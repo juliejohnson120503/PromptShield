@@ -1,0 +1,15 @@
+# PromptShield AI — Dependencies
+# Phase 1 runs out of the box with Python 3.12 Standard Library (0 external dependencies required).
+
+# Development & Testing (Optional)
+pytest>=7.4.0
+
+# Natural Language Processing (Optional for Phase 1; enhances NER)
+# spacy>=3.7.0
+
+# Future Phases (Phases 2-6)
+# sentence-transformers>=2.3.0
+# pydantic>=2.6.0
+# fastapi>=0.110.0
+# uvicorn>=0.28.0
+# httpx>=0.27.0
