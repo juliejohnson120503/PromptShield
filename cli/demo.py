@@ -56,6 +56,10 @@ SAMPLE_PROMPTS = [
         "Abbreviations & Shortforms (i m julie, psswrd)",
         "i m julie and my psswrd is 98765432"
     ),
+    (
+        "Customer Support Multi-Entity (Anjali Nair, Infosys, Kochi, ORD-78291)",
+        "Yesterday, Rahul Menon from Infosys contacted me about customer Anjali Nair, whose order ORD-78291 was shipped to Kochi. Her email is anjali.nair@gmail.com and she can be reached at +91 9876543210. The support team recorded her customer ID as CUST-10458 and the request came from IP address 192.168.1.45."
+    ),
 ]
 
 
