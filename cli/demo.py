@@ -9,6 +9,14 @@ Showcases:
 import sys
 import os
 
+# Ensure UTF-8 output on Windows consoles
+if sys.platform.startswith("win"):
+    try:
+        sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+        sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+    except Exception:
+        pass
+
 # Ensure project root is in python path
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
@@ -43,6 +51,10 @@ SAMPLE_PROMPTS = [
     (
         "Informal name with contraction (i am / i'm)",
         "i'm amina and my email is amina@gmail.com, write a formal letter to elon musk."
+    ),
+    (
+        "Abbreviations & Shortforms (i m julie, psswrd)",
+        "i m julie and my psswrd is 98765432"
     ),
 ]
 
@@ -79,12 +91,12 @@ def _colour(text: str, col: str) -> str:
 def print_banner():
     w = 90
     print("=" * w)
-    print("  PROMPTSHIELD AI — Phase 1 · 2 · 3: Detection · Context · Policy".center(w))
+    print("  PROMPTSHIELD AI - Phase 1 | 2 | 3: Detection | Context | Policy".center(w))
     print("=" * w)
     print("  A Context-Aware Security Layer for Safe, Responsible & Enterprise-Ready AI Systems".center(w))
     print("-" * w)
-    print(("  Pipeline Active: Prompt → Detection (P1) → Context Analysis (P2) "
-           "→ Policy Engine (P3)").center(w))
+    print(("  Pipeline Active: Prompt -> Detection (P1) -> Context Analysis (P2) "
+           "-> Policy Engine (P3)").center(w))
     print("  Upcoming: Context-Aware Semantic Masking (P4)".center(w))
     print("=" * w)
 
@@ -95,7 +107,7 @@ def display_results(shield: PromptShieldCore, prompt: str):
     baseline_res   = shield.sanitize_baseline(prompt)  # P1 baseline for reference
 
     W = 90
-    print("\n" + "─" * W)
+    print("\n" + "-" * W)
 
     # ── [1] Original Prompt ─────────────────────────────────────────────────
     print(f"\n{BOLD}[1] ORIGINAL PROMPT:{RESET}")
@@ -169,10 +181,10 @@ def display_results(shield: PromptShieldCore, prompt: str):
         for placeholder, secret in baseline_res.mapping.items():
             print(f"    {placeholder:<18} ===>  \"{secret}\"")
 
-    # ── [7] Phase 4 preview  ────────────────────────────────────────────────
-    print(f"\n{BOLD}[7] PHASE 4 PREVIEW — Context-Aware Semantic Masking (coming next):{RESET}")
+    # -- [7] Phase 4 preview  ------------------------------------------------
+    print(f"\n{BOLD}[7] PHASE 4 PREVIEW - Context-Aware Semantic Masking (coming next):{RESET}")
     mask_list = [
-        f"{_colour(p.entity_text, RED)} → <{p.entity_type.value}>"
+        f"{_colour(p.entity_text, RED)} -> <{p.entity_type.value}>"
         for p in policy_report.entities_to_mask
     ]
     retain_list = [
@@ -183,17 +195,29 @@ def display_results(shield: PromptShieldCore, prompt: str):
         f"{_colour(p.entity_text, YELLOW)} (ask user)"
         for p in policy_report.entities_needing_approval
     ]
-    print(f"    🔒 MASK:    {', '.join(mask_list)   or 'None'}")
-    print(f"    ✅ RETAIN:  {', '.join(retain_list) or 'None'}")
+    print(f"    [MASK]:     {', '.join(mask_list)   or 'None'}")
+    print(f"    [RETAIN]:   {', '.join(retain_list) or 'None'}")
     if ua_list:
-        print(f"    ❓ APPROVE: {', '.join(ua_list)}")
+        print(f"    [APPROVE]:  {', '.join(ua_list)}")
 
-    print("─" * W)
+    print("-" * W)
 
 
 def run_demo():
-    shield = PromptShieldCore(use_spacy=False)
     print_banner()
+
+    # Support direct prompt via command-line argument:
+    # Example: python -m cli.demo "i m julie and my psswrd is 98765432"
+    if len(sys.argv) > 1:
+        custom_input = " ".join(sys.argv[1:]).strip()
+        print(f"\n  [>] Running direct CLI analysis for custom prompt...")
+        shield = PromptShieldCore(use_spacy=True)
+        display_results(shield, custom_input)
+        return
+
+    print("  [>] Initializing PromptShield AI defense pipeline (Regex + Presidio + Neural NER)...")
+    shield = PromptShieldCore(use_spacy=True)
+    print("  [✓] All defense layers active!\n")
 
     while True:
         print("\nChoose a sample prompt or enter your own:")

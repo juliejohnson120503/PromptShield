@@ -88,22 +88,56 @@ PromptShield AI addresses this **Privacy–Utility trade-off** by acting as a us
 
 ---
 
-## 4. Phase 1 Features
+## 4. Phase 1 Features — Modular Hybrid Detection Foundation
 
-- **Structured Pattern Detection**:
-  - `EMAIL`: RFC 5322 pattern extraction.
-  - `PHONE`: International formats (E.164) and 10-digit formats with space/bracket/hyphen handling.
-  - `CREDIT_CARD`: Format recognition with **Luhn algorithm (mod-10) checksum validation** and card issuer branding (Visa, Mastercard, Amex, Discover). Arbitrary numbers failing Luhn are rejected to prevent false positives.
-  - `API_KEY`: Signatures for OpenAI (`sk-`), Google Cloud (`AIza`), GitHub (`ghp_`), AWS (`AKIA`), generic bearer tokens, and configuration key assignments.
-  - `PASSWORD`: Explicit assignments (`password = '...'`, `pwd: ...`) and natural language statements (`my password is ...`).
-- **Unstructured / Named Entity Recognition (NER)**:
-  - Hybrid design: Automatically uses `spaCy` if available; otherwise falls back cleanly to a built-in gazetteer and contextual intro pattern detector for `PERSON`, `ORGANIZATION`, `LOCATION`, and `DATE`.
-- **Entity Normalization**:
-  - Strips delimiters, extracts key values, lowercases emails, and normalizes phone digits.
-- **Overlap & Conflict Resolution**:
-  - Resolves overlapping candidate spans by confidence score, entity type specificity, and span length.
-- **Local Mapping Store**:
-  - Isolated in-memory storage per session. Associates generated placeholders with raw sensitive text locally. Mapping data is **never** transmitted to external models.
+Phase 1 has been refactored from a monolithic detector into a modular, hybrid detection architecture.
+
+### Detection Pipeline
+
+```
+User Prompt
+    │
+    ▼
+RegexDetector         ← Deterministic structured detection (zero-ML)
+    │                   EMAIL, PHONE, CREDIT_CARD (Luhn), API_KEY,
+    │                   ACCESS_TOKEN, PASSWORD, BANK_ACCOUNT, IP_ADDRESS,
+    │                   ORDER_ID/USER_ID/CUSTOMER_ID, DATE
+    ▼
+PresidioDetector      ← Microsoft Presidio PII detection
+    │                   EMAIL_ADDRESS, PHONE_NUMBER, CREDIT_CARD,
+    │                   IBAN_CODE, IP_ADDRESS, PERSON, LOCATION, DATE_TIME
+    │                   Confidence score preserved AS-IS from Presidio
+    ▼
+SpacyNERDetector      ← spaCy en_core_web_sm pretrained NER
+    │                   PERSON, ORG → ORGANIZATION, GPE/LOC → LOCATION, DATE
+    │                   Falls back to HeuristicNERDetector (gazetteer +
+    │                   contextual patterns) when model is unavailable
+    ▼
+EntityFusionEngine    ← Unified deduplication & conflict resolution
+    │                   • Exact-span merge (multi-source → contributing_sources)
+    │                   • Overlapping-span resolution (structured > NER)
+    │                   • Character-offset integrity validation
+    │                   • Output sorted by start offset
+    ▼
+List[DetectedEntity]  ← Unified, non-overlapping, sorted
+```
+
+### Key Principles
+
+1. **Detection ≠ Masking**: The detector identifies candidate entities only. Whether an entity is masked is decided by Phases 2–4.
+2. **Modular**: Each detector is an independent module; adding or replacing a detector does not affect others.
+3. **Graceful degradation**: If Presidio or spaCy is unavailable, the system logs a clear warning and continues with the remaining detectors.
+4. **No fabricated confidence**: Presidio's real scores are preserved. spaCy uses a documented baseline (not a made-up number).
+
+### New Modules (Phase 1 Refactor)
+
+| File | Role |
+|:---|:---|
+| `backend/config.py` | Centralized regex patterns, type maps, confidence baselines, conflict-resolution priorities |
+| `backend/regex_detector.py` | Modular `RegexDetector` class (all structured detection) |
+| `backend/presidio_detector.py` | `PresidioDetector` singleton wrapper |
+| `backend/spacy_detector.py` | `SpacyNERDetector` + `HeuristicNERDetector` fallback |
+| `backend/entity_fusion.py` | `EntityFusionEngine` — deduplication & overlap resolution |
 
 ---
 

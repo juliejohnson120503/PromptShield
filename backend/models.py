@@ -2,6 +2,16 @@
 Data models for PromptShield AI.
 Defines entity types, detected entity structures, normalization metadata,
 and baseline masking results.
+
+Changelog (Phase 1 — Hybrid Detection Foundation)
+--------------------------------------------------
+- EntityType extended with BANK_ACCOUNT, IP_ADDRESS, ACCESS_TOKEN,
+  ORDER_ID, USER_ID, CUSTOMER_ID.
+- DetectedEntity gains a `source` field that records which detector
+  subsystem produced the entity ("regex", "presidio", "spacy",
+  "heuristic_ner").
+  The legacy `detector` field is kept for backward compatibility and
+  always mirrors `source` when not set explicitly.
 """
 
 from dataclasses import dataclass, field
@@ -11,14 +21,22 @@ from typing import Dict, List, Optional, Any
 
 class EntityType(str, Enum):
     """Supported sensitive and named entity types."""
-    # Structured Sensitive Data
+    # ── Structured / Credential Sensitive Data ──────────────────────────
     EMAIL = "EMAIL"
     PHONE = "PHONE"
     CREDIT_CARD = "CREDIT_CARD"
     API_KEY = "API_KEY"
+    ACCESS_TOKEN = "ACCESS_TOKEN"       # JWT / OAuth bearer tokens
     PASSWORD = "PASSWORD"
+    BANK_ACCOUNT = "BANK_ACCOUNT"       # IBAN, account numbers
+    IP_ADDRESS = "IP_ADDRESS"           # IPv4 / IPv6
 
-    # Unstructured / Named Entities (NER)
+    # ── Project-Specific Configurable IDs ───────────────────────────────
+    ORDER_ID = "ORDER_ID"
+    USER_ID = "USER_ID"
+    CUSTOMER_ID = "CUSTOMER_ID"
+
+    # ── Unstructured / Named Entities (NER) ─────────────────────────────
     PERSON = "PERSON"
     ORGANIZATION = "ORGANIZATION"
     LOCATION = "LOCATION"
@@ -27,14 +45,36 @@ class EntityType(str, Enum):
 
 @dataclass
 class DetectedEntity:
-    """Represents an entity detected within a user prompt."""
+    """
+    Represents an entity detected within a user prompt.
+
+    Fields
+    ------
+    text            : The raw substring from the prompt.
+    entity_type     : Canonical PromptShield EntityType.
+    start           : Character start offset (inclusive).
+    end             : Character end offset (exclusive).
+    normalized_value: Canonicalized form of the entity value.
+    confidence      : Detection confidence in [0, 1].
+                      For regex: rule-defined baseline.
+                      For Presidio: analyzer's own score (preserved as-is).
+                      For spaCy / heuristic: model/rule baseline.
+    source          : Which detector subsystem produced this entity.
+                      One of: "regex", "presidio", "spacy", "heuristic_ner".
+    detector        : Specific recognizer label within the source
+                      (e.g. "openai_api_key", "luhn_credit_card").
+                      Kept for backward compatibility.
+    metadata        : Additional structured metadata (e.g. card brand,
+                      spacy_label, contributing_sources after fusion).
+    """
     text: str
     entity_type: EntityType
     start: int
     end: int
     normalized_value: str
     confidence: float = 1.0
-    detector: str = "rule_based"
+    source: str = "regex"        # NEW — which detector subsystem
+    detector: str = "rule_based" # legacy label; specific recognizer name
     metadata: Dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -46,6 +86,7 @@ class DetectedEntity:
             "end": self.end,
             "normalized_value": self.normalized_value,
             "confidence": round(self.confidence, 4),
+            "source": self.source,
             "detector": self.detector,
             "metadata": self.metadata,
         }

@@ -25,15 +25,21 @@ class BaselineMasker:
 
     # Placeholder tag prefixes
     TYPE_PREFIXES = {
-        EntityType.EMAIL: "EMAIL",
-        EntityType.PHONE: "PHONE",
-        EntityType.CREDIT_CARD: "CREDIT_CARD",
-        EntityType.API_KEY: "API_KEY",
-        EntityType.PASSWORD: "PASSWORD",
-        EntityType.PERSON: "PERSON",
-        EntityType.ORGANIZATION: "ORG",
-        EntityType.LOCATION: "LOCATION",
-        EntityType.DATE: "DATE",
+        EntityType.EMAIL:        "EMAIL",
+        EntityType.PHONE:        "PHONE",
+        EntityType.CREDIT_CARD:  "CREDIT_CARD",
+        EntityType.API_KEY:      "API_KEY",
+        EntityType.ACCESS_TOKEN: "TOKEN",
+        EntityType.PASSWORD:     "PASSWORD",
+        EntityType.BANK_ACCOUNT: "BANK_ACC",
+        EntityType.IP_ADDRESS:   "IP",
+        EntityType.ORDER_ID:     "ORDER_ID",
+        EntityType.USER_ID:      "USER_ID",
+        EntityType.CUSTOMER_ID:  "CUSTOMER_ID",
+        EntityType.PERSON:       "PERSON",
+        EntityType.ORGANIZATION:  "ORG",
+        EntityType.LOCATION:     "LOCATION",
+        EntityType.DATE:         "DATE",
     }
 
     def __init__(self, mapping_store: Optional[MappingStore] = None):
