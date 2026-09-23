@@ -47,9 +47,27 @@ def _load_analyzer() -> Optional[Any]:
     Returns the engine instance on success or None on failure.
     """
     try:
-        from presidio_analyzer import AnalyzerEngine
+        from presidio_analyzer import AnalyzerEngine, Pattern, PatternRecognizer
         engine = AnalyzerEngine()
-        logger.info("[PresidioDetector] AnalyzerEngine initialised successfully.")
+
+        # Custom structured recognizers for enterprise IDs with strict word boundaries
+        cust_recognizer = PatternRecognizer(
+            supported_entity="CUSTOMER_ID",
+            patterns=[Pattern("cust_id_pat", r"\b(?:CUST|CUSTOMER)[-_][A-Za-z0-9]{4,16}\b", 0.95)],
+        )
+        ord_recognizer = PatternRecognizer(
+            supported_entity="ORDER_ID",
+            patterns=[Pattern("ord_id_pat", r"\b(?:ORD|ORDER)[-_][A-Za-z0-9]{4,16}\b", 0.95)],
+        )
+        tkt_recognizer = PatternRecognizer(
+            supported_entity="TICKET_ID",
+            patterns=[Pattern("tkt_id_pat", r"\b(?:TKT|TICKET|SR|INC)[-_][A-Za-z0-9]{4,16}\b", 0.95)],
+        )
+        engine.registry.add_recognizer(cust_recognizer)
+        engine.registry.add_recognizer(ord_recognizer)
+        engine.registry.add_recognizer(tkt_recognizer)
+
+        logger.info("[PresidioDetector] AnalyzerEngine initialised with custom ID recognizers.")
         return engine
     except ImportError:
         logger.warning(
@@ -112,11 +130,22 @@ class PresidioDetector:
             return []
 
         entities: List[DetectedEntity] = []
+        import re
         for result in results:
+            # Score filter: drop low-confidence Presidio noise (< 0.40)
+            if result.score < 0.40:
+                continue
+
+            raw_text = prompt[result.start: result.end]
+            clean_text = raw_text.strip().lower()
+
+            # Exclude common tokens
+            if clean_text in config.COMMON_EXCLUDED_TOKENS:
+                continue
+
             # Normalise Presidio entity type → PromptShield EntityType string
             ps_type_str = config.PRESIDIO_ENTITY_MAPPING.get(result.entity_type)
             if ps_type_str is None:
-                # Unknown / unmapped Presidio type — ignore gracefully
                 continue
 
             try:
@@ -128,7 +157,10 @@ class PresidioDetector:
                 )
                 continue
 
-            raw_text = prompt[result.start: result.end]
+            # Filter false positive dates that actually describe street addresses or roads
+            if entity_type == EntityType.DATE:
+                if re.search(r"(?i)\b(?:road|rd\.?|street|st\.?|avenue|ave\.?|lane|ln\.?|drive|dr\.?|mg|marg|nagar|sector)\b", raw_text):
+                    continue
             entities.append(
                 DetectedEntity(
                     text=raw_text,

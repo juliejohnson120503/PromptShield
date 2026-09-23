@@ -415,9 +415,24 @@ class SpacyNERDetector:
             end = ent.end_char
 
             clean_text = text.strip()
-            # Filter out common excluded tokens (e.g., 'ip', 'email', 'password', etc.)
-            if clean_text.lower() in config.COMMON_EXCLUDED_TOKENS:
+            clean_norm = clean_text.lower()
+            # Filter out common excluded tokens (e.g., 'ip', 'email', 'password', 'team', etc.)
+            if clean_norm in config.COMMON_EXCLUDED_TOKENS:
                 continue
+            if clean_norm.startswith("the ") and clean_norm[4:].strip() in config.COMMON_EXCLUDED_TOKENS:
+                continue
+
+            # Reject structured alphanumeric codes (e.g., TKT-99182, ORD-78291) tagged as ORG or PERSON
+            import re
+            if re.match(r"^[A-Za-z]{2,8}[-_]\d+$", clean_text):
+                continue
+
+            # Reject isolated 5-6 digit PIN/postal codes or road names tagged as DATE
+            if entity_type == EntityType.DATE:
+                if re.match(r"^\d{5,6}$", clean_text):
+                    continue
+                if re.search(r"(?i)\b(?:road|rd\.?|street|st\.?|avenue|ave\.?|lane|ln\.?|drive|dr\.?|mg|marg|nagar)\b", text):
+                    continue
 
             # Gazetteer checks: prevent ORG misclassification of known locations (e.g., "Kochi")
             if clean_text in KNOWN_LOCATIONS or clean_text.title() in KNOWN_LOCATIONS:
@@ -426,6 +441,8 @@ class SpacyNERDetector:
                 entity_type = EntityType.ORGANIZATION
 
             if entity_type == EntityType.PERSON:
+                if len(clean_text) <= 1 or clean_norm in {"i", "me", "my", "we", "us", "he", "him", "she", "her", "they", "them", "it"}:
+                    continue
                 words = text.split()
                 while len(words) > 1 and words[-1].lower() in PERSON_STOP_WORDS:
                     words.pop()

@@ -1,0 +1,643 @@
+[
+  {
+    "id": 1,
+    "text": "Rahul Menon works at Infosys and can be contacted at rahul.menon@gmail.com or +91 9876543210.",
+    "entities": [
+      {
+        "text": "Rahul Menon",
+        "start": 0,
+        "end": 11,
+        "label": "PERSON"
+      },
+      {
+        "text": "Infosys",
+        "start": 21,
+        "end": 28,
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "rahul.menon@gmail.com",
+        "start": 53,
+        "end": 74,
+        "label": "EMAIL"
+      },
+      {
+        "text": "+91 9876543210",
+        "start": 78,
+        "end": 92,
+        "label": "PHONE"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "text": "Anjali Nair from Microsoft discussed the project with Arjun Kumar from Google during the meeting in Kochi.",
+    "entities": [
+      {
+        "text": "Anjali Nair",
+        "start": 0,
+        "end": 11,
+        "label": "PERSON"
+      },
+      {
+        "text": "Microsoft",
+        "start": 17,
+        "end": 26,
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "Arjun Kumar",
+        "start": 54,
+        "end": 65,
+        "label": "PERSON"
+      },
+      {
+        "text": "Google",
+        "start": 71,
+        "end": 77,
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "Kochi",
+        "start": 100,
+        "end": 105,
+        "label": "LOCATION"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "text": "The account belongs to Neha Thomas. Her email is neha.thomas@yahoo.com, her phone is +91 8123456789, and the request originated from 10.20.30.40.",
+    "entities": [
+      {
+        "text": "Neha Thomas",
+        "start": 23,
+        "end": 34,
+        "label": "PERSON"
+      },
+      {
+        "text": "neha.thomas@yahoo.com",
+        "start": 49,
+        "end": 70,
+        "label": "EMAIL"
+      },
+      {
+        "text": "+91 8123456789",
+        "start": 85,
+        "end": 99,
+        "label": "PHONE"
+      },
+      {
+        "text": "10.20.30.40",
+        "start": 133,
+        "end": 144,
+        "label": "IP_ADDRESS"
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "text": "Customer Anjali Nair reported that order ORD-78291 associated with customer ID CUST-10458 was delayed.",
+    "entities": [
+      {
+        "text": "Anjali Nair",
+        "start": 9,
+        "end": 20,
+        "label": "PERSON"
+      },
+      {
+        "text": "ORD-78291",
+        "start": 41,
+        "end": 50,
+        "label": "ORDER_ID"
+      },
+      {
+        "text": "CUST-10458",
+        "start": 79,
+        "end": 89,
+        "label": "CUSTOMER_ID"
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "text": "Please deliver the package to John Mathew at 24 MG Road, Kochi, Kerala 682016.",
+    "entities": [
+      {
+        "text": "John Mathew",
+        "start": 30,
+        "end": 41,
+        "label": "PERSON"
+      },
+      {
+        "text": "24 MG Road",
+        "start": 45,
+        "end": 55,
+        "label": "ADDRESS"
+      },
+      {
+        "text": "Kochi",
+        "start": 57,
+        "end": 62,
+        "label": "LOCATION"
+      },
+      {
+        "text": "Kerala",
+        "start": 64,
+        "end": 70,
+        "label": "LOCATION"
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "text": "The patient's name is Maria Thomas and her date of birth is 15/06/2002.",
+    "entities": [
+      {
+        "text": "Maria Thomas",
+        "start": 22,
+        "end": 34,
+        "label": "PERSON"
+      },
+      {
+        "text": "15/06/2002",
+        "start": 60,
+        "end": 70,
+        "label": "DATE"
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "text": "John Mathew used card number 4111 1111 1111 1111 for the payment.",
+    "entities": [
+      {
+        "text": "John Mathew",
+        "start": 0,
+        "end": 11,
+        "label": "PERSON"
+      },
+      {
+        "text": "4111 1111 1111 1111",
+        "start": 29,
+        "end": 48,
+        "label": "CREDIT_CARD"
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "text": "Maria Fernandes submitted passport number P1234567 while applying for a visa to Canada. Her nationality is Indian and her application reference is VISA-7821.",
+    "entities": [
+      {
+        "text": "Maria Fernandes",
+        "start": 0,
+        "end": 15,
+        "label": "PERSON"
+      },
+      {
+        "text": "P1234567",
+        "start": 42,
+        "end": 50,
+        "label": "PASSPORT_NUMBER"
+      },
+      {
+        "text": "Canada",
+        "start": 80,
+        "end": 86,
+        "label": "LOCATION"
+      },
+      {
+        "text": "Indian",
+        "start": 107,
+        "end": 113,
+        "label": "NATIONALITY"
+      },
+      {
+        "text": "VISA-7821",
+        "start": 147,
+        "end": 156,
+        "label": "TICKET_ID"
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "text": "The refund should be transferred to Rahul's bank account 458721963014 at HDFC Bank using IFSC HDFC0001234.",
+    "entities": [
+      {
+        "text": "Rahul",
+        "start": 36,
+        "end": 41,
+        "label": "PERSON"
+      },
+      {
+        "text": "458721963014",
+        "start": 57,
+        "end": 69,
+        "label": "BANK_ACCOUNT"
+      },
+      {
+        "text": "HDFC Bank",
+        "start": 73,
+        "end": 82,
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "HDFC0001234",
+        "start": 94,
+        "end": 105,
+        "label": "IFSC"
+      }
+    ]
+  },
+  {
+    "id": 10,
+    "text": "The suspicious login came from device MAC address 00:1A:2B:3C:4D:5E at 10.10.5.22.",
+    "entities": [
+      {
+        "text": "00:1A:2B:3C:4D:5E",
+        "start": 50,
+        "end": 67,
+        "label": "MAC_ADDRESS"
+      },
+      {
+        "text": "10.10.5.22",
+        "start": 71,
+        "end": 81,
+        "label": "IP_ADDRESS"
+      }
+    ]
+  },
+  {
+    "id": 11,
+    "text": "The application configuration contains API key sk_test_51N3xExampleSecret987654 and should not expose it in the generated response.",
+    "entities": [
+      {
+        "text": "sk_test_51N3xExampleSecret987654",
+        "start": 47,
+        "end": 79,
+        "label": "API_KEY"
+      }
+    ]
+  },
+  {
+    "id": 12,
+    "text": "Developer Neha Joseph used employee ID EMP-7712 and GitHub account neha-joseph to deploy service payment-api from workstation 10.0.0.25.",
+    "entities": [
+      {
+        "text": "Neha Joseph",
+        "start": 10,
+        "end": 21,
+        "label": "PERSON"
+      },
+      {
+        "text": "EMP-7712",
+        "start": 39,
+        "end": 47,
+        "label": "CUSTOMER_ID"
+      },
+      {
+        "text": "neha-joseph",
+        "start": 67,
+        "end": 78,
+        "label": "USERNAME"
+      },
+      {
+        "text": "10.0.0.25",
+        "start": 126,
+        "end": 135,
+        "label": "IP_ADDRESS"
+      }
+    ]
+  },
+  {
+    "id": 13,
+    "text": "Authenticate using bearer access token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c to query the API.",
+    "entities": [
+      {
+        "text": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+        "start": 39,
+        "end": 147,
+        "label": "ACCESS_TOKEN"
+      }
+    ]
+  },
+  {
+    "id": 14,
+    "text": "Support ticket TKT-94812 has incident tracking UUID 550e8400-e29b-41d4-a716-446655440000 assigned to engineer Vikram.",
+    "entities": [
+      {
+        "text": "TKT-94812",
+        "start": 15,
+        "end": 24,
+        "label": "TICKET_ID"
+      },
+      {
+        "text": "550e8400-e29b-41d4-a716-446655440000",
+        "start": 52,
+        "end": 88,
+        "label": "UUID"
+      },
+      {
+        "text": "Vikram",
+        "start": 110,
+        "end": 116,
+        "label": "PERSON"
+      }
+    ]
+  },
+  {
+    "id": 15,
+    "text": "The patient records indicate diagnosis of Type 2 Diabetes and prescribed Metformin 500mg daily.",
+    "entities": [
+      {
+        "text": "Type 2 Diabetes",
+        "start": 42,
+        "end": 57,
+        "label": "MEDICAL_INFORMATION"
+      },
+      {
+        "text": "Metformin 500mg",
+        "start": 73,
+        "end": 88,
+        "label": "MEDICAL_INFORMATION"
+      }
+    ]
+  },
+  {
+    "id": 16,
+    "text": "Dr. Sanjay Gupta confirmed that David Miller was admitted with acute myocardial infarction.",
+    "entities": [
+      {
+        "text": "Sanjay Gupta",
+        "start": 4,
+        "end": 16,
+        "label": "PERSON"
+      },
+      {
+        "text": "David Miller",
+        "start": 32,
+        "end": 44,
+        "label": "PERSON"
+      },
+      {
+        "text": "acute myocardial infarction",
+        "start": 63,
+        "end": 90,
+        "label": "MEDICAL_INFORMATION"
+      }
+    ]
+  },
+  {
+    "id": 17,
+    "text": "User admin_root logged in on 2024-03-15 using temporary passcode TempPass@2024! from host.",
+    "entities": [
+      {
+        "text": "admin_root",
+        "start": 5,
+        "end": 15,
+        "label": "USERNAME"
+      },
+      {
+        "text": "2024-03-15",
+        "start": 29,
+        "end": 39,
+        "label": "DATE"
+      },
+      {
+        "text": "TempPass@2024!",
+        "start": 65,
+        "end": 79,
+        "label": "PASSWORD"
+      }
+    ]
+  },
+  {
+    "id": 18,
+    "text": "German citizen Lukas Weber presented passport C01X00T47 at border control in Frankfurt.",
+    "entities": [
+      {
+        "text": "German",
+        "start": 0,
+        "end": 6,
+        "label": "NATIONALITY"
+      },
+      {
+        "text": "Lukas Weber",
+        "start": 15,
+        "end": 26,
+        "label": "PERSON"
+      },
+      {
+        "text": "C01X00T47",
+        "start": 46,
+        "end": 55,
+        "label": "PASSPORT_NUMBER"
+      },
+      {
+        "text": "Frankfurt",
+        "start": 77,
+        "end": 86,
+        "label": "LOCATION"
+      }
+    ]
+  },
+  {
+    "id": 19,
+    "text": "Please remit payment to account number 912345678901 with State Bank of India IFSC SBIN0000456.",
+    "entities": [
+      {
+        "text": "912345678901",
+        "start": 39,
+        "end": 51,
+        "label": "BANK_ACCOUNT"
+      },
+      {
+        "text": "State Bank of India",
+        "start": 57,
+        "end": 76,
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "SBIN0000456",
+        "start": 82,
+        "end": 93,
+        "label": "IFSC"
+      }
+    ]
+  },
+  {
+    "id": 20,
+    "text": "Tracking update: order ORD-11029 has been dispatched for customer ID CUST-99201.",
+    "entities": [
+      {
+        "text": "ORD-11029",
+        "start": 23,
+        "end": 32,
+        "label": "ORDER_ID"
+      },
+      {
+        "text": "CUST-99201",
+        "start": 69,
+        "end": 79,
+        "label": "CUSTOMER_ID"
+      }
+    ]
+  },
+  {
+    "id": 21,
+    "text": "Do not commit API key gh_p_98a7bc6d5e4f3a2b1c0d9e8f7a6b5c4d3e2f to version control.",
+    "entities": [
+      {
+        "text": "gh_p_98a7bc6d5e4f3a2b1c0d9e8f7a6b5c4d3e2f",
+        "start": 22,
+        "end": 63,
+        "label": "API_KEY"
+      }
+    ]
+  },
+  {
+    "id": 22,
+    "text": "Hardware adapter MAC 1A-2B-3C-4D-5E-6F assigned dynamic IPv6 address 2001:0db8:85a3:0000:0000:8a2e:0370:7334.",
+    "entities": [
+      {
+        "text": "1A-2B-3C-4D-5E-6F",
+        "start": 21,
+        "end": 38,
+        "label": "MAC_ADDRESS"
+      },
+      {
+        "text": "2001:0db8:85a3:0000:0000:8a2e:0370:7334",
+        "start": 69,
+        "end": 108,
+        "label": "IP_ADDRESS"
+      }
+    ]
+  },
+  {
+    "id": 23,
+    "text": "Contact Robert Taylor at 742 Evergreen Terrace, Springfield, or call 555-0199 for inquiries.",
+    "entities": [
+      {
+        "text": "Robert Taylor",
+        "start": 8,
+        "end": 21,
+        "label": "PERSON"
+      },
+      {
+        "text": "742 Evergreen Terrace",
+        "start": 25,
+        "end": 46,
+        "label": "ADDRESS"
+      },
+      {
+        "text": "Springfield",
+        "start": 48,
+        "end": 59,
+        "label": "LOCATION"
+      },
+      {
+        "text": "555-0199",
+        "start": 69,
+        "end": 77,
+        "label": "PHONE"
+      }
+    ]
+  },
+  {
+    "id": 24,
+    "text": "The transaction failed with trace ID a1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d in the payment gateway.",
+    "entities": [
+      {
+        "text": "a1b2c3d4-e5f6-7a8b-9c0d-1e2f3a4b5c6d",
+        "start": 37,
+        "end": 73,
+        "label": "UUID"
+      }
+    ]
+  },
+  {
+    "id": 25,
+    "text": "OAuth token ya29.a0AfH6SMD_example_secret_token_string_here_98765 expired after one hour.",
+    "entities": [
+      {
+        "text": "ya29.a0AfH6SMD_example_secret_token_string_here_98765",
+        "start": 12,
+        "end": 65,
+        "label": "ACCESS_TOKEN"
+      }
+    ]
+  },
+  {
+    "id": 26,
+    "text": "Indian food is popular in Kerala.",
+    "entities": [
+      {
+        "text": "Kerala",
+        "start": 26,
+        "end": 32,
+        "label": "LOCATION"
+      }
+    ]
+  },
+  {
+    "id": 27,
+    "text": "The network team discussed the IP address.",
+    "entities": []
+  },
+  {
+    "id": 28,
+    "text": "Apple released a new phone.",
+    "entities": [
+      {
+        "text": "Apple",
+        "start": 0,
+        "end": 5,
+        "label": "ORGANIZATION"
+      }
+    ]
+  },
+  {
+    "id": 29,
+    "text": "The order was delayed yesterday.",
+    "entities": []
+  },
+  {
+    "id": 30,
+    "text": "Machine learning models can identify patterns in large datasets.",
+    "entities": []
+  },
+  {
+    "id": 31,
+    "text": "IP is an important networking concept.",
+    "entities": []
+  },
+  {
+    "id": 32,
+    "text": "Amazon is an online shopping company.",
+    "entities": [
+      {
+        "text": "Amazon",
+        "start": 0,
+        "end": 6,
+        "label": "ORGANIZATION"
+      }
+    ]
+  },
+  {
+    "id": 33,
+    "text": "We need to review the quarterly budget report before the end of the fiscal year.",
+    "entities": []
+  },
+  {
+    "id": 34,
+    "text": "All employees should submit their feedback regarding the office reorganization.",
+    "entities": []
+  },
+  {
+    "id": 35,
+    "text": "The database connection timed out while querying the general catalog.",
+    "entities": []
+  }
+]

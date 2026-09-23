@@ -123,6 +123,7 @@ class RegexDetector:
         candidates.extend(self._detect_bank_accounts(prompt))
         candidates.extend(self._detect_ip_addresses(prompt))
         candidates.extend(self._detect_ids(prompt))
+        candidates.extend(self._detect_addresses(prompt))
         candidates.extend(self._detect_dates(prompt))
         return candidates
 
@@ -313,6 +314,7 @@ class RegexDetector:
             "order_id": EntityType.ORDER_ID,
             "user_id": EntityType.USER_ID,
             "customer_id": EntityType.CUSTOMER_ID,
+            "ticket_id": EntityType.TICKET_ID,
         }
         entities = []
         for pattern, label, conf in config.ID_PATTERNS:
@@ -328,6 +330,27 @@ class RegexDetector:
                         start=start,
                         end=end,
                         normalized_value=normalize_entity_value(entity_type, raw),
+                        confidence=conf,
+                        source="regex",
+                        detector=f"regex_{label}",
+                    )
+                )
+        return entities
+
+    def _detect_addresses(self, prompt: str) -> List[DetectedEntity]:
+        entities = []
+        for pattern, label, conf in config.ADDRESS_PATTERNS:
+            for match in pattern.finditer(prompt):
+                raw = match.group(0).strip().rstrip(".,;:")
+                start = match.start()
+                end = start + len(raw)
+                entities.append(
+                    DetectedEntity(
+                        text=raw,
+                        entity_type=EntityType.ADDRESS,
+                        start=start,
+                        end=end,
+                        normalized_value=normalize_entity_value(EntityType.ADDRESS, raw),
                         confidence=conf,
                         source="regex",
                         detector=f"regex_{label}",

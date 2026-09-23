@@ -36,9 +36,11 @@ class BaselineMasker:
         EntityType.ORDER_ID:     "ORDER_ID",
         EntityType.USER_ID:      "USER_ID",
         EntityType.CUSTOMER_ID:  "CUSTOMER_ID",
+        EntityType.TICKET_ID:    "TICKET_ID",
         EntityType.PERSON:       "PERSON",
-        EntityType.ORGANIZATION:  "ORG",
+        EntityType.ORGANIZATION: "ORG",
         EntityType.LOCATION:     "LOCATION",
+        EntityType.ADDRESS:      "ADDRESS",
         EntityType.DATE:         "DATE",
     }
 
@@ -56,7 +58,8 @@ class BaselineMasker:
         and register the local mapping.
 
         Replaces matches by slicing the original text in ascending order (or reverse)
-        to prevent offset drift. Reuses the same placeholder for identical normalized entities.
+        to prevent offset drift. Reuses the same placeholder for identical normalized entities,
+        and links person aliases/first-names to established person entities.
         """
         sid = self.mapping_store.create_session(session_id)
 
@@ -82,9 +85,22 @@ class BaselineMasker:
             prefix = self.TYPE_PREFIXES.get(entity.entity_type, entity.entity_type.value)
             cache_key = (entity.entity_type, entity.normalized_value)
 
+            ph = None
             if cache_key in seen_entity_map:
                 ph = seen_entity_map[cache_key]
-            else:
+            elif entity.entity_type == EntityType.PERSON:
+                # Coreference resolution: link first-name alias to existing full-name person (e.g. John -> John Mathew)
+                norm_words = entity.normalized_value.split()
+                for (seen_type, seen_val), seen_ph in seen_entity_map.items():
+                    if seen_type == EntityType.PERSON:
+                        seen_words = seen_val.split()
+                        if (len(norm_words) == 1 and len(seen_words) > 1 and norm_words[0].lower() == seen_words[0].lower()) or \
+                           (len(seen_words) == 1 and len(norm_words) > 1 and norm_words[0].lower() == seen_words[0].lower()):
+                            ph = seen_ph
+                            seen_entity_map[cache_key] = ph
+                            break
+
+            if ph is None:
                 counter = type_counters.get(prefix, 0) + 1
                 type_counters[prefix] = counter
                 ph = f"<{prefix}_{counter}>"

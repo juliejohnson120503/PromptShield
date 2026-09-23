@@ -167,22 +167,21 @@ class SensitiveDataDetector:
                 "[Detector] GLiNER found %d candidates.", len(gliner_results)
             )
 
-        # 4. spaCy NER (if enabled and available)
-        if self._spacy_ner is not None and self._spacy_ner.is_available():
+        # 4. spaCy NER (if enabled) or Heuristic NER fallback (when use_spacy=False)
+        if self._spacy_ner is not None:
             ner_results = self._spacy_ner.detect(prompt)
             candidates.extend(ner_results)
             logger.debug(
                 "[Detector] NER found %d candidates.", len(ner_results)
             )
-
-        # 5. Contextual Heuristic & Gazetteer NER
-        from backend.spacy_detector import HeuristicNERDetector
-        heuristic_results = HeuristicNERDetector().detect(prompt)
-        candidates.extend(heuristic_results)
-        logger.debug(
-            "[Detector] Heuristic NER found %d candidates.",
-            len(heuristic_results),
-        )
+        else:
+            from backend.spacy_detector import HeuristicNERDetector
+            heuristic_results = HeuristicNERDetector().detect(prompt)
+            candidates.extend(heuristic_results)
+            logger.debug(
+                "[Detector] Heuristic NER (use_spacy=False fallback) found %d candidates.",
+                len(heuristic_results),
+            )
 
         # 5. Fusion: deduplicate, resolve overlaps, sort
         fused = self._fusion.fuse(candidates, prompt)
@@ -191,6 +190,24 @@ class SensitiveDataDetector:
             len(candidates), len(fused),
         )
         return fused
+
+    @staticmethod
+    def format_explainable_report(entities: List[DetectedEntity]) -> str:
+        """
+        Format detected entities as an explainable report:
+        ENTITY | TYPE | SOURCE | CONFIDENCE
+        """
+        if not entities:
+            return "No entities detected."
+        lines = [
+            f"{'ENTITY':<30} | {'TYPE':<15} | {'SOURCE':<15} | {'CONFIDENCE':<10}",
+            "-" * 78,
+        ]
+        for e in entities:
+            src = e.source if hasattr(e, "source") else "unknown"
+            conf = f"{e.confidence:.2f}"
+            lines.append(f"{e.text:<30} | {e.entity_type.value:<15} | {src:<15} | {conf:<10}")
+        return "\n".join(lines)
 
     def get_detector_status(self) -> Dict[str, Any]:
         """

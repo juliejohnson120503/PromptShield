@@ -35,11 +35,13 @@ class EntityType(str, Enum):
     ORDER_ID = "ORDER_ID"
     USER_ID = "USER_ID"
     CUSTOMER_ID = "CUSTOMER_ID"
+    TICKET_ID = "TICKET_ID"
 
     # ── Unstructured / Named Entities (NER) ─────────────────────────────
     PERSON = "PERSON"
     ORGANIZATION = "ORGANIZATION"
     LOCATION = "LOCATION"
+    ADDRESS = "ADDRESS"
     DATE = "DATE"
 
 

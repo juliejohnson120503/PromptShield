@@ -238,3 +238,21 @@ class EntityFusionEngine:
                 )
 
         return accepted
+
+    @staticmethod
+    def format_explainable_report(entities: List[DetectedEntity]) -> str:
+        """
+        Format detected entities as an explainable report:
+        ENTITY | TYPE | SOURCE | CONFIDENCE
+        """
+        if not entities:
+            return "No entities detected."
+        lines = [
+            f"{'ENTITY':<30} | {'TYPE':<15} | {'SOURCE':<15} | {'CONFIDENCE':<10}",
+            "-" * 78,
+        ]
+        for e in entities:
+            src = getattr(e, "source", "unknown")
+            conf = f"{e.confidence:.2f}"
+            lines.append(f"{e.text:<30} | {e.entity_type.value:<15} | {src:<15} | {conf:<10}")
+        return "\n".join(lines)

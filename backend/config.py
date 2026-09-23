@@ -26,11 +26,23 @@ from typing import Dict, List, Tuple, Set
 # COMMON EXCLUDED TOKENS (Keywords falsely tagged as entities)
 # ============================================================
 COMMON_EXCLUDED_TOKENS: Set[str] = {
+    # Credentials, technical protocols & field labels
     "password", "psswrd", "pswrd", "pswd", "pwd", "pass", "pin", "passcode",
     "email", "mail", "phone", "username", "user", "name", "id", "card",
     "letter", "note", "message", "text", "prompt", "code", "token", "key",
-    "ip", "url", "uri", "http", "https", "ftp", "dns", "tcp", "udp",
-    "vpn", "api", "ai", "ml", "os", "ssh", "ssl", "tls", "customer", "order",
+    "ip", "ip address", "url", "uri", "http", "https", "ftp", "dns", "tcp", "udp",
+    "vpn", "api", "ai", "ml", "os", "ssh", "ssl", "tls", "customer", "order", "ticket",
+    # Pronouns & function words falsely tagged as PERSON
+    "i", "me", "my", "myself", "we", "us", "our", "ours", "ourselves",
+    "you", "your", "yours", "yourself", "yourselves",
+    "he", "him", "his", "himself", "she", "her", "hers", "herself",
+    "it", "its", "itself", "they", "them", "their", "theirs", "themselves",
+    # Generic collective nouns, roles, and meeting concepts (not named organizations)
+    "team", "the team", "network team", "the network team", "support team", "the support team",
+    "project", "database", "server", "meeting", "architecture", "report",
+    "organization", "organizations", "company", "companies", "department", "departments",
+    "model", "models", "dataset", "datasets", "pattern", "patterns", "task", "tasks",
+    "package", "replacement",
 }
 
 
@@ -222,25 +234,76 @@ IP_ADDRESS_PATTERNS: List[Tuple[re.Pattern, str, float]] = [
 # ============================================================
 # PROJECT-SPECIFIC / STRUCTURED IDs
 # ============================================================
-# These are OFF by default — enable in project config if needed.
 ID_PATTERNS: List[Tuple[re.Pattern, str, float]] = [
-    # ORDER_ID: keyword trigger e.g. "order #ORD-123456", "order ORD-78291"
+    # ORDER_ID: explicit prefix format (e.g. ORD-12345, ORD-78291, ORDER-55123)
+    (
+        re.compile(r"\b(?:ORD|ORDER)[-_][A-Za-z0-9]{4,16}\b", re.IGNORECASE),
+        "order_id",
+        0.95,
+    ),
+    # ORDER_ID: keyword context trigger (e.g. "order #ORD-123456", "order ORD-78291")
     (
         re.compile(r"(?i)\border(?:\s+id|\s+#|no\.?|number)?\s*(?:is|as|[:\-#=])?\s*(ORD[-\s]?[A-Za-z0-9]{4,12})\b"),
         "order_id",
-        0.88,
+        0.92,
     ),
-    # USER_ID: keyword trigger e.g. "user id: U12345", "user id as usr_998"
+    # CUSTOMER_ID: explicit prefix format (e.g. CUST-10458, CUST-90812, CUSTOMER-1234)
     (
-        re.compile(r"(?i)\buser(?:\s+id|_id|\s*#|\s*no\.?|\s+number|\s+code)\s*(?:is|as|[:\-#=])?\s*([A-Za-z0-9_\-]{4,24})\b"),
-        "user_id",
-        0.80,
-    ),
-    # CUSTOMER_ID: requires explicit id / # / no / code e.g. "customer id: CUST-10458", "customer ID as CUST-10458"
-    (
-        re.compile(r"(?i)\bcustomer(?:\s+id|_id|\s*#|\s*no\.?|\s+number|\s+code)\s*(?:is|as|[:\-#=])?\s*([A-Za-z0-9_\-]{4,24})\b"),
+        re.compile(r"\b(?:CUST|CUSTOMER)[-_][A-Za-z0-9]{4,16}\b", re.IGNORECASE),
         "customer_id",
+        0.95,
+    ),
+    # CUSTOMER_ID: keyword context trigger (e.g. "customer id: CUST-10458", "customer ID as 10458")
+    (
+        re.compile(r"(?i)\bcustomer(?:\s+id|_id|\s*#|\s*no\.?|\s+number|\s+code)\s*(?:is|as|[:\-#=])?\s*([A-Za-z0-9_\-]*\d[A-Za-z0-9_\-]*)\b"),
+        "customer_id",
+        0.90,
+    ),
+    # TICKET_ID: explicit prefix format (e.g. TKT-99182, TICKET-1042, SR-9912, INC-8821)
+    (
+        re.compile(r"\b(?:TKT|TICKET|SR|INC)[-_][A-Za-z0-9]{4,16}\b", re.IGNORECASE),
+        "ticket_id",
+        0.95,
+    ),
+    # TICKET_ID: keyword context trigger (e.g. "ticket #99182", "ticket id: TKT-99182")
+    (
+        re.compile(r"(?i)\bticket(?:\s+id|_id|\s*#|\s*no\.?|\s+number)?\s*(?:is|as|[:\-#=])?\s*([A-Za-z0-9_\-]*\d[A-Za-z0-9_\-]*)\b"),
+        "ticket_id",
+        0.90,
+    ),
+    # USER_ID: keyword context trigger e.g. "user id: U12345", "user id as usr_998"
+    (
+        re.compile(r"(?i)\buser(?:\s+id|_id|\s*#|\s*no\.?|\s+number|\s+code)\s*(?:is|as|[:\-#=])?\s*([A-Za-z0-9_\-]*\d[A-Za-z0-9_\-]*)\b"),
+        "user_id",
         0.85,
+    ),
+]
+
+# ============================================================
+# PHYSICAL / POSTAL ADDRESS
+# ============================================================
+ADDRESS_PATTERNS: List[Tuple[re.Pattern, str, float]] = [
+    # Full postal address with street number, street designator, optional localities, and 5-6 digit PIN/postal code
+    # e.g., "24 MG Road, Kochi, Kerala 682016" or "120 Nehru Marg, Pune, Maharashtra 411001"
+    (
+        re.compile(
+            r"(?<![-A-Za-z0-9/])\b\d{1,5}(?:[/-]\d{1,5})?[A-Za-z]?\s+"
+            r"(?:(?:(?![a-z])[A-Za-z0-9\'-]+|\d+(?:st|nd|rd|th)?)\s+){1,4}"
+            r"(?:Road|Rd\.?|Street|St\.?|Avenue|Ave\.?|Lane|Ln\.?|Drive|Dr\.?|Boulevard|Blvd\.?|Marg|Nagar|Colony|Sector|Bazaar|Cross|Main|Way|Place)\b"
+            r"(?:,\s*[A-Za-z0-9\s\'-]+){0,4}(?:,\s*|\s+)\b\d{5,6}\b",
+        ),
+        "address_with_postal_code",
+        0.96,
+    ),
+    # Street address without postal code (e.g., "24 MG Road", "221B Baker Street")
+    (
+        re.compile(
+            r"(?<![-A-Za-z0-9/])\b\d{1,5}(?:[/-]\d{1,5})?[A-Za-z]?\s+"
+            r"(?:(?:(?![a-z])[A-Za-z0-9\'-]+|\d+(?:st|nd|rd|th)?)\s+){1,4}"
+            r"(?:Road|Rd\.?|Street|St\.?|Avenue|Ave\.?|Lane|Ln\.?|Drive|Dr\.?|Boulevard|Blvd\.?|Marg|Nagar|Colony|Sector|Bazaar|Cross|Main|Way|Place)\b",
+        ),
+        "street_address",
+        0.90,
     ),
 ]
 
@@ -302,6 +365,9 @@ PRESIDIO_ENTITY_MAPPING: Dict[str, str] = {
     "US_PASSPORT":      "USER_ID",
     "US_BANK_NUMBER":   "BANK_ACCOUNT",
     "ORGANIZATION":     "ORGANIZATION",
+    "CUSTOMER_ID":      "CUSTOMER_ID",
+    "ORDER_ID":         "ORDER_ID",
+    "TICKET_ID":        "TICKET_ID",
 }
 
 # Presidio entity strings to request from the analyzer engine
@@ -368,14 +434,16 @@ ENTITY_TYPE_PRIORITY: Dict[str, int] = {
     "EMAIL":          7,
     "PHONE":          6,
     "BANK_ACCOUNT":   6,
-    "IP_ADDRESS":     5,
-    "ORDER_ID":       5,
+    "IP_ADDRESS":     6,
+    "ORDER_ID":       6,
+    "CUSTOMER_ID":    6,
+    "TICKET_ID":      6,
     "USER_ID":        5,
-    "CUSTOMER_ID":    5,
+    "ADDRESS":        5,  # Higher than individual LOCATION so full address subsumes nested city/state
     "DATE":           4,
     "PERSON":         3,
-    "ORGANIZATION":   3,  # Equal to PERSON & LOCATION — gazetteer & deep NER preserved
-    "LOCATION":       3,
+    "ORGANIZATION":   3,
+    "LOCATION":       2,
 }
 
 # SOURCE priority when entity types are the same but sources differ.
@@ -402,7 +470,9 @@ CONFIDENCE_BASELINES: Dict[str, float] = {
     "regex_password":       0.92,
     "regex_bank_account":   0.88,
     "regex_ip":             0.97,
-    "regex_id":             0.82,
+    "regex_id":             0.90,
+    "regex_ticket_id":      0.95,
+    "regex_address":        0.95,
     "regex_date":           0.90,
     "presidio":             None,  # Presidio provides per-entity scores; use as-is
     "gliner":               0.88,  # GLiNER zero-shot neural NER baseline

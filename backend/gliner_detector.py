@@ -147,9 +147,37 @@ class GlinerNERDetector:
             if prompt[start:end] != text:
                 continue
 
-            # Filter out common keywords and prompt labels falsely tagged as entities
-            if text.lower().strip() in COMMON_EXCLUDED_TOKENS:
+            clean_text = text.strip()
+            clean_norm = clean_text.lower()
+
+            # Filter out common keywords, pronouns, and prompt labels falsely tagged as entities
+            if clean_norm in COMMON_EXCLUDED_TOKENS:
                 continue
+            if clean_norm.startswith("the ") and clean_norm[4:].strip() in COMMON_EXCLUDED_TOKENS:
+                continue
+
+            # Linguistic entity-type validation:
+            if entity_type == EntityType.PERSON:
+                # Single characters or personal pronouns are not person names
+                if len(clean_text) <= 1 or clean_norm in {"i", "me", "my", "we", "us", "he", "him", "she", "her", "they", "them", "it"}:
+                    continue
+                # Structured alphanumeric codes (e.g., CUST-12345, ORD-9981) are IDs, not person names
+                import re
+                if re.match(r"^[A-Za-z]{2,8}[-_]\d+$", clean_text):
+                    continue
+
+            elif entity_type == EntityType.ORGANIZATION:
+                # Completely lowercase words without corporate indicators are generic nouns, not named orgs
+                if clean_text.islower() and not any(term in clean_norm for term in ["inc", "ltd", "corp", "llc", "gmbh", "co."]):
+                    continue
+                # Generic collective nouns (e.g., "organizations", "network team")
+                if clean_norm in {"organizations", "companies", "departments", "teams", "team", "network team", "support team"}:
+                    continue
+
+            elif entity_type == EntityType.LOCATION:
+                # Standalone technical architecture terms falsely tagged as locations
+                if clean_norm in {"ip", "ip address", "server", "cloud", "database", "network", "internet", "host", "domain"}:
+                    continue
 
             score = float(ent.get("score", config.CONFIDENCE_BASELINES.get("gliner", 0.88)))
 
