@@ -1,0 +1,1709 @@
+[
+  {
+    "id": "test_001",
+    "text": "Rahul Menon works at Infosys in Kochi.",
+    "entities": [
+      {
+        "text": "Rahul Menon",
+        "start": 0,
+        "end": 11,
+        "label": "PERSON"
+      },
+      {
+        "text": "Infosys",
+        "start": 21,
+        "end": 28,
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "Kochi",
+        "start": 32,
+        "end": 37,
+        "label": "LOCATION"
+      }
+    ]
+  },
+  {
+    "id": "test_002",
+    "text": "Contact me at priya.sharma@gmail.com for the project update.",
+    "entities": [
+      {
+        "text": "priya.sharma@gmail.com",
+        "start": 14,
+        "end": 36,
+        "label": "EMAIL"
+      }
+    ]
+  },
+  {
+    "id": "test_003",
+    "text": "Call Amit at +91 9876543210 before noon.",
+    "entities": [
+      {
+        "text": "Amit",
+        "start": 5,
+        "end": 9,
+        "label": "PERSON"
+      },
+      {
+        "text": "+91 9876543210",
+        "start": 13,
+        "end": 27,
+        "label": "PHONE"
+      }
+    ]
+  },
+  {
+    "id": "test_004",
+    "text": "The server at 192.168.1.100 is down. Please restart the service.",
+    "entities": [
+      {
+        "text": "192.168.1.100",
+        "start": 14,
+        "end": 27,
+        "label": "IP_ADDRESS"
+      }
+    ]
+  },
+  {
+    "id": "test_005",
+    "text": "John Mathew used card 4111 1111 1111 1111 for the online purchase.",
+    "entities": [
+      {
+        "text": "John Mathew",
+        "start": 0,
+        "end": 11,
+        "label": "PERSON"
+      },
+      {
+        "text": "4111 1111 1111 1111",
+        "start": 22,
+        "end": 41,
+        "label": "CREDIT_CARD"
+      }
+    ]
+  },
+  {
+    "id": "test_006",
+    "text": "The OpenAI key is sk-proj-AbCdEfGhIjKlMnOpQrStUvWxYz1234567890abcdef and must not be shared.",
+    "entities": [
+      {
+        "text": "sk-proj-AbCdEfGhIjKlMnOpQrStUvWxYz1234567890abcdef",
+        "start": 18,
+        "end": 68,
+        "label": "API_KEY"
+      }
+    ]
+  },
+  {
+    "id": "test_007",
+    "text": "Set password = MySecurePass@99 in the config.",
+    "entities": [
+      {
+        "text": "MySecurePass@99",
+        "start": 15,
+        "end": 30,
+        "label": "PASSWORD"
+      }
+    ]
+  },
+  {
+    "id": "test_008",
+    "text": "Please transfer funds to account number 912345678901 at SBI.",
+    "entities": [
+      {
+        "text": "912345678901",
+        "start": 40,
+        "end": 52,
+        "label": "BANK_ACCOUNT"
+      },
+      {
+        "text": "SBI",
+        "start": 56,
+        "end": 59,
+        "label": "ORGANIZATION"
+      }
+    ]
+  },
+  {
+    "id": "test_009",
+    "text": "Order ORD-78291 for customer CUST-10458 was placed on 2024-03-15.",
+    "entities": [
+      {
+        "text": "ORD-78291",
+        "start": 6,
+        "end": 15,
+        "label": "ORDER_ID"
+      },
+      {
+        "text": "CUST-10458",
+        "start": 29,
+        "end": 39,
+        "label": "CUSTOMER_ID"
+      },
+      {
+        "text": "2024-03-15",
+        "start": 54,
+        "end": 64,
+        "label": "DATE"
+      }
+    ]
+  },
+  {
+    "id": "test_010",
+    "text": "Escalate ticket TKT-94812 to Vikram at the Bangalore office.",
+    "entities": [
+      {
+        "text": "TKT-94812",
+        "start": 16,
+        "end": 25,
+        "label": "TICKET_ID"
+      },
+      {
+        "text": "Vikram",
+        "start": 29,
+        "end": 35,
+        "label": "PERSON"
+      },
+      {
+        "text": "Bangalore",
+        "start": 43,
+        "end": 52,
+        "label": "LOCATION"
+      }
+    ]
+  },
+  {
+    "id": "test_011",
+    "text": "Authentication header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+    "entities": [
+      {
+        "text": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+        "start": 30,
+        "end": 138,
+        "label": "ACCESS_TOKEN"
+      }
+    ]
+  },
+  {
+    "id": "test_012",
+    "text": "Neha Thomas resides at 24 MG Road, Kochi, Kerala 682016.",
+    "entities": [
+      {
+        "text": "Neha Thomas",
+        "start": 0,
+        "end": 11,
+        "label": "PERSON"
+      },
+      {
+        "text": "24 MG Road, Kochi, Kerala 682016",
+        "start": 23,
+        "end": 55,
+        "label": "ADDRESS"
+      }
+    ]
+  },
+  {
+    "id": "test_013",
+    "text": "Machine learning models process large amounts of data to find patterns.",
+    "entities": []
+  },
+  {
+    "id": "test_014",
+    "text": "The network team discussed the IP protocol standards.",
+    "entities": []
+  },
+  {
+    "id": "test_015",
+    "text": "Apple released a new smartphone model last quarter.",
+    "entities": [
+      {
+        "text": "Apple",
+        "start": 0,
+        "end": 5,
+        "label": "ORGANIZATION"
+      }
+    ]
+  },
+  {
+    "id": "test_016",
+    "text": "The order was delayed yesterday due to weather conditions.",
+    "entities": []
+  },
+  {
+    "id": "test_017",
+    "text": "Password management is critical for enterprise security policies.",
+    "entities": []
+  },
+  {
+    "id": "test_018",
+    "text": "Anjali Nair from Microsoft and Arjun Kumar from Google attended the summit in Mumbai.",
+    "entities": [
+      {
+        "text": "Anjali Nair",
+        "start": 0,
+        "end": 11,
+        "label": "PERSON"
+      },
+      {
+        "text": "Microsoft",
+        "start": 17,
+        "end": 26,
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "Arjun Kumar",
+        "start": 31,
+        "end": 42,
+        "label": "PERSON"
+      },
+      {
+        "text": "Google",
+        "start": 48,
+        "end": 54,
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "Mumbai",
+        "start": 78,
+        "end": 84,
+        "label": "LOCATION"
+      }
+    ]
+  },
+  {
+    "id": "test_019",
+    "text": "The request came from 10.0.0.1 and the response was sent to 10.0.0.2.",
+    "entities": [
+      {
+        "text": "10.0.0.1",
+        "start": 22,
+        "end": 30,
+        "label": "IP_ADDRESS"
+      },
+      {
+        "text": "10.0.0.2",
+        "start": 60,
+        "end": 68,
+        "label": "IP_ADDRESS"
+      }
+    ]
+  },
+  {
+    "id": "test_020",
+    "text": "Sanjay Mehta called sanjay.mehta@corp.com and left a voicemail at 022-2345-6789.",
+    "entities": [
+      {
+        "text": "Sanjay Mehta",
+        "start": 0,
+        "end": 12,
+        "label": "PERSON"
+      },
+      {
+        "text": "sanjay.mehta@corp.com",
+        "start": 20,
+        "end": 41,
+        "label": "EMAIL"
+      },
+      {
+        "text": "022-2345-6789",
+        "start": 66,
+        "end": 79,
+        "label": "PHONE"
+      }
+    ]
+  },
+  {
+    "id": "test_021",
+    "text": "AWS key AKIAIOSFODNN7EXAMPLE was found in the public repository.",
+    "entities": [
+      {
+        "text": "AKIAIOSFODNN7EXAMPLE",
+        "start": 8,
+        "end": 28,
+        "label": "API_KEY"
+      }
+    ]
+  },
+  {
+    "id": "test_022",
+    "text": "My account IBAN is GB82 WEST 1234 5698 7654 32.",
+    "entities": [
+      {
+        "text": "GB82 WEST 1234 5698 7654 32",
+        "start": 19,
+        "end": 46,
+        "label": "BANK_ACCOUNT"
+      }
+    ]
+  },
+  {
+    "id": "test_023",
+    "text": "The user admin_root logged in from 203.0.113.45 on January 15, 2024.",
+    "entities": [
+      {
+        "text": "203.0.113.45",
+        "start": 35,
+        "end": 47,
+        "label": "IP_ADDRESS"
+      },
+      {
+        "text": "January 15, 2024",
+        "start": 51,
+        "end": 67,
+        "label": "DATE"
+      }
+    ]
+  },
+  {
+    "id": "test_024",
+    "text": "Neha Joseph and Priya Sharma both applied for the engineering role at Wipro.",
+    "entities": [
+      {
+        "text": "Neha Joseph",
+        "start": 0,
+        "end": 11,
+        "label": "PERSON"
+      },
+      {
+        "text": "Priya Sharma",
+        "start": 16,
+        "end": 28,
+        "label": "PERSON"
+      },
+      {
+        "text": "Wipro",
+        "start": 70,
+        "end": 75,
+        "label": "ORGANIZATION"
+      }
+    ]
+  },
+  {
+    "id": "test_025",
+    "text": "My password is SuperSecret123! and my pin is 9087.",
+    "entities": [
+      {
+        "text": "SuperSecret123!",
+        "start": 15,
+        "end": 30,
+        "label": "PASSWORD"
+      },
+      {
+        "text": "9087",
+        "start": 45,
+        "end": 49,
+        "label": "PASSWORD"
+      }
+    ]
+  },
+  {
+    "id": "test_026",
+    "text": "The IPv6 address 2001:0db8:85a3:0000:0000:8a2e:0370:7334 is assigned to the host.",
+    "entities": [
+      {
+        "text": "2001:0db8:85a3:0000:0000:8a2e:0370:7334",
+        "start": 17,
+        "end": 56,
+        "label": "IP_ADDRESS"
+      }
+    ]
+  },
+  {
+    "id": "test_027",
+    "text": "Customer Rohan Verma (customer ID: CUST-99201) placed order ORD-55123 on 15/08/2023.",
+    "entities": [
+      {
+        "text": "Rohan Verma",
+        "start": 9,
+        "end": 20,
+        "label": "PERSON"
+      },
+      {
+        "text": "CUST-99201",
+        "start": 35,
+        "end": 45,
+        "label": "CUSTOMER_ID"
+      },
+      {
+        "text": "ORD-55123",
+        "start": 60,
+        "end": 69,
+        "label": "ORDER_ID"
+      },
+      {
+        "text": "15/08/2023",
+        "start": 73,
+        "end": 83,
+        "label": "DATE"
+      }
+    ]
+  },
+  {
+    "id": "test_028",
+    "text": "The GitHub token ghp_abc123DefGhi456JklMno789PqrStu000Vwx is exposed in the CI logs.",
+    "entities": [
+      {
+        "text": "ghp_abc123DefGhi456JklMno789PqrStu000Vwx",
+        "start": 17,
+        "end": 57,
+        "label": "API_KEY"
+      }
+    ]
+  },
+  {
+    "id": "test_029",
+    "text": "I am Lakshmi Nair and I live in Chennai.",
+    "entities": [
+      {
+        "text": "Lakshmi Nair",
+        "start": 5,
+        "end": 17,
+        "label": "PERSON"
+      },
+      {
+        "text": "Chennai",
+        "start": 32,
+        "end": 39,
+        "label": "LOCATION"
+      }
+    ]
+  },
+  {
+    "id": "test_030",
+    "text": "Please ship the item to 221B Baker Street, London.",
+    "entities": [
+      {
+        "text": "221B Baker Street",
+        "start": 24,
+        "end": 41,
+        "label": "ADDRESS"
+      },
+      {
+        "text": "London",
+        "start": 43,
+        "end": 49,
+        "label": "LOCATION"
+      }
+    ]
+  },
+  {
+    "id": "test_031",
+    "text": "The employee with ID EMP-7712 submitted the quarterly report.",
+    "entities": [
+      {
+        "text": "EMP-7712",
+        "start": 21,
+        "end": 29,
+        "label": "CUSTOMER_ID"
+      }
+    ]
+  },
+  {
+    "id": "test_032",
+    "text": "Her date of birth is 22/11/1990 and she holds Indian citizenship.",
+    "entities": [
+      {
+        "text": "22/11/1990",
+        "start": 21,
+        "end": 31,
+        "label": "DATE"
+      }
+    ]
+  },
+  {
+    "id": "test_033",
+    "text": "Send the invoice to billing@acme.io and copy accounts@acme.io on the thread.",
+    "entities": [
+      {
+        "text": "billing@acme.io",
+        "start": 20,
+        "end": 35,
+        "label": "EMAIL"
+      },
+      {
+        "text": "accounts@acme.io",
+        "start": 45,
+        "end": 61,
+        "label": "EMAIL"
+      }
+    ]
+  },
+  {
+    "id": "test_034",
+    "text": "Maria Fernandes from New York called +1 (212) 555-1234 to report a breach.",
+    "entities": [
+      {
+        "text": "Maria Fernandes",
+        "start": 0,
+        "end": 15,
+        "label": "PERSON"
+      },
+      {
+        "text": "New York",
+        "start": 21,
+        "end": 29,
+        "label": "LOCATION"
+      },
+      {
+        "text": "+1 (212) 555-1234",
+        "start": 37,
+        "end": 54,
+        "label": "PHONE"
+      }
+    ]
+  },
+  {
+    "id": "test_035",
+    "text": "The 2024 fiscal year budget review is scheduled for Q3.",
+    "entities": []
+  },
+  {
+    "id": "test_036",
+    "text": "api_key = 'aBcD1234EfGhIjKlMnOpQrSt56789uvWxYz'",
+    "entities": [
+      {
+        "text": "aBcD1234EfGhIjKlMnOpQrSt56789uvWxYz",
+        "start": 11,
+        "end": 46,
+        "label": "API_KEY"
+      }
+    ]
+  },
+  {
+    "id": "test_037",
+    "text": "User ticket INC-8821 raised by support agent Sara Evans for customer CUST-30041.",
+    "entities": [
+      {
+        "text": "INC-8821",
+        "start": 12,
+        "end": 20,
+        "label": "TICKET_ID"
+      },
+      {
+        "text": "Sara Evans",
+        "start": 45,
+        "end": 55,
+        "label": "PERSON"
+      },
+      {
+        "text": "CUST-30041",
+        "start": 69,
+        "end": 79,
+        "label": "CUSTOMER_ID"
+      }
+    ]
+  },
+  {
+    "id": "test_038",
+    "text": "pwd: T3mpPassw0rd! should be changed after first login.",
+    "entities": [
+      {
+        "text": "T3mpPassw0rd!",
+        "start": 5,
+        "end": 18,
+        "label": "PASSWORD"
+      }
+    ]
+  },
+  {
+    "id": "test_039",
+    "text": "The server logs at 172.16.0.5 and 172.16.0.6 show anomalous traffic.",
+    "entities": [
+      {
+        "text": "172.16.0.5",
+        "start": 19,
+        "end": 29,
+        "label": "IP_ADDRESS"
+      },
+      {
+        "text": "172.16.0.6",
+        "start": 34,
+        "end": 44,
+        "label": "IP_ADDRESS"
+      }
+    ]
+  },
+  {
+    "id": "test_040",
+    "text": "Mastercard 5500 0000 0000 0004 was used for the hotel booking.",
+    "entities": [
+      {
+        "text": "5500 0000 0000 0004",
+        "start": 11,
+        "end": 30,
+        "label": "CREDIT_CARD"
+      }
+    ]
+  },
+  {
+    "id": "test_041",
+    "text": "The data science team analyzed revenue trends across all regions.",
+    "entities": []
+  },
+  {
+    "id": "test_042",
+    "text": "My name is Aditya Kapoor. I am from Pune.",
+    "entities": [
+      {
+        "text": "Aditya Kapoor",
+        "start": 11,
+        "end": 24,
+        "label": "PERSON"
+      },
+      {
+        "text": "Pune",
+        "start": 36,
+        "end": 40,
+        "label": "LOCATION"
+      }
+    ]
+  },
+  {
+    "id": "test_043",
+    "text": "The Google API key AIzaSyExampleKey1234567890abcdefghij is hardcoded.",
+    "entities": [
+      {
+        "text": "AIzaSyExampleKey1234567890abcdefghij",
+        "start": 19,
+        "end": 55,
+        "label": "API_KEY"
+      }
+    ]
+  },
+  {
+    "id": "test_044",
+    "text": "Email Robert Taylor at robert.taylor@example.com or reach him at +44 20 7946 0958.",
+    "entities": [
+      {
+        "text": "Robert Taylor",
+        "start": 6,
+        "end": 19,
+        "label": "PERSON"
+      },
+      {
+        "text": "robert.taylor@example.com",
+        "start": 23,
+        "end": 48,
+        "label": "EMAIL"
+      },
+      {
+        "text": "+44 20 7946 0958",
+        "start": 65,
+        "end": 81,
+        "label": "PHONE"
+      }
+    ]
+  },
+  {
+    "id": "test_045",
+    "text": "Order ORD-11029 shipped to address 120 Nehru Marg, Pune, Maharashtra 411001.",
+    "entities": [
+      {
+        "text": "ORD-11029",
+        "start": 6,
+        "end": 15,
+        "label": "ORDER_ID"
+      },
+      {
+        "text": "120 Nehru Marg, Pune, Maharashtra 411001",
+        "start": 35,
+        "end": 75,
+        "label": "ADDRESS"
+      }
+    ]
+  },
+  {
+    "id": "test_046",
+    "text": "All database connections should use encrypted tunnels over TLS.",
+    "entities": []
+  },
+  {
+    "id": "test_047",
+    "text": "The bearer token for the API is Bearer abc123def456ghi789jkl012mno345pq.",
+    "entities": [
+      {
+        "text": "abc123def456ghi789jkl012mno345pq",
+        "start": 39,
+        "end": 71,
+        "label": "API_KEY"
+      }
+    ]
+  },
+  {
+    "id": "test_048",
+    "text": "Support request SR-9912 was created for account holder Priya Nair.",
+    "entities": [
+      {
+        "text": "SR-9912",
+        "start": 16,
+        "end": 23,
+        "label": "TICKET_ID"
+      },
+      {
+        "text": "Priya Nair",
+        "start": 55,
+        "end": 65,
+        "label": "PERSON"
+      }
+    ]
+  },
+  {
+    "id": "test_049",
+    "text": "The AI model was trained on a publicly available dataset from 2022.",
+    "entities": []
+  },
+  {
+    "id": "test_050",
+    "text": "Lukas Weber resides at 15 Hauptstrasse, Berlin, Germany.",
+    "entities": [
+      {
+        "text": "Lukas Weber",
+        "start": 0,
+        "end": 11,
+        "label": "PERSON"
+      },
+      {
+        "text": "Berlin",
+        "start": 40,
+        "end": 46,
+        "label": "LOCATION"
+      },
+      {
+        "text": "Germany",
+        "start": 48,
+        "end": 55,
+        "label": "LOCATION"
+      }
+    ]
+  },
+  {
+    "id": "test_051",
+    "text": "access_token: 'eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJ1c2VyIn0.SigValue123456ABC' should be kept private.",
+    "entities": [
+      {
+        "text": "eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJ1c2VyIn0.SigValue123456ABC",
+        "start": 15,
+        "end": 73,
+        "label": "ACCESS_TOKEN"
+      }
+    ]
+  },
+  {
+    "id": "test_052",
+    "text": "My credit card 4532015112830366 expires next year.",
+    "entities": [
+      {
+        "text": "4532015112830366",
+        "start": 15,
+        "end": 31,
+        "label": "CREDIT_CARD"
+      }
+    ]
+  },
+  {
+    "id": "test_053",
+    "text": "Please refund order ORDER-55123 to customer CUST-10001 via bank account 123456789012.",
+    "entities": [
+      {
+        "text": "ORDER-55123",
+        "start": 20,
+        "end": 31,
+        "label": "ORDER_ID"
+      },
+      {
+        "text": "CUST-10001",
+        "start": 44,
+        "end": 54,
+        "label": "CUSTOMER_ID"
+      },
+      {
+        "text": "123456789012",
+        "start": 72,
+        "end": 84,
+        "label": "BANK_ACCOUNT"
+      }
+    ]
+  },
+  {
+    "id": "test_054",
+    "text": "The project deadline is December 31, 2024.",
+    "entities": [
+      {
+        "text": "December 31, 2024",
+        "start": 24,
+        "end": 41,
+        "label": "DATE"
+      }
+    ]
+  },
+  {
+    "id": "test_055",
+    "text": "Send the package to 742 Evergreen Terrace, Springfield.",
+    "entities": [
+      {
+        "text": "742 Evergreen Terrace",
+        "start": 20,
+        "end": 41,
+        "label": "ADDRESS"
+      },
+      {
+        "text": "Springfield",
+        "start": 43,
+        "end": 54,
+        "label": "LOCATION"
+      }
+    ]
+  },
+  {
+    "id": "test_056",
+    "text": "Employee ID EMP-5501 for David Miller at Cognizant Hyderabad.",
+    "entities": [
+      {
+        "text": "EMP-5501",
+        "start": 12,
+        "end": 20,
+        "label": "CUSTOMER_ID"
+      },
+      {
+        "text": "David Miller",
+        "start": 25,
+        "end": 37,
+        "label": "PERSON"
+      },
+      {
+        "text": "Cognizant",
+        "start": 41,
+        "end": 50,
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "Hyderabad",
+        "start": 51,
+        "end": 60,
+        "label": "LOCATION"
+      }
+    ]
+  },
+  {
+    "id": "test_057",
+    "text": "This is a test prompt with no sensitive information whatsoever.",
+    "entities": []
+  },
+  {
+    "id": "test_058",
+    "text": "Ravi Kumar at TCS sent an email to ravi.kumar@tcs.com on 2023-11-20.",
+    "entities": [
+      {
+        "text": "Ravi Kumar",
+        "start": 0,
+        "end": 10,
+        "label": "PERSON"
+      },
+      {
+        "text": "TCS",
+        "start": 14,
+        "end": 17,
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "ravi.kumar@tcs.com",
+        "start": 35,
+        "end": 53,
+        "label": "EMAIL"
+      },
+      {
+        "text": "2023-11-20",
+        "start": 57,
+        "end": 67,
+        "label": "DATE"
+      }
+    ]
+  },
+  {
+    "id": "test_059",
+    "text": "The development server runs at 10.10.10.10 and staging at 10.10.10.11.",
+    "entities": [
+      {
+        "text": "10.10.10.10",
+        "start": 31,
+        "end": 42,
+        "label": "IP_ADDRESS"
+      },
+      {
+        "text": "10.10.10.11",
+        "start": 58,
+        "end": 69,
+        "label": "IP_ADDRESS"
+      }
+    ]
+  },
+  {
+    "id": "test_060",
+    "text": "Elon Musk announced the new product at the Tesla headquarters in Austin.",
+    "entities": [
+      {
+        "text": "Elon Musk",
+        "start": 0,
+        "end": 9,
+        "label": "PERSON"
+      },
+      {
+        "text": "Tesla",
+        "start": 43,
+        "end": 48,
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "Austin",
+        "start": 65,
+        "end": 71,
+        "label": "LOCATION"
+      }
+    ]
+  },
+  {
+    "id": "test_061",
+    "text": "Please reset the password for deepak.r@outlook.com — the current one is Pass#2024!.",
+    "entities": [
+      {
+        "text": "deepak.r@outlook.com",
+        "start": 30,
+        "end": 50,
+        "label": "EMAIL"
+      },
+      {
+        "text": "Pass#2024!",
+        "start": 72,
+        "end": 82,
+        "label": "PASSWORD"
+      }
+    ]
+  },
+  {
+    "id": "test_062",
+    "text": "Refer to the quarterly report for team metrics and KPIs.",
+    "entities": []
+  },
+  {
+    "id": "test_063",
+    "text": "The support team created ticket TKT-00192 for INC-0091 under project Alpha.",
+    "entities": [
+      {
+        "text": "TKT-00192",
+        "start": 32,
+        "end": 41,
+        "label": "TICKET_ID"
+      },
+      {
+        "text": "INC-0091",
+        "start": 46,
+        "end": 54,
+        "label": "TICKET_ID"
+      }
+    ]
+  },
+  {
+    "id": "test_064",
+    "text": "The Visa card 4012888888881881 was charged $500.",
+    "entities": [
+      {
+        "text": "4012888888881881",
+        "start": 14,
+        "end": 30,
+        "label": "CREDIT_CARD"
+      }
+    ]
+  },
+  {
+    "id": "test_065",
+    "text": "Meera Pillai from Accenture is handling customer CUST-88712 and order ORD-99100.",
+    "entities": [
+      {
+        "text": "Meera Pillai",
+        "start": 0,
+        "end": 12,
+        "label": "PERSON"
+      },
+      {
+        "text": "Accenture",
+        "start": 18,
+        "end": 27,
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "CUST-88712",
+        "start": 49,
+        "end": 59,
+        "label": "CUSTOMER_ID"
+      },
+      {
+        "text": "ORD-99100",
+        "start": 70,
+        "end": 79,
+        "label": "ORDER_ID"
+      }
+    ]
+  },
+  {
+    "id": "test_066",
+    "text": "The number 1234567890 appears in the report but is not a phone number.",
+    "entities": []
+  },
+  {
+    "id": "test_067",
+    "text": "The 12345 code refers to a postal zone in our delivery map.",
+    "entities": []
+  },
+  {
+    "id": "test_068",
+    "text": "Sundar Pichai leads Google and is based in Mountain View, California.",
+    "entities": [
+      {
+        "text": "Sundar Pichai",
+        "start": 0,
+        "end": 13,
+        "label": "PERSON"
+      },
+      {
+        "text": "Google",
+        "start": 20,
+        "end": 26,
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "Mountain View",
+        "start": 43,
+        "end": 56,
+        "label": "LOCATION"
+      },
+      {
+        "text": "California",
+        "start": 58,
+        "end": 68,
+        "label": "LOCATION"
+      }
+    ]
+  },
+  {
+    "id": "test_069",
+    "text": "Confidential memo from Pankaj Shah at HDFC Bank to headquarters in Delhi.",
+    "entities": [
+      {
+        "text": "Pankaj Shah",
+        "start": 23,
+        "end": 34,
+        "label": "PERSON"
+      },
+      {
+        "text": "HDFC Bank",
+        "start": 38,
+        "end": 47,
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "Delhi",
+        "start": 67,
+        "end": 72,
+        "label": "LOCATION"
+      }
+    ]
+  },
+  {
+    "id": "test_070",
+    "text": "Credentials: username/P@ssw0rd99 should never be stored in plaintext.",
+    "entities": [
+      {
+        "text": "username/P@ssw0rd99",
+        "start": 13,
+        "end": 32,
+        "label": "PASSWORD"
+      }
+    ]
+  },
+  {
+    "id": "test_071",
+    "text": "The insurance policy number 12-ABC-456789 is under the name James Clark.",
+    "entities": [
+      {
+        "text": "James Clark",
+        "start": 60,
+        "end": 71,
+        "label": "PERSON"
+      }
+    ]
+  },
+  {
+    "id": "test_072",
+    "text": "I need to pay my phone bill. The amount is 999.",
+    "entities": []
+  },
+  {
+    "id": "test_073",
+    "text": "Asha Menon (asha.menon@hcl.com) from HCL Technologies in Noida placed order ORD-12309.",
+    "entities": [
+      {
+        "text": "Asha Menon",
+        "start": 0,
+        "end": 10,
+        "label": "PERSON"
+      },
+      {
+        "text": "asha.menon@hcl.com",
+        "start": 12,
+        "end": 30,
+        "label": "EMAIL"
+      },
+      {
+        "text": "HCL Technologies",
+        "start": 37,
+        "end": 53,
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "Noida",
+        "start": 57,
+        "end": 62,
+        "label": "LOCATION"
+      },
+      {
+        "text": "ORD-12309",
+        "start": 76,
+        "end": 85,
+        "label": "ORDER_ID"
+      }
+    ]
+  },
+  {
+    "id": "test_074",
+    "text": "The token secret_token: xyz_super_secret_key_12345abc was found in the .env file.",
+    "entities": [
+      {
+        "text": "xyz_super_secret_key_12345abc",
+        "start": 24,
+        "end": 53,
+        "label": "API_KEY"
+      }
+    ]
+  },
+  {
+    "id": "test_075",
+    "text": "Today is a good day for a code review.",
+    "entities": []
+  },
+  {
+    "id": "test_076",
+    "text": "The patient, Suresh Babu, born on 12 January 1978, was diagnosed at the clinic.",
+    "entities": [
+      {
+        "text": "Suresh Babu",
+        "start": 13,
+        "end": 24,
+        "label": "PERSON"
+      },
+      {
+        "text": "12 January 1978",
+        "start": 34,
+        "end": 49,
+        "label": "DATE"
+      }
+    ]
+  },
+  {
+    "id": "test_077",
+    "text": "SSH into the box: ssh admin@198.51.100.42 and restart nginx.",
+    "entities": [
+      {
+        "text": "198.51.100.42",
+        "start": 28,
+        "end": 41,
+        "label": "IP_ADDRESS"
+      }
+    ]
+  },
+  {
+    "id": "test_078",
+    "text": "Rohan Sharma and Deepika Nair are both listed under project Orion at TCS.",
+    "entities": [
+      {
+        "text": "Rohan Sharma",
+        "start": 0,
+        "end": 12,
+        "label": "PERSON"
+      },
+      {
+        "text": "Deepika Nair",
+        "start": 17,
+        "end": 29,
+        "label": "PERSON"
+      },
+      {
+        "text": "TCS",
+        "start": 69,
+        "end": 72,
+        "label": "ORGANIZATION"
+      }
+    ]
+  },
+  {
+    "id": "test_079",
+    "text": "The config contains: database_password = 'Db@Pass2024Secret!'",
+    "entities": [
+      {
+        "text": "Db@Pass2024Secret!",
+        "start": 42,
+        "end": 60,
+        "label": "PASSWORD"
+      }
+    ]
+  },
+  {
+    "id": "test_080",
+    "text": "We need three engineers based in Singapore for the upcoming sprint.",
+    "entities": [
+      {
+        "text": "Singapore",
+        "start": 33,
+        "end": 42,
+        "label": "LOCATION"
+      }
+    ]
+  },
+  {
+    "id": "test_081",
+    "text": "Diners card 30569309025904 was declined at checkout.",
+    "entities": [
+      {
+        "text": "30569309025904",
+        "start": 12,
+        "end": 26,
+        "label": "CREDIT_CARD"
+      }
+    ]
+  },
+  {
+    "id": "test_082",
+    "text": "TKT-12001 was assigned to engineer Vikram Nair for issue resolution.",
+    "entities": [
+      {
+        "text": "TKT-12001",
+        "start": 0,
+        "end": 9,
+        "label": "TICKET_ID"
+      },
+      {
+        "text": "Vikram Nair",
+        "start": 35,
+        "end": 46,
+        "label": "PERSON"
+      }
+    ]
+  },
+  {
+    "id": "test_083",
+    "text": "Payment received for order ORD-71008 on 2024-06-01 via card.",
+    "entities": [
+      {
+        "text": "ORD-71008",
+        "start": 27,
+        "end": 36,
+        "label": "ORDER_ID"
+      },
+      {
+        "text": "2024-06-01",
+        "start": 40,
+        "end": 50,
+        "label": "DATE"
+      }
+    ]
+  },
+  {
+    "id": "test_084",
+    "text": "The software runs on Ubuntu 22.04 LTS with kernel 5.15.",
+    "entities": []
+  },
+  {
+    "id": "test_085",
+    "text": "Devika Pillai joined Infosys Bangalore on 01 March 2023 as a senior engineer.",
+    "entities": [
+      {
+        "text": "Devika Pillai",
+        "start": 0,
+        "end": 13,
+        "label": "PERSON"
+      },
+      {
+        "text": "Infosys",
+        "start": 21,
+        "end": 28,
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "Bangalore",
+        "start": 29,
+        "end": 38,
+        "label": "LOCATION"
+      },
+      {
+        "text": "01 March 2023",
+        "start": 42,
+        "end": 55,
+        "label": "DATE"
+      }
+    ]
+  },
+  {
+    "id": "test_086",
+    "text": "Policy update: all API keys must be rotated every 90 days.",
+    "entities": []
+  },
+  {
+    "id": "test_087",
+    "text": "i m priya and im from delhi, write to me at priya1990@hotmail.com",
+    "entities": [
+      {
+        "text": "priya1990@hotmail.com",
+        "start": 44,
+        "end": 65,
+        "label": "EMAIL"
+      }
+    ]
+  },
+  {
+    "id": "test_088",
+    "text": "Access token: auth_token = 'K8mP3xQzR7wL2jN9vT4ySbE6uHcDfGi1oA5'",
+    "entities": [
+      {
+        "text": "K8mP3xQzR7wL2jN9vT4ySbE6uHcDfGi1oA5",
+        "start": 28,
+        "end": 63,
+        "label": "API_KEY"
+      }
+    ]
+  },
+  {
+    "id": "test_089",
+    "text": "The invoice is addressed to 45 Park Avenue, New York, NY 10022.",
+    "entities": [
+      {
+        "text": "45 Park Avenue, New York, NY 10022",
+        "start": 28,
+        "end": 62,
+        "label": "ADDRESS"
+      },
+      {
+        "text": "New York",
+        "start": 44,
+        "end": 52,
+        "label": "LOCATION"
+      }
+    ]
+  },
+  {
+    "id": "test_090",
+    "text": "The number 55 is not an ID, and May is not a name.",
+    "entities": []
+  },
+  {
+    "id": "test_091",
+    "text": "Satya Nadella, CEO of Microsoft, spoke at the conference in Seattle on 15 Sep 2024.",
+    "entities": [
+      {
+        "text": "Satya Nadella",
+        "start": 0,
+        "end": 13,
+        "label": "PERSON"
+      },
+      {
+        "text": "Microsoft",
+        "start": 22,
+        "end": 31,
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "Seattle",
+        "start": 60,
+        "end": 67,
+        "label": "LOCATION"
+      },
+      {
+        "text": "15 Sep 2024",
+        "start": 71,
+        "end": 82,
+        "label": "DATE"
+      }
+    ]
+  },
+  {
+    "id": "test_092",
+    "text": "His phone number is 9876543210 and email is user@domain.org.",
+    "entities": [
+      {
+        "text": "9876543210",
+        "start": 20,
+        "end": 30,
+        "label": "PHONE"
+      },
+      {
+        "text": "user@domain.org",
+        "start": 44,
+        "end": 59,
+        "label": "EMAIL"
+      }
+    ]
+  },
+  {
+    "id": "test_093",
+    "text": "The AWS secret access key: secret_token: AKIA4example1234567890ABCDEF must be revoked.",
+    "entities": [
+      {
+        "text": "AKIA4example1234567890ABCDEF",
+        "start": 41,
+        "end": 69,
+        "label": "API_KEY"
+      }
+    ]
+  },
+  {
+    "id": "test_094",
+    "text": "Rajesh Verma (CUST-50909) spent $500 on order ORD-21001 delivered to Hyderabad.",
+    "entities": [
+      {
+        "text": "Rajesh Verma",
+        "start": 0,
+        "end": 12,
+        "label": "PERSON"
+      },
+      {
+        "text": "CUST-50909",
+        "start": 14,
+        "end": 24,
+        "label": "CUSTOMER_ID"
+      },
+      {
+        "text": "ORD-21001",
+        "start": 46,
+        "end": 55,
+        "label": "ORDER_ID"
+      },
+      {
+        "text": "Hyderabad",
+        "start": 69,
+        "end": 78,
+        "label": "LOCATION"
+      }
+    ]
+  },
+  {
+    "id": "test_095",
+    "text": "All transactions above 10000 require additional verification steps.",
+    "entities": []
+  },
+  {
+    "id": "test_096",
+    "text": "The IBAN GB29 NWBK 6016 1331 9268 19 belongs to David Brown.",
+    "entities": [
+      {
+        "text": "GB29 NWBK 6016 1331 9268 19",
+        "start": 9,
+        "end": 36,
+        "label": "BANK_ACCOUNT"
+      },
+      {
+        "text": "David Brown",
+        "start": 48,
+        "end": 59,
+        "label": "PERSON"
+      }
+    ]
+  },
+  {
+    "id": "test_097",
+    "text": "The data pipeline runs nightly at 02:00 UTC. No PII is processed.",
+    "entities": []
+  },
+  {
+    "id": "test_098",
+    "text": "My old password was OldPass@123 and the new one is NewPass#456.",
+    "entities": [
+      {
+        "text": "OldPass@123",
+        "start": 20,
+        "end": 31,
+        "label": "PASSWORD"
+      },
+      {
+        "text": "NewPass#456",
+        "start": 51,
+        "end": 62,
+        "label": "PASSWORD"
+      }
+    ]
+  },
+  {
+    "id": "test_099",
+    "text": "Amazon, Google, and Microsoft are the top three cloud providers in the world.",
+    "entities": [
+      {
+        "text": "Amazon",
+        "start": 0,
+        "end": 6,
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "Google",
+        "start": 8,
+        "end": 14,
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "Microsoft",
+        "start": 20,
+        "end": 29,
+        "label": "ORGANIZATION"
+      }
+    ]
+  },
+  {
+    "id": "test_100",
+    "text": "Ritika Verma born on 05/09/1985 has email ritika.verma@rediffmail.com and phone +91 8877665544.",
+    "entities": [
+      {
+        "text": "Ritika Verma",
+        "start": 0,
+        "end": 12,
+        "label": "PERSON"
+      },
+      {
+        "text": "05/09/1985",
+        "start": 21,
+        "end": 31,
+        "label": "DATE"
+      },
+      {
+        "text": "ritika.verma@rediffmail.com",
+        "start": 42,
+        "end": 69,
+        "label": "EMAIL"
+      },
+      {
+        "text": "+91 8877665544",
+        "start": 80,
+        "end": 94,
+        "label": "PHONE"
+      }
+    ]
+  },
+  {
+    "id": "test_101",
+    "text": "Network protocol TCP/IP is fundamental for internet communications.",
+    "entities": []
+  },
+  {
+    "id": "test_102",
+    "text": "The finance manager Sarah Johnson at Barclays London processed the refund of GBP 5000 on October 3, 2024.",
+    "entities": [
+      {
+        "text": "Sarah Johnson",
+        "start": 20,
+        "end": 33,
+        "label": "PERSON"
+      },
+      {
+        "text": "Barclays",
+        "start": 37,
+        "end": 45,
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "London",
+        "start": 46,
+        "end": 52,
+        "label": "LOCATION"
+      },
+      {
+        "text": "October 3, 2024",
+        "start": 89,
+        "end": 104,
+        "label": "DATE"
+      }
+    ]
+  },
+  {
+    "id": "test_103",
+    "text": "passcode is 458921 and the account holder is Amit Joshi from Kolkata.",
+    "entities": [
+      {
+        "text": "458921",
+        "start": 12,
+        "end": 18,
+        "label": "PASSWORD"
+      },
+      {
+        "text": "Amit Joshi",
+        "start": 45,
+        "end": 55,
+        "label": "PERSON"
+      },
+      {
+        "text": "Kolkata",
+        "start": 61,
+        "end": 68,
+        "label": "LOCATION"
+      }
+    ]
+  },
+  {
+    "id": "test_104",
+    "text": "The organization chart shows three departments with 200 employees each.",
+    "entities": []
+  },
+  {
+    "id": "test_105",
+    "text": "Dear Kavya Reddy, your ticket SR-1091 has been resolved. Please contact support@helpdesk.in or call 040-66554433 for further queries. Your account CUST-71200 has been updated. Regards, Infosys Support Team, Hyderabad.",
+    "entities": [
+      {
+        "text": "Kavya Reddy",
+        "start": 5,
+        "end": 16,
+        "label": "PERSON"
+      },
+      {
+        "text": "SR-1091",
+        "start": 30,
+        "end": 37,
+        "label": "TICKET_ID"
+      },
+      {
+        "text": "support@helpdesk.in",
+        "start": 72,
+        "end": 91,
+        "label": "EMAIL"
+      },
+      {
+        "text": "040-66554433",
+        "start": 100,
+        "end": 112,
+        "label": "PHONE"
+      },
+      {
+        "text": "CUST-71200",
+        "start": 147,
+        "end": 157,
+        "label": "CUSTOMER_ID"
+      },
+      {
+        "text": "Infosys",
+        "start": 185,
+        "end": 192,
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "Hyderabad",
+        "start": 207,
+        "end": 216,
+        "label": "LOCATION"
+      }
+    ]
+  }
+]

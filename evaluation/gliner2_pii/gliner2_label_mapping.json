@@ -1,0 +1,124 @@
+{
+  "_comment": "GLiNER2-PII Label Mapping — v1.0",
+  "_model": "fastino/gliner2-pii-v1",
+  "_methodology": "Native GLiNER2 labels are ALWAYS preserved in entity metadata. This mapping is used ONLY for canonical PromptShield EntityType compatibility in the fusion engine and evaluation scoring.",
+  "_total_labels": 42,
+
+  "labels": [
+    "person", "full_name", "first_name", "middle_name", "last_name", "date_of_birth",
+    "email", "phone_number", "address", "street_address", "city", "state_or_region",
+    "postal_code", "country", "government_id", "national_id_number", "passport_number",
+    "drivers_license_number", "license_number", "tax_id", "tax_number", "bank_account",
+    "account_number", "routing_number", "iban", "payment_card", "card_number",
+    "card_expiry", "card_cvv", "username", "ip_address", "account_id",
+    "sensitive_account_id", "password", "secret", "api_key", "access_token",
+    "recovery_code", "sensitive_date", "document_date", "expiration_date", "transaction_date"
+  ],
+
+  "gliner2_to_canonical": {
+    "person":                "PERSON",
+    "full_name":             "PERSON",
+    "first_name":            "PERSON",
+    "middle_name":           "PERSON",
+    "last_name":             "PERSON",
+    "date_of_birth":         "DATE",
+
+    "email":                 "EMAIL",
+    "phone_number":          "PHONE",
+    "address":               "ADDRESS",
+    "street_address":        "ADDRESS",
+    "city":                  "LOCATION",
+    "state_or_region":       "LOCATION",
+    "postal_code":           "LOCATION",
+    "country":               "LOCATION",
+
+    "government_id":         null,
+    "national_id_number":    null,
+    "passport_number":       null,
+    "drivers_license_number": null,
+    "license_number":        null,
+    "tax_id":                null,
+    "tax_number":            null,
+
+    "bank_account":          "BANK_ACCOUNT",
+    "account_number":        "BANK_ACCOUNT",
+    "routing_number":        "BANK_ACCOUNT",
+    "iban":                  "BANK_ACCOUNT",
+    "payment_card":          "CREDIT_CARD",
+    "card_number":           "CREDIT_CARD",
+    "card_expiry":           "CREDIT_CARD",
+    "card_cvv":              "CREDIT_CARD",
+
+    "username":              "USER_ID",
+    "ip_address":            "IP_ADDRESS",
+    "account_id":            "USER_ID",
+    "sensitive_account_id":  "USER_ID",
+
+    "password":              "PASSWORD",
+    "secret":                "API_KEY",
+    "api_key":               "API_KEY",
+    "access_token":          "ACCESS_TOKEN",
+    "recovery_code":         "ACCESS_TOKEN",
+
+    "sensitive_date":        "DATE",
+    "document_date":         "DATE",
+    "expiration_date":       "DATE",
+    "transaction_date":      "DATE"
+  },
+
+  "unsupported_labels": [
+    "government_id",
+    "national_id_number",
+    "passport_number",
+    "drivers_license_number",
+    "license_number",
+    "tax_id",
+    "tax_number"
+  ],
+
+  "unsupported_label_notes": {
+    "government_id":          "No PromptShield EntityType equivalent. Reported with native label preserved.",
+    "national_id_number":     "No PromptShield EntityType equivalent. Reported with native label preserved.",
+    "passport_number":        "No PromptShield EntityType equivalent. Reported with native label preserved.",
+    "drivers_license_number": "No PromptShield EntityType equivalent. Reported with native label preserved.",
+    "license_number":         "No PromptShield EntityType equivalent. Reported with native label preserved.",
+    "tax_id":                 "No PromptShield EntityType equivalent. Reported with native label preserved.",
+    "tax_number":             "No PromptShield EntityType equivalent. Reported with native label preserved."
+  },
+
+  "canonical_to_gliner2_labels": {
+    "PERSON":       ["person", "full_name", "first_name", "middle_name", "last_name"],
+    "DATE":         ["date_of_birth", "sensitive_date", "document_date", "expiration_date", "transaction_date"],
+    "EMAIL":        ["email"],
+    "PHONE":        ["phone_number"],
+    "ADDRESS":      ["address", "street_address"],
+    "LOCATION":     ["city", "state_or_region", "postal_code", "country"],
+    "BANK_ACCOUNT": ["bank_account", "account_number", "routing_number", "iban"],
+    "CREDIT_CARD":  ["payment_card", "card_number", "card_expiry", "card_cvv"],
+    "USER_ID":      ["username", "account_id", "sensitive_account_id"],
+    "IP_ADDRESS":   ["ip_address"],
+    "PASSWORD":     ["password"],
+    "API_KEY":      ["api_key", "secret"],
+    "ACCESS_TOKEN": ["access_token", "recovery_code"],
+    "UNSUPPORTED":  ["government_id", "national_id_number", "passport_number",
+                     "drivers_license_number", "license_number", "tax_id", "tax_number"]
+  },
+
+  "scoring_rules": {
+    "supported_labels_for_benchmark_scoring": [
+      "person", "full_name", "first_name", "middle_name", "last_name",
+      "date_of_birth", "email", "phone_number", "address", "street_address",
+      "city", "state_or_region", "postal_code", "country",
+      "bank_account", "account_number", "routing_number", "iban",
+      "payment_card", "card_number", "card_expiry", "card_cvv",
+      "username", "ip_address", "account_id", "sensitive_account_id",
+      "password", "secret", "api_key", "access_token", "recovery_code",
+      "sensitive_date", "document_date", "expiration_date", "transaction_date"
+    ],
+    "unsupported_for_benchmark_scoring": [
+      "government_id", "national_id_number", "passport_number",
+      "drivers_license_number", "license_number", "tax_id", "tax_number"
+    ],
+    "note": "Unsupported labels cannot match any ground-truth entity in the 105-prompt benchmark (no GT labels exist for them). They are tracked separately in coverage analysis."
+  }
+}

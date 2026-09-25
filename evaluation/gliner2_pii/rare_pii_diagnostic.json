@@ -1,0 +1,127 @@
+[
+  {"id": "diag_person_001", "gliner2_label": "person", "text": "Amelia Watson called the helpdesk about her account.", "entities": [{"text": "Amelia Watson", "start": 0, "end": 13, "label": "person"}]},
+  {"id": "diag_person_002", "gliner2_label": "person", "text": "The contract was signed by Mr. Haruto Yamada.", "entities": [{"text": "Haruto Yamada", "start": 31, "end": 44, "label": "person"}]},
+
+  {"id": "diag_full_name_001", "gliner2_label": "full_name", "text": "Full name on the passport: Jonathan William Pierce.", "entities": [{"text": "Jonathan William Pierce", "start": 27, "end": 50, "label": "full_name"}]},
+  {"id": "diag_full_name_002", "gliner2_label": "full_name", "text": "The account is registered under the full name Priya Anita Sharma.", "entities": [{"text": "Priya Anita Sharma", "start": 46, "end": 64, "label": "full_name"}]},
+
+  {"id": "diag_first_name_001", "gliner2_label": "first_name", "text": "Please enter your first name: Marcus", "entities": [{"text": "Marcus", "start": 30, "end": 36, "label": "first_name"}]},
+  {"id": "diag_first_name_002", "gliner2_label": "first_name", "text": "First name: Aiko", "entities": [{"text": "Aiko", "start": 12, "end": 16, "label": "first_name"}]},
+
+  {"id": "diag_middle_name_001", "gliner2_label": "middle_name", "text": "Full legal name: James Robert Carter. Middle name: Robert", "entities": [{"text": "Robert", "start": 51, "end": 57, "label": "middle_name"}]},
+  {"id": "diag_middle_name_002", "gliner2_label": "middle_name", "text": "The customer's middle name is Wei.", "entities": [{"text": "Wei", "start": 30, "end": 33, "label": "middle_name"}]},
+
+  {"id": "diag_last_name_001", "gliner2_label": "last_name", "text": "Last name: Okonkwo", "entities": [{"text": "Okonkwo", "start": 11, "end": 18, "label": "last_name"}]},
+  {"id": "diag_last_name_002", "gliner2_label": "last_name", "text": "The surname on the insurance document is Johansson.", "entities": [{"text": "Johansson", "start": 41, "end": 50, "label": "last_name"}]},
+
+  {"id": "diag_dob_001", "gliner2_label": "date_of_birth", "text": "Date of birth: 14/03/1985", "entities": [{"text": "14/03/1985", "start": 15, "end": 25, "label": "date_of_birth"}]},
+  {"id": "diag_dob_002", "gliner2_label": "date_of_birth", "text": "The patient was born on March 7, 1992.", "entities": [{"text": "March 7, 1992", "start": 23, "end": 36, "label": "date_of_birth"}]},
+
+  {"id": "diag_email_001", "gliner2_label": "email", "text": "Send the invoice to billing@northstar.io.", "entities": [{"text": "billing@northstar.io", "start": 20, "end": 40, "label": "email"}]},
+  {"id": "diag_email_002", "gliner2_label": "email", "text": "Reach Elena at elena.vasquez@company.org for the update.", "entities": [{"text": "elena.vasquez@company.org", "start": 15, "end": 40, "label": "email"}]},
+
+  {"id": "diag_phone_001", "gliner2_label": "phone_number", "text": "Call the support line at +1 800 555 0199.", "entities": [{"text": "+1 800 555 0199", "start": 25, "end": 40, "label": "phone_number"}]},
+  {"id": "diag_phone_002", "gliner2_label": "phone_number", "text": "Her mobile number is +44 7911 123456.", "entities": [{"text": "+44 7911 123456", "start": 21, "end": 36, "label": "phone_number"}]},
+
+  {"id": "diag_address_001", "gliner2_label": "address", "text": "Mail the form to 88 Riverside Drive, Chicago, IL 60601.", "entities": [{"text": "88 Riverside Drive, Chicago, IL 60601", "start": 17, "end": 54, "label": "address"}]},
+  {"id": "diag_address_002", "gliner2_label": "address", "text": "Delivery address: 5B Oakwood Lane, Manchester M13 9PL.", "entities": [{"text": "5B Oakwood Lane, Manchester M13 9PL", "start": 18, "end": 53, "label": "address"}]},
+
+  {"id": "diag_street_address_001", "gliner2_label": "street_address", "text": "Street address: 42 Elm Street", "entities": [{"text": "42 Elm Street", "start": 16, "end": 29, "label": "street_address"}]},
+  {"id": "diag_street_address_002", "gliner2_label": "street_address", "text": "She lives at 7 Willow Court.", "entities": [{"text": "7 Willow Court", "start": 13, "end": 27, "label": "street_address"}]},
+
+  {"id": "diag_city_001", "gliner2_label": "city", "text": "The client is based in Bengaluru.", "entities": [{"text": "Bengaluru", "start": 23, "end": 32, "label": "city"}]},
+  {"id": "diag_city_002", "gliner2_label": "city", "text": "Ship the parcel to Amsterdam.", "entities": [{"text": "Amsterdam", "start": 19, "end": 28, "label": "city"}]},
+
+  {"id": "diag_state_001", "gliner2_label": "state_or_region", "text": "State: Karnataka", "entities": [{"text": "Karnataka", "start": 7, "end": 16, "label": "state_or_region"}]},
+  {"id": "diag_state_002", "gliner2_label": "state_or_region", "text": "Her registered state is New South Wales.", "entities": [{"text": "New South Wales", "start": 24, "end": 39, "label": "state_or_region"}]},
+
+  {"id": "diag_postal_001", "gliner2_label": "postal_code", "text": "Postal code: 110001", "entities": [{"text": "110001", "start": 13, "end": 19, "label": "postal_code"}]},
+  {"id": "diag_postal_002", "gliner2_label": "postal_code", "text": "The zip code for the branch is 94105.", "entities": [{"text": "94105", "start": 31, "end": 36, "label": "postal_code"}]},
+
+  {"id": "diag_country_001", "gliner2_label": "country", "text": "Citizenship: Japan", "entities": [{"text": "Japan", "start": 13, "end": 18, "label": "country"}]},
+  {"id": "diag_country_002", "gliner2_label": "country", "text": "She relocated from Brazil to Canada.", "entities": [{"text": "Brazil", "start": 19, "end": 25, "label": "country"}, {"text": "Canada", "start": 29, "end": 35, "label": "country"}]},
+
+  {"id": "diag_gov_id_001", "gliner2_label": "government_id", "text": "Government ID number: GID-2024-88432", "entities": [{"text": "GID-2024-88432", "start": 22, "end": 36, "label": "government_id"}]},
+  {"id": "diag_gov_id_002", "gliner2_label": "government_id", "text": "Please provide your government-issued ID: A1234567B.", "entities": [{"text": "A1234567B", "start": 42, "end": 51, "label": "government_id"}]},
+
+  {"id": "diag_national_id_001", "gliner2_label": "national_id_number", "text": "National ID number: 990-22-3456", "entities": [{"text": "990-22-3456", "start": 20, "end": 31, "label": "national_id_number"}]},
+  {"id": "diag_national_id_002", "gliner2_label": "national_id_number", "text": "His Aadhaar number is 2345 6789 0123.", "entities": [{"text": "2345 6789 0123", "start": 22, "end": 36, "label": "national_id_number"}]},
+
+  {"id": "diag_passport_001", "gliner2_label": "passport_number", "text": "Passport number: P1234567A", "entities": [{"text": "P1234567A", "start": 17, "end": 26, "label": "passport_number"}]},
+  {"id": "diag_passport_002", "gliner2_label": "passport_number", "text": "Her passport is N87654321 issued by the Home Office.", "entities": [{"text": "N87654321", "start": 19, "end": 28, "label": "passport_number"}]},
+
+  {"id": "diag_drivers_001", "gliner2_label": "drivers_license_number", "text": "Driver's license: DL-MH-1234567890", "entities": [{"text": "DL-MH-1234567890", "start": 18, "end": 34, "label": "drivers_license_number"}]},
+  {"id": "diag_drivers_002", "gliner2_label": "drivers_license_number", "text": "His California driver license number is CA-D1234568.", "entities": [{"text": "CA-D1234568", "start": 40, "end": 51, "label": "drivers_license_number"}]},
+
+  {"id": "diag_license_001", "gliner2_label": "license_number", "text": "Professional license number: MED-2024-10092", "entities": [{"text": "MED-2024-10092", "start": 29, "end": 43, "label": "license_number"}]},
+  {"id": "diag_license_002", "gliner2_label": "license_number", "text": "The contractor's license no. is CON-99812.", "entities": [{"text": "CON-99812", "start": 33, "end": 42, "label": "license_number"}]},
+
+  {"id": "diag_tax_id_001", "gliner2_label": "tax_id", "text": "Tax ID: 12-3456789", "entities": [{"text": "12-3456789", "start": 8, "end": 18, "label": "tax_id"}]},
+  {"id": "diag_tax_id_002", "gliner2_label": "tax_id", "text": "Please submit your TIN: 987-65-4321.", "entities": [{"text": "987-65-4321", "start": 24, "end": 35, "label": "tax_id"}]},
+
+  {"id": "diag_tax_number_001", "gliner2_label": "tax_number", "text": "GST number: 27AAPFU0939F1ZV", "entities": [{"text": "27AAPFU0939F1ZV", "start": 12, "end": 27, "label": "tax_number"}]},
+  {"id": "diag_tax_number_002", "gliner2_label": "tax_number", "text": "The company's VAT tax number is GB123456789.", "entities": [{"text": "GB123456789", "start": 32, "end": 43, "label": "tax_number"}]},
+
+  {"id": "diag_bank_account_001", "gliner2_label": "bank_account", "text": "The salary will be credited to bank account 3456789012345.", "entities": [{"text": "3456789012345", "start": 44, "end": 57, "label": "bank_account"}]},
+  {"id": "diag_bank_account_002", "gliner2_label": "bank_account", "text": "Wire to bank account number 9988776655 at HDFC.", "entities": [{"text": "9988776655", "start": 28, "end": 38, "label": "bank_account"}]},
+
+  {"id": "diag_account_number_001", "gliner2_label": "account_number", "text": "Account number: 00112233445566", "entities": [{"text": "00112233445566", "start": 16, "end": 30, "label": "account_number"}]},
+  {"id": "diag_account_number_002", "gliner2_label": "account_number", "text": "Please check your savings account number 7788990011 for the deposit.", "entities": [{"text": "7788990011", "start": 41, "end": 51, "label": "account_number"}]},
+
+  {"id": "diag_routing_001", "gliner2_label": "routing_number", "text": "Routing number: 021000021", "entities": [{"text": "021000021", "start": 16, "end": 25, "label": "routing_number"}]},
+  {"id": "diag_routing_002", "gliner2_label": "routing_number", "text": "The ABA routing no. is 026009593.", "entities": [{"text": "026009593", "start": 23, "end": 32, "label": "routing_number"}]},
+
+  {"id": "diag_iban_001", "gliner2_label": "iban", "text": "International bank account: DE89 3704 0044 0532 0130 00", "entities": [{"text": "DE89 3704 0044 0532 0130 00", "start": 28, "end": 54, "label": "iban"}]},
+  {"id": "diag_iban_002", "gliner2_label": "iban", "text": "Wire to IBAN FR76 3000 6000 0112 3456 7890 189.", "entities": [{"text": "FR76 3000 6000 0112 3456 7890 189", "start": 13, "end": 46, "label": "iban"}]},
+
+  {"id": "diag_payment_card_001", "gliner2_label": "payment_card", "text": "The payment card on file is Visa ending 4242.", "entities": [{"text": "Visa", "start": 28, "end": 32, "label": "payment_card"}]},
+  {"id": "diag_payment_card_002", "gliner2_label": "payment_card", "text": "He used his Mastercard 5105105105105100 to pay.", "entities": [{"text": "5105105105105100", "start": 23, "end": 39, "label": "payment_card"}]},
+
+  {"id": "diag_card_number_001", "gliner2_label": "card_number", "text": "Card number: 4111 1111 1111 1111", "entities": [{"text": "4111 1111 1111 1111", "start": 13, "end": 32, "label": "card_number"}]},
+  {"id": "diag_card_number_002", "gliner2_label": "card_number", "text": "The credit card number 3714 496353 98431 was charged.", "entities": [{"text": "3714 496353 98431", "start": 23, "end": 40, "label": "card_number"}]},
+
+  {"id": "diag_card_expiry_001", "gliner2_label": "card_expiry", "text": "Card expiry: 09/27", "entities": [{"text": "09/27", "start": 13, "end": 18, "label": "card_expiry"}]},
+  {"id": "diag_card_expiry_002", "gliner2_label": "card_expiry", "text": "Your card expires on 12/2026.", "entities": [{"text": "12/2026", "start": 21, "end": 28, "label": "card_expiry"}]},
+
+  {"id": "diag_card_cvv_001", "gliner2_label": "card_cvv", "text": "CVV: 374", "entities": [{"text": "374", "start": 5, "end": 8, "label": "card_cvv"}]},
+  {"id": "diag_card_cvv_002", "gliner2_label": "card_cvv", "text": "Security code (CVV) on the card is 291.", "entities": [{"text": "291", "start": 35, "end": 38, "label": "card_cvv"}]},
+
+  {"id": "diag_username_001", "gliner2_label": "username", "text": "Username: dev_user_42", "entities": [{"text": "dev_user_42", "start": 10, "end": 21, "label": "username"}]},
+  {"id": "diag_username_002", "gliner2_label": "username", "text": "The account belongs to user handle @xtreme_coder.", "entities": [{"text": "@xtreme_coder", "start": 36, "end": 49, "label": "username"}]},
+
+  {"id": "diag_ip_001", "gliner2_label": "ip_address", "text": "Login from IP address 203.0.113.199 was flagged.", "entities": [{"text": "203.0.113.199", "start": 22, "end": 35, "label": "ip_address"}]},
+  {"id": "diag_ip_002", "gliner2_label": "ip_address", "text": "Blocked outbound traffic to 198.51.100.77.", "entities": [{"text": "198.51.100.77", "start": 28, "end": 41, "label": "ip_address"}]},
+
+  {"id": "diag_account_id_001", "gliner2_label": "account_id", "text": "Account ID: ACC-88291", "entities": [{"text": "ACC-88291", "start": 12, "end": 21, "label": "account_id"}]},
+  {"id": "diag_account_id_002", "gliner2_label": "account_id", "text": "Your portal account ID is USR-20240912-0042.", "entities": [{"text": "USR-20240912-0042", "start": 26, "end": 43, "label": "account_id"}]},
+
+  {"id": "diag_sensitive_account_id_001", "gliner2_label": "sensitive_account_id", "text": "Sensitive account: SEC-ACCT-99001", "entities": [{"text": "SEC-ACCT-99001", "start": 19, "end": 33, "label": "sensitive_account_id"}]},
+  {"id": "diag_sensitive_account_id_002", "gliner2_label": "sensitive_account_id", "text": "The privileged service account ID is PRIV-SA-8812.", "entities": [{"text": "PRIV-SA-8812", "start": 37, "end": 49, "label": "sensitive_account_id"}]},
+
+  {"id": "diag_password_001", "gliner2_label": "password", "text": "password = Tr0ub4dor&3", "entities": [{"text": "Tr0ub4dor&3", "start": 11, "end": 22, "label": "password"}]},
+  {"id": "diag_password_002", "gliner2_label": "password", "text": "My current password is Correct!Horse#Battery9.", "entities": [{"text": "Correct!Horse#Battery9", "start": 23, "end": 45, "label": "password"}]},
+
+  {"id": "diag_secret_001", "gliner2_label": "secret", "text": "client_secret: wKgRm2pX9zTjQnLvB8cF", "entities": [{"text": "wKgRm2pX9zTjQnLvB8cF", "start": 15, "end": 36, "label": "secret"}]},
+  {"id": "diag_secret_002", "gliner2_label": "secret", "text": "The app secret is stored in: Xk9!mQ2#nR7@pZ4", "entities": [{"text": "Xk9!mQ2#nR7@pZ4", "start": 29, "end": 45, "label": "secret"}]},
+
+  {"id": "diag_api_key_001", "gliner2_label": "api_key", "text": "API key: sk-live-abcdef1234567890XYZ", "entities": [{"text": "sk-live-abcdef1234567890XYZ", "start": 9, "end": 36, "label": "api_key"}]},
+  {"id": "diag_api_key_002", "gliner2_label": "api_key", "text": "Set STRIPE_KEY=pk_live_abc123def456ghi789 in your env.", "entities": [{"text": "pk_live_abc123def456ghi789", "start": 15, "end": 41, "label": "api_key"}]},
+
+  {"id": "diag_access_token_001", "gliner2_label": "access_token", "text": "Bearer token: eyJhbGciOiJSUzI1NiJ9.eyJ1aWQiOiI0MiJ9.SigXYZ123", "entities": [{"text": "eyJhbGciOiJSUzI1NiJ9.eyJ1aWQiOiI0MiJ9.SigXYZ123", "start": 14, "end": 63, "label": "access_token"}]},
+  {"id": "diag_access_token_002", "gliner2_label": "access_token", "text": "OAuth access token: tok_live_9aB3cD7eF2gH1iJ", "entities": [{"text": "tok_live_9aB3cD7eF2gH1iJ", "start": 20, "end": 44, "label": "access_token"}]},
+
+  {"id": "diag_recovery_code_001", "gliner2_label": "recovery_code", "text": "Recovery code: RCVR-7X2K-9MBP-4TQZ", "entities": [{"text": "RCVR-7X2K-9MBP-4TQZ", "start": 15, "end": 35, "label": "recovery_code"}]},
+  {"id": "diag_recovery_code_002", "gliner2_label": "recovery_code", "text": "Save this backup code: abcd-efgh-ijkl-mnop", "entities": [{"text": "abcd-efgh-ijkl-mnop", "start": 23, "end": 42, "label": "recovery_code"}]},
+
+  {"id": "diag_sensitive_date_001", "gliner2_label": "sensitive_date", "text": "Sensitive date of incident: 2023-07-15", "entities": [{"text": "2023-07-15", "start": 28, "end": 38, "label": "sensitive_date"}]},
+  {"id": "diag_sensitive_date_002", "gliner2_label": "sensitive_date", "text": "The termination date marked as sensitive: November 30, 2024.", "entities": [{"text": "November 30, 2024", "start": 42, "end": 59, "label": "sensitive_date"}]},
+
+  {"id": "diag_document_date_001", "gliner2_label": "document_date", "text": "Document date: 01/04/2024", "entities": [{"text": "01/04/2024", "start": 15, "end": 25, "label": "document_date"}]},
+  {"id": "diag_document_date_002", "gliner2_label": "document_date", "text": "The contract was dated March 15, 2023.", "entities": [{"text": "March 15, 2023", "start": 23, "end": 37, "label": "document_date"}]},
+
+  {"id": "diag_expiration_date_001", "gliner2_label": "expiration_date", "text": "Expiration date: 31 Dec 2026", "entities": [{"text": "31 Dec 2026", "start": 17, "end": 28, "label": "expiration_date"}]},
+  {"id": "diag_expiration_date_002", "gliner2_label": "expiration_date", "text": "Your subscription expires on 2025-06-01.", "entities": [{"text": "2025-06-01", "start": 29, "end": 39, "label": "expiration_date"}]},
+
+  {"id": "diag_transaction_date_001", "gliner2_label": "transaction_date", "text": "Transaction date: 2024-08-22", "entities": [{"text": "2024-08-22", "start": 18, "end": 28, "label": "transaction_date"}]},
+  {"id": "diag_transaction_date_002", "gliner2_label": "transaction_date", "text": "The payment was processed on September 3, 2024.", "entities": [{"text": "September 3, 2024", "start": 29, "end": 46, "label": "transaction_date"}]}
+]

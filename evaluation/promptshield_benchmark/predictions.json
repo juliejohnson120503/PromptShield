@@ -1,0 +1,2762 @@
+[
+  {
+    "prompt_id": "test_001",
+    "text": "Rahul Menon works at Infosys in Kochi.",
+    "detected_entities": [
+      {
+        "text": "Rahul Menon",
+        "start": 0,
+        "end": 11,
+        "label": "PERSON",
+        "confidence": 0.954,
+        "source": "gliner",
+        "detector": "gliner_person"
+      },
+      {
+        "text": "Infosys",
+        "start": 21,
+        "end": 28,
+        "label": "ORGANIZATION",
+        "confidence": 0.985,
+        "source": "gliner",
+        "detector": "gliner_organization"
+      },
+      {
+        "text": "Kochi",
+        "start": 32,
+        "end": 37,
+        "label": "LOCATION",
+        "confidence": 0.963,
+        "source": "gliner",
+        "detector": "gliner_location"
+      }
+    ],
+    "latency_ms": 267.1563
+  },
+  {
+    "prompt_id": "test_002",
+    "text": "Contact me at priya.sharma@gmail.com for the project update.",
+    "detected_entities": [
+      {
+        "text": "priya.sharma@gmail.com",
+        "start": 14,
+        "end": 36,
+        "label": "EMAIL",
+        "confidence": 1.0,
+        "source": "regex",
+        "detector": "regex_email"
+      }
+    ],
+    "latency_ms": 275.9314
+  },
+  {
+    "prompt_id": "test_003",
+    "text": "Call Amit at +91 9876543210 before noon.",
+    "detected_entities": [
+      {
+        "text": "Amit",
+        "start": 5,
+        "end": 9,
+        "label": "PERSON",
+        "confidence": 0.88,
+        "source": "gliner",
+        "detector": "gliner_person"
+      },
+      {
+        "text": "+91 9876543210",
+        "start": 13,
+        "end": 27,
+        "label": "PHONE",
+        "confidence": 0.92,
+        "source": "regex",
+        "detector": "regex_phone_international"
+      },
+      {
+        "text": "noon",
+        "start": 35,
+        "end": 39,
+        "label": "DATE",
+        "confidence": 0.85,
+        "source": "presidio",
+        "detector": "presidio_date_time"
+      }
+    ],
+    "latency_ms": 264.1657
+  },
+  {
+    "prompt_id": "test_004",
+    "text": "The server at 192.168.1.100 is down. Please restart the service.",
+    "detected_entities": [
+      {
+        "text": "192.168.1.100",
+        "start": 14,
+        "end": 27,
+        "label": "IP_ADDRESS",
+        "confidence": 0.97,
+        "source": "regex",
+        "detector": "regex_ipv4"
+      }
+    ],
+    "latency_ms": 265.4609
+  },
+  {
+    "prompt_id": "test_005",
+    "text": "John Mathew used card 4111 1111 1111 1111 for the online purchase.",
+    "detected_entities": [
+      {
+        "text": "John Mathew",
+        "start": 0,
+        "end": 11,
+        "label": "PERSON",
+        "confidence": 0.912,
+        "source": "gliner",
+        "detector": "gliner_person"
+      },
+      {
+        "text": "4111 1111 1111 1111",
+        "start": 22,
+        "end": 41,
+        "label": "CREDIT_CARD",
+        "confidence": 1.0,
+        "source": "regex",
+        "detector": "luhn_credit_card"
+      }
+    ],
+    "latency_ms": 259.7299
+  },
+  {
+    "prompt_id": "test_006",
+    "text": "The OpenAI key is sk-proj-AbCdEfGhIjKlMnOpQrStUvWxYz1234567890abcdef and must not be shared.",
+    "detected_entities": [
+      {
+        "text": "OpenAI",
+        "start": 4,
+        "end": 10,
+        "label": "ORGANIZATION",
+        "confidence": 0.85,
+        "source": "gliner",
+        "detector": "gliner_organization"
+      },
+      {
+        "text": "sk-proj-AbCdEfGhIjKlMnOpQrStUvWxYz1234567890abcdef",
+        "start": 18,
+        "end": 68,
+        "label": "API_KEY",
+        "confidence": 0.99,
+        "source": "regex",
+        "detector": "regex_openai_api_key"
+      }
+    ],
+    "latency_ms": 337.418
+  },
+  {
+    "prompt_id": "test_007",
+    "text": "Set password = MySecurePass@99 in the config.",
+    "detected_entities": [
+      {
+        "text": "MySecurePass@99",
+        "start": 15,
+        "end": 30,
+        "label": "PASSWORD",
+        "confidence": 0.92,
+        "source": "regex",
+        "detector": "regex_password_assignment"
+      }
+    ],
+    "latency_ms": 387.9305
+  },
+  {
+    "prompt_id": "test_008",
+    "text": "Please transfer funds to account number 912345678901 at SBI.",
+    "detected_entities": [
+      {
+        "text": "912345678901",
+        "start": 40,
+        "end": 52,
+        "label": "BANK_ACCOUNT",
+        "confidence": 0.85,
+        "source": "regex",
+        "detector": "regex_account_number"
+      },
+      {
+        "text": "SBI",
+        "start": 56,
+        "end": 59,
+        "label": "ORGANIZATION",
+        "confidence": 0.947,
+        "source": "gliner",
+        "detector": "gliner_organization"
+      }
+    ],
+    "latency_ms": 371.284
+  },
+  {
+    "prompt_id": "test_009",
+    "text": "Order ORD-78291 for customer CUST-10458 was placed on 2024-03-15.",
+    "detected_entities": [
+      {
+        "text": "ORD-78291",
+        "start": 6,
+        "end": 15,
+        "label": "ORDER_ID",
+        "confidence": 0.95,
+        "source": "regex",
+        "detector": "regex_order_id"
+      },
+      {
+        "text": "CUST-10458",
+        "start": 29,
+        "end": 39,
+        "label": "CUSTOMER_ID",
+        "confidence": 0.95,
+        "source": "regex",
+        "detector": "regex_customer_id"
+      },
+      {
+        "text": "2024-03-15",
+        "start": 54,
+        "end": 64,
+        "label": "DATE",
+        "confidence": 0.9,
+        "source": "regex",
+        "detector": "regex_date_iso"
+      }
+    ],
+    "latency_ms": 405.1056
+  },
+  {
+    "prompt_id": "test_010",
+    "text": "Escalate ticket TKT-94812 to Vikram at the Bangalore office.",
+    "detected_entities": [
+      {
+        "text": "TKT-94812",
+        "start": 16,
+        "end": 25,
+        "label": "TICKET_ID",
+        "confidence": 0.95,
+        "source": "regex",
+        "detector": "regex_ticket_id"
+      },
+      {
+        "text": "Vikram",
+        "start": 29,
+        "end": 35,
+        "label": "PERSON",
+        "confidence": 0.914,
+        "source": "gliner",
+        "detector": "gliner_person"
+      },
+      {
+        "text": "Bangalore",
+        "start": 43,
+        "end": 52,
+        "label": "LOCATION",
+        "confidence": 0.85,
+        "source": "presidio",
+        "detector": "presidio_location"
+      }
+    ],
+    "latency_ms": 281.8897
+  },
+  {
+    "prompt_id": "test_011",
+    "text": "Authentication header: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+    "detected_entities": [
+      {
+        "text": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+        "start": 30,
+        "end": 138,
+        "label": "ACCESS_TOKEN",
+        "confidence": 0.97,
+        "source": "regex",
+        "detector": "regex_jwt_token"
+      }
+    ],
+    "latency_ms": 749.5702
+  },
+  {
+    "prompt_id": "test_012",
+    "text": "Neha Thomas resides at 24 MG Road, Kochi, Kerala 682016.",
+    "detected_entities": [
+      {
+        "text": "Neha Thomas",
+        "start": 0,
+        "end": 11,
+        "label": "PERSON",
+        "confidence": 0.955,
+        "source": "gliner",
+        "detector": "gliner_person"
+      },
+      {
+        "text": "24 MG Road, Kochi, Kerala 682016",
+        "start": 23,
+        "end": 55,
+        "label": "ADDRESS",
+        "confidence": 0.96,
+        "source": "regex",
+        "detector": "regex_address_with_postal_code"
+      }
+    ],
+    "latency_ms": 335.0836
+  },
+  {
+    "prompt_id": "test_013",
+    "text": "Machine learning models process large amounts of data to find patterns.",
+    "detected_entities": [],
+    "latency_ms": 373.0688
+  },
+  {
+    "prompt_id": "test_014",
+    "text": "The network team discussed the IP protocol standards.",
+    "detected_entities": [],
+    "latency_ms": 328.9042
+  },
+  {
+    "prompt_id": "test_015",
+    "text": "Apple released a new smartphone model last quarter.",
+    "detected_entities": [
+      {
+        "text": "Apple",
+        "start": 0,
+        "end": 5,
+        "label": "ORGANIZATION",
+        "confidence": 0.977,
+        "source": "gliner",
+        "detector": "gliner_organization"
+      },
+      {
+        "text": "last quarter",
+        "start": 38,
+        "end": 50,
+        "label": "DATE",
+        "confidence": 0.85,
+        "source": "presidio",
+        "detector": "presidio_date_time"
+      }
+    ],
+    "latency_ms": 294.3079
+  },
+  {
+    "prompt_id": "test_016",
+    "text": "The order was delayed yesterday due to weather conditions.",
+    "detected_entities": [
+      {
+        "text": "yesterday",
+        "start": 22,
+        "end": 31,
+        "label": "DATE",
+        "confidence": 0.85,
+        "source": "presidio",
+        "detector": "presidio_date_time"
+      }
+    ],
+    "latency_ms": 281.3475
+  },
+  {
+    "prompt_id": "test_017",
+    "text": "Password management is critical for enterprise security policies.",
+    "detected_entities": [],
+    "latency_ms": 303.6484
+  },
+  {
+    "prompt_id": "test_018",
+    "text": "Anjali Nair from Microsoft and Arjun Kumar from Google attended the summit in Mumbai.",
+    "detected_entities": [
+      {
+        "text": "Anjali Nair",
+        "start": 0,
+        "end": 11,
+        "label": "PERSON",
+        "confidence": 0.959,
+        "source": "gliner",
+        "detector": "gliner_person"
+      },
+      {
+        "text": "Microsoft",
+        "start": 17,
+        "end": 26,
+        "label": "ORGANIZATION",
+        "confidence": 0.971,
+        "source": "gliner",
+        "detector": "gliner_organization"
+      },
+      {
+        "text": "Arjun Kumar",
+        "start": 31,
+        "end": 42,
+        "label": "PERSON",
+        "confidence": 0.955,
+        "source": "gliner",
+        "detector": "gliner_person"
+      },
+      {
+        "text": "Google",
+        "start": 48,
+        "end": 54,
+        "label": "ORGANIZATION",
+        "confidence": 0.971,
+        "source": "gliner",
+        "detector": "gliner_organization"
+      },
+      {
+        "text": "Mumbai",
+        "start": 78,
+        "end": 84,
+        "label": "LOCATION",
+        "confidence": 0.969,
+        "source": "gliner",
+        "detector": "gliner_location"
+      }
+    ],
+    "latency_ms": 293.8058
+  },
+  {
+    "prompt_id": "test_019",
+    "text": "The request came from 10.0.0.1 and the response was sent to 10.0.0.2.",
+    "detected_entities": [
+      {
+        "text": "10.0.0.1",
+        "start": 22,
+        "end": 30,
+        "label": "IP_ADDRESS",
+        "confidence": 0.97,
+        "source": "regex",
+        "detector": "regex_ipv4"
+      },
+      {
+        "text": "10.0.0.2",
+        "start": 60,
+        "end": 68,
+        "label": "IP_ADDRESS",
+        "confidence": 0.97,
+        "source": "regex",
+        "detector": "regex_ipv4"
+      }
+    ],
+    "latency_ms": 306.1085
+  },
+  {
+    "prompt_id": "test_020",
+    "text": "Sanjay Mehta called sanjay.mehta@corp.com and left a voicemail at 022-2345-6789.",
+    "detected_entities": [
+      {
+        "text": "Sanjay Mehta",
+        "start": 0,
+        "end": 12,
+        "label": "PERSON",
+        "confidence": 0.947,
+        "source": "gliner",
+        "detector": "gliner_person"
+      },
+      {
+        "text": "sanjay.mehta@corp.com",
+        "start": 20,
+        "end": 41,
+        "label": "EMAIL",
+        "confidence": 1.0,
+        "source": "regex",
+        "detector": "regex_email"
+      },
+      {
+        "text": "022-2345-6789",
+        "start": 66,
+        "end": 79,
+        "label": "PHONE",
+        "confidence": 0.4,
+        "source": "presidio",
+        "detector": "presidio_phone_number"
+      }
+    ],
+    "latency_ms": 324.8453
+  },
+  {
+    "prompt_id": "test_021",
+    "text": "AWS key AKIAIOSFODNN7EXAMPLE was found in the public repository.",
+    "detected_entities": [
+      {
+        "text": "AWS",
+        "start": 0,
+        "end": 3,
+        "label": "ORGANIZATION",
+        "confidence": 0.85,
+        "source": "gliner",
+        "detector": "gliner_organization"
+      },
+      {
+        "text": "AKIAIOSFODNN7EXAMPLE",
+        "start": 8,
+        "end": 28,
+        "label": "API_KEY",
+        "confidence": 0.98,
+        "source": "regex",
+        "detector": "regex_aws_access_key"
+      },
+      {
+        "text": "public repository",
+        "start": 46,
+        "end": 63,
+        "label": "LOCATION",
+        "confidence": 0.684,
+        "source": "gliner",
+        "detector": "gliner_location"
+      }
+    ],
+    "latency_ms": 259.0253
+  },
+  {
+    "prompt_id": "test_022",
+    "text": "My account IBAN is GB82 WEST 1234 5698 7654 32.",
+    "detected_entities": [
+      {
+        "text": "IBAN",
+        "start": 11,
+        "end": 15,
+        "label": "ORGANIZATION",
+        "confidence": 0.85,
+        "source": "spacy",
+        "detector": "spacy_org"
+      },
+      {
+        "text": "GB82 WEST 1234 5698 7654 32",
+        "start": 19,
+        "end": 46,
+        "label": "BANK_ACCOUNT",
+        "confidence": 1.0,
+        "source": "regex",
+        "detector": "regex_iban"
+      }
+    ],
+    "latency_ms": 321.2905
+  },
+  {
+    "prompt_id": "test_023",
+    "text": "The user admin_root logged in from 203.0.113.45 on January 15, 2024.",
+    "detected_entities": [
+      {
+        "text": "admin_root",
+        "start": 9,
+        "end": 19,
+        "label": "USER_ID",
+        "confidence": 0.764,
+        "source": "gliner",
+        "detector": "gliner_username"
+      },
+      {
+        "text": "203.0.113.45",
+        "start": 35,
+        "end": 47,
+        "label": "IP_ADDRESS",
+        "confidence": 0.97,
+        "source": "regex",
+        "detector": "regex_ipv4"
+      },
+      {
+        "text": "January 15, 2024",
+        "start": 51,
+        "end": 67,
+        "label": "DATE",
+        "confidence": 0.9,
+        "source": "regex",
+        "detector": "regex_date_month_dd_yyyy"
+      }
+    ],
+    "latency_ms": 324.2258
+  },
+  {
+    "prompt_id": "test_024",
+    "text": "Neha Joseph and Priya Sharma both applied for the engineering role at Wipro.",
+    "detected_entities": [
+      {
+        "text": "Neha Joseph",
+        "start": 0,
+        "end": 11,
+        "label": "PERSON",
+        "confidence": 0.92,
+        "source": "gliner",
+        "detector": "gliner_person"
+      },
+      {
+        "text": "Priya Sharma",
+        "start": 16,
+        "end": 28,
+        "label": "PERSON",
+        "confidence": 0.927,
+        "source": "gliner",
+        "detector": "gliner_person"
+      },
+      {
+        "text": "Wipro",
+        "start": 70,
+        "end": 75,
+        "label": "ORGANIZATION",
+        "confidence": 0.979,
+        "source": "gliner",
+        "detector": "gliner_organization"
+      }
+    ],
+    "latency_ms": 329.6641
+  },
+  {
+    "prompt_id": "test_025",
+    "text": "My password is SuperSecret123! and my pin is 9087.",
+    "detected_entities": [
+      {
+        "text": "SuperSecret123!",
+        "start": 15,
+        "end": 30,
+        "label": "PASSWORD",
+        "confidence": 0.92,
+        "source": "regex",
+        "detector": "regex_password_natural_lang"
+      },
+      {
+        "text": "9087",
+        "start": 45,
+        "end": 49,
+        "label": "PASSWORD",
+        "confidence": 0.92,
+        "source": "regex",
+        "detector": "regex_pin_natural_lang"
+      }
+    ],
+    "latency_ms": 282.8994
+  },
+  {
+    "prompt_id": "test_026",
+    "text": "The IPv6 address 2001:0db8:85a3:0000:0000:8a2e:0370:7334 is assigned to the host.",
+    "detected_entities": [
+      {
+        "text": "IPv6",
+        "start": 4,
+        "end": 8,
+        "label": "ORGANIZATION",
+        "confidence": 0.85,
+        "source": "spacy",
+        "detector": "spacy_org"
+      },
+      {
+        "text": "2001:0db8:85a3:0000:0000:8a2e:0370:7334",
+        "start": 17,
+        "end": 56,
+        "label": "IP_ADDRESS",
+        "confidence": 0.97,
+        "source": "regex",
+        "detector": "regex_ipv6"
+      }
+    ],
+    "latency_ms": 341.6283
+  },
+  {
+    "prompt_id": "test_027",
+    "text": "Customer Rohan Verma (customer ID: CUST-99201) placed order ORD-55123 on 15/08/2023.",
+    "detected_entities": [
+      {
+        "text": "Rohan Verma",
+        "start": 9,
+        "end": 20,
+        "label": "PERSON",
+        "confidence": 0.914,
+        "source": "gliner",
+        "detector": "gliner_person"
+      },
+      {
+        "text": "CUST-99201",
+        "start": 35,
+        "end": 45,
+        "label": "CUSTOMER_ID",
+        "confidence": 0.95,
+        "source": "regex",
+        "detector": "regex_customer_id"
+      },
+      {
+        "text": "ORD-55123",
+        "start": 60,
+        "end": 69,
+        "label": "ORDER_ID",
+        "confidence": 0.95,
+        "source": "regex",
+        "detector": "regex_order_id"
+      },
+      {
+        "text": "15/08/2023",
+        "start": 73,
+        "end": 83,
+        "label": "DATE",
+        "confidence": 0.9,
+        "source": "regex",
+        "detector": "regex_date_dmy"
+      }
+    ],
+    "latency_ms": 353.0509
+  },
+  {
+    "prompt_id": "test_028",
+    "text": "The GitHub token ghp_abc123DefGhi456JklMno789PqrStu000Vwx is exposed in the CI logs.",
+    "detected_entities": [
+      {
+        "text": "GitHub",
+        "start": 4,
+        "end": 10,
+        "label": "ORGANIZATION",
+        "confidence": 0.871,
+        "source": "gliner",
+        "detector": "gliner_organization"
+      },
+      {
+        "text": "ghp_abc123DefGhi456JklMno789PqrStu000Vwx",
+        "start": 17,
+        "end": 57,
+        "label": "API_KEY",
+        "confidence": 0.99,
+        "source": "regex",
+        "detector": "regex_github_pat"
+      },
+      {
+        "text": "CI",
+        "start": 76,
+        "end": 78,
+        "label": "ORGANIZATION",
+        "confidence": 0.85,
+        "source": "spacy",
+        "detector": "spacy_org"
+      }
+    ],
+    "latency_ms": 305.246
+  },
+  {
+    "prompt_id": "test_029",
+    "text": "I am Lakshmi Nair and I live in Chennai.",
+    "detected_entities": [
+      {
+        "text": "Lakshmi Nair",
+        "start": 5,
+        "end": 17,
+        "label": "PERSON",
+        "confidence": 0.85,
+        "source": "presidio",
+        "detector": "presidio_person"
+      },
+      {
+        "text": "Chennai",
+        "start": 32,
+        "end": 39,
+        "label": "LOCATION",
+        "confidence": 0.969,
+        "source": "gliner",
+        "detector": "gliner_location"
+      }
+    ],
+    "latency_ms": 238.4242
+  },
+  {
+    "prompt_id": "test_030",
+    "text": "Please ship the item to 221B Baker Street, London.",
+    "detected_entities": [
+      {
+        "text": "221B Baker Street",
+        "start": 24,
+        "end": 41,
+        "label": "ADDRESS",
+        "confidence": 0.9,
+        "source": "regex",
+        "detector": "regex_street_address"
+      },
+      {
+        "text": "London",
+        "start": 43,
+        "end": 49,
+        "label": "LOCATION",
+        "confidence": 0.96,
+        "source": "gliner",
+        "detector": "gliner_location"
+      }
+    ],
+    "latency_ms": 252.3387
+  },
+  {
+    "prompt_id": "test_031",
+    "text": "The employee with ID EMP-7712 submitted the quarterly report.",
+    "detected_entities": [
+      {
+        "text": "employee",
+        "start": 4,
+        "end": 12,
+        "label": "PERSON",
+        "confidence": 0.51,
+        "source": "gliner",
+        "detector": "gliner_person"
+      },
+      {
+        "text": "ID EMP-7712",
+        "start": 18,
+        "end": 29,
+        "label": "USER_ID",
+        "confidence": 0.518,
+        "source": "gliner",
+        "detector": "gliner_username"
+      },
+      {
+        "text": "quarterly",
+        "start": 44,
+        "end": 53,
+        "label": "DATE",
+        "confidence": 0.85,
+        "source": "presidio",
+        "detector": "presidio_date_time"
+      }
+    ],
+    "latency_ms": 279.6849
+  },
+  {
+    "prompt_id": "test_032",
+    "text": "Her date of birth is 22/11/1990 and she holds Indian citizenship.",
+    "detected_entities": [
+      {
+        "text": "22/11/1990",
+        "start": 21,
+        "end": 31,
+        "label": "DATE",
+        "confidence": 0.95,
+        "source": "regex",
+        "detector": "regex_date_dmy"
+      },
+      {
+        "text": "Indian",
+        "start": 46,
+        "end": 52,
+        "label": "PERSON",
+        "confidence": 0.85,
+        "source": "presidio",
+        "detector": "presidio_nrp"
+      }
+    ],
+    "latency_ms": 291.607
+  },
+  {
+    "prompt_id": "test_033",
+    "text": "Send the invoice to billing@acme.io and copy accounts@acme.io on the thread.",
+    "detected_entities": [
+      {
+        "text": "billing@acme.io",
+        "start": 20,
+        "end": 35,
+        "label": "EMAIL",
+        "confidence": 1.0,
+        "source": "regex",
+        "detector": "regex_email"
+      },
+      {
+        "text": "accounts@acme.io",
+        "start": 45,
+        "end": 61,
+        "label": "EMAIL",
+        "confidence": 1.0,
+        "source": "regex",
+        "detector": "regex_email"
+      }
+    ],
+    "latency_ms": 292.523
+  },
+  {
+    "prompt_id": "test_034",
+    "text": "Maria Fernandes from New York called +1 (212) 555-1234 to report a breach.",
+    "detected_entities": [
+      {
+        "text": "Maria Fernandes",
+        "start": 0,
+        "end": 15,
+        "label": "PERSON",
+        "confidence": 0.92,
+        "source": "gliner",
+        "detector": "gliner_person"
+      },
+      {
+        "text": "New York",
+        "start": 21,
+        "end": 29,
+        "label": "LOCATION",
+        "confidence": 0.959,
+        "source": "gliner",
+        "detector": "gliner_location"
+      },
+      {
+        "text": "+1 (212) 555-1234",
+        "start": 37,
+        "end": 54,
+        "label": "PHONE",
+        "confidence": 0.92,
+        "source": "regex",
+        "detector": "regex_phone_international"
+      }
+    ],
+    "latency_ms": 372.3751
+  },
+  {
+    "prompt_id": "test_035",
+    "text": "The 2024 fiscal year budget review is scheduled for Q3.",
+    "detected_entities": [
+      {
+        "text": "2024 fiscal year",
+        "start": 4,
+        "end": 20,
+        "label": "DATE",
+        "confidence": 0.85,
+        "source": "presidio",
+        "detector": "presidio_date_time"
+      },
+      {
+        "text": "Q3",
+        "start": 52,
+        "end": 54,
+        "label": "LOCATION",
+        "confidence": 0.85,
+        "source": "presidio",
+        "detector": "presidio_location"
+      }
+    ],
+    "latency_ms": 318.6699
+  },
+  {
+    "prompt_id": "test_036",
+    "text": "api_key = 'aBcD1234EfGhIjKlMnOpQrSt56789uvWxYz'",
+    "detected_entities": [
+      {
+        "text": "aBcD1234EfGhIjKlMnOpQrSt56789uvWxYz",
+        "start": 11,
+        "end": 46,
+        "label": "API_KEY",
+        "confidence": 0.95,
+        "source": "regex",
+        "detector": "regex_generic_key_assignment"
+      }
+    ],
+    "latency_ms": 272.6153
+  },
+  {
+    "prompt_id": "test_037",
+    "text": "User ticket INC-8821 raised by support agent Sara Evans for customer CUST-30041.",
+    "detected_entities": [
+      {
+        "text": "INC-8821",
+        "start": 12,
+        "end": 20,
+        "label": "TICKET_ID",
+        "confidence": 0.95,
+        "source": "regex",
+        "detector": "regex_ticket_id"
+      },
+      {
+        "text": "Sara Evans",
+        "start": 45,
+        "end": 55,
+        "label": "PERSON",
+        "confidence": 0.85,
+        "source": "presidio",
+        "detector": "presidio_person"
+      },
+      {
+        "text": "CUST-30041",
+        "start": 69,
+        "end": 79,
+        "label": "CUSTOMER_ID",
+        "confidence": 0.95,
+        "source": "regex",
+        "detector": "regex_customer_id"
+      }
+    ],
+    "latency_ms": 302.7063
+  },
+  {
+    "prompt_id": "test_038",
+    "text": "pwd: T3mpPassw0rd! should be changed after first login.",
+    "detected_entities": [
+      {
+        "text": "T3mpPassw0rd!",
+        "start": 5,
+        "end": 18,
+        "label": "PASSWORD",
+        "confidence": 0.92,
+        "source": "regex",
+        "detector": "regex_password_assignment"
+      }
+    ],
+    "latency_ms": 289.733
+  },
+  {
+    "prompt_id": "test_039",
+    "text": "The server logs at 172.16.0.5 and 172.16.0.6 show anomalous traffic.",
+    "detected_entities": [
+      {
+        "text": "172.16.0.5",
+        "start": 19,
+        "end": 29,
+        "label": "IP_ADDRESS",
+        "confidence": 0.97,
+        "source": "regex",
+        "detector": "regex_ipv4"
+      },
+      {
+        "text": "172.16.0.6",
+        "start": 34,
+        "end": 44,
+        "label": "IP_ADDRESS",
+        "confidence": 0.97,
+        "source": "regex",
+        "detector": "regex_ipv4"
+      }
+    ],
+    "latency_ms": 296.54
+  },
+  {
+    "prompt_id": "test_040",
+    "text": "Mastercard 5500 0000 0000 0004 was used for the hotel booking.",
+    "detected_entities": [
+      {
+        "text": "5500 0000 0000 0004",
+        "start": 11,
+        "end": 30,
+        "label": "CREDIT_CARD",
+        "confidence": 1.0,
+        "source": "regex",
+        "detector": "luhn_credit_card"
+      },
+      {
+        "text": "hotel",
+        "start": 48,
+        "end": 53,
+        "label": "LOCATION",
+        "confidence": 0.541,
+        "source": "gliner",
+        "detector": "gliner_location"
+      }
+    ],
+    "latency_ms": 257.7222
+  },
+  {
+    "prompt_id": "test_041",
+    "text": "The data science team analyzed revenue trends across all regions.",
+    "detected_entities": [
+      {
+        "text": "regions",
+        "start": 57,
+        "end": 64,
+        "label": "LOCATION",
+        "confidence": 0.592,
+        "source": "gliner",
+        "detector": "gliner_location"
+      }
+    ],
+    "latency_ms": 270.9091
+  },
+  {
+    "prompt_id": "test_042",
+    "text": "My name is Aditya Kapoor. I am from Pune.",
+    "detected_entities": [
+      {
+        "text": "Aditya Kapoor",
+        "start": 11,
+        "end": 24,
+        "label": "PERSON",
+        "confidence": 0.851,
+        "source": "gliner",
+        "detector": "gliner_person"
+      },
+      {
+        "text": "Pune",
+        "start": 36,
+        "end": 40,
+        "label": "LOCATION",
+        "confidence": 0.983,
+        "source": "gliner",
+        "detector": "gliner_location"
+      }
+    ],
+    "latency_ms": 283.1052
+  },
+  {
+    "prompt_id": "test_043",
+    "text": "The Google API key AIzaSyExampleKey1234567890abcdefghij is hardcoded.",
+    "detected_entities": [
+      {
+        "text": "Google",
+        "start": 4,
+        "end": 10,
+        "label": "ORGANIZATION",
+        "confidence": 0.89,
+        "source": "gliner",
+        "detector": "gliner_organization"
+      },
+      {
+        "text": "AIzaSyExampleKey1234567890abcdefghij",
+        "start": 19,
+        "end": 55,
+        "label": "API_KEY",
+        "confidence": 0.99,
+        "source": "regex",
+        "detector": "regex_google_api_key"
+      }
+    ],
+    "latency_ms": 282.5727
+  },
+  {
+    "prompt_id": "test_044",
+    "text": "Email Robert Taylor at robert.taylor@example.com or reach him at +44 20 7946 0958.",
+    "detected_entities": [
+      {
+        "text": "Robert Taylor",
+        "start": 6,
+        "end": 19,
+        "label": "PERSON",
+        "confidence": 0.975,
+        "source": "gliner",
+        "detector": "gliner_person"
+      },
+      {
+        "text": "robert.taylor@example.com",
+        "start": 23,
+        "end": 48,
+        "label": "EMAIL",
+        "confidence": 1.0,
+        "source": "regex",
+        "detector": "regex_email"
+      },
+      {
+        "text": "+44 20 7946 0958",
+        "start": 65,
+        "end": 81,
+        "label": "PHONE",
+        "confidence": 0.92,
+        "source": "regex",
+        "detector": "regex_phone_international"
+      }
+    ],
+    "latency_ms": 302.2615
+  },
+  {
+    "prompt_id": "test_045",
+    "text": "Order ORD-11029 shipped to address 120 Nehru Marg, Pune, Maharashtra 411001.",
+    "detected_entities": [
+      {
+        "text": "ORD-11029",
+        "start": 6,
+        "end": 15,
+        "label": "ORDER_ID",
+        "confidence": 0.95,
+        "source": "regex",
+        "detector": "regex_order_id"
+      },
+      {
+        "text": "120 Nehru Marg, Pune, Maharashtra 411001",
+        "start": 35,
+        "end": 75,
+        "label": "ADDRESS",
+        "confidence": 0.96,
+        "source": "regex",
+        "detector": "regex_address_with_postal_code"
+      }
+    ],
+    "latency_ms": 316.0353
+  },
+  {
+    "prompt_id": "test_046",
+    "text": "All database connections should use encrypted tunnels over TLS.",
+    "detected_entities": [],
+    "latency_ms": 267.407
+  },
+  {
+    "prompt_id": "test_047",
+    "text": "The bearer token for the API is Bearer abc123def456ghi789jkl012mno345pq.",
+    "detected_entities": [
+      {
+        "text": "Bearer",
+        "start": 32,
+        "end": 38,
+        "label": "ORGANIZATION",
+        "confidence": 0.85,
+        "source": "spacy",
+        "detector": "spacy_org"
+      },
+      {
+        "text": "abc123def456ghi789jkl012mno345pq",
+        "start": 39,
+        "end": 71,
+        "label": "API_KEY",
+        "confidence": 0.93,
+        "source": "regex",
+        "detector": "regex_bearer_token"
+      }
+    ],
+    "latency_ms": 291.7827
+  },
+  {
+    "prompt_id": "test_048",
+    "text": "Support request SR-9912 was created for account holder Priya Nair.",
+    "detected_entities": [
+      {
+        "text": "SR-9912",
+        "start": 16,
+        "end": 23,
+        "label": "TICKET_ID",
+        "confidence": 0.95,
+        "source": "regex",
+        "detector": "regex_ticket_id"
+      },
+      {
+        "text": "Priya Nair",
+        "start": 55,
+        "end": 65,
+        "label": "PERSON",
+        "confidence": 0.911,
+        "source": "gliner",
+        "detector": "gliner_person"
+      }
+    ],
+    "latency_ms": 265.661
+  },
+  {
+    "prompt_id": "test_049",
+    "text": "The AI model was trained on a publicly available dataset from 2022.",
+    "detected_entities": [
+      {
+        "text": "2022",
+        "start": 62,
+        "end": 66,
+        "label": "DATE",
+        "confidence": 0.85,
+        "source": "spacy",
+        "detector": "spacy_date"
+      }
+    ],
+    "latency_ms": 288.1248
+  },
+  {
+    "prompt_id": "test_050",
+    "text": "Lukas Weber resides at 15 Hauptstrasse, Berlin, Germany.",
+    "detected_entities": [
+      {
+        "text": "Lukas Weber",
+        "start": 0,
+        "end": 11,
+        "label": "PERSON",
+        "confidence": 0.963,
+        "source": "gliner",
+        "detector": "gliner_person"
+      },
+      {
+        "text": "15 Hauptstrasse",
+        "start": 23,
+        "end": 38,
+        "label": "LOCATION",
+        "confidence": 0.866,
+        "source": "gliner",
+        "detector": "gliner_location"
+      },
+      {
+        "text": "Berlin",
+        "start": 40,
+        "end": 46,
+        "label": "LOCATION",
+        "confidence": 0.943,
+        "source": "gliner",
+        "detector": "gliner_location"
+      },
+      {
+        "text": "Germany",
+        "start": 48,
+        "end": 55,
+        "label": "LOCATION",
+        "confidence": 0.91,
+        "source": "gliner",
+        "detector": "gliner_location"
+      }
+    ],
+    "latency_ms": 320.8481
+  },
+  {
+    "prompt_id": "test_051",
+    "text": "access_token: 'eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJ1c2VyIn0.SigValue123456ABC' should be kept private.",
+    "detected_entities": [
+      {
+        "text": "eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJ1c2VyIn0.SigValue123456ABC",
+        "start": 15,
+        "end": 73,
+        "label": "ACCESS_TOKEN",
+        "confidence": 0.97,
+        "source": "regex",
+        "detector": "regex_jwt_token"
+      }
+    ],
+    "latency_ms": 549.4614
+  },
+  {
+    "prompt_id": "test_052",
+    "text": "My credit card 4532015112830366 expires next year.",
+    "detected_entities": [
+      {
+        "text": "4532015112830366",
+        "start": 15,
+        "end": 31,
+        "label": "CREDIT_CARD",
+        "confidence": 1.0,
+        "source": "regex",
+        "detector": "luhn_credit_card"
+      },
+      {
+        "text": "next year",
+        "start": 40,
+        "end": 49,
+        "label": "DATE",
+        "confidence": 0.85,
+        "source": "presidio",
+        "detector": "presidio_date_time"
+      }
+    ],
+    "latency_ms": 292.1153
+  },
+  {
+    "prompt_id": "test_053",
+    "text": "Please refund order ORDER-55123 to customer CUST-10001 via bank account 123456789012.",
+    "detected_entities": [
+      {
+        "text": "ORDER-55123",
+        "start": 20,
+        "end": 31,
+        "label": "ORDER_ID",
+        "confidence": 0.95,
+        "source": "regex",
+        "detector": "regex_order_id"
+      },
+      {
+        "text": "CUST-10001",
+        "start": 44,
+        "end": 54,
+        "label": "CUSTOMER_ID",
+        "confidence": 0.95,
+        "source": "regex",
+        "detector": "regex_customer_id"
+      },
+      {
+        "text": "123456789012",
+        "start": 72,
+        "end": 84,
+        "label": "PASSWORD",
+        "confidence": 0.578,
+        "source": "gliner",
+        "detector": "gliner_password"
+      }
+    ],
+    "latency_ms": 292.5087
+  },
+  {
+    "prompt_id": "test_054",
+    "text": "The project deadline is December 31, 2024.",
+    "detected_entities": [
+      {
+        "text": "December 31, 2024",
+        "start": 24,
+        "end": 41,
+        "label": "DATE",
+        "confidence": 0.9,
+        "source": "regex",
+        "detector": "regex_date_month_dd_yyyy"
+      }
+    ],
+    "latency_ms": 251.1247
+  },
+  {
+    "prompt_id": "test_055",
+    "text": "Send the package to 742 Evergreen Terrace, Springfield.",
+    "detected_entities": [
+      {
+        "text": "Evergreen Terrace",
+        "start": 24,
+        "end": 41,
+        "label": "ORGANIZATION",
+        "confidence": 0.85,
+        "source": "spacy",
+        "detector": "spacy_org"
+      },
+      {
+        "text": "Springfield",
+        "start": 43,
+        "end": 54,
+        "label": "LOCATION",
+        "confidence": 0.956,
+        "source": "gliner",
+        "detector": "gliner_location"
+      }
+    ],
+    "latency_ms": 657.5826
+  },
+  {
+    "prompt_id": "test_056",
+    "text": "Employee ID EMP-5501 for David Miller at Cognizant Hyderabad.",
+    "detected_entities": [
+      {
+        "text": "EMP-5501",
+        "start": 12,
+        "end": 20,
+        "label": "PERSON",
+        "confidence": 0.85,
+        "source": "presidio",
+        "detector": "presidio_person"
+      },
+      {
+        "text": "David Miller",
+        "start": 25,
+        "end": 37,
+        "label": "PERSON",
+        "confidence": 0.945,
+        "source": "gliner",
+        "detector": "gliner_person"
+      },
+      {
+        "text": "Cognizant",
+        "start": 41,
+        "end": 50,
+        "label": "ORGANIZATION",
+        "confidence": 0.799,
+        "source": "gliner",
+        "detector": "gliner_organization"
+      },
+      {
+        "text": "Hyderabad",
+        "start": 51,
+        "end": 60,
+        "label": "LOCATION",
+        "confidence": 0.875,
+        "source": "gliner",
+        "detector": "gliner_location"
+      }
+    ],
+    "latency_ms": 248.0427
+  },
+  {
+    "prompt_id": "test_057",
+    "text": "This is a test prompt with no sensitive information whatsoever.",
+    "detected_entities": [],
+    "latency_ms": 278.2184
+  },
+  {
+    "prompt_id": "test_058",
+    "text": "Ravi Kumar at TCS sent an email to ravi.kumar@tcs.com on 2023-11-20.",
+    "detected_entities": [
+      {
+        "text": "Ravi Kumar",
+        "start": 0,
+        "end": 10,
+        "label": "PERSON",
+        "confidence": 0.956,
+        "source": "gliner",
+        "detector": "gliner_person"
+      },
+      {
+        "text": "TCS",
+        "start": 14,
+        "end": 17,
+        "label": "ORGANIZATION",
+        "confidence": 0.958,
+        "source": "gliner",
+        "detector": "gliner_organization"
+      },
+      {
+        "text": "ravi.kumar@tcs.com",
+        "start": 35,
+        "end": 53,
+        "label": "EMAIL",
+        "confidence": 1.0,
+        "source": "regex",
+        "detector": "regex_email"
+      },
+      {
+        "text": "2023-11-20",
+        "start": 57,
+        "end": 67,
+        "label": "DATE",
+        "confidence": 0.9,
+        "source": "regex",
+        "detector": "regex_date_iso"
+      }
+    ],
+    "latency_ms": 281.6338
+  },
+  {
+    "prompt_id": "test_059",
+    "text": "The development server runs at 10.10.10.10 and staging at 10.10.10.11.",
+    "detected_entities": [
+      {
+        "text": "10.10.10.10",
+        "start": 31,
+        "end": 42,
+        "label": "IP_ADDRESS",
+        "confidence": 0.97,
+        "source": "regex",
+        "detector": "regex_ipv4"
+      },
+      {
+        "text": "10.10.10.11",
+        "start": 58,
+        "end": 69,
+        "label": "IP_ADDRESS",
+        "confidence": 0.97,
+        "source": "regex",
+        "detector": "regex_ipv4"
+      }
+    ],
+    "latency_ms": 298.7243
+  },
+  {
+    "prompt_id": "test_060",
+    "text": "Elon Musk announced the new product at the Tesla headquarters in Austin.",
+    "detected_entities": [
+      {
+        "text": "Elon Musk",
+        "start": 0,
+        "end": 9,
+        "label": "PERSON",
+        "confidence": 0.978,
+        "source": "gliner",
+        "detector": "gliner_person"
+      },
+      {
+        "text": "Tesla",
+        "start": 43,
+        "end": 48,
+        "label": "ORGANIZATION",
+        "confidence": 0.876,
+        "source": "gliner",
+        "detector": "gliner_organization"
+      },
+      {
+        "text": "Austin",
+        "start": 65,
+        "end": 71,
+        "label": "LOCATION",
+        "confidence": 0.94,
+        "source": "gliner",
+        "detector": "gliner_location"
+      }
+    ],
+    "latency_ms": 237.322
+  },
+  {
+    "prompt_id": "test_061",
+    "text": "Please reset the password for deepak.r@outlook.com — the current one is Pass#2024!.",
+    "detected_entities": [
+      {
+        "text": "deepak.r@outlook.com",
+        "start": 30,
+        "end": 50,
+        "label": "EMAIL",
+        "confidence": 1.0,
+        "source": "regex",
+        "detector": "regex_email"
+      },
+      {
+        "text": "Pass#2024",
+        "start": 72,
+        "end": 81,
+        "label": "PASSWORD",
+        "confidence": 0.538,
+        "source": "gliner",
+        "detector": "gliner_password"
+      }
+    ],
+    "latency_ms": 332.0313
+  },
+  {
+    "prompt_id": "test_062",
+    "text": "Refer to the quarterly report for team metrics and KPIs.",
+    "detected_entities": [
+      {
+        "text": "quarterly",
+        "start": 13,
+        "end": 22,
+        "label": "DATE",
+        "confidence": 0.85,
+        "source": "presidio",
+        "detector": "presidio_date_time"
+      }
+    ],
+    "latency_ms": 249.7029
+  },
+  {
+    "prompt_id": "test_063",
+    "text": "The support team created ticket TKT-00192 for INC-0091 under project Alpha.",
+    "detected_entities": [
+      {
+        "text": "TKT-00192",
+        "start": 32,
+        "end": 41,
+        "label": "TICKET_ID",
+        "confidence": 0.95,
+        "source": "regex",
+        "detector": "regex_ticket_id"
+      },
+      {
+        "text": "INC-0091",
+        "start": 46,
+        "end": 54,
+        "label": "TICKET_ID",
+        "confidence": 0.95,
+        "source": "regex",
+        "detector": "regex_ticket_id"
+      },
+      {
+        "text": "project Alpha",
+        "start": 61,
+        "end": 74,
+        "label": "ORGANIZATION",
+        "confidence": 0.734,
+        "source": "gliner",
+        "detector": "gliner_organization"
+      }
+    ],
+    "latency_ms": 252.1871
+  },
+  {
+    "prompt_id": "test_064",
+    "text": "The Visa card 4012888888881881 was charged $500.",
+    "detected_entities": [
+      {
+        "text": "Visa",
+        "start": 4,
+        "end": 8,
+        "label": "ORGANIZATION",
+        "confidence": 0.85,
+        "source": "spacy",
+        "detector": "spacy_org"
+      },
+      {
+        "text": "4012888888881881",
+        "start": 14,
+        "end": 30,
+        "label": "CREDIT_CARD",
+        "confidence": 1.0,
+        "source": "regex",
+        "detector": "luhn_credit_card"
+      }
+    ],
+    "latency_ms": 256.5645
+  },
+  {
+    "prompt_id": "test_065",
+    "text": "Meera Pillai from Accenture is handling customer CUST-88712 and order ORD-99100.",
+    "detected_entities": [
+      {
+        "text": "Meera Pillai",
+        "start": 0,
+        "end": 12,
+        "label": "PERSON",
+        "confidence": 0.964,
+        "source": "gliner",
+        "detector": "gliner_person"
+      },
+      {
+        "text": "Accenture",
+        "start": 18,
+        "end": 27,
+        "label": "ORGANIZATION",
+        "confidence": 0.975,
+        "source": "gliner",
+        "detector": "gliner_organization"
+      },
+      {
+        "text": "CUST-88712",
+        "start": 49,
+        "end": 59,
+        "label": "CUSTOMER_ID",
+        "confidence": 0.95,
+        "source": "regex",
+        "detector": "regex_customer_id"
+      },
+      {
+        "text": "ORD-99100",
+        "start": 70,
+        "end": 79,
+        "label": "ORDER_ID",
+        "confidence": 0.95,
+        "source": "regex",
+        "detector": "regex_order_id"
+      }
+    ],
+    "latency_ms": 257.9759
+  },
+  {
+    "prompt_id": "test_066",
+    "text": "The number 1234567890 appears in the report but is not a phone number.",
+    "detected_entities": [
+      {
+        "text": "1234567890",
+        "start": 11,
+        "end": 21,
+        "label": "PASSWORD",
+        "confidence": 0.751,
+        "source": "gliner",
+        "detector": "gliner_password"
+      }
+    ],
+    "latency_ms": 284.6585
+  },
+  {
+    "prompt_id": "test_067",
+    "text": "The 12345 code refers to a postal zone in our delivery map.",
+    "detected_entities": [
+      {
+        "text": "postal zone",
+        "start": 27,
+        "end": 38,
+        "label": "LOCATION",
+        "confidence": 0.729,
+        "source": "gliner",
+        "detector": "gliner_location"
+      }
+    ],
+    "latency_ms": 261.1652
+  },
+  {
+    "prompt_id": "test_068",
+    "text": "Sundar Pichai leads Google and is based in Mountain View, California.",
+    "detected_entities": [
+      {
+        "text": "Sundar Pichai",
+        "start": 0,
+        "end": 13,
+        "label": "PERSON",
+        "confidence": 0.965,
+        "source": "gliner",
+        "detector": "gliner_person"
+      },
+      {
+        "text": "Google",
+        "start": 20,
+        "end": 26,
+        "label": "ORGANIZATION",
+        "confidence": 0.98,
+        "source": "gliner",
+        "detector": "gliner_organization"
+      },
+      {
+        "text": "Mountain View",
+        "start": 43,
+        "end": 56,
+        "label": "LOCATION",
+        "confidence": 0.924,
+        "source": "gliner",
+        "detector": "gliner_location"
+      },
+      {
+        "text": "California",
+        "start": 58,
+        "end": 68,
+        "label": "LOCATION",
+        "confidence": 0.899,
+        "source": "gliner",
+        "detector": "gliner_location"
+      }
+    ],
+    "latency_ms": 246.106
+  },
+  {
+    "prompt_id": "test_069",
+    "text": "Confidential memo from Pankaj Shah at HDFC Bank to headquarters in Delhi.",
+    "detected_entities": [
+      {
+        "text": "Pankaj Shah",
+        "start": 23,
+        "end": 34,
+        "label": "PERSON",
+        "confidence": 0.959,
+        "source": "gliner",
+        "detector": "gliner_person"
+      },
+      {
+        "text": "HDFC Bank",
+        "start": 38,
+        "end": 47,
+        "label": "ORGANIZATION",
+        "confidence": 0.965,
+        "source": "gliner",
+        "detector": "gliner_organization"
+      },
+      {
+        "text": "Delhi",
+        "start": 67,
+        "end": 72,
+        "label": "LOCATION",
+        "confidence": 0.951,
+        "source": "gliner",
+        "detector": "gliner_location"
+      }
+    ],
+    "latency_ms": 302.7501
+  },
+  {
+    "prompt_id": "test_070",
+    "text": "Credentials: username/P@ssw0rd99 should never be stored in plaintext.",
+    "detected_entities": [
+      {
+        "text": "username/P@ssw0rd99",
+        "start": 13,
+        "end": 32,
+        "label": "PASSWORD",
+        "confidence": 0.92,
+        "source": "regex",
+        "detector": "regex_credential_assignment"
+      }
+    ],
+    "latency_ms": 260.1298
+  },
+  {
+    "prompt_id": "test_071",
+    "text": "The insurance policy number 12-ABC-456789 is under the name James Clark.",
+    "detected_entities": [
+      {
+        "text": "456789",
+        "start": 35,
+        "end": 41,
+        "label": "USER_ID",
+        "confidence": 0.4,
+        "source": "presidio",
+        "detector": "presidio_us_driver_license"
+      },
+      {
+        "text": "James Clark",
+        "start": 60,
+        "end": 71,
+        "label": "PERSON",
+        "confidence": 0.85,
+        "source": "presidio",
+        "detector": "presidio_person"
+      }
+    ],
+    "latency_ms": 291.6635
+  },
+  {
+    "prompt_id": "test_072",
+    "text": "I need to pay my phone bill. The amount is 999.",
+    "detected_entities": [],
+    "latency_ms": 230.0715
+  },
+  {
+    "prompt_id": "test_073",
+    "text": "Asha Menon (asha.menon@hcl.com) from HCL Technologies in Noida placed order ORD-12309.",
+    "detected_entities": [
+      {
+        "text": "Asha Menon",
+        "start": 0,
+        "end": 10,
+        "label": "PERSON",
+        "confidence": 0.903,
+        "source": "gliner",
+        "detector": "gliner_person"
+      },
+      {
+        "text": "asha.menon@hcl.com",
+        "start": 12,
+        "end": 30,
+        "label": "EMAIL",
+        "confidence": 1.0,
+        "source": "regex",
+        "detector": "regex_email"
+      },
+      {
+        "text": "HCL Technologies",
+        "start": 37,
+        "end": 53,
+        "label": "ORGANIZATION",
+        "confidence": 0.983,
+        "source": "gliner",
+        "detector": "gliner_organization"
+      },
+      {
+        "text": "Noida",
+        "start": 57,
+        "end": 62,
+        "label": "LOCATION",
+        "confidence": 0.969,
+        "source": "gliner",
+        "detector": "gliner_location"
+      },
+      {
+        "text": "ORD-12309",
+        "start": 76,
+        "end": 85,
+        "label": "ORDER_ID",
+        "confidence": 0.95,
+        "source": "regex",
+        "detector": "regex_order_id"
+      }
+    ],
+    "latency_ms": 274.911
+  },
+  {
+    "prompt_id": "test_074",
+    "text": "The token secret_token: xyz_super_secret_key_12345abc was found in the .env file.",
+    "detected_entities": [
+      {
+        "text": "xyz_super_secret_key_12345abc",
+        "start": 24,
+        "end": 53,
+        "label": "API_KEY",
+        "confidence": 0.95,
+        "source": "regex",
+        "detector": "regex_generic_key_assignment"
+      }
+    ],
+    "latency_ms": 254.9283
+  },
+  {
+    "prompt_id": "test_075",
+    "text": "Today is a good day for a code review.",
+    "detected_entities": [
+      {
+        "text": "Today",
+        "start": 0,
+        "end": 5,
+        "label": "DATE",
+        "confidence": 0.85,
+        "source": "presidio",
+        "detector": "presidio_date_time"
+      },
+      {
+        "text": "a good day",
+        "start": 9,
+        "end": 19,
+        "label": "DATE",
+        "confidence": 0.85,
+        "source": "presidio",
+        "detector": "presidio_date_time"
+      }
+    ],
+    "latency_ms": 269.5441
+  },
+  {
+    "prompt_id": "test_076",
+    "text": "The patient, Suresh Babu, born on 12 January 1978, was diagnosed at the clinic.",
+    "detected_entities": [
+      {
+        "text": "Suresh Babu",
+        "start": 13,
+        "end": 24,
+        "label": "PERSON",
+        "confidence": 0.952,
+        "source": "gliner",
+        "detector": "gliner_person"
+      },
+      {
+        "text": "12 January 1978",
+        "start": 34,
+        "end": 49,
+        "label": "DATE",
+        "confidence": 0.9,
+        "source": "regex",
+        "detector": "regex_date_dd_month_yyyy"
+      }
+    ],
+    "latency_ms": 268.7824
+  },
+  {
+    "prompt_id": "test_077",
+    "text": "SSH into the box: ssh admin@198.51.100.42 and restart nginx.",
+    "detected_entities": [
+      {
+        "text": "admin",
+        "start": 22,
+        "end": 27,
+        "label": "USER_ID",
+        "confidence": 0.587,
+        "source": "gliner",
+        "detector": "gliner_username"
+      },
+      {
+        "text": "198.51.100.42",
+        "start": 28,
+        "end": 41,
+        "label": "IP_ADDRESS",
+        "confidence": 0.97,
+        "source": "regex",
+        "detector": "regex_ipv4"
+      }
+    ],
+    "latency_ms": 307.6064
+  },
+  {
+    "prompt_id": "test_078",
+    "text": "Rohan Sharma and Deepika Nair are both listed under project Orion at TCS.",
+    "detected_entities": [
+      {
+        "text": "Rohan Sharma",
+        "start": 0,
+        "end": 12,
+        "label": "PERSON",
+        "confidence": 0.945,
+        "source": "gliner",
+        "detector": "gliner_person"
+      },
+      {
+        "text": "Deepika Nair",
+        "start": 17,
+        "end": 29,
+        "label": "PERSON",
+        "confidence": 0.951,
+        "source": "gliner",
+        "detector": "gliner_person"
+      },
+      {
+        "text": "project Orion",
+        "start": 52,
+        "end": 65,
+        "label": "ORGANIZATION",
+        "confidence": 0.589,
+        "source": "gliner",
+        "detector": "gliner_organization"
+      },
+      {
+        "text": "TCS",
+        "start": 69,
+        "end": 72,
+        "label": "ORGANIZATION",
+        "confidence": 0.952,
+        "source": "gliner",
+        "detector": "gliner_organization"
+      }
+    ],
+    "latency_ms": 268.1594
+  },
+  {
+    "prompt_id": "test_079",
+    "text": "The config contains: database_password = 'Db@Pass2024Secret!'",
+    "detected_entities": [
+      {
+        "text": "Db",
+        "start": 42,
+        "end": 44,
+        "label": "USER_ID",
+        "confidence": 0.6,
+        "source": "gliner",
+        "detector": "gliner_username"
+      }
+    ],
+    "latency_ms": 252.5244
+  },
+  {
+    "prompt_id": "test_080",
+    "text": "We need three engineers based in Singapore for the upcoming sprint.",
+    "detected_entities": [
+      {
+        "text": "three engineers",
+        "start": 8,
+        "end": 23,
+        "label": "PERSON",
+        "confidence": 0.586,
+        "source": "gliner",
+        "detector": "gliner_person"
+      },
+      {
+        "text": "Singapore",
+        "start": 33,
+        "end": 42,
+        "label": "LOCATION",
+        "confidence": 0.967,
+        "source": "gliner",
+        "detector": "gliner_location"
+      }
+    ],
+    "latency_ms": 283.7971
+  },
+  {
+    "prompt_id": "test_081",
+    "text": "Diners card 30569309025904 was declined at checkout.",
+    "detected_entities": [
+      {
+        "text": "30569309025904",
+        "start": 12,
+        "end": 26,
+        "label": "CREDIT_CARD",
+        "confidence": 1.0,
+        "source": "regex",
+        "detector": "luhn_credit_card"
+      }
+    ],
+    "latency_ms": 231.333
+  },
+  {
+    "prompt_id": "test_082",
+    "text": "TKT-12001 was assigned to engineer Vikram Nair for issue resolution.",
+    "detected_entities": [
+      {
+        "text": "TKT-12001",
+        "start": 0,
+        "end": 9,
+        "label": "TICKET_ID",
+        "confidence": 0.95,
+        "source": "regex",
+        "detector": "regex_ticket_id"
+      },
+      {
+        "text": "Vikram Nair",
+        "start": 35,
+        "end": 46,
+        "label": "PERSON",
+        "confidence": 0.89,
+        "source": "gliner",
+        "detector": "gliner_person"
+      }
+    ],
+    "latency_ms": 252.89
+  },
+  {
+    "prompt_id": "test_083",
+    "text": "Payment received for order ORD-71008 on 2024-06-01 via card.",
+    "detected_entities": [
+      {
+        "text": "ORD-71008",
+        "start": 27,
+        "end": 36,
+        "label": "ORDER_ID",
+        "confidence": 0.95,
+        "source": "regex",
+        "detector": "regex_order_id"
+      },
+      {
+        "text": "2024-06-01",
+        "start": 40,
+        "end": 50,
+        "label": "DATE",
+        "confidence": 0.9,
+        "source": "regex",
+        "detector": "regex_date_iso"
+      }
+    ],
+    "latency_ms": 246.4528
+  },
+  {
+    "prompt_id": "test_084",
+    "text": "The software runs on Ubuntu 22.04 LTS with kernel 5.15.",
+    "detected_entities": [
+      {
+        "text": "Ubuntu 22.04 LTS",
+        "start": 21,
+        "end": 37,
+        "label": "ORGANIZATION",
+        "confidence": 0.85,
+        "source": "spacy",
+        "detector": "spacy_org"
+      }
+    ],
+    "latency_ms": 270.9296
+  },
+  {
+    "prompt_id": "test_085",
+    "text": "Devika Pillai joined Infosys Bangalore on 01 March 2023 as a senior engineer.",
+    "detected_entities": [
+      {
+        "text": "Devika Pillai",
+        "start": 0,
+        "end": 13,
+        "label": "PERSON",
+        "confidence": 0.965,
+        "source": "gliner",
+        "detector": "gliner_person"
+      },
+      {
+        "text": "Infosys",
+        "start": 21,
+        "end": 28,
+        "label": "ORGANIZATION",
+        "confidence": 0.729,
+        "source": "gliner",
+        "detector": "gliner_organization"
+      },
+      {
+        "text": "Bangalore",
+        "start": 29,
+        "end": 38,
+        "label": "LOCATION",
+        "confidence": 0.821,
+        "source": "gliner",
+        "detector": "gliner_location"
+      },
+      {
+        "text": "01 March 2023",
+        "start": 42,
+        "end": 55,
+        "label": "DATE",
+        "confidence": 0.9,
+        "source": "regex",
+        "detector": "regex_date_dd_month_yyyy"
+      }
+    ],
+    "latency_ms": 284.0852
+  },
+  {
+    "prompt_id": "test_086",
+    "text": "Policy update: all API keys must be rotated every 90 days.",
+    "detected_entities": [
+      {
+        "text": "every 90 days",
+        "start": 44,
+        "end": 57,
+        "label": "DATE",
+        "confidence": 0.85,
+        "source": "presidio",
+        "detector": "presidio_date_time"
+      }
+    ],
+    "latency_ms": 283.7137
+  },
+  {
+    "prompt_id": "test_087",
+    "text": "i m priya and im from delhi, write to me at priya1990@hotmail.com",
+    "detected_entities": [
+      {
+        "text": "priya",
+        "start": 4,
+        "end": 9,
+        "label": "PERSON",
+        "confidence": 0.911,
+        "source": "gliner",
+        "detector": "gliner_person"
+      },
+      {
+        "text": "delhi",
+        "start": 22,
+        "end": 27,
+        "label": "LOCATION",
+        "confidence": 0.966,
+        "source": "gliner",
+        "detector": "gliner_location"
+      },
+      {
+        "text": "priya1990@hotmail.com",
+        "start": 44,
+        "end": 65,
+        "label": "EMAIL",
+        "confidence": 1.0,
+        "source": "regex",
+        "detector": "regex_email"
+      }
+    ],
+    "latency_ms": 313.614
+  },
+  {
+    "prompt_id": "test_088",
+    "text": "Access token: auth_token = 'K8mP3xQzR7wL2jN9vT4ySbE6uHcDfGi1oA5'",
+    "detected_entities": [
+      {
+        "text": "K8mP3xQzR7wL2jN9vT4ySbE6uHcDfGi1oA5",
+        "start": 28,
+        "end": 63,
+        "label": "API_KEY",
+        "confidence": 0.95,
+        "source": "regex",
+        "detector": "regex_generic_key_assignment"
+      }
+    ],
+    "latency_ms": 396.2972
+  },
+  {
+    "prompt_id": "test_089",
+    "text": "The invoice is addressed to 45 Park Avenue, New York, NY 10022.",
+    "detected_entities": [
+      {
+        "text": "45 Park Avenue, New York, NY 10022",
+        "start": 28,
+        "end": 62,
+        "label": "ADDRESS",
+        "confidence": 0.96,
+        "source": "regex",
+        "detector": "regex_address_with_postal_code"
+      }
+    ],
+    "latency_ms": 391.3051
+  },
+  {
+    "prompt_id": "test_090",
+    "text": "The number 55 is not an ID, and May is not a name.",
+    "detected_entities": [
+      {
+        "text": "May",
+        "start": 32,
+        "end": 35,
+        "label": "DATE",
+        "confidence": 0.85,
+        "source": "presidio",
+        "detector": "presidio_date_time"
+      }
+    ],
+    "latency_ms": 268.2752
+  },
+  {
+    "prompt_id": "test_091",
+    "text": "Satya Nadella, CEO of Microsoft, spoke at the conference in Seattle on 15 Sep 2024.",
+    "detected_entities": [
+      {
+        "text": "Satya Nadella",
+        "start": 0,
+        "end": 13,
+        "label": "PERSON",
+        "confidence": 0.982,
+        "source": "gliner",
+        "detector": "gliner_person"
+      },
+      {
+        "text": "Microsoft",
+        "start": 22,
+        "end": 31,
+        "label": "ORGANIZATION",
+        "confidence": 0.971,
+        "source": "gliner",
+        "detector": "gliner_organization"
+      },
+      {
+        "text": "Seattle",
+        "start": 60,
+        "end": 67,
+        "label": "LOCATION",
+        "confidence": 0.96,
+        "source": "gliner",
+        "detector": "gliner_location"
+      },
+      {
+        "text": "15 Sep 2024",
+        "start": 71,
+        "end": 82,
+        "label": "DATE",
+        "confidence": 0.9,
+        "source": "regex",
+        "detector": "regex_date_dd_month_yyyy"
+      }
+    ],
+    "latency_ms": 258.1363
+  },
+  {
+    "prompt_id": "test_092",
+    "text": "His phone number is 9876543210 and email is user@domain.org.",
+    "detected_entities": [
+      {
+        "text": "9876543210",
+        "start": 20,
+        "end": 30,
+        "label": "PHONE",
+        "confidence": 0.92,
+        "source": "regex",
+        "detector": "regex_phone_10digit"
+      },
+      {
+        "text": "user@domain.org",
+        "start": 44,
+        "end": 59,
+        "label": "EMAIL",
+        "confidence": 1.0,
+        "source": "regex",
+        "detector": "regex_email"
+      }
+    ],
+    "latency_ms": 287.0367
+  },
+  {
+    "prompt_id": "test_093",
+    "text": "The AWS secret access key: secret_token: AKIA4example1234567890ABCDEF must be revoked.",
+    "detected_entities": [
+      {
+        "text": "AWS",
+        "start": 4,
+        "end": 7,
+        "label": "ORGANIZATION",
+        "confidence": 0.85,
+        "source": "gliner",
+        "detector": "gliner_organization"
+      },
+      {
+        "text": "AKIA4example1234567890ABCDEF",
+        "start": 41,
+        "end": 69,
+        "label": "API_KEY",
+        "confidence": 0.95,
+        "source": "regex",
+        "detector": "regex_generic_key_assignment"
+      }
+    ],
+    "latency_ms": 277.0176
+  },
+  {
+    "prompt_id": "test_094",
+    "text": "Rajesh Verma (CUST-50909) spent $500 on order ORD-21001 delivered to Hyderabad.",
+    "detected_entities": [
+      {
+        "text": "Rajesh Verma",
+        "start": 0,
+        "end": 12,
+        "label": "PERSON",
+        "confidence": 0.944,
+        "source": "gliner",
+        "detector": "gliner_person"
+      },
+      {
+        "text": "CUST-50909",
+        "start": 14,
+        "end": 24,
+        "label": "CUSTOMER_ID",
+        "confidence": 0.95,
+        "source": "regex",
+        "detector": "regex_customer_id"
+      },
+      {
+        "text": "ORD-21001",
+        "start": 46,
+        "end": 55,
+        "label": "ORDER_ID",
+        "confidence": 0.95,
+        "source": "regex",
+        "detector": "regex_order_id"
+      },
+      {
+        "text": "Hyderabad",
+        "start": 69,
+        "end": 78,
+        "label": "LOCATION",
+        "confidence": 0.95,
+        "source": "gliner",
+        "detector": "gliner_location"
+      }
+    ],
+    "latency_ms": 291.9645
+  },
+  {
+    "prompt_id": "test_095",
+    "text": "All transactions above 10000 require additional verification steps.",
+    "detected_entities": [],
+    "latency_ms": 250.5758
+  },
+  {
+    "prompt_id": "test_096",
+    "text": "The IBAN GB29 NWBK 6016 1331 9268 19 belongs to David Brown.",
+    "detected_entities": [
+      {
+        "text": "IBAN",
+        "start": 4,
+        "end": 8,
+        "label": "ORGANIZATION",
+        "confidence": 0.85,
+        "source": "spacy",
+        "detector": "spacy_org"
+      },
+      {
+        "text": "GB29 NWBK 6016 1331 9268 19",
+        "start": 9,
+        "end": 36,
+        "label": "BANK_ACCOUNT",
+        "confidence": 1.0,
+        "source": "regex",
+        "detector": "regex_iban"
+      },
+      {
+        "text": "David Brown",
+        "start": 48,
+        "end": 59,
+        "label": "PERSON",
+        "confidence": 0.886,
+        "source": "gliner",
+        "detector": "gliner_person"
+      }
+    ],
+    "latency_ms": 310.7201
+  },
+  {
+    "prompt_id": "test_097",
+    "text": "The data pipeline runs nightly at 02:00 UTC. No PII is processed.",
+    "detected_entities": [
+      {
+        "text": "nightly",
+        "start": 23,
+        "end": 30,
+        "label": "DATE",
+        "confidence": 0.85,
+        "source": "presidio",
+        "detector": "presidio_date_time"
+      },
+      {
+        "text": "02:00 UTC",
+        "start": 34,
+        "end": 43,
+        "label": "DATE",
+        "confidence": 0.85,
+        "source": "presidio",
+        "detector": "presidio_date_time"
+      },
+      {
+        "text": "PII",
+        "start": 48,
+        "end": 51,
+        "label": "ORGANIZATION",
+        "confidence": 0.85,
+        "source": "spacy",
+        "detector": "spacy_org"
+      }
+    ],
+    "latency_ms": 264.9732
+  },
+  {
+    "prompt_id": "test_098",
+    "text": "My old password was OldPass@123 and the new one is NewPass#456.",
+    "detected_entities": [
+      {
+        "text": "OldPass@123",
+        "start": 20,
+        "end": 31,
+        "label": "PASSWORD",
+        "confidence": 0.92,
+        "source": "regex",
+        "detector": "regex_password_natural_lang"
+      },
+      {
+        "text": "NewPass",
+        "start": 51,
+        "end": 58,
+        "label": "ORGANIZATION",
+        "confidence": 0.757,
+        "source": "gliner",
+        "detector": "gliner_organization"
+      }
+    ],
+    "latency_ms": 265.7225
+  },
+  {
+    "prompt_id": "test_099",
+    "text": "Amazon, Google, and Microsoft are the top three cloud providers in the world.",
+    "detected_entities": [
+      {
+        "text": "Amazon",
+        "start": 0,
+        "end": 6,
+        "label": "ORGANIZATION",
+        "confidence": 0.964,
+        "source": "gliner",
+        "detector": "gliner_organization"
+      },
+      {
+        "text": "Google",
+        "start": 8,
+        "end": 14,
+        "label": "ORGANIZATION",
+        "confidence": 0.957,
+        "source": "gliner",
+        "detector": "gliner_organization"
+      },
+      {
+        "text": "Microsoft",
+        "start": 20,
+        "end": 29,
+        "label": "ORGANIZATION",
+        "confidence": 0.969,
+        "source": "gliner",
+        "detector": "gliner_organization"
+      },
+      {
+        "text": "world",
+        "start": 71,
+        "end": 76,
+        "label": "LOCATION",
+        "confidence": 0.922,
+        "source": "gliner",
+        "detector": "gliner_location"
+      }
+    ],
+    "latency_ms": 303.932
+  },
+  {
+    "prompt_id": "test_100",
+    "text": "Ritika Verma born on 05/09/1985 has email ritika.verma@rediffmail.com and phone +91 8877665544.",
+    "detected_entities": [
+      {
+        "text": "Ritika Verma",
+        "start": 0,
+        "end": 12,
+        "label": "PERSON",
+        "confidence": 0.924,
+        "source": "gliner",
+        "detector": "gliner_person"
+      },
+      {
+        "text": "05/09/1985",
+        "start": 21,
+        "end": 31,
+        "label": "DATE",
+        "confidence": 0.9,
+        "source": "regex",
+        "detector": "regex_date_dmy"
+      },
+      {
+        "text": "ritika.verma@rediffmail.com",
+        "start": 42,
+        "end": 69,
+        "label": "EMAIL",
+        "confidence": 1.0,
+        "source": "regex",
+        "detector": "regex_email"
+      },
+      {
+        "text": "+91 8877665544",
+        "start": 80,
+        "end": 94,
+        "label": "PHONE",
+        "confidence": 0.92,
+        "source": "regex",
+        "detector": "regex_phone_international"
+      }
+    ],
+    "latency_ms": 351.4416
+  },
+  {
+    "prompt_id": "test_101",
+    "text": "Network protocol TCP/IP is fundamental for internet communications.",
+    "detected_entities": [],
+    "latency_ms": 255.9893
+  },
+  {
+    "prompt_id": "test_102",
+    "text": "The finance manager Sarah Johnson at Barclays London processed the refund of GBP 5000 on October 3, 2024.",
+    "detected_entities": [
+      {
+        "text": "Sarah Johnson",
+        "start": 20,
+        "end": 33,
+        "label": "PERSON",
+        "confidence": 0.946,
+        "source": "gliner",
+        "detector": "gliner_person"
+      },
+      {
+        "text": "Barclays London",
+        "start": 37,
+        "end": 52,
+        "label": "ORGANIZATION",
+        "confidence": 0.85,
+        "source": "spacy",
+        "detector": "spacy_org"
+      },
+      {
+        "text": "October 3, 2024",
+        "start": 89,
+        "end": 104,
+        "label": "DATE",
+        "confidence": 0.9,
+        "source": "regex",
+        "detector": "regex_date_month_dd_yyyy"
+      }
+    ],
+    "latency_ms": 301.1618
+  },
+  {
+    "prompt_id": "test_103",
+    "text": "passcode is 458921 and the account holder is Amit Joshi from Kolkata.",
+    "detected_entities": [
+      {
+        "text": "458921",
+        "start": 12,
+        "end": 18,
+        "label": "PASSWORD",
+        "confidence": 0.92,
+        "source": "regex",
+        "detector": "regex_password_natural_lang"
+      },
+      {
+        "text": "Amit Joshi",
+        "start": 45,
+        "end": 55,
+        "label": "PERSON",
+        "confidence": 0.88,
+        "source": "gliner",
+        "detector": "gliner_person"
+      },
+      {
+        "text": "Kolkata",
+        "start": 61,
+        "end": 68,
+        "label": "LOCATION",
+        "confidence": 0.97,
+        "source": "gliner",
+        "detector": "gliner_location"
+      }
+    ],
+    "latency_ms": 255.5405
+  },
+  {
+    "prompt_id": "test_104",
+    "text": "The organization chart shows three departments with 200 employees each.",
+    "detected_entities": [],
+    "latency_ms": 274.6644
+  },
+  {
+    "prompt_id": "test_105",
+    "text": "Dear Kavya Reddy, your ticket SR-1091 has been resolved. Please contact support@helpdesk.in or call 040-66554433 for further queries. Your account CUST-71200 has been updated. Regards, Infosys Support Team, Hyderabad.",
+    "detected_entities": [
+      {
+        "text": "Kavya Reddy",
+        "start": 5,
+        "end": 16,
+        "label": "PERSON",
+        "confidence": 0.94,
+        "source": "gliner",
+        "detector": "gliner_person"
+      },
+      {
+        "text": "SR-1091",
+        "start": 30,
+        "end": 37,
+        "label": "TICKET_ID",
+        "confidence": 0.95,
+        "source": "regex",
+        "detector": "regex_ticket_id"
+      },
+      {
+        "text": "support@helpdesk.in",
+        "start": 72,
+        "end": 91,
+        "label": "EMAIL",
+        "confidence": 1.0,
+        "source": "regex",
+        "detector": "regex_email"
+      },
+      {
+        "text": "040-66554433",
+        "start": 100,
+        "end": 112,
+        "label": "PHONE",
+        "confidence": 0.4,
+        "source": "presidio",
+        "detector": "presidio_phone_number"
+      },
+      {
+        "text": "CUST-71200",
+        "start": 147,
+        "end": 157,
+        "label": "CUSTOMER_ID",
+        "confidence": 0.95,
+        "source": "regex",
+        "detector": "regex_customer_id"
+      },
+      {
+        "text": "Infosys Support Team",
+        "start": 185,
+        "end": 205,
+        "label": "ORGANIZATION",
+        "confidence": 0.902,
+        "source": "gliner",
+        "detector": "gliner_organization"
+      },
+      {
+        "text": "Hyderabad",
+        "start": 207,
+        "end": 216,
+        "label": "LOCATION",
+        "confidence": 0.947,
+        "source": "gliner",
+        "detector": "gliner_location"
+      }
+    ],
+    "latency_ms": 418.5488
+  }
+]
