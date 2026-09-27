@@ -155,6 +155,7 @@ class PolicyReport:
 # Base risk scores per entity type (before context modifiers)
 BASE_RISK: Dict[EntityType, float] = {
     # Critical credentials & identifiers
+    EntityType.CONNECTION_STRING: 1.00,
     EntityType.API_KEY:        0.98,
     EntityType.ACCESS_TOKEN:   0.98,
     EntityType.RECOVERY_CODE:  0.98,
@@ -165,9 +166,12 @@ BASE_RISK: Dict[EntityType, float] = {
     EntityType.DRIVER_LICENSE: 0.90,
     EntityType.TAX_ID:         0.90,
     EntityType.BANK_ACCOUNT:   0.85,
+    EntityType.MEDICAL_RECORD: 0.85,
+    EntityType.HEALTH_INSURANCE_ID: 0.85,
     # Personal identifiers & contacts
     EntityType.DOB:            0.75,
     EntityType.ADDRESS:        0.70,
+    EntityType.MAC_ADDRESS:    0.65,
     EntityType.EMAIL:          0.65,
     EntityType.PHONE:          0.60,
     EntityType.USERNAME:       0.60,
@@ -334,9 +338,24 @@ class PolicyEngine:
 
         # Rule 1 — Credentials are always masked, no exceptions
         if role.role_category == RoleCategory.TECHNICAL_CREDENTIAL:
+            if "recovery" in role.context_cue.lower() or "maiden" in role.context_cue.lower():
+                return (
+                    PolicyDecision.MASK,
+                    "Authentication / recovery question answer — masked to protect account security.",
+                )
+            if role.entity_type == EntityType.PASSWORD:
+                return (PolicyDecision.MASK, "Authentication credential — always masked.")
+            if role.entity_type == EntityType.API_KEY:
+                return (PolicyDecision.MASK, "Technical credential — always masked.")
+            if role.entity_type == EntityType.ACCESS_TOKEN:
+                return (PolicyDecision.MASK, "Technical credential (access token) — always masked.")
+            if role.entity_type == EntityType.CONNECTION_STRING:
+                return (PolicyDecision.MASK, "Credential-bearing connection string / database URI — always masked.")
+            if role.entity_type == EntityType.RECOVERY_CODE:
+                return (PolicyDecision.MASK, "Account recovery authentication credential — always masked.")
             return (
                 PolicyDecision.MASK,
-                "Technical credential (API key / password / card) — always masked.",
+                f"Technical credential ({role.entity_type.value}) — always masked.",
             )
 
         # Rule 2 — Public figures / public facts: retain unless the user is
@@ -349,9 +368,30 @@ class PolicyEngine:
 
         # Rule 3 — Critical or high risk → mask unconditionally
         if risk_level in (RiskLevel.CRITICAL, RiskLevel.HIGH):
+            SEMANTIC_DESCRIPTIONS = {
+                EntityType.PASSPORT: "Government-issued identity document number",
+                EntityType.DRIVER_LICENSE: "Government-issued driver's licence identifier",
+                EntityType.NATIONAL_ID: "High-risk government-issued personal identifier",
+                EntityType.TAX_ID: "Sensitive tax/government identifier",
+                EntityType.BANK_ACCOUNT: "Sensitive financial identifier",
+                EntityType.CREDIT_CARD: "Sensitive payment card identifier",
+                EntityType.MEDICAL_RECORD: "Sensitive medical identifier",
+                EntityType.HEALTH_INSURANCE_ID: "Sensitive health insurance member identifier",
+                EntityType.MAC_ADDRESS: "Device network hardware identifier",
+                EntityType.IP_ADDRESS: "Network IP address identifier",
+                EntityType.DOB: "Date of birth personal identifier",
+                EntityType.PERSON: "Personal name identifier",
+                EntityType.EMAIL: "Personal email address",
+                EntityType.PHONE: "Personal phone number",
+                EntityType.USERNAME: "Personal username identifier",
+            }
+            desc = SEMANTIC_DESCRIPTIONS.get(
+                role.entity_type,
+                f"{risk_level.value} risk {role.entity_type.value}"
+            )
             return (
                 PolicyDecision.MASK,
-                f"{risk_level.value} risk score ({score:.2f}) — masked to protect personal data.",
+                f"{desc} — masked to protect personal data ({risk_level.value} risk, {score:.2f}).",
             )
 
         # Rule 4 — Medium risk but task-essential and not personal → user approval

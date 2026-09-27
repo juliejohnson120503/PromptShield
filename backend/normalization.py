@@ -85,6 +85,16 @@ def normalize_date(raw_val: str) -> str:
     return cleaned
 
 
+def normalize_mac_address(raw_val: str) -> str:
+    """Normalize MAC address: uppercase, strip surrounding whitespace."""
+    return raw_val.strip().upper()
+
+
+def normalize_connection_string(raw_val: str) -> str:
+    """Normalize connection string: strip surrounding whitespace and quotes."""
+    return raw_val.strip().strip("'\"`")
+
+
 # ---------------------------------------------------------------------------
 # Dispatch function (unchanged public API)
 # ---------------------------------------------------------------------------
@@ -105,11 +115,15 @@ def normalize_entity_value(entity_type: EntityType, raw_val: str) -> str:
         return normalize_bank_account(raw_val)
     elif entity_type == EntityType.IP_ADDRESS:
         return normalize_ip_address(raw_val)
+    elif entity_type == EntityType.MAC_ADDRESS:
+        return normalize_mac_address(raw_val)
+    elif entity_type == EntityType.CONNECTION_STRING:
+        return normalize_connection_string(raw_val)
     elif entity_type in (
         EntityType.ORDER_ID, EntityType.USER_ID, EntityType.CUSTOMER_ID,
         EntityType.TICKET_ID, EntityType.USERNAME, EntityType.NATIONAL_ID,
         EntityType.PASSPORT, EntityType.DRIVER_LICENSE, EntityType.TAX_ID,
-        EntityType.RECOVERY_CODE,
+        EntityType.RECOVERY_CODE, EntityType.MEDICAL_RECORD, EntityType.HEALTH_INSURANCE_ID,
     ):
         return normalize_id(raw_val)
     elif entity_type in (EntityType.PERSON, EntityType.ORGANIZATION, EntityType.LOCATION, EntityType.ADDRESS):
@@ -119,3 +133,4 @@ def normalize_entity_value(entity_type: EntityType, raw_val: str) -> str:
     elif entity_type == EntityType.PII_OTHER:
         return raw_val.strip()
     return raw_val.strip()
+

@@ -50,6 +50,7 @@ Limitations
 """
 
 import logging
+import re
 from typing import List, Dict, Tuple, Optional
 
 from backend.models import EntityType, DetectedEntity
@@ -58,7 +59,44 @@ from backend import config
 logger = logging.getLogger(__name__)
 
 
+def _is_descriptor_label(ent: DetectedEntity, prompt: str, all_candidates: List[DetectedEntity]) -> bool:
+    """
+    Check if an entity is a sensitive field descriptor word (e.g. MAC, IBAN, BIC, SWIFT)
+    functioning as a label rather than an actual sensitive entity / organization.
+    Narrow contextual check to avoid globally blacklisting legitimate organizations.
+    """
+    LABEL_WORDS = {"MAC", "IBAN", "BIC", "SWIFT", "MRN", "HIN"}
+    clean_text = ent.text.strip().upper()
+    if clean_text not in LABEL_WORDS:
+        return False
+
+    start, end = ent.start, ent.end
+
+    # 1. Check surrounding text within 40 characters
+    after_text = prompt[end:end + 40].lower()
+    before_text = prompt[max(0, start - 30):start].lower()
+
+    # Check if followed by descriptor markers: e.g. " address", " number", " id", " code", " is ", " :", " = ", " / "
+    # or preceded by "device ", "server ", "network ", "her ", "his ", "my ", "your ", "swift/"
+    is_label_context = bool(
+        re.match(r"^(?:\s*/\s*[a-z]+)?\s*(?:address|number|no\.?|id|code|member\s+id)?\s*(?:is|was|[:\-#=])\s*", after_text)
+        or re.search(r"\b(?:device|server|network|client|my|her|his|your|employee|user|swift/|swift\s*/\s*)\s*$", before_text)
+    )
+
+    # 2. Check if there is an adjacent target sensitive entity following within 50 characters
+    adjacent_sensitive = any(
+        0 <= other.start - end <= 50 and other.entity_type in (
+            EntityType.MAC_ADDRESS, EntityType.BANK_ACCOUNT, EntityType.MEDICAL_RECORD,
+            EntityType.HEALTH_INSURANCE_ID, EntityType.NATIONAL_ID, EntityType.TAX_ID
+        )
+        for other in all_candidates if other is not ent
+    )
+
+    return is_label_context or adjacent_sensitive
+
+
 def _entity_sort_key(entity: DetectedEntity) -> Tuple:
+
     """
     Composite sort key for ranking entities when resolving conflicts.
     Higher tuple value = preferred entity.
@@ -133,8 +171,22 @@ class EntityFusionEngine:
         if not valid:
             return []
 
+        # --- Step 0.5: filter descriptor label words (e.g. MAC, IBAN, BIC) functioning as field labels ---
+        filtered: List[DetectedEntity] = []
+        for ent in valid:
+            if _is_descriptor_label(ent, prompt, valid):
+                logger.debug(
+                    "[Fusion] Filtered descriptor label %r (%s) at [%d, %d) — acts as field label.",
+                    ent.text, ent.entity_type.value, ent.start, ent.end,
+                )
+            else:
+                filtered.append(ent)
+
+        if not filtered:
+            return []
+
         # --- Step 1: group by exact span, merge same-span entities ---
-        merged = self._merge_exact_spans(valid)
+        merged = self._merge_exact_spans(filtered)
 
         # --- Step 2: resolve overlapping spans ---
         resolved = self._resolve_overlaps(merged)

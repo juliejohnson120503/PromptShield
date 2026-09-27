@@ -49,6 +49,10 @@ class BaselineMasker:
         EntityType.DRIVER_LICENSE: "DRIVER_LICENSE",
         EntityType.TAX_ID:       "TAX_ID",
         EntityType.RECOVERY_CODE: "RECOVERY_CODE",
+        EntityType.MAC_ADDRESS:  "MAC_ADDR",
+        EntityType.CONNECTION_STRING: "CONN_STR",
+        EntityType.MEDICAL_RECORD: "MED_REC",
+        EntityType.HEALTH_INSURANCE_ID: "HEALTH_INS",
         EntityType.PII_OTHER:    "PII",
     }
 

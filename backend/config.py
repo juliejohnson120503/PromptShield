@@ -94,9 +94,9 @@ CREDIT_CARD_PATTERN: re.Pattern = re.compile(
 # ============================================================
 # Each entry: (compiled_regex, detector_label, confidence)
 API_KEY_PATTERNS: List[Tuple[re.Pattern, str, float]] = [
-    # OpenAI API keys: sk-..., sk-proj-..., sk-live-..., sk-test-...
+    # OpenAI API keys: sk-..., sk_..., sk-proj-..., sk-live-..., sk-test-..., sk_test_...
     (
-        re.compile(r"\b(?:sk-(?:proj-|live-|test-)?[A-Za-z0-9_\-]{8,})\b"),
+        re.compile(r"\b(?:sk[_-](?:proj[_-]|live[_-]|test[_-])?[A-Za-z0-9_\-]{8,})\b"),
         "openai_api_key",
         0.99,
     ),
@@ -181,10 +181,17 @@ PASSWORD_PATTERNS: List[Tuple[re.Pattern, str]] = [
         ),
         "credential_assignment",
     ),
+    # password followed directly by secret value with space: "password RiverStone#9472"
+    (
+        re.compile(
+            r"(?i)\b(?:password|passwd|psswrd|pswrd|pswd|pass|pwd)\s+([A-Za-z0-9!@#$%^&*()_+\-=\[\]{}|;:'\",.<>?/]{6,32})(?=\s|[.,;]|$)"
+        ),
+        "password_space_separated",
+    ),
 ]
 
 # ============================================================
-# BANK ACCOUNT / IBAN
+# BANK ACCOUNT / IBAN / SWIFT-BIC
 # ============================================================
 BANK_ACCOUNT_PATTERNS: List[Tuple[re.Pattern, str, float]] = [
     # IBAN: e.g. GB82 WEST 1234 5698 7654 32  (up to 34 alphanumeric + spaces)
@@ -194,6 +201,14 @@ BANK_ACCOUNT_PATTERNS: List[Tuple[re.Pattern, str, float]] = [
         ),
         "iban",
         0.90,
+    ),
+    # SWIFT / BIC: 8 or 11 alphanumeric characters (e.g. DEUTDEFF500)
+    (
+        re.compile(
+            r"(?i)\b(?:swift(?:/bic)?|bic)\s*(?:is|was|[:\-#=])?\s*([A-Z]{4}[A-Z]{2}[A-Z0-9]{2}(?:[A-Z0-9]{3})?)\b"
+        ),
+        "swift_bic",
+        0.95,
     ),
     # Generic account number keyword trigger: account number 1234567890
     (
@@ -218,13 +233,130 @@ IP_ADDRESS_PATTERNS: List[Tuple[re.Pattern, str, float]] = [
         "ipv4",
         0.97,
     ),
-    # IPv6 (simplified canonical form)
+    # IPv6 (canonical and compressed forms e.g. 2001:db8:85a3::8a2e:370:7334)
     (
         re.compile(
-            r"\b(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}\b"
+            r"(?i)\b(?:"
+            r"(?:[0-9a-fA-F]{1,4}:){7}[0-9a-fA-F]{1,4}|"
+            r"(?:[0-9a-fA-F]{1,4}:){1,6}:(?:[0-9a-fA-F]{1,4}:){0,5}[0-9a-fA-F]{1,4}|"
+            r"(?:[0-9a-fA-F]{1,4}:){1,7}:|"
+            r":(?::[0-9a-fA-F]{1,4}){1,7}|"
+            r"::"
+            r")\b"
         ),
         "ipv6",
         0.97,
+    ),
+]
+
+# ============================================================
+# MAC ADDRESS
+# ============================================================
+MAC_ADDRESS_PATTERNS: List[Tuple[re.Pattern, str, float]] = [
+    # IEEE 802 MAC address: 6 pairs of hex digits separated by : or -
+    (
+        re.compile(
+            r"\b(?:[0-9A-Fa-f]{2}[:-]){5}[0-9A-Fa-f]{2}\b"
+        ),
+        "mac_address",
+        0.99,
+    ),
+]
+
+# ============================================================
+# CONNECTION STRING / DATABASE CREDENTIAL URI
+# ============================================================
+CONNECTION_STRING_PATTERNS: List[Tuple[re.Pattern, str, float]] = [
+    (
+        re.compile(
+            r"\b(?:postgresql|postgres|mysql|mongodb|mongodb\+srv|redis|rediss|mssql|oracle)://"
+            r"(?:[^\s:@/]+:[^\s:@/]+@)?[^\s/:]+(?::\d+)?(?:/[^\s?#]*)?(?:\?[^\s#]*)?",
+            re.IGNORECASE,
+        ),
+        "connection_string",
+        1.00,
+    ),
+]
+
+# ============================================================
+# MEDICAL IDENTIFIERS (MRN, HEALTH INSURANCE ID)
+# ============================================================
+MEDICAL_RECORD_PATTERNS: List[Tuple[re.Pattern, str, float]] = [
+    # Explicit prefix e.g. MRN-84729163, MRN_12345678
+    (
+        re.compile(r"\bMRN[-_ ][A-Za-z0-9]{6,16}\b", re.IGNORECASE),
+        "mrn_prefix",
+        0.98,
+    ),
+    # Contextual introduction
+    (
+        re.compile(
+            r"(?i)\b(?:medical\s+record\s+(?:number|no\.?|id|#)|mrn)\s*(?:is|as|[:\-#=])?\s*([A-Za-z0-9_\-]{6,20})\b"
+        ),
+        "mrn_contextual",
+        0.95,
+    ),
+]
+
+HEALTH_INSURANCE_PATTERNS: List[Tuple[re.Pattern, str, float]] = [
+    # Explicit prefix e.g. HIN-72819456
+    (
+        re.compile(r"\bHIN[-_ ][A-Za-z0-9]{6,16}\b", re.IGNORECASE),
+        "hin_prefix",
+        0.98,
+    ),
+    # Contextual introduction
+    (
+        re.compile(
+            r"(?i)\b(?:health\s+insurance\s+(?:member\s+)?(?:id|number|no\.?|#)|insurance\s+member\s+(?:id|number|no\.?|#))\s*(?:is|as|[:\-#=])?\s*([A-Za-z0-9_\-]{6,20})\b"
+        ),
+        "health_insurance_contextual",
+        0.95,
+    ),
+]
+
+# ============================================================
+# GOVERNMENT ID PATTERNS (Passport, DL, National ID, Tax ID)
+# ============================================================
+GOVERNMENT_ID_PATTERNS: List[Tuple[re.Pattern, str, float, str]] = [
+    # Passport contextual
+    (
+        re.compile(r"(?i)\bpassport(?:\s+(?:number|no\.?|#))?\s*(?:is|as|[:\-#=])?\s*([A-Za-z0-9]{8,12})\b"),
+        "passport_contextual",
+        0.98,
+        "PASSPORT",
+    ),
+    # Driver license contextual
+    (
+        re.compile(r"(?i)\bdriver'?s?\s*license(?:\s+(?:number|no\.?|#))?\s*(?:is|as|[:\-#=])?\s*([A-Za-z0-9\-]{8,24})\b"),
+        "driver_license_contextual",
+        0.98,
+        "DRIVER_LICENSE",
+    ),
+    # National ID contextual
+    (
+        re.compile(r"(?i)\bnational\s*(?:identification|id)?(?:\s+(?:number|no\.?|#))?\s*(?:is|as|[:\-#=])?\s*([A-Za-z0-9\-]{8,24})\b"),
+        "national_id_contextual",
+        0.98,
+        "NATIONAL_ID",
+    ),
+    # Tax ID / SSN contextual
+    (
+        re.compile(r"(?i)\btax\s*(?:identification\s*)?(?:number|no\.?|#|id)?\s*(?:is|as|[:\-#=])?\s*(\d{3}-\d{2}-\d{4}|\d{2}-\d{7}|[A-Za-z0-9\-]{8,20})\b"),
+        "tax_id_contextual",
+        0.98,
+        "TAX_ID",
+    ),
+]
+
+# ============================================================
+# USERNAME PATTERNS
+# ============================================================
+USERNAME_PATTERNS: List[Tuple[re.Pattern, str, float]] = [
+    (
+        re.compile(r"(?i)\busername\s*(?:is|as|[:\-#=]|\s)\s*([A-Za-z0-9_.-]{3,30})\b"),
+        "username_contextual",
+        0.95,
     ),
 ]
 
@@ -515,9 +647,10 @@ GLINER2_ENTITY_MAPPING: Dict[str, str] = {
     "card_number":              "CREDIT_CARD",
     "card_expiry":              "DATE",
     "card_cvv":                 "PASSWORD",
-    # DIGITAL IDENTITY
+    # DIGITAL IDENTITY & NETWORK
     "username":                 "USERNAME",
     "ip_address":               "IP_ADDRESS",
+    "mac_address":              "MAC_ADDRESS",
     "account_id":               "USER_ID",
     "sensitive_account_id":     "USER_ID",
     # SECRETS / CREDENTIALS
@@ -526,6 +659,13 @@ GLINER2_ENTITY_MAPPING: Dict[str, str] = {
     "api_key":                  "API_KEY",
     "access_token":             "ACCESS_TOKEN",
     "recovery_code":            "RECOVERY_CODE",
+    "connection_string":        "CONNECTION_STRING",
+    "database_uri":             "CONNECTION_STRING",
+    # MEDICAL & HEALTHCARE
+    "medical_record":           "MEDICAL_RECORD",
+    "medical_id":               "MEDICAL_RECORD",
+    "health_insurance_id":      "HEALTH_INSURANCE_ID",
+    "health_insurance":         "HEALTH_INSURANCE_ID",
     # SENSITIVE DATES
     "sensitive_date":           "DATE",
     "document_date":            "DATE",
@@ -540,6 +680,7 @@ GLINER2_ENTITY_MAPPING: Dict[str, str] = {
 # Higher number = higher priority when resolving overlapping spans.
 # Structured / credential detections beat generic NER.
 ENTITY_TYPE_PRIORITY: Dict[str, int] = {
+    "CONNECTION_STRING": 11, # Full credential URI subsumes nested emails/passwords/hosts
     "API_KEY":          10,
     "ACCESS_TOKEN":     10,
     "RECOVERY_CODE":    10,
@@ -549,7 +690,10 @@ ENTITY_TYPE_PRIORITY: Dict[str, int] = {
     "PASSPORT":          8,
     "DRIVER_LICENSE":    8,
     "TAX_ID":            8,
+    "MEDICAL_RECORD":    8,
+    "HEALTH_INSURANCE_ID": 8,
     "EMAIL":             7,
+    "MAC_ADDRESS":       7,
     "PHONE":             6,
     "BANK_ACCOUNT":      6,
     "IP_ADDRESS":        6,
@@ -591,6 +735,10 @@ CONFIDENCE_BASELINES: Dict[str, float] = {
     "luhn_credit_card":     0.96,
     "regex_api_key":        0.99,  # varies by sub-pattern; see API_KEY_PATTERNS
     "regex_password":       0.92,
+    "regex_connection_string": 0.99,
+    "regex_mac":            0.98,
+    "regex_medical_record": 0.95,
+    "regex_health_insurance": 0.95,
     "regex_bank_account":   0.88,
     "regex_ip":             0.97,
     "regex_id":             0.90,
@@ -604,3 +752,4 @@ CONFIDENCE_BASELINES: Dict[str, float] = {
     "spacy_ner":            0.85,
     "heuristic_ner":        0.88,
 }
+

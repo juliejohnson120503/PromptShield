@@ -57,6 +57,12 @@ TASK_RELEVANCE_CUES = re.compile(
     r"contract\s+with|regarding\s+my\s+application\s+to|cover\s+letter\s+for)\b"
 )
 
+# Recovery Question & Authentication Secret Cues (e.g. mother's maiden name, security questions)
+RECOVERY_QUESTION_CUES = re.compile(
+    r"(?i)\b(?:mother'?s\s+maiden\s+name|security\s+question(?:\s+answer)?|"
+    r"account\s+recovery(?:\s+answer)?|secret\s+question(?:\s+answer)?)\b"
+)
+
 
 class ContextAnalyzer:
     """
@@ -83,12 +89,11 @@ class ContextAnalyzer:
         local_context = prompt[start_win:end_win]
 
         # -----------------------------------------------------------------
-        # 1. TECHNICAL CREDENTIALS & SENSITIVE IDENTIFIERS
+        # 1. TECHNICAL CREDENTIALS (Strict Authentication Secrets)
         # -----------------------------------------------------------------
         if entity.entity_type in (
-            EntityType.API_KEY, EntityType.PASSWORD, EntityType.CREDIT_CARD,
-            EntityType.ACCESS_TOKEN, EntityType.RECOVERY_CODE, EntityType.NATIONAL_ID,
-            EntityType.PASSPORT, EntityType.DRIVER_LICENSE, EntityType.TAX_ID,
+            EntityType.API_KEY, EntityType.PASSWORD, EntityType.ACCESS_TOKEN,
+            EntityType.RECOVERY_CODE, EntityType.CONNECTION_STRING,
         ):
             return ContextualRole(
                 entity_text=entity.text,
@@ -97,18 +102,21 @@ class ContextAnalyzer:
                 is_first_party=True,
                 is_public_knowledge=False,
                 is_task_relevant=False,
-                context_cue=f"Strict credential / sensitive identifier of type {entity.entity_type.value}",
-                confidence=0.98,
+                context_cue=f"Strict technical credential of type {entity.entity_type.value}",
+                confidence=0.99,
             )
 
         # -----------------------------------------------------------------
-        # 2. CONTACT PII & PERSONAL IDENTIFIERS
+        # 2. PERSONAL IDENTIFIERS, GOVT IDs & HEALTHCARE PII
         # -----------------------------------------------------------------
         if entity.entity_type in (
-            EntityType.EMAIL, EntityType.PHONE, EntityType.USERNAME, EntityType.USER_ID,
+            EntityType.NATIONAL_ID, EntityType.PASSPORT, EntityType.DRIVER_LICENSE,
+            EntityType.TAX_ID, EntityType.CREDIT_CARD, EntityType.BANK_ACCOUNT,
+            EntityType.MEDICAL_RECORD, EntityType.HEALTH_INSURANCE_ID,
+            EntityType.MAC_ADDRESS, EntityType.IP_ADDRESS, EntityType.EMAIL,
+            EntityType.PHONE, EntityType.USERNAME, EntityType.USER_ID,
             EntityType.CUSTOMER_ID, EntityType.ORDER_ID, EntityType.TICKET_ID,
-            EntityType.DOB, EntityType.ADDRESS, EntityType.BANK_ACCOUNT, EntityType.IP_ADDRESS,
-            EntityType.PII_OTHER,
+            EntityType.DOB, EntityType.ADDRESS, EntityType.PII_OTHER,
         ):
             is_first_party = bool(FIRST_PARTY_CUES.search(local_context)) or "my" in pre_context.lower() or "i live" in pre_context.lower()
             return ContextualRole(
@@ -123,13 +131,42 @@ class ContextAnalyzer:
             )
 
         # -----------------------------------------------------------------
-        # 3. PERSON ENTITY EVALUATION (Julie vs Elon Musk)
+        # 3. PERSON ENTITY EVALUATION (Julie vs Elon Musk vs Maiden Name)
         # -----------------------------------------------------------------
         if entity.entity_type == EntityType.PERSON:
+            # Check for recovery question / maiden name cues (Issue 7)
+            if RECOVERY_QUESTION_CUES.search(local_context) or RECOVERY_QUESTION_CUES.search(pre_context):
+                return ContextualRole(
+                    entity_text=entity.text,
+                    entity_type=EntityType.PERSON,
+                    role_category=RoleCategory.TECHNICAL_CREDENTIAL,
+                    is_first_party=True,
+                    is_public_knowledge=False,
+                    is_task_relevant=False,
+                    context_cue="Account recovery / security question sensitive answer (e.g. mother's maiden name)",
+                    confidence=0.98,
+                )
+
             # Check if entity is a recognized public figure
             is_known_public = (
                 lower_text in KNOWN_PUBLIC_FIGURES or normalized_lower in KNOWN_PUBLIC_FIGURES
             )
+
+            # Check for general linguistic reference (e.g. "Fernandez is a common surname")
+            is_general_reference = bool(
+                re.search(r"(?i)\b(?:common\s+(?:surname|name|last\s+name|first\s+name)|meaning\s+of|origin\s+of)\b", local_context)
+            )
+            if is_general_reference and not FIRST_PARTY_CUES.search(pre_context):
+                return ContextualRole(
+                    entity_text=entity.text,
+                    entity_type=EntityType.PERSON,
+                    role_category=RoleCategory.GENERAL_REFERENCE,
+                    is_first_party=False,
+                    is_public_knowledge=True,
+                    is_task_relevant=True,
+                    context_cue="Common name mentioned in general/linguistic reference",
+                    confidence=0.85,
+                )
 
             # Check for first-party self-identification cues ("My name is Julie", "I am...")
             is_self_ident = bool(FIRST_PARTY_CUES.search(pre_context)) or bool(
@@ -151,7 +188,7 @@ class ContextAnalyzer:
                     confidence=0.92,
                 )
 
-            # Otherwise, personal name (e.g. "Julie", "John Mathew")
+            # Otherwise, personal name (e.g. "Julie", "John Mathew", "Elena Rodriguez")
             return ContextualRole(
                 entity_text=entity.text,
                 entity_type=EntityType.PERSON,

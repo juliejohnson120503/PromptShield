@@ -122,6 +122,12 @@ class RegexDetector:
         candidates.extend(self._detect_passwords(prompt))
         candidates.extend(self._detect_bank_accounts(prompt))
         candidates.extend(self._detect_ip_addresses(prompt))
+        candidates.extend(self._detect_mac_addresses(prompt))
+        candidates.extend(self._detect_connection_strings(prompt))
+        candidates.extend(self._detect_medical_records(prompt))
+        candidates.extend(self._detect_health_insurance_ids(prompt))
+        candidates.extend(self._detect_government_ids(prompt))
+        candidates.extend(self._detect_usernames(prompt))
         candidates.extend(self._detect_ids(prompt))
         candidates.extend(self._detect_addresses(prompt))
         candidates.extend(self._detect_dates(prompt))
@@ -134,6 +140,10 @@ class RegexDetector:
     def _detect_emails(self, prompt: str) -> List[DetectedEntity]:
         entities = []
         for match in config.EMAIL_PATTERN.finditer(prompt):
+            # Check if this email match is actually user:password@host in a URI
+            prefix = prompt[max(0, match.start() - 100):match.start()]
+            if re.search(r"://[^\s/@]*:[^\s/@]*$", prefix):
+                continue
             raw = match.group(0)
             entities.append(
                 DetectedEntity(
@@ -376,3 +386,148 @@ class RegexDetector:
                     )
                 )
         return entities
+
+    def _detect_mac_addresses(self, prompt: str) -> List[DetectedEntity]:
+        entities = []
+        for pattern, label, conf in config.MAC_ADDRESS_PATTERNS:
+            for match in pattern.finditer(prompt):
+                raw = match.group(0)
+                entities.append(
+                    DetectedEntity(
+                        text=raw,
+                        entity_type=EntityType.MAC_ADDRESS,
+                        start=match.start(),
+                        end=match.end(),
+                        normalized_value=normalize_entity_value(EntityType.MAC_ADDRESS, raw),
+                        confidence=conf,
+                        source="regex",
+                        detector=f"regex_{label}",
+                    )
+                )
+        return entities
+
+    def _detect_connection_strings(self, prompt: str) -> List[DetectedEntity]:
+        entities = []
+        for pattern, label, conf in config.CONNECTION_STRING_PATTERNS:
+            for match in pattern.finditer(prompt):
+                raw = match.group(0)
+                raw_clean = raw.rstrip(".,;:")
+                start = match.start()
+                end = start + len(raw_clean)
+                entities.append(
+                    DetectedEntity(
+                        text=raw_clean,
+                        entity_type=EntityType.CONNECTION_STRING,
+                        start=start,
+                        end=end,
+                        normalized_value=normalize_entity_value(EntityType.CONNECTION_STRING, raw_clean),
+                        confidence=conf,
+                        source="regex",
+                        detector=f"regex_{label}",
+                    )
+                )
+        return entities
+
+    def _detect_medical_records(self, prompt: str) -> List[DetectedEntity]:
+        entities = []
+        for pattern, label, conf in config.MEDICAL_RECORD_PATTERNS:
+            for match in pattern.finditer(prompt):
+                if match.groups():
+                    raw = match.group(1)
+                    start, end = match.start(1), match.end(1)
+                else:
+                    raw = match.group(0)
+                    start, end = match.start(), match.end()
+                entities.append(
+                    DetectedEntity(
+                        text=raw,
+                        entity_type=EntityType.MEDICAL_RECORD,
+                        start=start,
+                        end=end,
+                        normalized_value=normalize_entity_value(EntityType.MEDICAL_RECORD, raw),
+                        confidence=conf,
+                        source="regex",
+                        detector=f"regex_{label}",
+                    )
+                )
+        return entities
+
+    def _detect_health_insurance_ids(self, prompt: str) -> List[DetectedEntity]:
+        entities = []
+        for pattern, label, conf in config.HEALTH_INSURANCE_PATTERNS:
+            for match in pattern.finditer(prompt):
+                if match.groups():
+                    raw = match.group(1)
+                    start, end = match.start(1), match.end(1)
+                else:
+                    raw = match.group(0)
+                    start, end = match.start(), match.end()
+                entities.append(
+                    DetectedEntity(
+                        text=raw,
+                        entity_type=EntityType.HEALTH_INSURANCE_ID,
+                        start=start,
+                        end=end,
+                        normalized_value=normalize_entity_value(EntityType.HEALTH_INSURANCE_ID, raw),
+                        confidence=conf,
+                        source="regex",
+                        detector=f"regex_{label}",
+                    )
+                )
+        return entities
+
+    def _detect_government_ids(self, prompt: str) -> List[DetectedEntity]:
+        TYPE_MAP = {
+            "PASSPORT": EntityType.PASSPORT,
+            "DRIVER_LICENSE": EntityType.DRIVER_LICENSE,
+            "NATIONAL_ID": EntityType.NATIONAL_ID,
+            "TAX_ID": EntityType.TAX_ID,
+        }
+        entities = []
+        for pattern, label, conf, entity_type_str in config.GOVERNMENT_ID_PATTERNS:
+            entity_type = TYPE_MAP.get(entity_type_str, EntityType.NATIONAL_ID)
+            for match in pattern.finditer(prompt):
+                if match.groups():
+                    raw = match.group(1)
+                    start, end = match.start(1), match.end(1)
+                else:
+                    raw = match.group(0)
+                    start, end = match.start(), match.end()
+                entities.append(
+                    DetectedEntity(
+                        text=raw,
+                        entity_type=entity_type,
+                        start=start,
+                        end=end,
+                        normalized_value=normalize_entity_value(entity_type, raw),
+                        confidence=conf,
+                        source="regex",
+                        detector=f"regex_{label}",
+                    )
+                )
+        return entities
+
+    def _detect_usernames(self, prompt: str) -> List[DetectedEntity]:
+        entities = []
+        for pattern, label, conf in config.USERNAME_PATTERNS:
+            for match in pattern.finditer(prompt):
+                if match.groups():
+                    raw = match.group(1)
+                    start, end = match.start(1), match.end(1)
+                else:
+                    raw = match.group(0)
+                    start, end = match.start(), match.end()
+                entities.append(
+                    DetectedEntity(
+                        text=raw,
+                        entity_type=EntityType.USERNAME,
+                        start=start,
+                        end=end,
+                        normalized_value=normalize_entity_value(EntityType.USERNAME, raw),
+                        confidence=conf,
+                        source="regex",
+                        detector=f"regex_{label}",
+                    )
+                )
+        return entities
+
