@@ -219,9 +219,9 @@ def run_demo():
         display_results(shield, custom_input)
         return
 
-    print("  [>] Initializing PromptShield AI defense pipeline (Regex + Presidio + Neural NER)...")
+    print("  [>] Initializing PromptShield AI defense pipeline (Regex + Presidio + GLiNER2-PII + SpaCy NER)...")
     shield = PromptShieldCore(use_spacy=True)
-    print("  [✓] All defense layers active!\n")
+    print("  [✓] All defense layers active (GLiNER2 production pipeline ready)!\n")
 
     while True:
         print("\nChoose a sample prompt or enter your own:")

@@ -55,7 +55,7 @@ from typing import Any, Dict, List, Optional
 from backend.models import DetectedEntity, EntityType
 from backend.regex_detector import RegexDetector, is_luhn_valid, detect_card_brand
 from backend.presidio_detector import PresidioDetector
-from backend.gliner_detector import GlinerNERDetector
+from backend.gliner2_pii_detector import GLiNER2PIIDetector
 from backend.spacy_detector import SpacyNERDetector
 from backend.entity_fusion import EntityFusionEngine
 
@@ -77,7 +77,7 @@ class SensitiveDataDetector:
     Orchestrates complementary detector subsystems across 3 architectural tiers:
       1. RegexDetector       — fast, deterministic, zero-ML (API keys, cards+Luhn, passwords, emails, phones)
       2. PresidioDetector    — enterprise compliance PII (Microsoft Presidio)
-      3. GlinerNERDetector   — deep neural open-vocabulary transformer NER (zero-shot, informal/lowercase text)
+      3. GLiNER2PIIDetector  — deep neural PII privacy filter model (zero-shot, 42 native PII labels)
       4. SpacyNERDetector    — pretrained statistical NER (+ contextual heuristics fallback)
 
     Results are merged by EntityFusionEngine into a single sorted,
@@ -92,38 +92,46 @@ class SensitiveDataDetector:
     use_presidio : bool
         Explicitly enable or disable Presidio regardless of use_spacy.
         Default: True (active when use_spacy is True).
-    use_gliner : bool
-        Enable or disable GLiNER neural open-vocabulary NER.
+    use_gliner2 : bool
+        Enable or disable GLiNER2 neural PII detector.
         Default: True (active when available and use_spacy is True).
+    use_gliner : Optional[bool]
+        Backward-compatibility alias for use_gliner2.
     """
 
     def __init__(
         self,
         use_spacy: bool = True,
         use_presidio: bool = True,
-        use_gliner: bool = True,
+        use_gliner2: bool = True,
+        use_gliner: Optional[bool] = None,
     ):
+        if use_gliner is not None:
+            use_gliner2 = use_gliner
+
         self._use_spacy = use_spacy
         self._use_presidio = use_presidio and use_spacy  # Presidio needs NLP stack
-        self._use_gliner = use_gliner and use_spacy
+        self._use_gliner2 = use_gliner2 and use_spacy
 
         self._regex = RegexDetector()
         self._presidio: Optional[PresidioDetector] = (
             PresidioDetector() if self._use_presidio else None
         )
-        self._gliner: Optional[GlinerNERDetector] = (
-            GlinerNERDetector() if self._use_gliner else None
+        self._gliner2: Optional[GLiNER2PIIDetector] = (
+            GLiNER2PIIDetector() if self._use_gliner2 else None
         )
         self._spacy_ner: Optional[SpacyNERDetector] = (
             SpacyNERDetector() if self._use_spacy else None
         )
         self._fusion = EntityFusionEngine()
+        self._use_gliner = self._use_gliner2
+        self._gliner = self._gliner2
 
         logger.info(
             "[SensitiveDataDetector] Initialised — "
-            "regex=ON, presidio=%s, gliner=%s, spacy=%s",
+            "regex=ON, presidio=%s, gliner2=%s, spacy=%s",
             "ON" if self._presidio else "OFF",
-            "ON" if (self._gliner and self._gliner.is_installed()) else "OFF/fallback",
+            "ON" if (self._gliner2 and self._gliner2.is_installed()) else "OFF/fallback",
             "ON (+" + ("spacy" if (self._spacy_ner and self._spacy_ner.is_available())
                        else "heuristic") + ")" if self._use_spacy else "OFF",
         )
@@ -159,12 +167,12 @@ class SensitiveDataDetector:
                 "[Detector] Presidio found %d candidates.", len(presidio_results)
             )
 
-        # 3. GLiNER Deep Neural Open-Vocabulary NER (if enabled and available)
-        if self._gliner is not None and self._gliner.is_available():
-            gliner_results = self._gliner.detect(prompt)
-            candidates.extend(gliner_results)
+        # 3. GLiNER2 Deep Neural PII / Privacy Model (if enabled and available)
+        if self._gliner2 is not None and self._gliner2.is_available():
+            gliner2_results = self._gliner2.detect(prompt)
+            candidates.extend(gliner2_results)
             logger.debug(
-                "[Detector] GLiNER found %d candidates.", len(gliner_results)
+                "[Detector] GLiNER2 found %d candidates.", len(gliner2_results)
             )
 
         # 4. spaCy NER (if enabled) or Heuristic NER fallback (when use_spacy=False)
@@ -217,12 +225,21 @@ class SensitiveDataDetector:
         presidio_ok = (
             self._presidio.is_available() if self._presidio else False
         )
-        gliner_ok = (
-            self._gliner.is_available() if self._gliner else False
+        gliner2_ok = (
+            self._gliner2.is_available() if self._gliner2 else False
         )
         spacy_ok = (
             self._spacy_ner.is_available() if self._spacy_ner else False
         )
+        gliner2_status = {
+            "active": self._use_gliner2,
+            "model_loaded": gliner2_ok,
+            "note": (
+                "GLiNER2 multi-category PII transformer loaded"
+                if gliner2_ok
+                else "unavailable or disabled"
+            ),
+        }
         return {
             "regex": {"active": True, "note": "Always active; zero-dependency"},
             "presidio": {
@@ -233,15 +250,8 @@ class SensitiveDataDetector:
                     else "unavailable or disabled"
                 ),
             },
-            "gliner": {
-                "active": self._use_gliner,
-                "model_loaded": gliner_ok,
-                "note": (
-                    "GLiNER zero-shot transformer loaded"
-                    if gliner_ok
-                    else "unavailable or disabled"
-                ),
-            },
+            "gliner2": gliner2_status,
+            "gliner": gliner2_status,  # Backwards compatibility alias
             "spacy": {
                 "active": self._use_spacy,
                 "model_loaded": spacy_ok,

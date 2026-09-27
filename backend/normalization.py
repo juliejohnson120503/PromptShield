@@ -105,10 +105,17 @@ def normalize_entity_value(entity_type: EntityType, raw_val: str) -> str:
         return normalize_bank_account(raw_val)
     elif entity_type == EntityType.IP_ADDRESS:
         return normalize_ip_address(raw_val)
-    elif entity_type in (EntityType.ORDER_ID, EntityType.USER_ID, EntityType.CUSTOMER_ID, EntityType.TICKET_ID):
+    elif entity_type in (
+        EntityType.ORDER_ID, EntityType.USER_ID, EntityType.CUSTOMER_ID,
+        EntityType.TICKET_ID, EntityType.USERNAME, EntityType.NATIONAL_ID,
+        EntityType.PASSPORT, EntityType.DRIVER_LICENSE, EntityType.TAX_ID,
+        EntityType.RECOVERY_CODE,
+    ):
         return normalize_id(raw_val)
     elif entity_type in (EntityType.PERSON, EntityType.ORGANIZATION, EntityType.LOCATION, EntityType.ADDRESS):
         return normalize_text_entity(raw_val)
-    elif entity_type == EntityType.DATE:
+    elif entity_type in (EntityType.DATE, EntityType.DOB):
         return normalize_date(raw_val)
+    elif entity_type == EntityType.PII_OTHER:
+        return raw_val.strip()
     return raw_val.strip()

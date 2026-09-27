@@ -33,9 +33,14 @@ def _load_gliner_model(model_name: str = config.GLINER_MODEL_NAME) -> Optional[A
     Returns the GLiNER instance on success, or None on failure.
     """
     try:
+        import os
+        os.environ["HF_HUB_DISABLE_XET"] = "1"
         from gliner import GLiNER
         logger.info("[GlinerNERDetector] Loading GLiNER model: %s ...", model_name)
-        model = GLiNER.from_pretrained(model_name)
+        try:
+            model = GLiNER.from_pretrained(model_name, local_files_only=True)
+        except Exception:
+            model = GLiNER.from_pretrained(model_name)
         logger.info("[GlinerNERDetector] GLiNER model %s loaded successfully.", model_name)
         return model
     except ImportError:

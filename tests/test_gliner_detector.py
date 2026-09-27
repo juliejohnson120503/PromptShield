@@ -12,6 +12,8 @@ class TestGlinerNERDetector(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         cls.detector = GlinerNERDetector()
+        if not cls.detector.is_available():
+            raise unittest.SkipTest("GLiNER v1 (legacy evaluation model) not downloaded/available in local cache.")
 
     def test_gliner_available(self):
         self.assertTrue(self.detector.is_available(), "GLiNER model should be loaded and available.")

@@ -154,15 +154,35 @@ class PolicyReport:
 
 # Base risk scores per entity type (before context modifiers)
 BASE_RISK: Dict[EntityType, float] = {
-    EntityType.API_KEY:      0.98,
-    EntityType.PASSWORD:     0.97,
-    EntityType.CREDIT_CARD:  0.95,
-    EntityType.EMAIL:        0.65,
-    EntityType.PHONE:        0.60,
-    EntityType.PERSON:       0.45,
-    EntityType.ORGANIZATION: 0.25,
-    EntityType.LOCATION:     0.20,
-    EntityType.DATE:         0.15,
+    # Critical credentials & identifiers
+    EntityType.API_KEY:        0.98,
+    EntityType.ACCESS_TOKEN:   0.98,
+    EntityType.RECOVERY_CODE:  0.98,
+    EntityType.PASSWORD:       0.97,
+    EntityType.CREDIT_CARD:    0.95,
+    EntityType.NATIONAL_ID:    0.92,
+    EntityType.PASSPORT:       0.92,
+    EntityType.DRIVER_LICENSE: 0.90,
+    EntityType.TAX_ID:         0.90,
+    EntityType.BANK_ACCOUNT:   0.85,
+    # Personal identifiers & contacts
+    EntityType.DOB:            0.75,
+    EntityType.ADDRESS:        0.70,
+    EntityType.EMAIL:          0.65,
+    EntityType.PHONE:          0.60,
+    EntityType.USERNAME:       0.60,
+    EntityType.USER_ID:        0.55,
+    EntityType.IP_ADDRESS:     0.55,
+    EntityType.PII_OTHER:      0.65,
+    # Configurable IDs
+    EntityType.CUSTOMER_ID:    0.50,
+    EntityType.ORDER_ID:       0.40,
+    EntityType.TICKET_ID:      0.40,
+    # Named entities
+    EntityType.PERSON:         0.45,
+    EntityType.ORGANIZATION:   0.25,
+    EntityType.LOCATION:       0.20,
+    EntityType.DATE:           0.15,
 }
 
 # Modifier weights applied on top of base risk

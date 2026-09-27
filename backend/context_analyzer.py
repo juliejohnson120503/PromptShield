@@ -83,9 +83,13 @@ class ContextAnalyzer:
         local_context = prompt[start_win:end_win]
 
         # -----------------------------------------------------------------
-        # 1. TECHNICAL CREDENTIALS (API_KEY, PASSWORD, CREDIT_CARD)
+        # 1. TECHNICAL CREDENTIALS & SENSITIVE IDENTIFIERS
         # -----------------------------------------------------------------
-        if entity.entity_type in (EntityType.API_KEY, EntityType.PASSWORD, EntityType.CREDIT_CARD):
+        if entity.entity_type in (
+            EntityType.API_KEY, EntityType.PASSWORD, EntityType.CREDIT_CARD,
+            EntityType.ACCESS_TOKEN, EntityType.RECOVERY_CODE, EntityType.NATIONAL_ID,
+            EntityType.PASSPORT, EntityType.DRIVER_LICENSE, EntityType.TAX_ID,
+        ):
             return ContextualRole(
                 entity_text=entity.text,
                 entity_type=entity.entity_type,
@@ -93,23 +97,28 @@ class ContextAnalyzer:
                 is_first_party=True,
                 is_public_knowledge=False,
                 is_task_relevant=False,
-                context_cue=f"Strict technical credential of type {entity.entity_type.value}",
+                context_cue=f"Strict credential / sensitive identifier of type {entity.entity_type.value}",
                 confidence=0.98,
             )
 
         # -----------------------------------------------------------------
-        # 2. CONTACT PII (EMAIL, PHONE)
+        # 2. CONTACT PII & PERSONAL IDENTIFIERS
         # -----------------------------------------------------------------
-        if entity.entity_type in (EntityType.EMAIL, EntityType.PHONE):
-            is_first_party = bool(FIRST_PARTY_CUES.search(local_context)) or "my" in pre_context.lower()
+        if entity.entity_type in (
+            EntityType.EMAIL, EntityType.PHONE, EntityType.USERNAME, EntityType.USER_ID,
+            EntityType.CUSTOMER_ID, EntityType.ORDER_ID, EntityType.TICKET_ID,
+            EntityType.DOB, EntityType.ADDRESS, EntityType.BANK_ACCOUNT, EntityType.IP_ADDRESS,
+            EntityType.PII_OTHER,
+        ):
+            is_first_party = bool(FIRST_PARTY_CUES.search(local_context)) or "my" in pre_context.lower() or "i live" in pre_context.lower()
             return ContextualRole(
                 entity_text=entity.text,
                 entity_type=entity.entity_type,
                 role_category=RoleCategory.PERSONAL_IDENTIFIER,
                 is_first_party=is_first_party,
                 is_public_knowledge=False,
-                is_task_relevant=(task_type == TaskType.EMAIL_GENERATION),
-                context_cue="Personal contact PII detected",
+                is_task_relevant=(task_type == TaskType.EMAIL_GENERATION and entity.entity_type in (EntityType.EMAIL, EntityType.PHONE)),
+                context_cue=f"Personal sensitive identifier ({entity.entity_type.value}) detected",
                 confidence=0.95,
             )
 

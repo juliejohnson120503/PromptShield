@@ -1,175 +1,66 @@
 """
-PromptShield AI — GLiNER2-PII Detector
-========================================
-Wraps the GLiNER2-PII model (fastino/gliner2-pii-v1) using the official
-gliner2 package API.
+PromptShield AI — GLiNER2-PII Detector (Production)
+===================================================
+Wraps the production GLiNER2-PII model (fastino/gliner2-privacy-filter-PII-multi)
+using the official gliner2 package API.
 
 KEY DESIGN PRINCIPLES
 ---------------------
 • Preserves ALL 42 native GLiNER2-PII labels — never drops or collapses
   them inside the detector itself.
-• Provides an ADDITIONAL canonical PromptShield label for downstream fusion
-  compatibility, but the native label is always retained in metadata.
-• Identifies itself as source="gliner2_pii" so it is distinguishable from
-  the old urchade/gliner_small-v2.1 detector (source="gliner").
+• Provides an ADDITIONAL canonical PromptShield label via backend.config.GLINER2_ENTITY_MAPPING.
+• Unknown / unmapped native labels map to EntityType.PII_OTHER (safe fallback with audit trail).
+• Identifies itself as source="gliner2" with detector="gliner2_<native_label>".
 • Graceful degradation: if gliner2 is not installed or the model fails to
-  load, detect() returns [] safely.
+  load, detect() returns [] safely without raising exceptions.
 • Span integrity: every entity is verified with text[start:end] == text
   before being returned.
-
-IMPORTANT: This file does NOT modify or replace backend/gliner_detector.py.
-The original detector (urchade/gliner_small-v2.1) remains available for
-baseline reproduction.
 """
 
 import logging
 import importlib.util
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional
 
 from backend.models import DetectedEntity, EntityType
 from backend.normalization import normalize_entity_value
+from backend import config
 
 logger = logging.getLogger(__name__)
 
-# ---------------------------------------------------------------------------
-# Full 42-label GLiNER2-PII taxonomy
-# (MUST remain complete — do not remove any label)
-# ---------------------------------------------------------------------------
-GLINER2_PII_LABELS: List[str] = [
-    # PERSON / NAMES
-    "person",
-    "full_name",
-    "first_name",
-    "middle_name",
-    "last_name",
-    "date_of_birth",
-    # CONTACT / ADDRESS
-    "email",
-    "phone_number",
-    "address",
-    "street_address",
-    "city",
-    "state_or_region",
-    "postal_code",
-    "country",
-    # GOVERNMENT / TAX IDs
-    "government_id",
-    "national_id_number",
-    "passport_number",
-    "drivers_license_number",
-    "license_number",
-    "tax_id",
-    "tax_number",
-    # BANKING / PAYMENT
-    "bank_account",
-    "account_number",
-    "routing_number",
-    "iban",
-    "payment_card",
-    "card_number",
-    "card_expiry",
-    "card_cvv",
-    # DIGITAL IDENTITY
-    "username",
-    "ip_address",
-    "account_id",
-    "sensitive_account_id",
-    # SECRETS / CREDENTIALS
-    "password",
-    "secret",
-    "api_key",
-    "access_token",
-    "recovery_code",
-    # SENSITIVE DATES
-    "sensitive_date",
-    "document_date",
-    "expiration_date",
-    "transaction_date",
-]
-
-# ---------------------------------------------------------------------------
-# Mapping: GLiNER2 native label → PromptShield canonical EntityType string
-# None = no equivalent in current PromptShield taxonomy (UNSUPPORTED)
-# ---------------------------------------------------------------------------
-GLINER2_TO_CANONICAL: Dict[str, Optional[str]] = {
-    # PERSON / NAMES
-    "person":                   "PERSON",
-    "full_name":                "PERSON",
-    "first_name":               "PERSON",
-    "middle_name":              "PERSON",
-    "last_name":                "PERSON",
-    "date_of_birth":            "DATE",
-    # CONTACT / ADDRESS
-    "email":                    "EMAIL",
-    "phone_number":             "PHONE",
-    "address":                  "ADDRESS",
-    "street_address":           "ADDRESS",
-    "city":                     "LOCATION",
-    "state_or_region":          "LOCATION",
-    "postal_code":              "LOCATION",
-    "country":                  "LOCATION",
-    # GOVERNMENT / TAX IDs — no exact PromptShield equivalent
-    "government_id":            None,   # UNSUPPORTED
-    "national_id_number":       None,   # UNSUPPORTED
-    "passport_number":          None,   # UNSUPPORTED
-    "drivers_license_number":   None,   # UNSUPPORTED
-    "license_number":           None,   # UNSUPPORTED
-    "tax_id":                   None,   # UNSUPPORTED
-    "tax_number":               None,   # UNSUPPORTED
-    # BANKING / PAYMENT
-    "bank_account":             "BANK_ACCOUNT",
-    "account_number":           "BANK_ACCOUNT",
-    "routing_number":           "BANK_ACCOUNT",
-    "iban":                     "BANK_ACCOUNT",
-    "payment_card":             "CREDIT_CARD",
-    "card_number":              "CREDIT_CARD",
-    "card_expiry":              "CREDIT_CARD",
-    "card_cvv":                 "CREDIT_CARD",
-    # DIGITAL IDENTITY
-    "username":                 "USER_ID",
-    "ip_address":               "IP_ADDRESS",
-    "account_id":               "USER_ID",
-    "sensitive_account_id":     "USER_ID",
-    # SECRETS / CREDENTIALS
-    "password":                 "PASSWORD",
-    "secret":                   "API_KEY",
-    "api_key":                  "API_KEY",
-    "access_token":             "ACCESS_TOKEN",
-    "recovery_code":            "ACCESS_TOKEN",
-    # SENSITIVE DATES
-    "sensitive_date":           "DATE",
-    "document_date":            "DATE",
-    "expiration_date":          "DATE",
-    "transaction_date":         "DATE",
-}
-
-# Entity types that have no PromptShield canonical equivalent
-UNSUPPORTED_GLINER2_LABELS = {
-    lbl for lbl, canon in GLINER2_TO_CANONICAL.items() if canon is None
-}
-
-# ---------------------------------------------------------------------------
-# Model configuration
-# ---------------------------------------------------------------------------
-GLINER2_MODEL_NAME = "fastino/gliner2-pii-v1"
-GLINER2_DEFAULT_THRESHOLD = 0.50
+# Expose constants for backward compatibility
+GLINER2_PII_LABELS = config.GLINER2_PII_LABELS
+GLINER2_TO_CANONICAL = config.GLINER2_ENTITY_MAPPING
+GLINER2_MODEL_NAME = config.GLINER2_MODEL_NAME
+GLINER2_DEFAULT_THRESHOLD = config.GLINER2_DEFAULT_THRESHOLD
 
 
-def _load_gliner2_model(model_name: str = GLINER2_MODEL_NAME) -> Optional[Any]:
+def _load_gliner2_model(model_name: str = config.GLINER2_MODEL_NAME) -> Optional[Any]:
     """
     Attempt to load GLiNER2 model using the official gliner2 package.
     Returns the model instance on success, or None on failure.
     """
     try:
+        import sys
+        if hasattr(sys.stdout, "reconfigure"):
+            try:
+                sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+            except Exception:
+                pass
+        if hasattr(sys.stderr, "reconfigure"):
+            try:
+                sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+            except Exception:
+                pass
+
         from gliner2 import GLiNER2
-        logger.info("[GLiNER2PIIDetector] Loading model: %s ...", model_name)
+        logger.info("[GLiNER2PIIDetector] Loading production GLiNER2 model: %s ...", model_name)
         model = GLiNER2.from_pretrained(model_name)
         logger.info("[GLiNER2PIIDetector] Model %s loaded successfully.", model_name)
         return model
     except ImportError:
         logger.warning(
             "[GLiNER2PIIDetector] 'gliner2' package not installed. "
-            "Install with: pip install gliner2"
+            "Install with: pip install \"gliner2[local]\""
         )
         return None
     except Exception as exc:
@@ -184,11 +75,11 @@ class GLiNER2PIIDetector:
     """
     GLiNER2-PII Open-Vocabulary PII Detector.
 
-    Uses fastino/gliner2-pii-v1 with the complete 42-label taxonomy.
-    Preserves native GLiNER2 labels; provides canonical PromptShield labels
-    as supplementary metadata for fusion engine compatibility.
+    Uses fastino/gliner2-privacy-filter-PII-multi with the complete 42-label taxonomy.
+    Preserves native GLiNER2 labels; maps them cleanly into PromptShield's
+    canonical EntityType schema.
 
-    The detector identifies itself as source="gliner2_pii".
+    The detector identifies itself as source="gliner2".
     """
 
     _model: Optional[Any] = None
@@ -197,16 +88,15 @@ class GLiNER2PIIDetector:
     def __init__(
         self,
         labels: Optional[List[str]] = None,
-        threshold: float = GLINER2_DEFAULT_THRESHOLD,
-        model_name: str = GLINER2_MODEL_NAME,
+        threshold: float = config.GLINER2_DEFAULT_THRESHOLD,
+        model_name: str = config.GLINER2_MODEL_NAME,
     ):
-        # Always use the full 42-label list unless explicitly overridden
-        self.labels = labels or list(GLINER2_PII_LABELS)
+        self.labels = labels or list(config.GLINER2_PII_LABELS)
         self.threshold = threshold
         self.model_name = model_name
 
     @classmethod
-    def _get_model(cls, model_name: str = GLINER2_MODEL_NAME) -> Optional[Any]:
+    def _get_model(cls, model_name: str = config.GLINER2_MODEL_NAME) -> Optional[Any]:
         if not cls._initialised:
             cls._model = _load_gliner2_model(model_name)
             cls._initialised = True
@@ -230,11 +120,10 @@ class GLiNER2PIIDetector:
 
         For every detection:
           - native GLiNER2 label is preserved in entity.metadata["gliner2_label"]
-          - canonical PromptShield label (if mappable) is in metadata["canonical_label"]
-          - entities with no canonical mapping (UNSUPPORTED) are still returned
-            using EntityType.PERSON as a placeholder; the true type is in metadata
-          - source is always "gliner2_pii"
-          - span integrity is verified: text[start:end] == entity text
+          - canonical PromptShield label is stored in entity.entity_type
+          - entities with unknown native labels map to EntityType.PII_OTHER
+          - source is "gliner2"
+          - span integrity is verified: prompt[start:end] == entity.text
 
         Returns [] gracefully if model is unavailable or prompt is empty.
         """
@@ -245,16 +134,42 @@ class GLiNER2PIIDetector:
         if model is None:
             return []
 
-        try:
-            raw_entities = model.predict_entities(
-                prompt,
-                self.labels,
-                flat_ner=True,
-                threshold=self.threshold,
-            )
-        except Exception as exc:
-            logger.warning("[GLiNER2PIIDetector] predict_entities failed: %s", exc)
-            return []
+        raw_entities = []
+        if hasattr(model, "extract_entities"):
+            try:
+                extraction = model.extract_entities(
+                    prompt,
+                    self.labels,
+                    threshold=self.threshold,
+                    include_confidence=True,
+                    include_spans=True,
+                )
+                entity_dict = extraction.get("entities", extraction) if isinstance(extraction, dict) else {}
+                for lbl, items in entity_dict.items():
+                    if isinstance(items, list):
+                        for item in items:
+                            if isinstance(item, dict):
+                                raw_entities.append({
+                                    "label": lbl,
+                                    "text": item.get("text", ""),
+                                    "start": item.get("start", -1),
+                                    "end": item.get("end", -1),
+                                    "score": item.get("confidence", self.threshold),
+                                })
+            except Exception as exc:
+                logger.warning("[GLiNER2PIIDetector] extract_entities failed: %s", exc)
+                return []
+        elif hasattr(model, "predict_entities"):
+            try:
+                raw_entities = model.predict_entities(
+                    prompt,
+                    self.labels,
+                    flat_ner=True,
+                    threshold=self.threshold,
+                )
+            except Exception as exc:
+                logger.warning("[GLiNER2PIIDetector] predict_entities failed: %s", exc)
+                return []
 
         entities: List[DetectedEntity] = []
 
@@ -282,22 +197,26 @@ class GLiNER2PIIDetector:
                 continue
 
             # --- Canonical label lookup ---
-            canonical_str = GLINER2_TO_CANONICAL.get(gliner2_label)
-            is_unsupported = canonical_str is None
+            canonical_str = config.GLINER2_ENTITY_MAPPING.get(gliner2_label)
+            is_unsupported = False
 
-            if not is_unsupported:
+            if canonical_str is not None:
                 try:
                     entity_type = EntityType(canonical_str)
                 except ValueError:
-                    logger.debug(
-                        "[GLiNER2PIIDetector] Unknown EntityType '%s' for label '%s'",
-                        canonical_str, gliner2_label,
+                    logger.warning(
+                        "[GLiNER2PIIDetector] Canonical string '%s' not a valid EntityType",
+                        canonical_str,
                     )
-                    continue
+                    entity_type = EntityType.PII_OTHER
+                    is_unsupported = True
             else:
-                # Unsupported label: still report with PERSON as placeholder
-                # The REAL type is in metadata["gliner2_label"]
-                entity_type = EntityType.PERSON
+                logger.warning(
+                    "[GLiNER2PIIDetector] Unknown native label '%s' mapped to PII_OTHER",
+                    gliner2_label,
+                )
+                entity_type = EntityType.PII_OTHER
+                is_unsupported = True
 
             entities.append(
                 DetectedEntity(
@@ -307,11 +226,11 @@ class GLiNER2PIIDetector:
                     end=end,
                     normalized_value=normalize_entity_value(entity_type, text),
                     confidence=round(raw_score, 4),
-                    source="gliner2_pii",
+                    source="gliner2",
                     detector=f"gliner2_{gliner2_label}",
                     metadata={
                         "gliner2_label":     gliner2_label,
-                        "canonical_label":   canonical_str,       # None = UNSUPPORTED
+                        "canonical_label":   entity_type.value,
                         "is_unsupported":    is_unsupported,
                         "raw_score":         raw_score,
                     },

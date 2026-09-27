@@ -37,6 +37,16 @@ class EntityType(str, Enum):
     CUSTOMER_ID = "CUSTOMER_ID"
     TICKET_ID = "TICKET_ID"
 
+    # ── Extended PII Types (GLiNER2 Canonical Support) ───────────────────
+    USERNAME = "USERNAME"
+    DOB = "DOB"
+    NATIONAL_ID = "NATIONAL_ID"
+    PASSPORT = "PASSPORT"
+    DRIVER_LICENSE = "DRIVER_LICENSE"
+    TAX_ID = "TAX_ID"
+    RECOVERY_CODE = "RECOVERY_CODE"
+    PII_OTHER = "PII_OTHER"
+
     # ── Unstructured / Named Entities (NER) ─────────────────────────────
     PERSON = "PERSON"
     ORGANIZATION = "ORGANIZATION"

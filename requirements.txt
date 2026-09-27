@@ -15,7 +15,10 @@ presidio-analyzer>=2.2.350
 # After install, run:  python -m spacy download en_core_web_sm
 spacy>=3.7.0
 
-# GLiNER — Transformer-based open-vocabulary zero-shot NER
+# GLiNER2 — Modern multi-category PII / privacy-filter model (production)
+gliner2>=2.0.0
+
+# GLiNER — Transformer-based open-vocabulary NER (retained for research/evaluation)
 gliner>=0.2.0
 
 # ── Future Phases (2-6) ────────────────────────────────────────────────────

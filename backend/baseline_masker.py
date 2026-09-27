@@ -35,6 +35,7 @@ class BaselineMasker:
         EntityType.IP_ADDRESS:   "IP",
         EntityType.ORDER_ID:     "ORDER_ID",
         EntityType.USER_ID:      "USER_ID",
+        EntityType.USERNAME:     "USERNAME",
         EntityType.CUSTOMER_ID:  "CUSTOMER_ID",
         EntityType.TICKET_ID:    "TICKET_ID",
         EntityType.PERSON:       "PERSON",
@@ -42,6 +43,13 @@ class BaselineMasker:
         EntityType.LOCATION:     "LOCATION",
         EntityType.ADDRESS:      "ADDRESS",
         EntityType.DATE:         "DATE",
+        EntityType.DOB:          "DOB",
+        EntityType.NATIONAL_ID:  "NATIONAL_ID",
+        EntityType.PASSPORT:     "PASSPORT",
+        EntityType.DRIVER_LICENSE: "DRIVER_LICENSE",
+        EntityType.TAX_ID:       "TAX_ID",
+        EntityType.RECOVERY_CODE: "RECOVERY_CODE",
+        EntityType.PII_OTHER:    "PII",
     }
 
     def __init__(self, mapping_store: Optional[MappingStore] = None):

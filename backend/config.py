@@ -392,7 +392,7 @@ SPACY_ENTITY_MAPPING: Dict[str, str] = {
 
 
 # ============================================================
-# GLINER CONFIGURATION & ENTITY MAPPING (Deep Neural NER)
+# GLINER CONFIGURATION & ENTITY MAPPING (Deep Neural NER - GLiNER v1 / Research)
 # ============================================================
 GLINER_MODEL_NAME: str = "urchade/gliner_small-v2.1"
 GLINER_DEFAULT_LABELS: List[str] = [
@@ -422,28 +422,149 @@ GLINER_ENTITY_MAPPING: Dict[str, str] = {
 
 
 # ============================================================
+# GLINER2 CONFIGURATION & ENTITY MAPPING (Production GLiNER2-PII)
+# ============================================================
+GLINER2_MODEL_NAME: str = "fastino/gliner2-privacy-filter-PII-multi"
+GLINER2_DEFAULT_THRESHOLD: float = 0.50
+
+# Full 42-label GLiNER2-PII taxonomy
+GLINER2_PII_LABELS: List[str] = [
+    # PERSON / NAMES
+    "person",
+    "full_name",
+    "first_name",
+    "middle_name",
+    "last_name",
+    "date_of_birth",
+    # CONTACT / ADDRESS
+    "email",
+    "phone_number",
+    "address",
+    "street_address",
+    "city",
+    "state_or_region",
+    "postal_code",
+    "country",
+    # GOVERNMENT / TAX IDs
+    "government_id",
+    "national_id_number",
+    "passport_number",
+    "drivers_license_number",
+    "license_number",
+    "tax_id",
+    "tax_number",
+    # BANKING / PAYMENT
+    "bank_account",
+    "account_number",
+    "routing_number",
+    "iban",
+    "payment_card",
+    "card_number",
+    "card_expiry",
+    "card_cvv",
+    # DIGITAL IDENTITY
+    "username",
+    "ip_address",
+    "account_id",
+    "sensitive_account_id",
+    # SECRETS / CREDENTIALS
+    "password",
+    "secret",
+    "api_key",
+    "access_token",
+    "recovery_code",
+    # SENSITIVE DATES
+    "sensitive_date",
+    "document_date",
+    "expiration_date",
+    "transaction_date",
+]
+
+# Centralized canonical mapping: GLiNER2 native label → PromptShield canonical EntityType
+GLINER2_ENTITY_MAPPING: Dict[str, str] = {
+    # PERSON / NAMES
+    "person":                   "PERSON",
+    "full_name":                "PERSON",
+    "first_name":               "PERSON",
+    "middle_name":              "PERSON",
+    "last_name":                "PERSON",
+    "date_of_birth":            "DOB",
+    # CONTACT / ADDRESS
+    "email":                    "EMAIL",
+    "phone_number":             "PHONE",
+    "address":                  "ADDRESS",
+    "street_address":           "ADDRESS",
+    "city":                     "LOCATION",
+    "state_or_region":          "LOCATION",
+    "postal_code":              "LOCATION",
+    "country":                  "LOCATION",
+    # GOVERNMENT / TAX IDs
+    "government_id":            "NATIONAL_ID",
+    "national_id_number":       "NATIONAL_ID",
+    "passport_number":          "PASSPORT",
+    "drivers_license_number":   "DRIVER_LICENSE",
+    "license_number":           "DRIVER_LICENSE",
+    "tax_id":                   "TAX_ID",
+    "tax_number":               "TAX_ID",
+    # BANKING / PAYMENT
+    "bank_account":             "BANK_ACCOUNT",
+    "account_number":           "BANK_ACCOUNT",
+    "routing_number":           "BANK_ACCOUNT",
+    "iban":                     "BANK_ACCOUNT",
+    "payment_card":             "CREDIT_CARD",
+    "card_number":              "CREDIT_CARD",
+    "card_expiry":              "DATE",
+    "card_cvv":                 "PASSWORD",
+    # DIGITAL IDENTITY
+    "username":                 "USERNAME",
+    "ip_address":               "IP_ADDRESS",
+    "account_id":               "USER_ID",
+    "sensitive_account_id":     "USER_ID",
+    # SECRETS / CREDENTIALS
+    "password":                 "PASSWORD",
+    "secret":                   "API_KEY",
+    "api_key":                  "API_KEY",
+    "access_token":             "ACCESS_TOKEN",
+    "recovery_code":            "RECOVERY_CODE",
+    # SENSITIVE DATES
+    "sensitive_date":           "DATE",
+    "document_date":            "DATE",
+    "expiration_date":          "DATE",
+    "transaction_date":         "DATE",
+}
+
+
+# ============================================================
 # CONFLICT RESOLUTION — ENTITY TYPE PRIORITY
 # ============================================================
 # Higher number = higher priority when resolving overlapping spans.
 # Structured / credential detections beat generic NER.
 ENTITY_TYPE_PRIORITY: Dict[str, int] = {
-    "API_KEY":       10,
-    "ACCESS_TOKEN":  10,
-    "CREDIT_CARD":    9,
-    "PASSWORD":       8,
-    "EMAIL":          7,
-    "PHONE":          6,
-    "BANK_ACCOUNT":   6,
-    "IP_ADDRESS":     6,
-    "ORDER_ID":       6,
-    "CUSTOMER_ID":    6,
-    "TICKET_ID":      6,
-    "USER_ID":        5,
-    "ADDRESS":        5,  # Higher than individual LOCATION so full address subsumes nested city/state
-    "DATE":           4,
-    "PERSON":         3,
-    "ORGANIZATION":   3,
-    "LOCATION":       2,
+    "API_KEY":          10,
+    "ACCESS_TOKEN":     10,
+    "RECOVERY_CODE":    10,
+    "CREDIT_CARD":       9,
+    "PASSWORD":          8,
+    "NATIONAL_ID":       8,
+    "PASSPORT":          8,
+    "DRIVER_LICENSE":    8,
+    "TAX_ID":            8,
+    "EMAIL":             7,
+    "PHONE":             6,
+    "BANK_ACCOUNT":      6,
+    "IP_ADDRESS":        6,
+    "ORDER_ID":          6,
+    "CUSTOMER_ID":       6,
+    "TICKET_ID":         6,
+    "USER_ID":           5,
+    "USERNAME":          5,
+    "DOB":               5,
+    "ADDRESS":           5,  # Higher than individual LOCATION so full address subsumes nested city/state
+    "PII_OTHER":         5,
+    "DATE":              4,
+    "PERSON":            3,
+    "ORGANIZATION":      3,
+    "LOCATION":          2,
 }
 
 # SOURCE priority when entity types are the same but sources differ.
@@ -451,8 +572,10 @@ ENTITY_TYPE_PRIORITY: Dict[str, int] = {
 SOURCE_PRIORITY: Dict[str, int] = {
     "regex":            5,    # deterministic, explicit format pattern
     "luhn_credit_card": 5,
+    "gliner2":          4,    # deep neural GLiNER2-PII privacy model
+    "gliner2_pii":      4,    # synonym/alias for gliner2 source
     "presidio":         4,    # ML-backed, well-trained
-    "gliner":           4,    # deep neural zero-shot transformer
+    "gliner":           4,    # legacy GLiNER v1 (evaluation only)
     "spacy":            3,    # pretrained statistical NER
     "heuristic_ner":    2,    # built-in gazetteer / pattern fallback
 }
@@ -475,7 +598,9 @@ CONFIDENCE_BASELINES: Dict[str, float] = {
     "regex_address":        0.95,
     "regex_date":           0.90,
     "presidio":             None,  # Presidio provides per-entity scores; use as-is
-    "gliner":               0.88,  # GLiNER zero-shot neural NER baseline
+    "gliner2":              0.90,  # GLiNER2-PII baseline confidence
+    "gliner2_pii":          0.90,
+    "gliner":               0.88,  # GLiNER v1 legacy baseline
     "spacy_ner":            0.85,
     "heuristic_ner":        0.88,
 }
