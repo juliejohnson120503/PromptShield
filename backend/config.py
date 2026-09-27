@@ -162,7 +162,9 @@ PASSWORD_PATTERNS: List[Tuple[re.Pattern, str]] = [
     (
         re.compile(
             r"(?i)\b(?:(?:my|the|user|acc|account|login)\s+)?(?:login\s+)?(?:password|passwd|psswrd|pswrd|pswd|pass|pwd|passphrase|passcode|pword)"
-            r"\s+(?:is|was|=|:)\s*['\"]?([^'\"\s\r\n,.;]{3,})['\"]?"
+            r"\s+(?:is|was|=|:)\s*['\"]?"
+            r"(?!(?:strong|weak|secure|insecure|valid|invalid|safe|unsafe|compromised|complexity|length|requirements|policy|rules|checker|hash|reset|change|generator|management|verification|rotation|strength|entropy|stronger|weaker|better|good|bad)\b)"
+            r"([^'\"\s\r\n,.;]{3,})['\"]?"
         ),
         "password_natural_lang",
     ),
@@ -184,7 +186,10 @@ PASSWORD_PATTERNS: List[Tuple[re.Pattern, str]] = [
     # password followed directly by secret value with space: "password RiverStone#9472"
     (
         re.compile(
-            r"(?i)\b(?:password|passwd|psswrd|pswrd|pswd|pass|pwd)\s+([A-Za-z0-9!@#$%^&*()_+\-=\[\]{}|;:'\",.<>?/]{6,32})(?=\s|[.,;]|$)"
+            r"(?i)\b(?:password|passwd|psswrd|pswrd|pswd|pass|pwd)\s+"
+            r"(?!(?:strong|weak|secure|insecure|valid|invalid|safe|unsafe|compromised|complexity|length|requirements|policy|rules|checker|hash|reset|change|generator|management|verification|rotation|strength|entropy|stronger|weaker|better|good|bad|should|must|will|would|can|could|is|was|are|were|has|have|had|and|or|not|with|for|from|that|this|which|to|in|at)\b)"
+            r"([A-Za-z0-9!@#$%^&*()_+\-=\[\]{}|;:'\"/]{6,32})"
+            r"(?=[.,;!?]?(?:\s|$))"
         ),
         "password_space_separated",
     ),

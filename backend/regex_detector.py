@@ -248,16 +248,37 @@ class RegexDetector:
         return entities
 
     def _detect_passwords(self, prompt: str) -> List[DetectedEntity]:
+        DESCRIPTOR_WORDS = {
+            "strong", "weak", "secure", "insecure", "valid", "invalid",
+            "safe", "unsafe", "compromised", "complexity", "length",
+            "policy", "reset", "checker", "strength", "entropy",
+            "stronger", "weaker", "better", "best", "good", "bad",
+            "simple", "complex", "random", "plain", "text", "hash",
+            "hashed", "encrypted",
+        }
         entities = []
         for pattern, label in config.PASSWORD_PATTERNS:
             for match in pattern.finditer(prompt):
                 if match.groups():
-                    payload = match.group(len(match.groups()))
-                    start = match.start(len(match.groups()))
-                    end = match.end(len(match.groups()))
+                    payload = match.group(1)
+                    start = match.start(1)
+                    end = match.end(1)
                 else:
                     payload = match.group(0)
                     start, end = match.start(), match.end()
+
+                # Strip trailing sentence punctuation (preserve exclamation marks which are common in passwords)
+                clean_payload = payload.rstrip(".,;:?")
+                if clean_payload != payload:
+                    end = start + len(clean_payload)
+                    payload = clean_payload
+
+                if len(payload) < 3:
+                    continue
+
+                if payload.lower() in DESCRIPTOR_WORDS:
+                    continue
+
                 entities.append(
                     DetectedEntity(
                         text=payload,

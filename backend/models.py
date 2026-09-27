@@ -162,6 +162,31 @@ class RoleCategory(str, Enum):
     GENERAL_REFERENCE = "GENERAL_REFERENCE"          # Ambiguous or third-party background references
 
 
+class EntityTaskRelation(str, Enum):
+    """Semantic relationship between a detected entity and the user's task."""
+    NONE = "NONE"
+    IRRELEVANT = "IRRELEVANT"
+    OUTPUT_REFERENCE = "OUTPUT_REFERENCE"
+    TARGET_OF_ANALYSIS = "TARGET_OF_ANALYSIS"
+    COMPARISON_INPUT = "COMPARISON_INPUT"
+    CALCULATION_INPUT = "CALCULATION_INPUT"
+    VALIDATION_INPUT = "VALIDATION_INPUT"
+    TRANSFORMATION_CONTENT = "TRANSFORMATION_CONTENT"
+
+
+class OperationType(str, Enum):
+    """Broad semantic category of operation requested in the prompt."""
+    GENERATION = "GENERATION"
+    TRANSFORMATION = "TRANSFORMATION"
+    SUMMARIZATION = "SUMMARIZATION"
+    VALUE_ANALYSIS = "VALUE_ANALYSIS"
+    COMPARISON = "COMPARISON"
+    CALCULATION = "CALCULATION"
+    VALIDATION = "VALIDATION"
+    GENERAL_INFORMATION = "GENERAL_INFORMATION"
+    UNKNOWN = "UNKNOWN"
+
+
 @dataclass
 class ContextualRole:
     """Detailed contextual evaluation for a detected entity."""
@@ -173,6 +198,8 @@ class ContextualRole:
     is_task_relevant: bool          # True if entity is functionally needed for the prompt's task
     context_cue: str                # Explanatory linguistic/structural trigger
     confidence: float = 1.0
+    value_required: bool = False    # True if the literal entity characters/value are required for the task
+    entity_task_relation: EntityTaskRelation = EntityTaskRelation.NONE  # Specific entity-task relationship
 
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -182,6 +209,12 @@ class ContextualRole:
             "is_first_party": self.is_first_party,
             "is_public_knowledge": self.is_public_knowledge,
             "is_task_relevant": self.is_task_relevant,
+            "value_required": self.value_required,
+            "entity_task_relation": (
+                self.entity_task_relation.value
+                if isinstance(self.entity_task_relation, EntityTaskRelation)
+                else str(self.entity_task_relation)
+            ),
             "context_cue": self.context_cue,
             "confidence": round(self.confidence, 4),
         }
@@ -195,6 +228,7 @@ class ContextAnalysisResult:
     task_confidence: float
     task_cues: List[str]
     entity_contexts: List[ContextualRole]
+    operation_type: OperationType = OperationType.UNKNOWN
 
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -202,5 +236,11 @@ class ContextAnalysisResult:
             "task_type": self.task_type.value,
             "task_confidence": round(self.task_confidence, 4),
             "task_cues": self.task_cues,
+            "operation_type": (
+                self.operation_type.value
+                if isinstance(self.operation_type, OperationType)
+                else str(self.operation_type)
+            ),
             "entity_contexts": [ec.to_dict() for ec in self.entity_contexts],
         }
+

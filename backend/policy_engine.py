@@ -79,6 +79,10 @@ class EntityPolicyResult:
     decision:    PolicyDecision
     reason:      str            # Short audit-trail sentence
 
+    # Task & Operational Relation
+    value_required: bool = False
+    entity_task_relation: str = "NONE"
+
     def to_dict(self) -> Dict[str, Any]:
         return {
             "entity_text":       self.entity_text,
@@ -87,6 +91,8 @@ class EntityPolicyResult:
             "is_first_party":    self.is_first_party,
             "is_public_knowledge": self.is_public_knowledge,
             "is_task_relevant":  self.is_task_relevant,
+            "value_required":    self.value_required,
+            "entity_task_relation": self.entity_task_relation,
             "risk_score":        round(self.risk_score, 4),
             "risk_level":        self.risk_level.value,
             "risk_factors":      self.risk_factors,
@@ -262,6 +268,10 @@ class PolicyEngine:
         risk_level = _score_to_level(score)
         decision, reason = self._decide_policy(role, score, risk_level)
 
+        val_req = getattr(role, "value_required", False)
+        rel = getattr(role, "entity_task_relation", "NONE")
+        rel_str = rel.value if hasattr(rel, "value") else str(rel)
+
         return EntityPolicyResult(
             entity_text=role.entity_text,
             entity_type=role.entity_type,
@@ -269,6 +279,8 @@ class PolicyEngine:
             is_first_party=role.is_first_party,
             is_public_knowledge=role.is_public_knowledge,
             is_task_relevant=role.is_task_relevant,
+            value_required=val_req,
+            entity_task_relation=rel_str,
             risk_score=score,
             risk_level=risk_level,
             risk_factors=factors,
@@ -328,6 +340,7 @@ class PolicyEngine:
         Map risk score + contextual flags to a concrete PolicyDecision.
 
         Decision logic (ordered by priority):
+        0. Value Required by Task → USER_APPROVAL
         1. Technical credentials → always MASK
         2. Public knowledge and NOT first-party → RETAIN
         3. CRITICAL / HIGH risk → MASK
@@ -335,6 +348,18 @@ class PolicyEngine:
         5. MEDIUM risk otherwise → MASK
         6. LOW / NONE risk → RETAIN
         """
+
+        # Rule 0 — Literal Value Required by Task:
+        # If the requested task genuinely requires the literal value to be analyzed,
+        # calculated, compared, or validated, surface for explicit USER_APPROVAL.
+        # The underlying risk score remains intact (e.g. CRITICAL for credentials).
+        if getattr(role, "value_required", False):
+            rel = getattr(role, "entity_task_relation", "TARGET_OF_ANALYSIS")
+            relation_str = rel.value if hasattr(rel, "value") else str(rel)
+            return (
+                PolicyDecision.USER_APPROVAL,
+                f"Sensitive literal value ({role.entity_type.value}) is required as {relation_str} for the requested task ({role.context_cue}) — user approval required before sending.",
+            )
 
         # Rule 1 — Credentials are always masked, no exceptions
         if role.role_category == RoleCategory.TECHNICAL_CREDENTIAL:
