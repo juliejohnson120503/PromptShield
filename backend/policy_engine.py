@@ -83,6 +83,13 @@ class EntityPolicyResult:
     value_required: bool = False
     entity_task_relation: str = "NONE"
 
+    # Character spans (threaded from DetectedEntity via ContextualRole)
+    start: int = -1
+    end: int = -1
+    normalized_value: str = ""
+    disclosure_allowed: bool = True
+    explicit_directive: Optional[str] = None
+
     def to_dict(self) -> Dict[str, Any]:
         return {
             "entity_text":       self.entity_text,
@@ -98,6 +105,11 @@ class EntityPolicyResult:
             "risk_factors":      self.risk_factors,
             "decision":          self.decision.value,
             "reason":            self.reason,
+            "start":             self.start,
+            "end":               self.end,
+            "normalized_value":  self.normalized_value,
+            "disclosure_allowed": self.disclosure_allowed,
+            "explicit_directive": self.explicit_directive,
         }
 
 
@@ -266,7 +278,7 @@ class PolicyEngine:
         """Compute risk score + policy decision for one entity."""
         score, factors = self._compute_risk_score(role)
         risk_level = _score_to_level(score)
-        decision, reason = self._decide_policy(role, score, risk_level)
+        decision, reason, disclosure_allowed = self._decide_policy(role, score, risk_level)
 
         val_req = getattr(role, "value_required", False)
         rel = getattr(role, "entity_task_relation", "NONE")
@@ -286,6 +298,11 @@ class PolicyEngine:
             risk_factors=factors,
             decision=decision,
             reason=reason,
+            start=getattr(role, "start", -1),
+            end=getattr(role, "end", -1),
+            normalized_value=getattr(role, "normalized_value", role.entity_text),
+            disclosure_allowed=disclosure_allowed,
+            explicit_directive=getattr(role, "explicit_directive", None),
         )
 
     def _compute_risk_score(
@@ -335,63 +352,85 @@ class PolicyEngine:
         role: ContextualRole,
         score: float,
         risk_level: RiskLevel,
-    ) -> tuple[PolicyDecision, str]:
+    ) -> tuple[PolicyDecision, str, bool]:
         """
-        Map risk score + contextual flags to a concrete PolicyDecision.
+        Map risk score + contextual flags + directives to a concrete PolicyDecision.
+        Returns: (PolicyDecision, reason_str, disclosure_allowed_bool)
 
         Decision logic (ordered by priority):
-        0. Value Required by Task → USER_APPROVAL
-        1. Technical credentials → always MASK
-        2. Public knowledge and NOT first-party → RETAIN
-        3. CRITICAL / HIGH risk → MASK
-        4. MEDIUM risk + task-relevant (and not first-party) → USER_APPROVAL
-        5. MEDIUM risk otherwise → MASK
-        6. LOW / NONE risk → RETAIN
+        0. Explicit Linguistic Directive (RETAIN vs MASK)
+        1. Literal Value Required by Task → USER_APPROVAL
+        2. Technical credentials → always MASK
+        3. Public knowledge and NOT first-party → RETAIN
+        4. CRITICAL / HIGH risk → MASK
+        5. MEDIUM risk + task-relevant (and not first-party) → USER_APPROVAL
+        6. MEDIUM risk otherwise → MASK
+        7. LOW / NONE risk → RETAIN
         """
 
-        # Rule 0 — Literal Value Required by Task:
-        # If the requested task genuinely requires the literal value to be analyzed,
-        # calculated, compared, or validated, surface for explicit USER_APPROVAL.
-        # The underlying risk score remains intact (e.g. CRITICAL for credentials).
+        # Rule 0 — Explicit Directive Handling:
+        directive = getattr(role, "explicit_directive", None)
+        if directive == "MASK":
+            return (
+                PolicyDecision.MASK,
+                f"Explicit user directive prohibiting disclosure (must not expose) — masked to protect privacy.",
+                False,
+            )
+        if directive == "RETAIN":
+            # Protect technical credentials regardless of ordinary retain instruction
+            if role.role_category != RoleCategory.TECHNICAL_CREDENTIAL and role.entity_type not in (
+                EntityType.PASSWORD, EntityType.API_KEY, EntityType.ACCESS_TOKEN, EntityType.RECOVERY_CODE
+            ):
+                return (
+                    PolicyDecision.RETAIN,
+                    f"Explicit user directive to mention/include '{role.entity_text}' in output — retained for task accuracy.",
+                    True,
+                )
+
+        # Rule 1 — Literal Value Required by Task:
         if getattr(role, "value_required", False):
             rel = getattr(role, "entity_task_relation", "TARGET_OF_ANALYSIS")
             relation_str = rel.value if hasattr(rel, "value") else str(rel)
             return (
                 PolicyDecision.USER_APPROVAL,
                 f"Sensitive literal value ({role.entity_type.value}) is required as {relation_str} for the requested task ({role.context_cue}) — user approval required before sending.",
+                False,
             )
 
-        # Rule 1 — Credentials are always masked, no exceptions
+        # Rule 2 — Credentials are always masked, no exceptions
         if role.role_category == RoleCategory.TECHNICAL_CREDENTIAL:
             if "recovery" in role.context_cue.lower() or "maiden" in role.context_cue.lower():
                 return (
                     PolicyDecision.MASK,
                     "Authentication / recovery question answer — masked to protect account security.",
+                    False,
                 )
             if role.entity_type == EntityType.PASSWORD:
-                return (PolicyDecision.MASK, "Authentication credential — always masked.")
+                return (PolicyDecision.MASK, "Authentication credential — always masked.", False)
             if role.entity_type == EntityType.API_KEY:
-                return (PolicyDecision.MASK, "Technical credential — always masked.")
+                return (PolicyDecision.MASK, "Technical credential — always masked.", False)
             if role.entity_type == EntityType.ACCESS_TOKEN:
-                return (PolicyDecision.MASK, "Technical credential (access token) — always masked.")
+                return (PolicyDecision.MASK, "Technical credential (access token) — always masked.", False)
             if role.entity_type == EntityType.CONNECTION_STRING:
-                return (PolicyDecision.MASK, "Credential-bearing connection string / database URI — always masked.")
+                return (PolicyDecision.MASK, "Credential-bearing connection string / database URI — always masked.", False)
             if role.entity_type == EntityType.RECOVERY_CODE:
-                return (PolicyDecision.MASK, "Account recovery authentication credential — always masked.")
+                return (PolicyDecision.MASK, "Account recovery authentication credential — always masked.", False)
             return (
                 PolicyDecision.MASK,
                 f"Technical credential ({role.entity_type.value}) — always masked.",
+                False,
             )
 
-        # Rule 2 — Public figures / public facts: retain unless the user is
+        # Rule 3 — Public figures / public facts: retain unless the user is
         #           personally associated (e.g., "my company is Google")
         if role.is_public_knowledge and not role.is_first_party:
             return (
                 PolicyDecision.RETAIN,
                 "Publicly known entity with no personal ownership — retained for task accuracy.",
+                True,
             )
 
-        # Rule 3 — Critical or high risk → mask unconditionally
+        # Rule 4 — Critical or high risk → mask unconditionally
         if risk_level in (RiskLevel.CRITICAL, RiskLevel.HIGH):
             SEMANTIC_DESCRIPTIONS = {
                 EntityType.PASSPORT: "Government-issued identity document number",
@@ -417,25 +456,29 @@ class PolicyEngine:
             return (
                 PolicyDecision.MASK,
                 f"{desc} — masked to protect personal data ({risk_level.value} risk, {score:.2f}).",
+                True,
             )
 
-        # Rule 4 — Medium risk but task-essential and not personal → user approval
+        # Rule 5 — Medium risk but task-essential and not personal → user approval
         if risk_level == RiskLevel.MEDIUM and role.is_task_relevant and not role.is_first_party:
             return (
                 PolicyDecision.USER_APPROVAL,
                 f"Medium risk ({score:.2f}), task-relevant and not first-party — "
                 "user approval required before sending.",
+                True,
             )
 
-        # Rule 5 — Medium risk without task relevance → mask
+        # Rule 6 — Medium risk without task relevance → mask
         if risk_level == RiskLevel.MEDIUM:
             return (
                 PolicyDecision.MASK,
                 f"Medium risk ({score:.2f}), not clearly task-essential — masked by default.",
+                True,
             )
 
-        # Rule 6 — Low / no risk → retain
+        # Rule 7 — Low / no risk → retain
         return (
             PolicyDecision.RETAIN,
             f"Low risk ({score:.2f}) — retained; no significant privacy concern.",
+            True,
         )

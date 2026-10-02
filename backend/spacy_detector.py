@@ -90,7 +90,7 @@ def _load_spacy_model() -> Optional[Any]:
 # Static gazetteers — kept in this module for the fallback path.
 # These are NOT the primary detection mechanism when spaCy is available.
 KNOWN_ORGANIZATIONS: Set[str] = {
-    "Google", "Microsoft", "Apple", "Amazon", "Meta", "Facebook", "Netflix",
+    "Google", "Microsoft", "Apple", "Apple Inc.", "Amazon", "Meta", "Facebook", "Netflix",
     "OpenAI", "Anthropic", "IBM", "Intel", "Cisco", "Oracle", "Nvidia",
     "TCS", "Infosys", "Wipro", "Accenture", "Cognizant", "Capgemini",
     "ABC Technologies", "XYZ Corp", "Acme Corp", "Tech Solutions",
@@ -130,13 +130,13 @@ PERSON_STOP_WORDS: Set[str] = {
     "looking", "trying", "interested", "reaching", "contacting", "hoping",
     "asking", "working", "living", "studying", "excited", "pleased", "glad",
     "meet", "have", "write", "create", "generate", "compose", "draft",
-    "need", "want", "would", "like", "make", "do", "get", "let", "show",
+    "need", "want", "would", "like", "make", "do", "does", "did", "get", "let", "show",
     "give", "take", "help", "build", "use", "run", "go", "come", "check",
     "find", "open", "read", "list", "explain", "describe", "summarize",
     "translate", "summarise", "analyze", "analyse", "fix", "debug", "solve",
     "convert", "formal", "professional", "informal", "could", "can", "shall",
     "will", "what", "when", "where", "why", "how", "just", "also", "so",
-    "but", "letter", "mail", "message", "note", "report", "document", "text",
+    "but", "has", "had", "letter", "mail", "message", "note", "report", "document", "text",
     "psswrd", "pswd", "pwd", "password", "pin", "passcode", "pass", "pword",
 }
 
@@ -152,9 +152,12 @@ _RECIPIENT_INTRO_RE = re.compile(
 )
 _ORG_INTRO_RE = re.compile(
     r"\b(?i:working\s+at|employed\s+at|interview\s+with|email\s+to|"
-    r"application\s+(?:for|to)|company\s+called|joining)\s+"
+    r"application\s+(?:for|to)|company\s+called|joining|from)\s+"
     r"([A-Z][A-Za-z0-9]+(?:\s+[A-Z][A-Za-z0-9]+)*"
-    r"(?:\s+(?:Technologies|Corp|Corporation|Inc|Ltd|Limited|LLC|Labs|Systems|Solutions))?)\\b"
+    r"(?:\s+(?:Technologies|Corp|Corporation|Inc|Ltd|Limited|LLC|Labs|Systems|Solutions|Enterprises|Holdings|Group))?)\b"
+)
+_CORPORATE_SUFFIX_RE = re.compile(
+    r"\b([A-Z][A-Za-z0-9]+(?:\s+[A-Z][A-Za-z0-9]+)*\s+(?:Technologies|Corp|Corporation|Inc\.?|Ltd\.?|Limited|LLC|Labs|Systems|Solutions|Enterprises|Holdings|Group))\b"
 )
 _LOC_INTRO_RE = re.compile(
     r"\b(?i:living\s+in|located\s+in|based\s+in|traveling\s+to|office\s+in|"
@@ -284,11 +287,29 @@ class HeuristicNERDetector:
     def _org_intro_patterns(self, prompt: str) -> List[DetectedEntity]:
         results = []
         for m in _ORG_INTRO_RE.finditer(prompt):
-            org = m.group(1)
+            org = m.group(1).strip()
+            org_norm = org.lower()
+            if org_norm in config.COMMON_EXCLUDED_TOKENS or len(org) <= 2:
+                continue
+            if org in KNOWN_LOCATIONS or org_norm in {"india", "kochi", "chennai", "delhi", "mumbai"}:
+                continue
+            # Check if followed by technical descriptors e.g. "IP address", "server", "number"
+            tail = prompt[m.end(1):m.end(1) + 20].lower()
+            if re.match(r"^\s+(?:address|number|id|port|server|connection|endpoint|log)\b", tail):
+                continue
+            results.append(self._make(org, EntityType.ORGANIZATION,
+                                      m.start(1), m.end(1), 0.85,
+                                      "heuristic_org_intro"))
+        return results
+
+    def _corporate_suffix_orgs(self, prompt: str) -> List[DetectedEntity]:
+        results = []
+        for m in _CORPORATE_SUFFIX_RE.finditer(prompt):
+            org = m.group(1).strip()
             if org not in KNOWN_LOCATIONS:
                 results.append(self._make(org, EntityType.ORGANIZATION,
-                                          m.start(1), m.end(1), 0.85,
-                                          "heuristic_org_intro"))
+                                          m.start(1), m.end(1), 0.90,
+                                          "heuristic_org_suffix"))
         return results
 
     def _loc_intro_patterns(self, prompt: str) -> List[DetectedEntity]:
@@ -310,6 +331,7 @@ class HeuristicNERDetector:
             if any(
                 w in DAYS_AND_MONTHS
                 or w in KNOWN_LOCATIONS
+                or w in KNOWN_ORGANIZATIONS
                 or w.lower() in PERSON_STOP_WORDS
                 for w in words
             ):
@@ -427,22 +449,58 @@ class SpacyNERDetector:
             if re.match(r"^[A-Za-z]{2,8}[-_]\d+$", clean_text):
                 continue
 
-            # Reject isolated 5-6 digit PIN/postal codes or road names tagged as DATE
+            # Reject isolated 5-6 digit PIN/postal codes, road names, or isolated month words tagged as DATE
             if entity_type == EntityType.DATE:
                 if re.match(r"^\d{5,6}$", clean_text):
                     continue
                 if re.search(r"(?i)\b(?:road|rd\.?|street|st\.?|avenue|ave\.?|lane|ln\.?|drive|dr\.?|mg|marg|nagar)\b", text):
                     continue
+                MONTH_WORDS = {
+                    "january", "february", "march", "april", "may", "june",
+                    "july", "august", "september", "october", "november", "december",
+                    "jan", "feb", "mar", "apr", "jun", "jul", "aug", "sep", "oct", "nov", "dec",
+                }
+                if clean_norm in MONTH_WORDS:
+                    w_before = prompt[max(0, start - 25):start]
+                    w_after = prompt[end:min(len(prompt), end + 25)]
+                    has_nearby_digits = bool(re.search(r"\b\d{1,4}(?:st|nd|rd|th)?\b", w_before + " " + w_after))
+                    has_date_prep = bool(re.search(r"(?i)\b(?:in|on|during|dated|since|until|by|before|after|of)\s*$", w_before.strip()))
+                    if not (has_nearby_digits or has_date_prep):
+                        continue
 
             # Gazetteer checks: prevent ORG misclassification of known locations (e.g., "Kochi")
             if clean_text in KNOWN_LOCATIONS or clean_text.title() in KNOWN_LOCATIONS:
                 entity_type = EntityType.LOCATION
             elif clean_text in KNOWN_ORGANIZATIONS or clean_text.title() in KNOWN_ORGANIZATIONS:
                 entity_type = EntityType.ORGANIZATION
+            elif entity_type == EntityType.ORGANIZATION:
+                prefix = prompt[:start].strip()
+                if re.search(r"(?i)\b(?:my\s+name\s+is|i\s*['’`]?\s*m|i\s+am|iam|this\s+is|call\s+me|myself|my\s+names|name\s+is)\b", prefix[-30:]):
+                    entity_type = EntityType.PERSON
 
             if entity_type == EntityType.PERSON:
                 if len(clean_text) <= 1 or clean_norm in {"i", "me", "my", "we", "us", "he", "him", "she", "her", "they", "them", "it"}:
                     continue
+                # Strip possessives (e.g. "Priya Nair's" -> "Priya Nair")
+                if re.search(r"['’]s?$", text):
+                    trimmed = re.sub(r"['’]s?$", "", text).rstrip()
+                    if trimmed:
+                        text = trimmed
+                        end = start + len(trimmed)
+
+                # Reject malformed PERSON spans
+                if re.search(r"[.!?;:\n]{1,}\s*[-–—]|\.[a-zA-Z]{2,}|\b(?<![A-Z])\.[A-Z]", text):
+                    continue
+                disqualifying = {
+                    "api", "key", "token", "password", "secret", "credential", "database",
+                    "server", "ip", "endpoint", "must", "should", "shall", "cannot", "can",
+                    "will", "would", "could", "please", "report", "explain", "recommend",
+                    "incident", "order", "ticket", "customer", "support",
+                }
+                words_clean = [re.sub(r"^\W+|\W+$", "", w).lower() for w in text.split()]
+                if any(w in disqualifying for w in words_clean):
+                    continue
+
                 words = text.split()
                 while len(words) > 1 and words[-1].lower() in PERSON_STOP_WORDS:
                     words.pop()
@@ -468,5 +526,34 @@ class SpacyNERDetector:
                     metadata={"spacy_label": ent.label_},
                 )
             )
+        # Also capture gazetteer persons and contextual name patterns that statistical NER misses
+        fallback_candidates = []
+        fallback_candidates.extend(self._fallback._gazetteer_persons(prompt))
+        fallback_candidates.extend(self._fallback._gazetteer_orgs(prompt))
+        fallback_candidates.extend(self._fallback._gazetteer_locations(prompt))
+        fallback_candidates.extend(self._fallback._iam_patterns(prompt))
+        fallback_candidates.extend(self._fallback._name_intro_patterns(prompt))
+        fallback_candidates.extend(self._fallback._recipient_intro_patterns(prompt))
+        fallback_candidates.extend(self._fallback._org_intro_patterns(prompt))
+        fallback_candidates.extend(self._fallback._corporate_suffix_orgs(prompt))
+
+        spacy_label_map = {
+            EntityType.PERSON: "PERSON",
+            EntityType.ORGANIZATION: "ORG",
+            EntityType.LOCATION: "GPE",
+            EntityType.DATE: "DATE",
+        }
+
+        for cand in fallback_candidates:
+            # Skip if an existing spaCy entity already overlaps with this candidate
+            if any(max(cand.start, e.start) < min(cand.end, e.end) for e in entities):
+                continue
+            cand.source = "spacy"
+            lbl = spacy_label_map.get(cand.entity_type, cand.entity_type.value)
+            cand.detector = f"spacy_{lbl.lower()}"
+            cand.metadata = dict(cand.metadata) if cand.metadata else {}
+            cand.metadata["spacy_label"] = lbl
+            entities.append(cand)
 
         return entities
+

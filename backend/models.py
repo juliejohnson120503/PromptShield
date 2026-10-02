@@ -1,7 +1,7 @@
 """
 Data models for PromptShield AI.
 Defines entity types, detected entity structures, normalization metadata,
-and baseline masking results.
+baseline masking results, and Phase 4 semantic masking results.
 
 Changelog (Phase 1 — Hybrid Detection Foundation)
 --------------------------------------------------
@@ -16,7 +16,7 @@ Changelog (Phase 1 — Hybrid Detection Foundation)
 
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Dict, List, Optional, Any
+from typing import Dict, List, Optional, Any, Set
 
 
 class EntityType(str, Enum):
@@ -150,6 +150,7 @@ class TaskType(str, Enum):
     TRANSLATION = "TRANSLATION"
     DATA_ANALYSIS = "DATA_ANALYSIS"
     DOCUMENT_GENERATION = "DOCUMENT_GENERATION"
+    INCIDENT_REPORT = "INCIDENT_REPORT"
     GENERAL_CHAT = "GENERAL_CHAT"
 
 
@@ -200,6 +201,12 @@ class ContextualRole:
     confidence: float = 1.0
     value_required: bool = False    # True if the literal entity characters/value are required for the task
     entity_task_relation: EntityTaskRelation = EntityTaskRelation.NONE  # Specific entity-task relationship
+    # Character offsets from the originating DetectedEntity (threaded through for Phase 4)
+    start: int = -1
+    end: int = -1
+    normalized_value: str = ""      # Canonical form of the entity text
+    explicit_directive: Optional[str] = None  # "RETAIN", "MASK", or None
+    disclosure_allowed: bool = True           # True if allowed to be restored in final output
 
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -217,6 +224,11 @@ class ContextualRole:
             ),
             "context_cue": self.context_cue,
             "confidence": round(self.confidence, 4),
+            "start": self.start,
+            "end": self.end,
+            "normalized_value": self.normalized_value,
+            "explicit_directive": self.explicit_directive,
+            "disclosure_allowed": self.disclosure_allowed,
         }
 
 
@@ -242,5 +254,222 @@ class ContextAnalysisResult:
                 else str(self.operation_type)
             ),
             "entity_contexts": [ec.to_dict() for ec in self.entity_contexts],
+        }
+
+
+# ==========================================
+# PHASE 4: SEMANTIC MASKING MODELS
+# ==========================================
+
+@dataclass
+class ApprovalRecord:
+    """
+    Stable approval identifier for a USER_APPROVAL entity.
+
+    Used by the UI/API (Phase 6+) to approve one specific sensitive value
+    without affecting other entities of the same or different type.
+
+    Fields
+    ------
+    entity_id       : Deterministic string key:  "<TYPE>:<normalized_value>"
+    entity_type     : The EntityType of the sensitive value.
+    entity_text     : The raw literal text from the prompt.
+    normalized_value: Canonical form used for deduplication.
+    placeholder     : The placeholder currently protecting this entity (e.g. <PASSWORD_1>).
+    risk_score      : Risk score from Phase 3 PolicyEngine.
+    risk_level      : Risk level string from Phase 3.
+    decision_reason : Human-readable Phase 3 reason string.
+    """
+    entity_id: str          # "<TYPE>:<normalized_value>" — stable within a prompt
+    entity_type: EntityType
+    entity_text: str
+    normalized_value: str
+    placeholder: str        # The placeholder assigned by SemanticMasker
+    risk_score: float
+    risk_level: str
+    decision_reason: str
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "entity_id":        self.entity_id,
+            "entity_type":      self.entity_type.value,
+            "entity_text":      self.entity_text,
+            "normalized_value": self.normalized_value,
+            "placeholder":      self.placeholder,
+            "risk_score":       round(self.risk_score, 4),
+            "risk_level":       self.risk_level,
+            "decision_reason":  self.decision_reason,
+        }
+
+
+@dataclass
+class SemanticMaskingResult:
+    """
+    Result of Phase 4 — Context-Aware Semantic Masking.
+
+    Produced by SemanticMasker.mask() after consuming Phase 3 PolicyReport.
+    Replaces BaselineMaskResult for production use from Phase 4 onwards.
+
+    Fields
+    ------
+    original_prompt     : Unmodified input prompt.
+    sanitized_prompt    : Prompt with MASK/REVIEW/unapproved-USER_APPROVAL
+                          placeholders applied. Safe to send to external LLM.
+    mapping             : Local-only {placeholder: raw_value} dict.
+                          NEVER included in any external payload.
+    masked_entities     : Entities processed with MASK decision.
+    retained_entities   : Entities processed with RETAIN decision (unchanged).
+    approval_required   : Entities requiring user approval before release.
+                          Their literal values are protected in sanitized_prompt.
+    approved_entities   : Entities that received explicit approval and whose
+                          literal values appear in sanitized_prompt.
+    review_required     : Entities assigned REVIEW decision; masked by default.
+    task_type           : Task classification string from Phase 2.
+    overall_risk_level  : Highest risk level across all entities (Phase 3).
+    session_id          : Session identifier for the local mapping store.
+    """
+    original_prompt:   str
+    sanitized_prompt:  str
+    mapping:           Dict[str, str]          # placeholder → raw value (LOCAL ONLY)
+    masked_entities:   List["EntityPolicyResult"]   # forward ref; defined in policy_engine
+    retained_entities: List["EntityPolicyResult"]
+    approval_required: List[ApprovalRecord]
+    approved_entities: List[ApprovalRecord]
+    review_required:   List[ApprovalRecord]
+    task_type:         str
+    overall_risk_level: str
+    session_id:        str
+
+    def to_dict(self) -> Dict[str, Any]:
+        from backend.policy_engine import EntityPolicyResult  # local import to avoid circular
+        return {
+            "original_prompt":    self.original_prompt,
+            "sanitized_prompt":   self.sanitized_prompt,
+            "mapping":            self.mapping,
+            "task_type":          self.task_type,
+            "overall_risk_level": self.overall_risk_level,
+            "session_id":         self.session_id,
+            "summary": {
+                "masked":           len(self.masked_entities),
+                "retained":         len(self.retained_entities),
+                "approval_required": len(self.approval_required),
+                "approved":         len(self.approved_entities),
+                "review_required":  len(self.review_required),
+            },
+            "masked_entities":    [e.to_dict() for e in self.masked_entities],
+            "retained_entities":  [e.to_dict() for e in self.retained_entities],
+            "approval_required":  [a.to_dict() for a in self.approval_required],
+            "approved_entities":  [a.to_dict() for a in self.approved_entities],
+            "review_required":    [a.to_dict() for a in self.review_required],
+        }
+
+
+# ==========================================
+# PHASE 5: CONTROLLED RESTORATION & LLM MODELS
+# ==========================================
+
+class RestorationStatus(str, Enum):
+    """Status of placeholder restoration in LLM response."""
+    SUCCESS = "SUCCESS"               # All requested placeholders restored successfully
+    PARTIAL = "PARTIAL"               # Some placeholders restored, some blocked or untracked
+    DENIED = "DENIED"                 # Restoration rejected due to authorization/policy
+    UNMODIFIED = "UNMODIFIED"         # No placeholders were present in LLM response
+    ERROR = "ERROR"                   # Error during restoration
+
+
+@dataclass
+class RestoredPlaceholder:
+    """Record of an individual placeholder processed during restoration."""
+    placeholder: str                  # e.g., "<PERSON_1>"
+    original_value: str               # e.g., "Alice"
+    entity_type: Optional[EntityType] = None
+    restored: bool = True
+    reason: str = "Restored from local mapping store"
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "placeholder": self.placeholder,
+            "original_value": self.original_value if self.restored else "[REDACTED]",
+            "entity_type": self.entity_type.value if self.entity_type else "UNKNOWN",
+            "restored": self.restored,
+            "reason": self.reason,
+        }
+
+
+@dataclass
+class RestorationPolicy:
+    """Security and authorization policy governing controlled response restoration."""
+    allow_restoration: bool = True
+    blocked_entity_types: Set[EntityType] = field(default_factory=lambda: {
+        EntityType.PASSWORD,
+        EntityType.API_KEY,
+        EntityType.ACCESS_TOKEN,
+        EntityType.RECOVERY_CODE,
+    })  # Technical secrets blocked from restoration into output by default
+    allow_credentials_restoration: bool = False  # Explicit override if user demands credential reflection
+    require_session_match: bool = True
+    max_restorations: int = 100
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "allow_restoration": self.allow_restoration,
+            "blocked_entity_types": [et.value for et in self.blocked_entity_types],
+            "allow_credentials_restoration": self.allow_credentials_restoration,
+            "require_session_match": self.require_session_match,
+            "max_restorations": self.max_restorations,
+        }
+
+
+@dataclass
+class RestorationResult:
+    """
+    Result of Phase 5 — Controlled Placeholder Restoration.
+
+    Produced by ResponseRestorer.restore() after processing LLM generated response.
+    """
+    restored_text: str
+    raw_llm_response: str
+    session_id: Optional[str]
+    status: RestorationStatus
+    restorations: List[RestoredPlaceholder]
+    unrestored_placeholders: List[str]
+    audit_trail: Dict[str, Any]
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "restored_text": self.restored_text,
+            "raw_llm_response": self.raw_llm_response,
+            "session_id": self.session_id,
+            "status": self.status.value,
+            "restorations": [r.to_dict() for r in self.restorations],
+            "unrestored_placeholders": self.unrestored_placeholders,
+            "audit_trail": self.audit_trail,
+        }
+
+
+@dataclass
+class ShieldedExchangeResult:
+    """
+    Complete end-to-end audit bundle of a PromptShield protected LLM exchange (Phases 1–5).
+    """
+    original_prompt: str
+    sanitized_prompt: str
+    raw_llm_response: str
+    restored_response: str
+    session_id: str
+    masking_result: SemanticMaskingResult
+    restoration_result: RestorationResult
+    provider_name: str
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "original_prompt": self.original_prompt,
+            "sanitized_prompt": self.sanitized_prompt,
+            "raw_llm_response": self.raw_llm_response,
+            "restored_response": self.restored_response,
+            "session_id": self.session_id,
+            "masking_result": self.masking_result.to_dict(),
+            "restoration_result": self.restoration_result.to_dict(),
+            "provider_name": self.provider_name,
         }
 

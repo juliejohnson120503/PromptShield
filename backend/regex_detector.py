@@ -145,12 +145,24 @@ class RegexDetector:
             if re.search(r"://[^\s/@]*:[^\s/@]*$", prefix):
                 continue
             raw = match.group(0)
+            start = match.start()
+            end = match.end()
+
+            # Check for trailing sentence text attached to email (e.g. "email@domain.example.The")
+            email_sent_match = re.match(r"^([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,})\.([A-Z][a-z]+.*)$", raw)
+            if email_sent_match:
+                raw = email_sent_match.group(1)
+                end = start + len(raw)
+            elif raw.endswith("."):
+                raw = raw.rstrip(".")
+                end = start + len(raw)
+
             entities.append(
                 DetectedEntity(
                     text=raw,
                     entity_type=EntityType.EMAIL,
-                    start=match.start(),
-                    end=match.end(),
+                    start=start,
+                    end=end,
                     normalized_value=normalize_entity_value(EntityType.EMAIL, raw),
                     confidence=config.CONFIDENCE_BASELINES["regex_email"],
                     source="regex",
@@ -167,6 +179,13 @@ class RegexDetector:
                 digits_only = re.sub(r"\D", "", raw)
                 # Reject sequences too short or too long to be phone numbers
                 if len(digits_only) < 7 or len(digits_only) > 15:
+                    continue
+                # Contextual check: if preceded or followed by explicit account number cues, skip phone detection
+                prefix = prompt[max(0, match.start() - 50):match.start()]
+                if re.search(r"(?i)\b(?:customer|client|user|bank|personal|savings|checking|current|holder|employee)?\s*account\s*(?:number|no\.?|id|#)?\s*(?:is|was|[:\-#=])?\s*$", prefix):
+                    continue
+                suffix = prompt[match.end():min(len(prompt), match.end() + 30)]
+                if re.search(r"(?i)^\s*(?:is\s+my|is\s+the|is\s+a|as\s+my)?\s*account\s*(?:number|no\.?|id|#)", suffix):
                     continue
                 entities.append(
                     DetectedEntity(
@@ -259,38 +278,43 @@ class RegexDetector:
         entities = []
         for pattern, label in config.PASSWORD_PATTERNS:
             for match in pattern.finditer(prompt):
-                if match.groups():
-                    payload = match.group(1)
-                    start = match.start(1)
-                    end = match.end(1)
+                if label == "password_comparison":
+                    targets = [
+                        (match.group(1), match.start(1), match.end(1)),
+                        (match.group(2), match.start(2), match.end(2)),
+                    ]
+                elif match.groups():
+                    targets = [(match.group(1), match.start(1), match.end(1))]
                 else:
-                    payload = match.group(0)
-                    start, end = match.start(), match.end()
+                    targets = [(match.group(0), match.start(), match.end())]
 
-                # Strip trailing sentence punctuation (preserve exclamation marks which are common in passwords)
-                clean_payload = payload.rstrip(".,;:?")
-                if clean_payload != payload:
-                    end = start + len(clean_payload)
-                    payload = clean_payload
+                for payload, start, end in targets:
+                    if not payload:
+                        continue
+                    # Strip trailing sentence punctuation (preserve exclamation marks which are common in passwords)
+                    clean_payload = payload.rstrip(".,;:?")
+                    if clean_payload != payload:
+                        end = start + len(clean_payload)
+                        payload = clean_payload
 
-                if len(payload) < 3:
-                    continue
+                    if len(payload) < 3:
+                        continue
 
-                if payload.lower() in DESCRIPTOR_WORDS:
-                    continue
+                    if payload.lower() in DESCRIPTOR_WORDS:
+                        continue
 
-                entities.append(
-                    DetectedEntity(
-                        text=payload,
-                        entity_type=EntityType.PASSWORD,
-                        start=start,
-                        end=end,
-                        normalized_value=normalize_entity_value(EntityType.PASSWORD, payload),
-                        confidence=config.CONFIDENCE_BASELINES["regex_password"],
-                        source="regex",
-                        detector=f"regex_{label}",
+                    entities.append(
+                        DetectedEntity(
+                            text=payload,
+                            entity_type=EntityType.PASSWORD,
+                            start=start,
+                            end=end,
+                            normalized_value=normalize_entity_value(EntityType.PASSWORD, payload),
+                            confidence=config.CONFIDENCE_BASELINES["regex_password"],
+                            source="regex",
+                            detector=f"regex_{label}",
+                        )
                     )
-                )
         return entities
 
     def _detect_bank_accounts(self, prompt: str) -> List[DetectedEntity]:
@@ -352,6 +376,11 @@ class RegexDetector:
             entity_type = TYPE_MAP.get(label, EntityType.USER_ID)
             for match in pattern.finditer(prompt):
                 raw = match.group(1) if match.groups() else match.group(0)
+                # Generic validation: require at least one digit and reject common English compound words
+                if not any(c.isdigit() for c in raw):
+                    continue
+                if re.search(r"(?i)\b(?:support|service|center|team|help|care|portal|desk|agent|group|staff)\b", raw):
+                    continue
                 start = match.start(1) if match.groups() else match.start()
                 end = match.end(1) if match.groups() else match.end()
                 entities.append(

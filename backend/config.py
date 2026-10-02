@@ -193,6 +193,17 @@ PASSWORD_PATTERNS: List[Tuple[re.Pattern, str]] = [
         ),
         "password_space_separated",
     ),
+    # password comparison: "Compare Apple#123 and Mango#987 and tell me which password is stronger."
+    (
+        re.compile(
+            r"(?i)\b(?:compare|check|between)(?:\s+passwords?)?\s+"
+            r"([A-Za-z0-9!@#$%^&*()_+\-=\[\]{}|;:'\"/]{3,32})\s+"
+            r"(?:and|or|vs|versus)\s+"
+            r"([A-Za-z0-9!@#$%^&*()_+\-=\[\]{}|;:'\"/]{3,32})\s+"
+            r".*?\b(?:which\s+(?:password|one)\s+is|passwords?\b)"
+        ),
+        "password_comparison",
+    ),
 ]
 
 # ============================================================
@@ -215,13 +226,13 @@ BANK_ACCOUNT_PATTERNS: List[Tuple[re.Pattern, str, float]] = [
         "swift_bic",
         0.95,
     ),
-    # Generic account number keyword trigger: account number 1234567890
+    # Generic account number keyword trigger: customer account number is 1234567890, account no: 123456
     (
         re.compile(
-            r"(?i)\b(?:account\s*(?:number|no\.?|#)\s*[:\-]?\s*)(\d{6,18})\b"
+            r"(?i)\b(?:(?:customer|client|user|bank|personal|savings|checking|current|holder|employee)?\s*account\s*(?:number|no\.?|id|#)?\s*(?:is|was|[:\-#=])?\s*)(\d{6,20})\b"
         ),
         "account_number",
-        0.85,
+        0.95,
     ),
 ]
 
@@ -374,7 +385,7 @@ USERNAME_PATTERNS: List[Tuple[re.Pattern, str, float]] = [
 ID_PATTERNS: List[Tuple[re.Pattern, str, float]] = [
     # ORDER_ID: explicit prefix format (e.g. ORD-12345, ORD-78291, ORDER-55123)
     (
-        re.compile(r"\b(?:ORD|ORDER)[-_][A-Za-z0-9]{4,16}\b", re.IGNORECASE),
+        re.compile(r"\b(?:ORD|ORDER)[-_](?=[A-Za-z0-9]{3,16}\b)[A-Za-z0-9]*\d[A-Za-z0-9]*\b", re.IGNORECASE),
         "order_id",
         0.95,
     ),
@@ -385,8 +396,9 @@ ID_PATTERNS: List[Tuple[re.Pattern, str, float]] = [
         0.92,
     ),
     # CUSTOMER_ID: explicit prefix format (e.g. CUST-10458, CUST-90812, CUSTOMER-1234)
+    # Requires digits so hyphenated English words like "customer-support" cannot match
     (
-        re.compile(r"\b(?:CUST|CUSTOMER)[-_][A-Za-z0-9]{4,16}\b", re.IGNORECASE),
+        re.compile(r"\b(?:CUST|CUSTOMER)[-_](?=[A-Za-z0-9]{3,16}\b)[A-Za-z0-9]*\d[A-Za-z0-9]*\b", re.IGNORECASE),
         "customer_id",
         0.95,
     ),
@@ -398,7 +410,7 @@ ID_PATTERNS: List[Tuple[re.Pattern, str, float]] = [
     ),
     # TICKET_ID: explicit prefix format (e.g. TKT-99182, TICKET-1042, SR-9912, INC-8821)
     (
-        re.compile(r"\b(?:TKT|TICKET|SR|INC)[-_][A-Za-z0-9]{4,16}\b", re.IGNORECASE),
+        re.compile(r"\b(?:TKT|TICKET|SR|INC)[-_](?=[A-Za-z0-9]{3,16}\b)[A-Za-z0-9]*\d[A-Za-z0-9]*\b", re.IGNORECASE),
         "ticket_id",
         0.95,
     ),

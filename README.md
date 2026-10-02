@@ -77,10 +77,10 @@ PromptShield AI addresses this **Privacy–Utility trade-off** by acting as a us
 | :--- | :--- | :---: | :--- |
 | **Phase 1** | **Detection Foundation** | **Completed ✅** | Deterministic detection for structured & NER entities, normalization, foundational baseline placeholder generator, local mapping store, unit tests & CLI. |
 | **Phase 2** | **Context Understanding** | **Completed ✅** | 8-category task classification and entity contextual role analysis (public vs personal, task relevance, distinguishing "Julie" from "Elon Musk"). |
-| **Phase 3** | **Risk & Privacy Policy** | *Next 🔜* | Transparent multi-factor risk scoring (0–100) and deterministic explainable policy decisions (`RETAIN`, `MASK`, `REPLACE`, `USER_APPROVAL`). |
-| **Phase 4** | **Context-Aware Semantic Masking** | *Planned* | Policy-driven selective masking, assigning `<TYPE_idx>` placeholders while retaining task-essential/public entities. |
-| **Phase 5** | **Controlled Restoration & LLM Layer** | *Planned* | Pluggable LLM interface (`MockLLMProvider`, `GeminiProvider`) and controlled, authorized response placeholder restoration. |
-| **Phase 6** | **FastAPI Backend Service** | *Planned* | REST API endpoints (`/analyze`, `/sanitize`, `/restore`, `/policies`, `/metrics`) with privacy-safe audit logging. |
+| **Phase 3** | **Risk & Privacy Policy** | **Completed ✅** | Transparent multi-factor risk scoring (0–100) and deterministic explainable policy decisions (`RETAIN`, `MASK`, `REPLACE`, `USER_APPROVAL`, `REVIEW`). |
+| **Phase 4** | **Context-Aware Semantic Masking** | **Completed ✅** | Policy-driven selective masking, assigning `<TYPE_idx>` placeholders while retaining task-essential/public entities. |
+| **Phase 5** | **Controlled Restoration & LLM Layer** | **Completed ✅** | Pluggable LLM interface (`MockLLMProvider`, `GeminiProvider`, `OpenAIProvider`), secure atomic non-recursive placeholder restoration, and credential quarantine. |
+| **Phase 6** | **FastAPI Backend Service** | *Next 🔜* | REST API endpoints (`/analyze`, `/sanitize`, `/restore`, `/policies`, `/metrics`) with privacy-safe audit logging. |
 | **Phase 7** | **Browser Extension (Manifest V3)** | *Planned* | Chrome extension for prompt capture, risk preview popup, user approval prompts, and sanitized prompt injection. |
 | **Phase 8** | **Dashboard & Empirical Evaluation** | *Planned* | Interactive dashboard & 3-way comparative benchmark (No Protection vs Blind Masking vs PromptShield). |
 

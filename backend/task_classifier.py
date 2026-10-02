@@ -43,7 +43,12 @@ TASK_PATTERNS: Dict[TaskType, List[re.Pattern]] = {
         re.compile(r"(?i)\b(?:calculate\s+(?:the\s+)?(?:mean|median|average|std|correlation)|regression|data\s+analysis)\b"),
     ],
     TaskType.DOCUMENT_GENERATION: [
-        re.compile(r"(?i)\b(?:write|draft|create|generate)\s+(?:a\s+|an\s+)?(?:essay|resume|cv|report|contract|agreement|article|blog\s+post|proposal|story)\b"),
+        re.compile(r"(?i)\b(?:write|draft|create|generate|prepare)\s+(?:a\s+|an\s+)?(?:essay|resume|cv|report|contract|agreement|article|blog\s+post|proposal|story)\b"),
+    ],
+    TaskType.INCIDENT_REPORT: [
+        re.compile(r"(?i)\b(?:prepare|write|draft|create|generate|file|compile)\s+(?:an?\s+)?(?:incident|security|outage|postmortem|investigation|breach|failure|troubleshoot)\s+report\b"),
+        re.compile(r"(?i)\b(?:incident\s+report|postmortem|root\s+cause\s+analysis|investigation\s+report)\b"),
+        re.compile(r"(?i)\b(?:explain\s+the\s+incident|investigate\s+(?:the\s+)?(?:incident|order|transaction|breach|outage))\b"),
     ],
     TaskType.GENERAL_QA: [
         re.compile(r"(?i)\b(?:what\s+is|who\s+is|who\s+was|where\s+is|when\s+did|why\s+did|why\s+is|how\s+does|how\s+do|how\s+can|how\s+to)\b"),
@@ -85,6 +90,7 @@ class TaskClassifier:
                         TaskType.CODE_GENERATION,
                         TaskType.TRANSLATION,
                         TaskType.SUMMARIZATION,
+                        TaskType.INCIDENT_REPORT,
                     ) else 2
                     scores[task_type] += weight * len(matches)
                     detected_cues[task_type].append(pattern.pattern)

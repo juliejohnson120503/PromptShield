@@ -22,6 +22,7 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")
 
 from backend.core import PromptShieldCore
 from backend.policy_engine import PolicyDecision, RiskLevel
+from backend.models import SemanticMaskingResult
 
 
 SAMPLE_PROMPTS = [
@@ -95,29 +96,29 @@ def _colour(text: str, col: str) -> str:
 def print_banner():
     w = 90
     print("=" * w)
-    print("  PROMPTSHIELD AI - Phase 1 | 2 | 3: Detection | Context | Policy".center(w))
+    print("  PROMPTSHIELD AI - Phase 1 | 2 | 3 | 4 | 5: Detection | Context | Policy | Mask | Restore".center(w))
     print("=" * w)
     print("  A Context-Aware Security Layer for Safe, Responsible & Enterprise-Ready AI Systems".center(w))
     print("-" * w)
-    print(("  Pipeline Active: Prompt -> Detection (P1) -> Context Analysis (P2) "
-           "-> Policy Engine (P3)").center(w))
-    print("  Upcoming: Context-Aware Semantic Masking (P4)".center(w))
+    print(("  Pipeline: Prompt -> Detect (P1) -> Context (P2) -> Policy (P3) -> Mask (P4) -> Restore (P5)").center(w))
+    print("  Upcoming: REST API Service (P6) | Browser Extension (P7)".center(w))
     print("=" * w)
 
 
 def display_results(shield: PromptShieldCore, prompt: str):
-    # Run all three phases
-    policy_report  = shield.evaluate_policy(prompt)   # includes P1+P2+P3
+    # Run all phases
+    policy_report  = shield.evaluate_policy(prompt)   # P1+P2+P3
     baseline_res   = shield.sanitize_baseline(prompt)  # P1 baseline for reference
+    p4_result      = shield.sanitize(prompt)           # Phase 4 context-aware masking
 
     W = 90
     print("\n" + "-" * W)
 
-    # ── [1] Original Prompt ─────────────────────────────────────────────────
+    # -- [1] Original Prompt -------------------------------------------------
     print(f"\n{BOLD}[1] ORIGINAL PROMPT:{RESET}")
     print(f'    "{prompt}"')
 
-    # ── [2] Phase 1: Detected Entities ──────────────────────────────────────
+    # -- [2] Phase 1: Detected Entities --------------------------------------
     print(f"\n{BOLD}[2] PHASE 1 — DETECTED ENTITIES:{RESET}")
     if not baseline_res.entities:
         print("    (No sensitive or named entities detected)")
@@ -131,7 +132,7 @@ def display_results(shield: PromptShieldCore, prompt: str):
                 f"{e.normalized_value[:19]:<20} | {e.confidence:<6.2f} | {e.detector}"
             )
 
-    # ── [3] Phase 2: Task & Context ─────────────────────────────────────────
+    # -- [3] Phase 2: Task & Context -----------------------------------------
     print(f"\n{BOLD}[3] PHASE 2 — TASK & CONTEXT UNDERSTANDING:{RESET}")
     print(f"    Task: {CYAN}{policy_report.task_type}{RESET}  "
           f"(Confidence: {policy_report.task_confidence:.2f})")
@@ -152,7 +153,7 @@ def display_results(shield: PromptShieldCore, prompt: str):
                 f"{'Y' if cr.is_task_relevant else 'N':<5} | {cr.context_cue[:28]}"
             )
 
-    # ── [4] Phase 3: Risk & Policy ──────────────────────────────────────────
+    # -- [4] Phase 3: Risk & Policy ------------------------------------------
     print(f"\n{BOLD}[4] PHASE 3 — RISK ASSESSMENT & POLICY DECISIONS:{RESET}")
     overall_col = RISK_COLOURS.get(policy_report.overall_risk_level, "")
     print(f"    Overall Risk: {_colour(policy_report.overall_risk_level.value, overall_col)}")
@@ -174,35 +175,61 @@ def display_results(shield: PromptShieldCore, prompt: str):
                 f"{p.risk_score:<6.2f} | {p.reason[:38]}"
             )
 
-    # ── [5] Baseline Masking Reference ──────────────────────────────────────
-    print(f"\n{BOLD}[5] PHASE 1 BASELINE MASKING (reference):{RESET}")
+    # -- [5] Phase 1 Baseline Masking (reference) ----------------------------
+    print(f"\n{BOLD}[5] PHASE 1 BASELINE MASKING (blind — reference only):{RESET}")
     print(f'    "{baseline_res.sanitized_prompt}"')
-
-    print(f"\n{BOLD}[6] LOCAL MAPPING (user-side, never sent to LLM):{RESET}")
+    print(f"\n{BOLD}[6] LOCAL MAPPING (phase 1 store, never sent to LLM):{RESET}")
     if not baseline_res.mapping:
         print("    (Empty mapping store)")
     else:
         for placeholder, secret in baseline_res.mapping.items():
             print(f"    {placeholder:<18} ===>  \"{secret}\"")
 
-    # -- [7] Phase 4 preview  ------------------------------------------------
-    print(f"\n{BOLD}[7] PHASE 4 PREVIEW - Context-Aware Semantic Masking (coming next):{RESET}")
-    mask_list = [
-        f"{_colour(p.entity_text, RED)} -> <{p.entity_type.value}>"
-        for p in policy_report.entities_to_mask
+    # -- [7] Phase 4: Context-Aware Semantic Masking -------------------------
+    print(f"\n{BOLD}[7] PHASE 4 — CONTEXT-AWARE SEMANTIC MASKING:{RESET}")
+    print(f'    SANITIZED PROMPT: "{p4_result.sanitized_prompt}"')
+    print(f"    Overall Risk:     {_colour(p4_result.overall_risk_level, overall_col)}")
+    print()
+    decisions = [
+        ("  MASKED",   p4_result.masked_entities,   RED,    lambda e: f"{_colour(e.entity_text, RED)} -> {e.entity_type.value}"),
+        ("  RETAINED", p4_result.retained_entities, GREEN,  lambda e: f"{_colour(e.entity_text, GREEN)}"),
+        ("  APPROVAL_REQUIRED", p4_result.approval_required, YELLOW, lambda a: f"{_colour(a.entity_text, YELLOW)} ({a.placeholder})"),
+        ("  APPROVED", p4_result.approved_entities,  GREEN,  lambda a: f"{_colour(a.entity_text, GREEN)} [approved]"),
+        ("  REVIEW",   p4_result.review_required,    CYAN,   lambda a: f"{_colour(a.entity_text, CYAN)} (review)"),
     ]
-    retain_list = [
-        f"{_colour(p.entity_text, GREEN)}"
-        for p in policy_report.entities_to_retain
-    ]
-    ua_list = [
-        f"{_colour(p.entity_text, YELLOW)} (ask user)"
-        for p in policy_report.entities_needing_approval
-    ]
-    print(f"    [MASK]:     {', '.join(mask_list)   or 'None'}")
-    print(f"    [RETAIN]:   {', '.join(retain_list) or 'None'}")
-    if ua_list:
-        print(f"    [APPROVE]:  {', '.join(ua_list)}")
+    for label, items, col, fmt in decisions:
+        if items:
+            formatted = ", ".join(fmt(x) for x in items)
+            print(f"    [{label.strip():<18}]  {formatted}")
+
+    if p4_result.mapping:
+        print(f"\n{BOLD}    LOCAL MAPPING (phase 4, never sent to LLM):{RESET}")
+        for ph, raw in p4_result.mapping.items():
+            print(f"      {ph:<22} ===>  \"{raw}\"")
+
+    # -- [8] Phase 5: Downstream LLM & Controlled Restoration ----------------
+    print(f"\n{BOLD}[8] PHASE 5 — DOWNSTREAM LLM GENERATION & CONTROLLED RESTORATION:{RESET}")
+    exchange = shield.execute_and_restore(prompt, session_id=p4_result.session_id)
+    print(f"    Provider:         {CYAN}{exchange.provider_name}{RESET}")
+    print(f"    Raw LLM Output:   \"{exchange.raw_llm_response}\"")
+    rest_status_col = GREEN if exchange.restoration_result.status.value in ("SUCCESS", "UNMODIFIED") else YELLOW
+    print(f"    Restoration Status: {_colour(exchange.restoration_result.status.value, rest_status_col)}")
+    print(f'    RESTORED OUTPUT:  "{exchange.restored_response}"')
+    if exchange.restoration_result.restorations:
+        restored_names = [
+            f"{r.placeholder} -> {r.original_value}"
+            for r in exchange.restoration_result.restorations
+            if r.restored
+        ]
+        if restored_names:
+            print(f"    Restored Secrets: {', '.join(restored_names)}")
+        blocked = [
+            f"{r.placeholder} ({r.reason})"
+            for r in exchange.restoration_result.restorations
+            if not r.restored
+        ]
+        if blocked:
+            print(f"    Quarantined:      {', '.join(blocked)}")
 
     print("-" * W)
 

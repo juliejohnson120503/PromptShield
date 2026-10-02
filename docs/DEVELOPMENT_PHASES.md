@@ -17,9 +17,9 @@ PromptShield AI is a **context-aware security layer** that sits between a user a
 | **1** | **Modular Hybrid Detection Foundation** | ✅ Completed | Detects candidates; does NOT mask |
 | **2** | **Context Understanding & Task Classification** | ✅ Completed | Classifies task intent; determines entity role (private vs public, first-party vs reference) |
 | **3** | **Risk Assessment & Privacy Policy Engine** | ✅ Completed | Scores risk (0–100); decides MASK / RETAIN / REPLACE / USER_APPROVAL |
-| **4** | **Context-Aware Semantic Masking** | 🔜 Next | Executes policy; replaces sensitive text with `<TYPE_N>` placeholders |
-| **5** | **Controlled Restoration & LLM Layer** | Planned | Pluggable LLM interface; authorized placeholder restoration |
-| **6** | **FastAPI Backend Service** | Planned | REST endpoints; privacy-safe audit logging |
+| **4** | **Context-Aware Semantic Masking** | ✅ Completed | Executes policy; replaces sensitive text with `<TYPE_N>` placeholders |
+| **5** | **Controlled Restoration & LLM Layer** | ✅ Completed | Pluggable LLM interface; authorized placeholder restoration |
+| **6** | **FastAPI Backend Service** | 🔜 Next | REST endpoints; privacy-safe audit logging |
 | **7** | **Browser Extension (Manifest V3)** | Planned | Chrome extension; popup UI; prompt injection |
 | **8** | **Dashboard & Empirical Evaluation** | Planned | Interactive dashboard; 3-way comparative benchmark |
 

@@ -37,16 +37,51 @@ class MappingStore:
         raw_value: str,
         entity_type: EntityType,
         normalized_value: Optional[str] = None,
+        entity_id: Optional[str] = None,
+        native_label: Optional[str] = None,
+        policy_decision: Optional[str] = None,
+        disclosure_allowed: bool = True,
     ) -> None:
-        """Register a placeholder to raw value association under a session."""
+        """Register a placeholder to raw value association with security metadata under a session."""
         if session_id not in self._store:
             self.create_session(session_id)
 
         self._store[session_id][placeholder] = {
+            "placeholder": placeholder,
             "raw_value": raw_value,
             "entity_type": entity_type,
             "normalized_value": normalized_value or raw_value,
+            "entity_id": entity_id or f"{entity_type.value}:{normalized_value or raw_value}",
+            "native_label": native_label or entity_type.value.lower(),
+            "policy_decision": policy_decision or "MASK",
+            "disclosure_allowed": disclosure_allowed,
         }
+
+    def register_mapping(
+        self,
+        session_id: str,
+        placeholder: str,
+        raw_value: str,
+        entity_type: Optional[EntityType] = None,
+        normalized_value: Optional[str] = None,
+        entity_id: Optional[str] = None,
+        native_label: Optional[str] = None,
+        policy_decision: Optional[str] = None,
+        disclosure_allowed: bool = True,
+    ) -> None:
+        """Convenience alias for store_mapping."""
+        et = entity_type or EntityType.PII_OTHER
+        self.store_mapping(
+            session_id=session_id,
+            placeholder=placeholder,
+            raw_value=raw_value,
+            entity_type=et,
+            normalized_value=normalized_value,
+            entity_id=entity_id,
+            native_label=native_label,
+            policy_decision=policy_decision,
+            disclosure_allowed=disclosure_allowed,
+        )
 
     def get_mappings(self, session_id: str) -> Dict[str, str]:
         """

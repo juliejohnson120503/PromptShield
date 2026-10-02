@@ -170,6 +170,65 @@ class PresidioDetector:
             if entity_type == EntityType.DATE:
                 if re.search(r"(?i)\b(?:road|rd\.?|street|st\.?|avenue|ave\.?|lane|ln\.?|drive|dr\.?|mg|marg|nagar|sector)\b", raw_text):
                     continue
+                # Reject isolated month words like "MAY", "march" that do not form a date expression
+                MONTH_WORDS = {
+                    "january", "february", "march", "april", "may", "june",
+                    "july", "august", "september", "october", "november", "december",
+                    "jan", "feb", "mar", "apr", "jun", "jul", "aug", "sep", "oct", "nov", "dec",
+                }
+                if clean_text in MONTH_WORDS:
+                    w_before = prompt[max(0, result.start - 25):result.start]
+                    w_after = prompt[result.end:min(len(prompt), result.end + 25)]
+                    has_nearby_digits = bool(re.search(r"\b\d{1,4}(?:st|nd|rd|th)?\b", w_before + " " + w_after))
+                    has_date_prep = bool(re.search(r"(?i)\b(?:in|on|during|dated|since|until|by|before|after|of)\s*$", w_before.strip()))
+                    if not (has_nearby_digits or has_date_prep):
+                        continue
+
+            # Clean EMAIL trailing sentence text (e.g. .The) or trailing punctuation
+            if entity_type == EntityType.EMAIL:
+                email_sent_match = re.match(r"^([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,})\.([A-Z][a-z]+.*)$", raw_text)
+                if email_sent_match:
+                    raw_text = email_sent_match.group(1)
+                    result.end = result.start + len(raw_text)
+                elif raw_text.endswith("."):
+                    raw_text = raw_text.rstrip(".")
+                    result.end = result.start + len(raw_text)
+
+            # Strip trailing action verbs/stop words for PERSON entities (e.g. "amina write" -> "amina")
+            if entity_type == EntityType.PERSON:
+                # Strip trailing possessive suffixes (e.g. "Priya Nair's" -> "Priya Nair")
+                if re.search(r"['’]s?$", raw_text):
+                    trimmed = re.sub(r"['’]s?$", "", raw_text).rstrip()
+                    if trimmed:
+                        raw_text = trimmed
+                        result.end = result.start + len(trimmed)
+
+                # Reject malformed PERSON spans containing sentence boundaries or punctuation sequences
+                if re.search(r"[.!?;:\n]{1,}\s*[-–—]|\.[a-zA-Z]{2,}|\b(?<![A-Z])\.[A-Z]", raw_text):
+                    continue
+
+                # Reject spans containing technical/directive words (e.g. "API key.- You MUST")
+                disqualifying = {
+                    "api", "key", "token", "password", "secret", "credential", "database",
+                    "server", "ip", "endpoint", "must", "should", "shall", "cannot", "can",
+                    "will", "would", "could", "please", "report", "explain", "recommend",
+                    "incident", "order", "ticket", "customer", "support",
+                }
+                words_clean = [re.sub(r"^\W+|\W+$", "", w).lower() for w in raw_text.split()]
+                if any(w in disqualifying for w in words_clean):
+                    continue
+
+                from backend.spacy_detector import PERSON_STOP_WORDS
+                words = raw_text.split()
+                while len(words) > 1 and words[-1].lower() in PERSON_STOP_WORDS:
+                    words.pop()
+                if not words:
+                    continue
+                trimmed = " ".join(words)
+                if trimmed != raw_text:
+                    raw_text = trimmed
+                    result.end = result.start + len(trimmed)
+
             entities.append(
                 DetectedEntity(
                     text=raw_text,

@@ -96,21 +96,22 @@ def _is_descriptor_label(ent: DetectedEntity, prompt: str, all_candidates: List[
 
 
 def _entity_sort_key(entity: DetectedEntity) -> Tuple:
-
     """
     Composite sort key for ranking entities when resolving conflicts.
     Higher tuple value = preferred entity.
 
-    Priority order (descending importance):
+    Priority order:
       1. Entity-type priority (structured > NER)
-      2. Source priority     (regex > presidio > spacy > heuristic)
-      3. Confidence score
-      4. Span length          (longer span wins on tie)
+      2. For named entities (PERSON, ORG, LOC): span length (longer full name wins over substring token), then source
+      3. For other entities: source priority, then span length
+      4. Confidence score
     """
     type_p = config.ENTITY_TYPE_PRIORITY.get(entity.entity_type.value, 0)
     src_p = config.SOURCE_PRIORITY.get(entity.source, 0)
     span_len = entity.end - entity.start
-    return (type_p, src_p, entity.confidence, span_len)
+    if entity.entity_type in (EntityType.PERSON, EntityType.ORGANIZATION, EntityType.LOCATION):
+        return (type_p, span_len, src_p, entity.confidence)
+    return (type_p, src_p, span_len, entity.confidence)
 
 
 def _spans_overlap(a: DetectedEntity, b: DetectedEntity) -> bool:
@@ -150,8 +151,144 @@ class EntityFusionEngine:
             return []
 
         # --- Step 0: integrity filter ---
+        from backend.normalization import normalize_entity_value
         valid: List[DetectedEntity] = []
         for ent in candidates:
+            # Discard excluded tokens falsely tagged as named entities (e.g. 'IP', 'email', 'password')
+            if ent.entity_type in (EntityType.ORGANIZATION, EntityType.PERSON, EntityType.LOCATION):
+                clean_norm = ent.text.strip().lower()
+                if clean_norm in config.COMMON_EXCLUDED_TOKENS or (
+                    clean_norm.startswith("the ") and clean_norm[4:].strip() in config.COMMON_EXCLUDED_TOKENS
+                ):
+                    continue
+
+            # Reclassify or discard invalid EMAIL without '@'
+            if ent.entity_type == EntityType.EMAIL and "@" not in ent.text:
+                if re.search(r"(?i)\b(?:inc\.?|corp\.?|corporation|llc|ltd\.?|limited|co\.?|technologies|solutions|group|holdings|enterprises|systems|studios|labs|foundation|university|institute)\b", ent.text):
+                    ent.entity_type = EntityType.ORGANIZATION
+                    ent.normalized_value = normalize_entity_value(EntityType.ORGANIZATION, ent.text)
+                else:
+                    continue
+
+            # Discard invalid IP_ADDRESS without '.' or ':'
+            if ent.entity_type == EntityType.IP_ADDRESS and ("." not in ent.text and ":" not in ent.text):
+                continue
+
+            # Reclassify PERSON entities with corporate suffixes to ORGANIZATION
+            if ent.entity_type == EntityType.PERSON:
+                if re.search(r"(?i)\b(?:inc\.?|corp\.?|corporation|llc|ltd\.?|limited|co\.?|technologies|solutions|group|holdings|enterprises|systems|studios|labs|foundation|university|institute)\b", ent.text):
+                    ent.entity_type = EntityType.ORGANIZATION
+                    ent.normalized_value = normalize_entity_value(EntityType.ORGANIZATION, ent.text)
+
+            # Format validation for BANK_ACCOUNT: must contain digits (do not relabel to ORGANIZATION)
+            if ent.entity_type == EntityType.BANK_ACCOUNT:
+                has_digits = any(c.isdigit() for c in ent.text)
+                if not has_digits:
+                    continue
+
+            # Format validation for project-specific IDs: must contain digits and not be common words
+            if ent.entity_type in (EntityType.CUSTOMER_ID, EntityType.ORDER_ID, EntityType.TICKET_ID):
+                if not any(c.isdigit() for c in ent.text):
+                    continue
+                if re.search(r"(?i)\b(?:support|service|center|team|help|care|portal|desk|agent|group|staff)\b", ent.text):
+                    continue
+
+            # Format validation for DATE: reject isolated month words without date expression context
+            if ent.entity_type == EntityType.DATE:
+                MONTH_WORDS = {
+                    "january", "february", "march", "april", "may", "june",
+                    "july", "august", "september", "october", "november", "december",
+                    "jan", "feb", "mar", "apr", "jun", "jul", "aug", "sep", "oct", "nov", "dec",
+                }
+                if ent.text.strip().lower() in MONTH_WORDS:
+                    w_before = prompt[max(0, ent.start - 25):ent.start]
+                    w_after = prompt[ent.end:min(len(prompt), ent.end + 25)]
+                    has_nearby_digits = bool(re.search(r"\b\d{1,4}(?:st|nd|rd|th)?\b", w_before + " " + w_after))
+                    has_date_prep = bool(re.search(r"(?i)\b(?:in|on|during|dated|since|until|by|before|after|of)\s*$", w_before.strip()))
+                    if not (has_nearby_digits or has_date_prep):
+                        continue
+
+            # Format validation for EMAIL: strip trailing sentence words (.The) and trailing punctuation
+            if ent.entity_type == EntityType.EMAIL:
+                email_sent_match = re.match(r"^([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,})\.([A-Z][a-z]+.*)$", ent.text)
+                if email_sent_match:
+                    ent.text = email_sent_match.group(1)
+                    ent.end = ent.start + len(ent.text)
+                    ent.normalized_value = normalize_entity_value(EntityType.EMAIL, ent.text)
+                elif ent.text.endswith("."):
+                    ent.text = ent.text.rstrip(".")
+                    ent.end = ent.start + len(ent.text)
+                    ent.normalized_value = normalize_entity_value(EntityType.EMAIL, ent.text)
+
+            # Generalized span boundary cleaning for named/structured entities
+            if ent.entity_type in (EntityType.PERSON, EntityType.ORGANIZATION, EntityType.LOCATION, EntityType.ORDER_ID, EntityType.CUSTOMER_ID, EntityType.USER_ID, EntityType.TICKET_ID):
+                # 1. Glued lowercase prefix (e.g. "involvingRahul" -> "Rahul")
+                glued_match = re.match(r"^([a-z]{2,})([A-Z].*)$", ent.text)
+                if glued_match:
+                    prefix_len = len(glued_match.group(1))
+                    ent.start += prefix_len
+                    ent.text = glued_match.group(2)
+                    ent.normalized_value = normalize_entity_value(ent.entity_type, ent.text)
+
+                # 2. Leading whitespace
+                l_stripped = ent.text.lstrip()
+                if len(l_stripped) < len(ent.text):
+                    diff = len(ent.text) - len(l_stripped)
+                    ent.start += diff
+                    ent.text = l_stripped
+                    ent.normalized_value = normalize_entity_value(ent.entity_type, ent.text)
+
+                # 3. Trailing whitespace
+                r_stripped = ent.text.rstrip()
+                if len(r_stripped) < len(ent.text):
+                    diff = len(ent.text) - len(r_stripped)
+                    ent.end -= diff
+                    ent.text = r_stripped
+                    ent.normalized_value = normalize_entity_value(ent.entity_type, ent.text)
+
+                # 4. Leading connector/preposition words (e.g. "involving Rahul", "for Infosys", "order ORD-78291")
+                CONNECTOR_WORDS = {"involving", "regarding", "concerning", "about", "from", "with", "for", "to", "at", "by", "order", "ticket", "user", "customer", "the", "a", "an"}
+                words = ent.text.split(None, 1)
+                if len(words) > 1 and words[0].lower() in CONNECTOR_WORDS:
+                    sub_idx = ent.text.find(words[1], len(words[0]))
+                    if sub_idx != -1:
+                        ent.start += sub_idx
+                        ent.text = ent.text[sub_idx:]
+                        ent.normalized_value = normalize_entity_value(ent.entity_type, ent.text)
+
+            # Clean PERSON entities
+            if ent.entity_type == EntityType.PERSON:
+                # Strip possessives (e.g. "Priya Nair's" -> "Priya Nair")
+                if re.search(r"['’]s?$", ent.text):
+                    trimmed = re.sub(r"['’]s?$", "", ent.text).rstrip()
+                    if trimmed:
+                        ent.text = trimmed
+                        ent.end = ent.start + len(trimmed)
+                        ent.normalized_value = normalize_entity_value(EntityType.PERSON, trimmed)
+
+                # Reject malformed PERSON spans containing sentence breaks, punctuation sequences, or directive keywords
+                if re.search(r"[.!?;:\n]{1,}\s*[-–—]|\.[a-zA-Z]{2,}|\b(?<![A-Z])\.[A-Z]", ent.text):
+                    continue
+                disqualifying = {
+                    "api", "key", "token", "password", "secret", "credential", "database",
+                    "server", "ip", "endpoint", "must", "should", "shall", "cannot", "can",
+                    "will", "would", "could", "please", "report", "explain", "recommend",
+                    "incident", "order", "ticket", "customer", "support",
+                }
+                words_clean = [re.sub(r"^\W+|\W+$", "", w).lower() for w in ent.text.split()]
+                if any(w in disqualifying for w in words_clean):
+                    continue
+
+                from backend.spacy_detector import PERSON_STOP_WORDS
+                words = ent.text.split()
+                while len(words) > 1 and words[-1].lower() in PERSON_STOP_WORDS:
+                    words.pop()
+                trimmed = " ".join(words)
+                if trimmed != ent.text and trimmed:
+                    ent.text = trimmed
+                    ent.end = ent.start + len(trimmed)
+                    ent.normalized_value = normalize_entity_value(EntityType.PERSON, trimmed)
+
             if 0 <= ent.start < ent.end <= len(prompt):
                 actual = prompt[ent.start: ent.end]
                 if actual == ent.text:

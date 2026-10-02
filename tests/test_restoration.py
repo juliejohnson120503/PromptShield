@@ -1,0 +1,198 @@
+"""
+PromptShield AI — Phase 5: Controlled Restoration & LLM Layer Test Suite.
+========================================================================
+Validates all security invariants and operational workflows of Phase 5:
+- Placeholder scanning and substitution
+- Local MappingStore session isolation
+- Credential quarantine policy (passwords/API keys blocked by default)
+- Immunity to recursive placeholder injection attacks
+- Hallucinated/untracked placeholder preservation
+- Pluggable MockLLMProvider integration
+- End-to-end execute_and_restore() shielded pipeline
+"""
+
+import unittest
+from unittest.mock import patch, MagicMock
+
+from backend.models import (
+    EntityType,
+    RestorationPolicy,
+    RestorationResult,
+    RestorationStatus,
+    ShieldedExchangeResult,
+)
+from backend.mapping_store import MappingStore
+from backend.restoration import ResponseRestorer
+from backend.llm_provider import MockLLMProvider
+from backend.core import PromptShieldCore
+
+
+class TestResponseRestorer(unittest.TestCase):
+
+    def setUp(self):
+        self.mapping_store = MappingStore()
+        self.session_id = "test-session-001"
+        self.mapping_store.register_mapping(self.session_id, "<PERSON_1>", "Alice Johnson")
+        self.mapping_store.register_mapping(self.session_id, "<EMAIL_1>", "alice@example.com")
+        self.mapping_store.register_mapping(self.session_id, "<ORG_1>", "Acme Corp")
+        self.mapping_store.register_mapping(self.session_id, "<PASSWORD_1>", "SuperSecretPass!")
+        self.mapping_store.register_mapping(self.session_id, "<API_KEY_1>", "sk-1234567890abcdef")
+        self.restorer = ResponseRestorer(mapping_store=self.mapping_store)
+
+    def test_basic_placeholder_restoration(self):
+        llm_response = "Hello <PERSON_1>, your account with <ORG_1> has been created."
+        result = self.restorer.restore(llm_response, session_id=self.session_id)
+
+        self.assertEqual(result.status, RestorationStatus.SUCCESS)
+        self.assertEqual(
+            result.restored_text,
+            "Hello Alice Johnson, your account with Acme Corp has been created."
+        )
+        self.assertEqual(len(result.restorations), 2)
+        self.assertTrue(all(r.restored for r in result.restorations))
+
+    def test_repeated_same_placeholder(self):
+        llm_response = "Dear <PERSON_1>, please confirm that you, <PERSON_1>, made this request."
+        result = self.restorer.restore(llm_response, session_id=self.session_id)
+
+        self.assertEqual(result.status, RestorationStatus.SUCCESS)
+        self.assertEqual(
+            result.restored_text,
+            "Dear Alice Johnson, please confirm that you, Alice Johnson, made this request."
+        )
+
+    def test_unmodified_when_no_placeholders_present(self):
+        llm_response = "Quantum computing relies on qubits to perform superposition calculations."
+        result = self.restorer.restore(llm_response, session_id=self.session_id)
+
+        self.assertEqual(result.status, RestorationStatus.UNMODIFIED)
+        self.assertEqual(result.restored_text, llm_response)
+        self.assertEqual(len(result.restorations), 0)
+
+    def test_policy_allow_restoration_gate(self):
+        policy = RestorationPolicy(allow_restoration=False)
+        llm_response = "Contact <PERSON_1> at <EMAIL_1>."
+        result = self.restorer.restore(llm_response, session_id=self.session_id, policy=policy)
+
+        self.assertEqual(result.status, RestorationStatus.DENIED)
+        self.assertEqual(result.restored_text, llm_response)  # Unaltered
+
+    def test_credential_quarantine_default(self):
+        """Technical credentials must NOT be reflected into output by default."""
+        llm_response = "Your username is <PERSON_1> and your password is <PASSWORD_1>."
+        result = self.restorer.restore(llm_response, session_id=self.session_id)
+
+        # PERSON_1 is restored, PASSWORD_1 is quarantined
+        self.assertEqual(result.status, RestorationStatus.PARTIAL)
+        self.assertIn("Alice Johnson", result.restored_text)
+        self.assertIn("<PASSWORD_1>", result.restored_text)
+        self.assertNotIn("SuperSecretPass!", result.restored_text)
+
+        # Audit check
+        quarantined = [r for r in result.restorations if not r.restored]
+        self.assertEqual(len(quarantined), 1)
+        self.assertEqual(quarantined[0].placeholder, "<PASSWORD_1>")
+        self.assertIn("credential", quarantined[0].reason)
+
+    def test_credential_quarantine_explicit_override(self):
+        """When policy explicitly permits credential restoration, it proceeds."""
+        policy = RestorationPolicy(allow_credentials_restoration=True)
+        llm_response = "Key is <API_KEY_1>."
+        result = self.restorer.restore(llm_response, session_id=self.session_id, policy=policy)
+
+        self.assertEqual(result.status, RestorationStatus.SUCCESS)
+        self.assertEqual(result.restored_text, "Key is sk-1234567890abcdef.")
+
+    def test_hallucinated_untracked_placeholder(self):
+        """Placeholders generated by LLM that were not in mapping store are preserved."""
+        llm_response = "Assigned agent is <PERSON_99>."
+        result = self.restorer.restore(llm_response, session_id=self.session_id)
+
+        self.assertEqual(result.status, RestorationStatus.DENIED)
+        self.assertEqual(result.restored_text, "Assigned agent is <PERSON_99>.")
+        self.assertIn("<PERSON_99>", result.unrestored_placeholders)
+
+    def test_recursive_placeholder_injection_immunity(self):
+        """
+        Invariant R-2: If a secret value contains a placeholder string,
+        single-pass replacement must NOT expand the injected placeholder.
+        """
+        inj_session = "inject-session"
+        self.mapping_store.register_mapping(inj_session, "<PERSON_1>", "<EMAIL_1>")
+        self.mapping_store.register_mapping(inj_session, "<EMAIL_1>", "pwned@evil.com")
+
+        llm_response = "Hello <PERSON_1>."
+        result = self.restorer.restore(llm_response, session_id=inj_session)
+
+        # <PERSON_1> becomes literally "<EMAIL_1>", NOT "pwned@evil.com"
+        self.assertEqual(result.restored_text, "Hello <EMAIL_1>.")
+        self.assertNotIn("pwned@evil.com", result.restored_text)
+
+    def test_session_isolation(self):
+        """Mappings from session A cannot be accessed by session B."""
+        sess_a = "session-a"
+        sess_b = "session-b"
+        self.mapping_store.register_mapping(sess_a, "<PERSON_1>", "Dr. Smith")
+        self.mapping_store.register_mapping(sess_b, "<PERSON_1>", "Prof. Davis")
+
+        resp = "Paging <PERSON_1>."
+        res_a = self.restorer.restore(resp, session_id=sess_a)
+        res_b = self.restorer.restore(resp, session_id=sess_b)
+
+        self.assertEqual(res_a.restored_text, "Paging Dr. Smith.")
+        self.assertEqual(res_b.restored_text, "Paging Prof. Davis.")
+
+    def test_restoration_budget_limit(self):
+        policy = RestorationPolicy(max_restorations=1)
+        llm_response = "<PERSON_1> works at <ORG_1>."
+        result = self.restorer.restore(llm_response, session_id=self.session_id, policy=policy)
+
+        self.assertEqual(result.status, RestorationStatus.PARTIAL)
+        self.assertEqual(len([r for r in result.restorations if r.restored]), 1)
+
+
+class TestMockLLMProvider(unittest.TestCase):
+
+    def test_custom_canned_response(self):
+        mock = MockLLMProvider()
+        mock.set_response("ping", "pong")
+        self.assertEqual(mock.generate("test ping message"), "pong")
+
+    def test_email_template_generation_with_placeholders(self):
+        mock = MockLLMProvider()
+        prompt = "Write an email from <PERSON_1> to <ORG_1> about project updates."
+        resp = mock.generate(prompt)
+
+        self.assertIn("Subject:", resp)
+        self.assertIn("<PERSON_1>", resp)
+        self.assertIn("<ORG_1>", resp)
+
+
+class TestEndToEndShieldedExchange(unittest.TestCase):
+
+    def test_shielded_exchange_roundtrip(self):
+        core = PromptShieldCore(use_spacy=False)  # Fast deterministic test
+        mock_provider = MockLLMProvider()
+        mock_provider.set_response(
+            "Write a note",
+            "Note recorded for <PERSON_1> regarding the consultation with Acme Corp."
+        )
+        core.set_llm_provider(mock_provider)
+
+        prompt = "My name is John Mathew. Write a note regarding Acme Corp."
+        exchange: ShieldedExchangeResult = core.execute_and_restore(prompt)
+
+        # 1. Original prompt intact
+        self.assertEqual(exchange.original_prompt, prompt)
+        # 2. Sanitized prompt contains placeholder
+        self.assertIn("<PERSON_1>", exchange.sanitized_prompt)
+        self.assertNotIn("John Mathew", exchange.sanitized_prompt)
+        # 3. Raw LLM response received placeholders
+        self.assertIn("<PERSON_1>", exchange.raw_llm_response)
+        # 4. Restored response has secrets reinstated on client side
+        self.assertIn("John Mathew", exchange.restored_response)
+        self.assertEqual(exchange.restoration_result.status, RestorationStatus.SUCCESS)
+
+
+if __name__ == "__main__":
+    unittest.main()

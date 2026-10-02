@@ -19,6 +19,7 @@ KEY DESIGN PRINCIPLES
 
 import logging
 import importlib.util
+import re
 from typing import Any, Dict, List, Optional
 
 from backend.models import DetectedEntity, EntityType
@@ -26,6 +27,10 @@ from backend.normalization import normalize_entity_value
 from backend import config
 
 logger = logging.getLogger(__name__)
+
+CORPORATE_SUFFIX_PATTERN = re.compile(
+    r"(?i)\b(?:inc\.?|corp\.?|corporation|llc|ltd\.?|limited|co\.?|technologies|solutions|group|holdings|enterprises|systems|studios|labs|foundation|university|institute)\b"
+)
 
 # Expose constants for backward compatibility
 GLINER2_PII_LABELS = config.GLINER2_PII_LABELS
@@ -196,6 +201,17 @@ class GLiNER2PIIDetector:
                 )
                 continue
 
+            # --- Excluded tokens filter (keywords falsely tagged as entities) ---
+            clean_norm = text.lower().strip()
+            if clean_norm in config.COMMON_EXCLUDED_TOKENS or (
+                clean_norm.startswith("the ") and clean_norm[4:].strip() in config.COMMON_EXCLUDED_TOKENS
+            ):
+                logger.debug(
+                    "[GLiNER2PIIDetector] Excluded token '%s' in COMMON_EXCLUDED_TOKENS — skipping.",
+                    text,
+                )
+                continue
+
             # --- Canonical label lookup ---
             canonical_str = config.GLINER2_ENTITY_MAPPING.get(gliner2_label)
             is_unsupported = False
@@ -217,6 +233,57 @@ class GLiNER2PIIDetector:
                 )
                 entity_type = EntityType.PII_OTHER
                 is_unsupported = True
+
+            # If classified as EMAIL but lacks '@', skip
+            if entity_type == EntityType.EMAIL and "@" not in text:
+                continue
+
+            # Clean EMAIL trailing sentence text (e.g. .The) or trailing punctuation
+            if entity_type == EntityType.EMAIL:
+                email_sent_match = re.match(r"^([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,})(?:\.([A-Z][a-z]+.*))?$", text)
+                if email_sent_match and email_sent_match.group(2):
+                    text = email_sent_match.group(1)
+                    end = start + len(text)
+                elif text.endswith("."):
+                    text = text.rstrip(".")
+                    end = start + len(text)
+
+            # If classified as IP_ADDRESS but lacks '.' or ':', skip
+            if entity_type == EntityType.IP_ADDRESS and ("." not in text and ":" not in text):
+                continue
+
+            # If classified as PERSON:
+            if entity_type == EntityType.PERSON:
+                # Strip trailing possessive suffixes (e.g. "Priya Nair's" -> "Priya Nair")
+                if re.search(r"['’]s?$", text):
+                    trimmed = re.sub(r"['’]s?$", "", text).rstrip()
+                    if trimmed:
+                        text = trimmed
+                        end = start + len(text)
+
+                # Reject malformed PERSON spans containing sentence breaks, punctuation sequences, or directive keywords
+                if re.search(r"[.!?;:\n]{1,}\s*[-–—]|\.[a-zA-Z]{2,}|\b(?<![A-Z])\.[A-Z]", text):
+                    continue
+                words = [re.sub(r"^\W+|\W+$", "", w).lower() for w in text.split()]
+                disqualifying = {
+                    "api", "key", "token", "password", "secret", "credential", "database",
+                    "server", "ip", "endpoint", "must", "should", "shall", "cannot", "can",
+                    "will", "would", "could", "please", "report", "explain", "recommend",
+                    "incident", "order", "ticket", "customer", "support",
+                }
+                if any(w in disqualifying for w in words):
+                    continue
+
+                if CORPORATE_SUFFIX_PATTERN.search(text):
+                    continue
+
+            # Format validation for BANK_ACCOUNT / IBAN:
+            # Structured account numbers and IBANs must contain digits. Purely alphabetic text cannot be a bank account.
+            # Do NOT silently relabel an incorrect native GLiNER2 label as ORGANIZATION.
+            if entity_type == EntityType.BANK_ACCOUNT:
+                has_digits = any(c.isdigit() for c in text)
+                if not has_digits:
+                    continue
 
             entities.append(
                 DetectedEntity(
