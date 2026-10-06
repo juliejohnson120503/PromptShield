@@ -39,11 +39,51 @@ GLINER2_MODEL_NAME = config.GLINER2_MODEL_NAME
 GLINER2_DEFAULT_THRESHOLD = config.GLINER2_DEFAULT_THRESHOLD
 
 
+def _check_memory_available(min_mb: float = 650.0) -> bool:
+    """Ensure sufficient free physical RAM before loading large transformer weights."""
+    import platform
+    if platform.system() == "Windows":
+        try:
+            import ctypes
+
+            class MEMORYSTATUSEX(ctypes.Structure):
+                _fields_ = [
+                    ("dwLength", ctypes.c_ulong),
+                    ("dwMemoryLoad", ctypes.c_ulong),
+                    ("ullTotalPhys", ctypes.c_ulonglong),
+                    ("ullAvailPhys", ctypes.c_ulonglong),
+                    ("ullTotalPageFile", ctypes.c_ulonglong),
+                    ("ullAvailPageFile", ctypes.c_ulonglong),
+                    ("ullTotalVirtual", ctypes.c_ulonglong),
+                    ("ullAvailVirtual", ctypes.c_ulonglong),
+                    ("sullAvailExtendedVirtual", ctypes.c_ulonglong),
+                ]
+
+            stat = MEMORYSTATUSEX()
+            stat.dwLength = ctypes.sizeof(MEMORYSTATUSEX)
+            if ctypes.windll.kernel32.GlobalMemoryStatusEx(ctypes.byref(stat)):
+                avail_mb = stat.ullAvailPhys / (1024 * 1024)
+                if avail_mb < min_mb:
+                    logger.warning(
+                        "[GLiNER2PIIDetector] Low physical memory (%.1f MB available, need >= %.1f MB). "
+                        "Skipping GLiNER2 neural model to prevent OS pagefile crash; hybrid detectors remain active.",
+                        avail_mb,
+                        min_mb,
+                    )
+                    return False
+        except Exception:
+            pass
+    return True
+
+
 def _load_gliner2_model(model_name: str = config.GLINER2_MODEL_NAME) -> Optional[Any]:
     """
     Attempt to load GLiNER2 model using the official gliner2 package.
     Returns the model instance on success, or None on failure.
     """
+    if not _check_memory_available():
+        return None
+
     try:
         import sys
         if hasattr(sys.stdout, "reconfigure"):
@@ -62,6 +102,7 @@ def _load_gliner2_model(model_name: str = config.GLINER2_MODEL_NAME) -> Optional
         model = GLiNER2.from_pretrained(model_name)
         logger.info("[GLiNER2PIIDetector] Model %s loaded successfully.", model_name)
         return model
+
     except ImportError:
         logger.warning(
             "[GLiNER2PIIDetector] 'gliner2' package not installed. "

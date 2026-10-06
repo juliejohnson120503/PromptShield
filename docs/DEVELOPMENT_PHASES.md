@@ -19,8 +19,8 @@ PromptShield AI is a **context-aware security layer** that sits between a user a
 | **3** | **Risk Assessment & Privacy Policy Engine** | ✅ Completed | Scores risk (0–100); decides MASK / RETAIN / REPLACE / USER_APPROVAL |
 | **4** | **Context-Aware Semantic Masking** | ✅ Completed | Executes policy; replaces sensitive text with `<TYPE_N>` placeholders |
 | **5** | **Controlled Restoration & LLM Layer** | ✅ Completed | Pluggable LLM interface; authorized placeholder restoration |
-| **6** | **FastAPI Backend Service** | 🔜 Next | REST endpoints; privacy-safe audit logging |
-| **7** | **Browser Extension (Manifest V3)** | Planned | Chrome extension; popup UI; prompt injection |
+| **6** | **FastAPI Backend Service** | ✅ Completed | REST endpoints; privacy-safe audit logging |
+| **7** | **Browser Extension (Manifest V3)** | 🔜 Next | Chrome extension; popup UI; prompt injection |
 | **8** | **Dashboard & Empirical Evaluation** | Planned | Interactive dashboard; 3-way comparative benchmark |
 
 ---
@@ -144,16 +144,36 @@ After the LLM processes the sanitized prompt and returns a response, restore pla
 
 ---
 
-## Phase 6 — FastAPI Backend Service (Planned)
+## Phase 6 — FastAPI Backend Service
 
-### Endpoints (Planned)
+### Status: ✅ Completed
+
+### Objective
+Provide a high-performance RESTful API service exposing the PromptShield AI pipeline (Phases 1–5) to external consumers, browser extensions, dashboards, and automated clients.
+
+### Implemented Endpoints
 ```
-POST /analyze     — detect entities in prompt
-POST /sanitize    — detect + apply masking + return protected prompt
-POST /restore     — restore placeholders in LLM response
-GET  /policies    — list current privacy policies
-GET  /metrics     — detection statistics (privacy-safe)
+GET  /             — service banner, version, documentation URLs
+GET  /health       — system health, version, and detector subsystem statuses
+GET  /policies     — list supported security levels, entity types, and task types
+GET  /metrics      — privacy-safe telemetry (counts, latencies; zero raw PII logged)
+POST /analyze      — hybrid detection, task classification, context analysis & risk assessment
+POST /sanitize     — context-aware semantic masking, session-backed placeholder substitution
+POST /restore      — controlled response restoration honoring disclosure authorization
+POST /process      — end-to-end shielded pipeline (sanitize -> LLM generation -> restoration)
 ```
+
+### Key Modules
+```
+backend/api/app.py          — FastAPI application factory, CORS, exception handlers
+backend/api/schemas.py      — Pydantic request/response models with strict validation
+backend/api/service.py      — singleton service orchestrator connecting API to PromptShieldCore
+backend/api/audit_logger.py — thread-safe privacy-safe operational audit and metrics logger
+backend/api/routes/         — modular endpoint controllers
+run_server.py               — Uvicorn server entrypoint
+tests/test_api_service.py   — automated test suite for all endpoints
+```
+
 
 ---
 

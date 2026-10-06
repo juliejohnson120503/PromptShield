@@ -463,3 +463,21 @@ def test_customer_support_incident_restoration(shield):
     assert "<CUSTOMER_ID_1>" in restored
     assert "<IP_ADDRESS_1>" in restored
     assert "<API_KEY_1>" in restored
+
+
+def test_password_and_email_detection_and_blocking(shield):
+    """Verify that password followed by short numeric credentials is detected as PASSWORD (not DATE) and quarantined."""
+    prompt = "i m manasa and my mail is mani@gmail.com along with password 1234"
+    mask_res = shield.sanitize(prompt)
+    exchange = shield.execute_and_restore(prompt, session_id=mask_res.session_id)
+
+    # 1. 1234 must NOT leak into sanitized prompt as plaintext or be misclassified as DATE
+    assert "1234" not in mask_res.sanitized_prompt
+    assert "<DATE_" not in mask_res.sanitized_prompt
+    assert "<PASSWORD_" in mask_res.sanitized_prompt
+    assert "<EMAIL_" in mask_res.sanitized_prompt
+
+    # 2. Email can be restored, but password is a technical credential and MUST remain quarantined
+    assert "1234" not in exchange.restored_response
+    assert "<PASSWORD_" in exchange.restored_response
+

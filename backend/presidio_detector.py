@@ -184,6 +184,12 @@ class PresidioDetector:
                     if not (has_nearby_digits or has_date_prep):
                         continue
 
+                # Filter false positive numeric dates preceded by password/credential/identifier/code cues
+                if clean_text.isdigit():
+                    w_before = prompt[max(0, result.start - 40):result.start]
+                    if re.search(r"(?i)\b(?:password|passwd|psswrd|pswrd|pswd|pass|pwd|pin|passcode|otp|token|code|key|secret|id|order|ticket|tracking|port|ext|account|acc)\b", w_before):
+                        continue
+
             # Clean EMAIL trailing sentence text (e.g. .The) or trailing punctuation
             if entity_type == EntityType.EMAIL:
                 email_sent_match = re.match(r"^([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,})\.([A-Z][a-z]+.*)$", raw_text)

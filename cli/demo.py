@@ -1,10 +1,14 @@
 """
-Interactive Demonstration CLI for PromptShield AI (Phases 1, 2 & 3).
+Interactive Demonstration CLI for PromptShield AI (Phases 1–6).
 Showcases:
 - Phase 1: Structured & NER entity detection, normalization, baseline mapping.
 - Phase 2: Task classification and Contextual Role analysis (e.g. Julie vs Elon Musk).
 - Phase 3: Risk assessment and Privacy Policy decisions (MASK / RETAIN / USER_APPROVAL).
+- Phase 4: Context-aware semantic masking.
+- Phase 5: Controlled response restoration & LLM integration.
+- Phase 6: Available as a REST API Service via `python run_server.py`.
 """
+
 
 import sys
 import os
@@ -96,12 +100,12 @@ def _colour(text: str, col: str) -> str:
 def print_banner():
     w = 90
     print("=" * w)
-    print("  PROMPTSHIELD AI - Phase 1 | 2 | 3 | 4 | 5: Detection | Context | Policy | Mask | Restore".center(w))
+    print("  PROMPTSHIELD AI — Complete Security Pipeline (Phases 1–6)".center(w))
     print("=" * w)
     print("  A Context-Aware Security Layer for Safe, Responsible & Enterprise-Ready AI Systems".center(w))
     print("-" * w)
-    print(("  Pipeline: Prompt -> Detect (P1) -> Context (P2) -> Policy (P3) -> Mask (P4) -> Restore (P5)").center(w))
-    print("  Upcoming: REST API Service (P6) | Browser Extension (P7)".center(w))
+    print(("  Pipeline: Detect (P1) -> Context (P2) -> Policy (P3) -> Mask (P4) -> Restore (P5) -> REST API (P6)").center(w))
+    print("  Upcoming: Browser Extension (P7) | Benchmark Dashboard (P8)".center(w))
     print("=" * w)
 
 
@@ -231,7 +235,33 @@ def display_results(shield: PromptShieldCore, prompt: str):
         if blocked:
             print(f"    Quarantined:      {', '.join(blocked)}")
 
+    # -- [9] Phase 6: REST API Service Response -----------------------------
+    print(f"\n{BOLD}[9] PHASE 6 — REST API SERVICE (FastAPI JSON Output):{RESET}")
+    from backend.api.service import PromptShieldService
+    api_service = PromptShieldService()
+    api_response = api_service.process_end_to_end(prompt, session_id=p4_result.session_id)
+    import json
+    api_json = {
+        "endpoint": "POST /process",
+        "http_status": 200,
+        "session_id": api_response.session_id,
+        "sanitized_prompt": api_response.sanitized_prompt,
+        "restored_response": api_response.restored_response,
+        "metrics": {
+            "entities_detected": api_response.detected_entities_count,
+            "masked_count": api_response.masked_count,
+            "restored_count": api_response.restored_count,
+            "blocked_count": api_response.blocked_count,
+            "leakage_detected": api_response.leakage_detected,
+            "latency_ms": api_response.total_latency_ms,
+        }
+    }
+    print(f"    {CYAN}HTTP JSON Payload delivered to Browser Extension / Dashboard:{RESET}")
+    for line in json.dumps(api_json, indent=4).splitlines():
+        print(f"    {line}")
+
     print("-" * W)
+
 
 
 def run_demo():

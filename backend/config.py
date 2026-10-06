@@ -183,12 +183,12 @@ PASSWORD_PATTERNS: List[Tuple[re.Pattern, str]] = [
         ),
         "credential_assignment",
     ),
-    # password followed directly by secret value with space: "password RiverStone#9472"
+    # password followed directly by secret value with space: "password RiverStone#9472", "password 1234"
     (
         re.compile(
-            r"(?i)\b(?:password|passwd|psswrd|pswrd|pswd|pass|pwd)\s+"
+            r"(?i)\b(?:(?:my|the|user|acc|account|login)\s+)?(?:login\s+)?(?:password|passwd|psswrd|pswrd|pswd|pass|pwd|passcode|passphrase|pword)\s+"
             r"(?!(?:strong|weak|secure|insecure|valid|invalid|safe|unsafe|compromised|complexity|length|requirements|policy|rules|checker|hash|reset|change|generator|management|verification|rotation|strength|entropy|stronger|weaker|better|good|bad|should|must|will|would|can|could|is|was|are|were|has|have|had|and|or|not|with|for|from|that|this|which|to|in|at)\b)"
-            r"([A-Za-z0-9!@#$%^&*()_+\-=\[\]{}|;:'\"/]{6,32})"
+            r"([A-Za-z0-9!@#$%^&*()_+\-=\[\]{}|;:'\"/]{3,64})"
             r"(?=[.,;!?]?(?:\s|$))"
         ),
         "password_space_separated",
