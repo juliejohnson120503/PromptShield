@@ -188,6 +188,7 @@ class PromptShieldService:
 
         restored_phs = [r.placeholder for r in res.restorations if r.restored]
         blocked_phs = [r.placeholder for r in res.restorations if not r.restored] + list(res.unrestored_placeholders)
+        restored_map = {r.placeholder: r.original_value for r in res.restorations if r.restored}
         restored_count = len(restored_phs)
         blocked_count = len(blocked_phs)
 
@@ -204,6 +205,7 @@ class PromptShieldService:
             blocked_count=blocked_count,
             restored_placeholders=restored_phs,
             blocked_placeholders=blocked_phs,
+            restored_map=restored_map,
             leakage_detected=leakage_detected,
             latency_ms=round(latency, 2),
         )

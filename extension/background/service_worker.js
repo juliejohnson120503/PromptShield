@@ -126,11 +126,11 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
             if (!res.ok) throw new Error(`HTTP error ${res.status}`);
             const data = await res.json();
 
-            // Update stats
+            // Update stats & persist last session ID for response restoration
             const stats = config.stats || DEFAULT_CONFIG.stats;
             stats.promptsMasked = (stats.promptsMasked || 0) + 1;
             stats.entitiesProtected = (stats.entitiesProtected || 0) + (data.masked_count || 0);
-            await chrome.storage.local.set({ stats });
+            await chrome.storage.local.set({ stats, lastSessionId: data.session_id });
 
             sendResponse({ success: true, data });
           } catch (err) {
@@ -141,12 +141,18 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
         case "RESTORE_RESPONSE": {
           try {
+            const effectiveSessionId = payload.session_id || config.lastSessionId;
+            if (!effectiveSessionId) {
+              sendResponse({ success: false, error: "No active session ID for restoration" });
+              return;
+            }
+
             const res = await fetch(`${baseUrl}/restore`, {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({
                 llm_response: payload.llm_response,
-                session_id: payload.session_id,
+                session_id: effectiveSessionId,
                 allow_all_restoration: payload.allow_all_restoration || false,
               }),
             });

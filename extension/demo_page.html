@@ -279,9 +279,19 @@
       appendMessage("user", text);
       textarea.value = "";
 
-      // Simulate LLM response after 700ms
+      // Simulate LLM response after 700ms reflecting placeholders
       setTimeout(() => {
-        appendMessage("assistant", `[Simulated LLM Received]: "${text}". Prompt processed safely without exposing confidential identities.`);
+        let reply = "";
+        if (text.includes("<PERSON_1>")) {
+          reply = `Hello <PERSON_1>! Your request has been processed successfully by the LLM without ever learning your real identity.`;
+        } else if (text.includes("<EMAIL_1>")) {
+          reply = `Notification dispatched to <EMAIL_1> securely.`;
+        } else if (text.includes("<PASSWORD_1>")) {
+          reply = `Credentials verified. Access level: Authorized.`;
+        } else {
+          reply = `[Simulated LLM Received]: "${text}". Prompt processed safely without exposing confidential identities.`;
+        }
+        appendMessage("assistant", reply);
       }, 700);
     }
 

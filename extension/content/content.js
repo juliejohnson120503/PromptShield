@@ -7,6 +7,7 @@
   let isIntercepting = false;
   let bypassNextSubmit = false;
   let lastActiveInput = null;
+  let lastSessionId = null;
 
   console.log("[PromptShield] Content script injected and active.");
 
@@ -207,14 +208,48 @@
 
     setPromptText(elem, text);
 
-    // Give React / ProseMirror 120ms to process the input event and enable the submit button
-    setTimeout(() => {
+    // Poll reactively for React/ProseMirror to update state and enable the send button
+    let attempts = 0;
+    const maxAttempts = 8;
+    const pollInterval = setInterval(() => {
+      attempts++;
       const sendBtn = findSubmitButton();
-      if (sendBtn && !sendBtn.disabled && sendBtn.getAttribute("aria-disabled") !== "true") {
-        console.log("[PromptShield] Triggering send via click on submit button.");
+      const isEnabled = sendBtn && !sendBtn.disabled && sendBtn.getAttribute("aria-disabled") !== "true";
+
+      if (isEnabled) {
+        clearInterval(pollInterval);
+        console.log("[PromptShield] Send button enabled, triggering click.");
         sendBtn.click();
-      } else {
-        console.log("[PromptShield] Dispatching Enter keydown to prompt input.");
+        return;
+      }
+
+      if (attempts >= maxAttempts) {
+        clearInterval(pollInterval);
+        console.log("[PromptShield] Attempting fallback submission techniques...");
+
+        // Fallback A: Native form requestSubmit
+        const form = elem.closest("form");
+        if (form && typeof form.requestSubmit === "function") {
+          try {
+            form.requestSubmit();
+            console.log("[PromptShield] Form requestSubmit dispatched successfully.");
+            return;
+          } catch (_) {}
+        }
+
+        // Fallback B: Mouse/Pointer event sequence on send button
+        if (sendBtn) {
+          sendBtn.disabled = false;
+          sendBtn.removeAttribute("disabled");
+          sendBtn.removeAttribute("aria-disabled");
+          sendBtn.dispatchEvent(new PointerEvent("pointerdown", { bubbles: true, cancelable: true }));
+          sendBtn.dispatchEvent(new MouseEvent("mousedown", { bubbles: true, cancelable: true }));
+          sendBtn.dispatchEvent(new PointerEvent("pointerup", { bubbles: true, cancelable: true }));
+          sendBtn.dispatchEvent(new MouseEvent("mouseup", { bubbles: true, cancelable: true }));
+          sendBtn.click();
+        }
+
+        // Fallback C: Keyboard Enter event sequence
         elem.focus();
         elem.dispatchEvent(new KeyboardEvent("keydown", {
           key: "Enter",
@@ -224,14 +259,8 @@
           bubbles: true,
           cancelable: true,
         }));
-        if (sendBtn) {
-          sendBtn.disabled = false;
-          sendBtn.removeAttribute("disabled");
-          sendBtn.removeAttribute("aria-disabled");
-          sendBtn.click();
-        }
       }
-    }, 120);
+    }, 50);
   }
 
   // 4. Render Interactive Security Intercept Modal
@@ -352,8 +381,10 @@
           overlay.remove();
           const targetInput = (inputElem && inputElem.isConnected) ? inputElem : findPromptInput();
           if (sanitizeRes && sanitizeRes.success && sanitizeRes.data) {
+            lastSessionId = sanitizeRes.data.session_id;
             const maskedText = sanitizeRes.data.sanitized_prompt;
             console.log("[PromptShield] Injected sanitized prompt into LLM:", maskedText);
+            console.log("[PromptShield] Active session ID for restoration:", lastSessionId);
             triggerDirectSubmit(maskedText, targetInput);
           } else {
             console.error("[PromptShield] Failed to sanitize prompt:", sanitizeRes);
@@ -364,7 +395,219 @@
     });
   }
 
-  // 5. Floating Status Pill Helper
+  // 5. Response Restoration Engine (Phase 5)
+  // Scans incoming LLM responses for <TYPE_N> placeholders and restores authorized secrets
+  const processedAssistantNodes = new WeakSet();
+  const PLACEHOLDER_CHECK_RE = /<([A-Z_]+)_(\d+)>/;
+
+  function isLLMGenerating() {
+    return !!document.querySelector(
+      "button[data-testid='stop-button'], button[aria-label*='Stop' i], button[aria-label='Stop streaming'], button[aria-label='Stop generating'], .stop-button, [data-testid*='stop' i]"
+    );
+  }
+
+  function findAssistantCandidateNodes() {
+    const matched = [];
+    // Broad selector across ChatGPT (classic + Canvas + 4o), Claude, Gemini, Copilot, and custom sandboxes
+    const selectors = [
+      "div[data-message-author-role='assistant']",
+      "article[data-testid*='conversation-turn']",
+      "article",
+      "div[class*='agent-turn']",
+      "div[class*='conversation-turn']",
+      "div.markdown",
+      "div[data-message-id]",
+      "div.font-claude-message",
+      "message-content",
+      ".message.assistant",
+      "cib-message-group[source='bot']",
+      "[data-content='ai-message']",
+      ".chat-history .assistant",
+      ".chat-message.assistant",
+      "div[class*='prose']",
+    ];
+
+    const elements = document.querySelectorAll(selectors.join(", "));
+    elements.forEach((el) => {
+      // Must not be the user prompt turn or input
+      if (
+        el.matches("[data-message-author-role='user'], [data-testid*='user-turn']") ||
+        el.closest("[data-message-author-role='user'], [data-testid*='user-turn']") ||
+        el.closest("#prompt-textarea, textarea, [contenteditable='true'], #promptshield-overlay")
+      ) {
+        return;
+      }
+      if (PLACEHOLDER_CHECK_RE.test(el.textContent || "")) {
+        matched.push(el);
+      }
+    });
+
+    // Fallback: If no structured container matched, locate any block with placeholder tokens
+    if (matched.length === 0) {
+      const genericBlocks = document.querySelectorAll("p, div, li");
+      genericBlocks.forEach((el) => {
+        if (
+          el.closest(
+            "#prompt-textarea, textarea, [contenteditable='true'], #promptshield-overlay, .ps-restored-banner, [data-message-author-role='user'], [data-testid*='user-turn']"
+          )
+        ) {
+          return;
+        }
+        if (PLACEHOLDER_CHECK_RE.test(el.textContent || "")) {
+          const container = el.closest("article, div[class*='turn'], div[class*='message'], div[class*='bubble']") || el;
+          if (!matched.includes(container)) {
+            matched.push(container);
+          }
+        }
+      });
+    }
+
+    return matched;
+  }
+
+  function scanAndRestoreResponses() {
+    // CRITICAL: Never touch or scan DOM while LLM is actively streaming tokens!
+    if (isLLMGenerating()) {
+      return;
+    }
+
+    const candidateNodes = findAssistantCandidateNodes();
+
+    candidateNodes.forEach((node) => {
+      if (processedAssistantNodes.has(node)) return;
+
+      const text = node.textContent || "";
+      if (PLACEHOLDER_CHECK_RE.test(text)) {
+        clearTimeout(node._psRestoreDebounce);
+        node._psRestoreDebounce = setTimeout(() => {
+          if (!isLLMGenerating()) {
+            performResponseRestoration(node);
+          }
+        }, 500);
+      }
+    });
+  }
+
+  function performResponseRestoration(node) {
+    if (processedAssistantNodes.has(node)) return;
+    if (isLLMGenerating()) return;
+
+    const rawText = node.textContent || "";
+    if (!PLACEHOLDER_CHECK_RE.test(rawText)) return;
+
+    processedAssistantNodes.add(node);
+    console.log("[PromptShield] Calling Phase 5 /restore. Local session ID:", lastSessionId);
+
+    chrome.runtime.sendMessage(
+      {
+        type: "RESTORE_RESPONSE",
+        payload: {
+          llm_response: rawText,
+          session_id: lastSessionId || undefined,
+          allow_all_restoration: false,
+        },
+      },
+      (res) => {
+        if (res && res.success && res.data && res.data.restored_count > 0) {
+          const restoredMap = res.data.restored_map || {};
+
+          // Safely replace text nodes without wiping HTML tags, code blocks, or React hierarchy
+          safelyReplacePlaceholders(node, restoredMap);
+
+          // Append PromptShield restored badge
+          const banner = document.createElement("div");
+          banner.className = "ps-restored-banner";
+          banner.innerHTML = `
+            <span>🛡️ <strong>PromptShield Restored</strong> (${res.data.restored_count} confidential token${res.data.restored_count > 1 ? 's' : ''})</span>
+            <button type="button" class="ps-toggle-raw-btn">View Raw Tokens</button>
+          `;
+
+          let isRestoredView = true;
+          const toggleBtn = banner.querySelector(".ps-toggle-raw-btn");
+          toggleBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            if (isRestoredView) {
+              safelyRevertPlaceholders(node, restoredMap);
+              toggleBtn.textContent = "View Restored Text";
+              isRestoredView = false;
+            } else {
+              safelyReplacePlaceholders(node, restoredMap);
+              toggleBtn.textContent = "View Raw Tokens";
+              isRestoredView = true;
+            }
+          });
+
+          node.appendChild(banner);
+          console.log(`[PromptShield] Successfully restored ${res.data.restored_count} tokens in response.`);
+        }
+      }
+    );
+  }
+
+  function safelyReplacePlaceholders(rootElem, restoredMap) {
+    if (!restoredMap || Object.keys(restoredMap).length === 0) return;
+    const walker = document.createTreeWalker(rootElem, NodeFilter.SHOW_TEXT, null, false);
+    let textNode;
+    const nodesToUpdate = [];
+    while ((textNode = walker.nextNode())) {
+      if (textNode.parentElement && textNode.parentElement.closest(".ps-restored-banner")) {
+        continue;
+      }
+      for (const ph of Object.keys(restoredMap)) {
+        if (textNode.nodeValue && textNode.nodeValue.includes(ph)) {
+          nodesToUpdate.push(textNode);
+          break;
+        }
+      }
+    }
+    for (const tn of nodesToUpdate) {
+      let val = tn.nodeValue;
+      for (const [ph, secret] of Object.entries(restoredMap)) {
+        val = val.replaceAll(ph, secret);
+      }
+      tn.nodeValue = val;
+    }
+  }
+
+  function safelyRevertPlaceholders(rootElem, restoredMap) {
+    if (!restoredMap || Object.keys(restoredMap).length === 0) return;
+    const walker = document.createTreeWalker(rootElem, NodeFilter.SHOW_TEXT, null, false);
+    let textNode;
+    const nodesToUpdate = [];
+    while ((textNode = walker.nextNode())) {
+      if (textNode.parentElement && textNode.parentElement.closest(".ps-restored-banner")) {
+        continue;
+      }
+      for (const secret of Object.values(restoredMap)) {
+        if (textNode.nodeValue && textNode.nodeValue.includes(secret)) {
+          nodesToUpdate.push(textNode);
+          break;
+        }
+      }
+    }
+    for (const tn of nodesToUpdate) {
+      let val = tn.nodeValue;
+      for (const [ph, secret] of Object.entries(restoredMap)) {
+        val = val.replaceAll(secret, ph);
+      }
+      tn.nodeValue = val;
+    }
+  }
+
+  // Debounced DOM observer that never triggers during active LLM streaming
+  let restoreDebounceTimer = null;
+  const responseObserver = new MutationObserver(() => {
+    if (isLLMGenerating()) return;
+    clearTimeout(restoreDebounceTimer);
+    restoreDebounceTimer = setTimeout(() => {
+      scanAndRestoreResponses();
+    }, 700);
+  });
+
+  responseObserver.observe(document.body, { childList: true, subtree: true });
+
+  // 6. Floating Status Pill Helper
   function showMiniStatus(text) {
     let pill = document.getElementById("promptshield-mini-status");
     if (!pill) {

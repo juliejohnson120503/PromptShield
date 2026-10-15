@@ -82,6 +82,7 @@ class RestoreResponse(BaseModel):
     blocked_count: int
     restored_placeholders: List[str]
     blocked_placeholders: List[str]
+    restored_map: Dict[str, str] = Field(default_factory=dict)
     leakage_detected: bool
     latency_ms: float
 
