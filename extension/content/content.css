@@ -1,0 +1,314 @@
+/* PromptShield AI — Content Script & Modal Stylesheet */
+/* Namespaced to prevent conflict with ChatGPT / Claude / Gemini styles */
+
+#promptshield-overlay {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  background: rgba(3, 7, 18, 0.75) !important;
+  backdrop-filter: blur(8px) !important;
+  z-index: 999999999 !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  color: #f8fafc !important;
+  animation: psFadeIn 0.2s ease-out !important;
+}
+
+@keyframes psFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes psSlideUp {
+  from { opacity: 0; transform: translateY(16px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+#promptshield-modal {
+  width: 580px !important;
+  max-width: 90vw !important;
+  max-height: 88vh !important;
+  background: #090d16 !important;
+  border: 1px solid rgba(56, 189, 248, 0.3) !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7), 0 0 35px rgba(56, 189, 248, 0.15) !important;
+  border-radius: 16px !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+  animation: psSlideUp 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  box-sizing: border-box !important;
+}
+
+/* Modal Header */
+.ps-modal-header {
+  padding: 16px 20px !important;
+  background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.6) 100%) !important;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.15) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+}
+
+.ps-brand {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+}
+
+.ps-logo-icon {
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 8px !important;
+  background: linear-gradient(135deg, #0284c7 0%, #06b6d4 100%) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  box-shadow: 0 0 12px rgba(6, 182, 212, 0.4) !important;
+}
+
+.ps-title-group h2 {
+  margin: 0 !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  color: #ffffff !important;
+  letter-spacing: -0.3px !important;
+}
+
+.ps-title-group span {
+  font-size: 11px !important;
+  color: #94a3b8 !important;
+}
+
+.ps-risk-pill {
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  padding: 4px 10px !important;
+  border-radius: 999px !important;
+  letter-spacing: 0.5px !important;
+  text-transform: uppercase !important;
+}
+
+.ps-risk-high {
+  background: rgba(244, 63, 94, 0.15) !important;
+  color: #fb7185 !important;
+  border: 1px solid rgba(244, 63, 94, 0.4) !important;
+}
+
+.ps-risk-medium {
+  background: rgba(245, 158, 11, 0.15) !important;
+  color: #fbbf24 !important;
+  border: 1px solid rgba(245, 158, 11, 0.4) !important;
+}
+
+.ps-risk-low {
+  background: rgba(16, 185, 129, 0.15) !important;
+  color: #34d399 !important;
+  border: 1px solid rgba(16, 185, 129, 0.4) !important;
+}
+
+/* Modal Body */
+.ps-modal-body {
+  padding: 18px 20px !important;
+  overflow-y: auto !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 14px !important;
+}
+
+.ps-section-heading {
+  font-size: 11.5px !important;
+  font-weight: 700 !important;
+  color: #94a3b8 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.5px !important;
+  margin-bottom: 6px !important;
+}
+
+.ps-prompt-preview {
+  background: #020617 !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 8px !important;
+  padding: 12px !important;
+  font-size: 12.5px !important;
+  line-height: 1.6 !important;
+  color: #cbd5e1 !important;
+  max-height: 100px !important;
+  overflow-y: auto !important;
+  word-break: break-word !important;
+}
+
+.ps-highlight-mask {
+  background: rgba(244, 63, 94, 0.25) !important;
+  color: #fda4af !important;
+  padding: 1px 4px !important;
+  border-radius: 4px !important;
+  border-bottom: 1.5px solid #f43f5e !important;
+  font-weight: 600 !important;
+}
+
+.ps-highlight-retain {
+  background: rgba(16, 185, 129, 0.2) !important;
+  color: #6ee7b7 !important;
+  padding: 1px 4px !important;
+  border-radius: 4px !important;
+  border-bottom: 1.5px solid #10b981 !important;
+}
+
+/* Entities List */
+.ps-entities-list {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 8px !important;
+  max-height: 190px !important;
+  overflow-y: auto !important;
+}
+
+.ps-entity-row {
+  background: rgba(15, 23, 42, 0.8) !important;
+  border: 1px solid rgba(148, 163, 184, 0.12) !important;
+  border-radius: 8px !important;
+  padding: 10px 12px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  gap: 12px !important;
+}
+
+.ps-entity-meta {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 2px !important;
+  flex: 1 !important;
+}
+
+.ps-entity-name {
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  color: #ffffff !important;
+}
+
+.ps-entity-sub {
+  font-size: 11px !important;
+  color: #64748b !important;
+}
+
+.ps-entity-decision-badge {
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  padding: 3px 8px !important;
+  border-radius: 4px !important;
+  letter-spacing: 0.3px !important;
+}
+
+.ps-badge-mask {
+  background: rgba(244, 63, 94, 0.2) !important;
+  color: #fb7185 !important;
+  border: 1px solid rgba(244, 63, 94, 0.4) !important;
+}
+
+.ps-badge-retain {
+  background: rgba(16, 185, 129, 0.2) !important;
+  color: #34d399 !important;
+  border: 1px solid rgba(16, 185, 129, 0.4) !important;
+}
+
+/* Modal Footer Actions */
+.ps-modal-footer {
+  padding: 14px 20px !important;
+  background: rgba(15, 23, 42, 0.95) !important;
+  border-top: 1px solid rgba(148, 163, 184, 0.12) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+}
+
+.ps-btn-group-right {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+}
+
+.ps-btn {
+  padding: 8px 16px !important;
+  font-size: 12.5px !important;
+  font-weight: 600 !important;
+  border-radius: 8px !important;
+  border: none !important;
+  cursor: pointer !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  transition: all 0.2s ease !important;
+}
+
+.ps-btn-primary {
+  background: linear-gradient(135deg, #0284c7 0%, #06b6d4 100%) !important;
+  color: #ffffff !important;
+  box-shadow: 0 2px 10px rgba(6, 182, 212, 0.35) !important;
+}
+
+.ps-btn-primary:hover {
+  filter: brightness(1.12) !important;
+  box-shadow: 0 4px 14px rgba(6, 182, 212, 0.5) !important;
+}
+
+.ps-btn-ghost {
+  background: rgba(255, 255, 255, 0.05) !important;
+  color: #94a3b8 !important;
+}
+
+.ps-btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+  color: #ffffff !important;
+}
+
+.ps-btn-danger-ghost {
+  background: transparent !important;
+  color: #f43f5e !important;
+  font-size: 11.5px !important;
+}
+
+.ps-btn-danger-ghost:hover {
+  background: rgba(244, 63, 94, 0.1) !important;
+  color: #fb7185 !important;
+}
+
+/* Floating Input Guard Badge */
+#promptshield-floating-indicator {
+  position: absolute !important;
+  bottom: 12px !important;
+  right: 65px !important;
+  z-index: 99999 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  padding: 3px 8px !important;
+  background: rgba(15, 23, 42, 0.85) !important;
+  border: 1px solid rgba(56, 189, 248, 0.3) !important;
+  border-radius: 999px !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  color: #38bdf8 !important;
+  cursor: pointer !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+  user-select: none !important;
+  transition: all 0.2s ease !important;
+}
+
+#promptshield-floating-indicator:hover {
+  background: rgba(30, 41, 59, 0.95) !important;
+  border-color: #38bdf8 !important;
+  transform: translateY(-1px) !important;
+}
+
+.ps-indicator-dot {
+  width: 6px !important;
+  height: 6px !important;
+  border-radius: 50% !important;
+  background: #10b981 !important;
+  box-shadow: 0 0 6px #10b981 !important;
+}

@@ -96,7 +96,7 @@ class PromptShieldService:
             EntityPolicySchema(
                 entity_text=ep.entity_text,
                 entity_type=ep.entity_type.value,
-                risk_score=ep.risk_score,
+                risk_score=round(ep.risk_score * 100.0, 1) if ep.risk_score <= 1.0 else round(ep.risk_score, 1),
                 decision=ep.decision.value,
                 disclosure_allowed=ep.disclosure_allowed,
                 rationale=ep.reason,
@@ -104,9 +104,10 @@ class PromptShieldService:
             for ep in policy.entity_policies
         ]
 
-        overall_risk = (
+        raw_overall = (
             max((ep.risk_score for ep in policy.entity_policies), default=0.0)
         )
+        overall_risk = raw_overall * 100.0 if raw_overall <= 1.0 else raw_overall
 
         return AnalyzeResponse(
             prompt_length=len(prompt),
@@ -114,7 +115,7 @@ class PromptShieldService:
             task_confidence=context.task_confidence,
             detected_entities=entity_schemas,
             entity_policies=policy_schemas,
-            overall_risk_score=round(overall_risk, 2),
+            overall_risk_score=round(overall_risk, 1),
             analysis_latency_ms=round(latency, 2),
         )
 

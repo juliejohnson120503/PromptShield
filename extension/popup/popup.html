@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PromptShield AI — Security Panel</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <header class="header">
+      <div class="brand">
+        <div class="logo-shield">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <path d="M12 2L3 7V12C3 17.5 7 21.5 12 22C17 21.5 21 17.5 21 12V7L12 2Z" fill="url(#shieldGrad)" stroke="#38bdf8" stroke-width="1.5"/>
+            <path d="M9 12L11 14L15 10" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <defs>
+              <linearGradient id="shieldGrad" x1="12" y1="2" x2="12" y2="22" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#0284c7"/>
+                <stop offset="1" stop-color="#0369a1"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <div>
+          <h1 class="title">PromptShield <span class="highlight">AI</span></h1>
+          <span class="subtitle">Context-Aware Privacy Layer</span>
+        </div>
+      </div>
+      <div id="backendStatus" class="status-pill status-checking">
+        <span class="status-dot"></span>
+        <span id="statusText">Connecting...</span>
+      </div>
+    </header>
+
+    <!-- Master Switch -->
+    <section class="card toggle-card">
+      <div class="toggle-info">
+        <span class="card-label">Active Prompt Interception</span>
+        <span class="card-desc">Intercepts sensitive data on ChatGPT, Claude & Gemini</span>
+      </div>
+      <label class="switch">
+        <input type="checkbox" id="masterToggle" checked>
+        <span class="slider"></span>
+      </label>
+    </section>
+
+    <!-- Security Level -->
+    <section class="card">
+      <div class="section-title">Security Policy Profile</div>
+      <div class="level-selector">
+        <button type="button" class="level-btn" data-level="STRICT">
+          <span class="level-name">STRICT</span>
+          <span class="level-sub">Mask all PII</span>
+        </button>
+        <button type="button" class="level-btn active" data-level="BALANCED">
+          <span class="level-name">BALANCED</span>
+          <span class="level-sub">Context-aware</span>
+        </button>
+        <button type="button" class="level-btn" data-level="PERMISSIVE">
+          <span class="level-name">PERMISSIVE</span>
+          <span class="level-sub">High risk only</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Live Stats -->
+    <section class="card stats-grid">
+      <div class="stat-box">
+        <span id="statScanned" class="stat-val">0</span>
+        <span class="stat-lbl">Prompts Scanned</span>
+      </div>
+      <div class="stat-box">
+        <span id="statProtected" class="stat-val highlight-cyan">0</span>
+        <span class="stat-lbl">Entities Masked</span>
+      </div>
+      <div class="stat-box">
+        <span id="statRisks" class="stat-val highlight-emerald">0</span>
+        <span class="stat-lbl">Risks Neutralized</span>
+      </div>
+    </section>
+
+    <!-- In-Popup Interactive Sandbox -->
+    <section class="card sandbox-card">
+      <div class="section-title">
+        <span>Quick Security Tester</span>
+        <span class="badge-mini">Live Sandbox</span>
+      </div>
+      <textarea id="testInput" rows="2" placeholder="e.g. My name is Julie, email julie@gmail.com. Help me draft an email to ABC Technologies."></textarea>
+      <div class="sandbox-actions">
+        <button id="testScanBtn" class="btn btn-primary">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          Analyze & Mask
+        </button>
+        <button id="testClearBtn" class="btn btn-ghost">Clear</button>
+      </div>
+      <div id="testOutputArea" class="test-results hidden">
+        <div class="results-header">
+          <span id="testRiskBadge" class="risk-badge">LOW RISK</span>
+          <span id="testLatency" class="latency-tag">0 ms</span>
+        </div>
+        <div class="result-block">
+          <span class="block-title">Sanitized Prompt Delivered to LLM:</span>
+          <div id="testSanitizedText" class="code-box"></div>
+        </div>
+        <div class="result-block">
+          <span class="block-title">Policy Decisions:</span>
+          <div id="testDecisionsList" class="decisions-container"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="footer-links">
+        <a href="http://127.0.0.1:8000/docs" target="_blank" class="footer-link">FastAPI Swagger Docs</a>
+        <span>•</span>
+        <span id="serverUrlDisplay" class="footer-meta">http://127.0.0.1:8000</span>
+      </div>
+    </footer>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

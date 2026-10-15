@@ -1,0 +1,60 @@
+{
+  "manifest_version": 3,
+  "name": "PromptShield AI — Context-Aware Security Guard",
+  "version": "1.0.0",
+  "description": "Real-time context-aware privacy shield for ChatGPT, Claude, and Gemini. Intercepts sensitive prompts, assesses privacy risks, and semantically masks PII.",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    },
+    "default_title": "PromptShield AI Security"
+  },
+  "background": {
+    "service_worker": "background/service_worker.js"
+  },
+  "permissions": [
+    "storage",
+    "activeTab"
+  ],
+  "host_permissions": [
+    "http://127.0.0.1:8000/*",
+    "http://localhost:8000/*",
+    "https://chatgpt.com/*",
+    "https://chat.openai.com/*",
+    "https://claude.ai/*",
+    "https://gemini.google.com/*",
+    "https://aistudio.google.com/*",
+    "<all_urls>"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://chatgpt.com/*",
+        "https://chat.openai.com/*",
+        "https://claude.ai/*",
+        "https://gemini.google.com/*",
+        "https://aistudio.google.com/*",
+        "http://*/*",
+        "https://*/*",
+        "file:///*"
+      ],
+      "js": ["content/content.js"],
+      "css": ["content/content.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["icons/*", "content/*"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}
