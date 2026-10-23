@@ -207,6 +207,8 @@ class ContextualRole:
     normalized_value: str = ""      # Canonical form of the entity text
     explicit_directive: Optional[str] = None  # "RETAIN", "MASK", or None
     disclosure_allowed: bool = True           # True if allowed to be restored in final output
+    detector_confidence: float = 1.0          # Original detector confidence
+    has_insufficient_context: bool = False   # True if prompt lacks task context
 
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -229,6 +231,8 @@ class ContextualRole:
             "normalized_value": self.normalized_value,
             "explicit_directive": self.explicit_directive,
             "disclosure_allowed": self.disclosure_allowed,
+            "detector_confidence": round(self.detector_confidence, 4),
+            "has_insufficient_context": self.has_insufficient_context,
         }
 
 
@@ -241,6 +245,8 @@ class ContextAnalysisResult:
     task_cues: List[str]
     entity_contexts: List[ContextualRole]
     operation_type: OperationType = OperationType.UNKNOWN
+    has_insufficient_context: bool = False
+    context_warning: Optional[str] = None
 
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -254,6 +260,8 @@ class ContextAnalysisResult:
                 else str(self.operation_type)
             ),
             "entity_contexts": [ec.to_dict() for ec in self.entity_contexts],
+            "has_insufficient_context": self.has_insufficient_context,
+            "context_warning": self.context_warning,
         }
 
 

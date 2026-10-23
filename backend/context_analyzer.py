@@ -135,6 +135,63 @@ def detect_operation(prompt: str) -> OperationType:
     return OperationType.UNKNOWN
 
 
+TASK_VERBS_PATTERN = re.compile(
+    r"(?i)\b(?:draft|write|compose|summarize|summary|explain|describe|analyze|calculate|"
+    r"compute|compare|check|verify|validate|tell\s+me|find|who|what|where|why|how|when|"
+    r"rewrite|proofread|translate|debug|generate|create|help|please|give|show)\b"
+)
+
+
+def evaluate_prompt_context(
+    prompt: str,
+    entities: List[DetectedEntity],
+    task_type: TaskType,
+    operation: OperationType,
+) -> Tuple[bool, Optional[str]]:
+    """
+    Evaluates whether the prompt has sufficient operational context or is an isolated fragment.
+    Returns (has_insufficient_context, warning_message).
+    """
+    cleaned = prompt.strip()
+    words = cleaned.split()
+    word_count = len(words)
+    char_len = len(cleaned)
+
+    if not cleaned or not entities:
+        return False, None
+
+    total_entity_chars = sum(len(e.text) for e in entities)
+    entity_coverage_ratio = total_entity_chars / max(1, char_len)
+    has_task_verb = bool(TASK_VERBS_PATTERN.search(cleaned))
+
+    # Condition 1: Extremely short isolated query (<= 4 words or < 25 chars) dominated by entities with NO task verb
+    is_isolated_entity = (
+        (word_count <= 4 or char_len < 25)
+        and entity_coverage_ratio >= 0.55
+        and not has_task_verb
+    )
+
+    # Condition 2: Operation is UNKNOWN and task is GENERAL_CHAT / UNKNOWN with no task verbs and few words
+    is_vague_general = (
+        operation == OperationType.UNKNOWN
+        and task_type in (TaskType.GENERAL_CHAT, TaskType.GENERAL_QA)
+        and not has_task_verb
+        and word_count <= 5
+        and entity_coverage_ratio >= 0.40
+    )
+
+    if is_isolated_entity or is_vague_general:
+        entity_names = ", ".join(f"'{e.text}'" for e in entities[:2])
+        msg = (
+            f"Prompt contains sensitive data ({entity_names}) with little or no task context. "
+            "Please provide a prompt with clear context (e.g., 'Draft an email to Rahul regarding S7') "
+            "so PromptShield can accurately determine task relevance and privacy protection."
+        )
+        return True, msg
+
+    return False, None
+
+
 # Linguistic Directive Patterns (Phase 2 & Phase 3)
 INCLUSION_DIRECTIVE_PATTERN = re.compile(
     r"(?i)\b(?:must\s+mention|please\s+mention|mention(?:ing|ed|s)?|must\s+include|please\s+include|include|including|includes|refer(?:ring)?\s+to|state|stating|cite|citing|must\s+contain|should\s+mention|use\s+in\s+the\s+report)\s+([^.?!;\n]+)"
@@ -588,10 +645,13 @@ class ContextAnalyzer:
         """
         operation = detect_operation(prompt)
         inclusions, exclusions = extract_linguistic_directives(prompt)
+        has_low_ctx, ctx_warning = evaluate_prompt_context(prompt, entities, task_type, operation)
 
         contexts: List[ContextualRole] = []
         for ent in entities:
             role = self.analyze_entity_context(ent, prompt, task_type, operation=operation)
+            role.detector_confidence = getattr(ent, "confidence", 1.0)
+            role.has_insufficient_context = has_low_ctx
             
             # Apply explicit linguistic directives
             directive, disclosure = check_entity_directives(ent, prompt, inclusions, exclusions)
@@ -635,4 +695,6 @@ class ContextAnalyzer:
             task_cues=task_cues,
             entity_contexts=contexts,
             operation_type=operation,
+            has_insufficient_context=has_low_ctx,
+            context_warning=ctx_warning,
         )

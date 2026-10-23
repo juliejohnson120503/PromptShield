@@ -123,6 +123,8 @@ class PolicyReport:
     task_type:         str
     task_confidence:   float
     entity_policies:   List[EntityPolicyResult]
+    has_insufficient_context: bool = False
+    context_warning: Optional[str] = None
 
     # Convenience views
     @property
@@ -156,6 +158,8 @@ class PolicyReport:
             "task_type":        self.task_type,
             "task_confidence":  round(self.task_confidence, 4),
             "overall_risk":     self.overall_risk_level.value,
+            "has_insufficient_context": self.has_insufficient_context,
+            "context_warning":  self.context_warning,
             "entity_policies":  [p.to_dict() for p in self.entity_policies],
             "summary": {
                 "total":          len(self.entity_policies),
@@ -268,6 +272,8 @@ class PolicyEngine:
             task_type=context_result.task_type.value,
             task_confidence=context_result.task_confidence,
             entity_policies=policies,
+            has_insufficient_context=getattr(context_result, "has_insufficient_context", False),
+            context_warning=getattr(context_result, "context_warning", None),
         )
 
     # -----------------------------------------------------------------------
@@ -421,7 +427,26 @@ class PolicyEngine:
                 False,
             )
 
-        # Rule 3 — Public figures / public facts: retain unless the user is
+        # Rule 3 — Insufficient / Isolated Prompt Context (e.g. 'rahul s7'):
+        # Prompt lacks operational context (no task verbs, isolated fragment).
+        # PromptShield requests user approval to confirm whether to mask as a token or retain.
+        if getattr(role, "has_insufficient_context", False) and not role.is_first_party:
+            return (
+                PolicyDecision.USER_APPROVAL,
+                f"Insufficient prompt context (isolated entity '{role.entity_text}') — user approval required to confirm privacy policy.",
+                True,
+            )
+
+        # Rule 4 — Borderline Detection Confidence (0.40 <= conf < 0.70) on non-first-party entities:
+        detector_conf = getattr(role, "detector_confidence", 1.0)
+        if 0.40 <= detector_conf < 0.70 and not role.is_first_party:
+            return (
+                PolicyDecision.USER_APPROVAL,
+                f"Borderline detection confidence ({detector_conf:.2f}) — user approval required to confirm entity sensitivity.",
+                True,
+            )
+
+        # Rule 5 — Public figures / public facts: retain unless the user is
         #           personally associated (e.g., "my company is Google")
         if role.is_public_knowledge and not role.is_first_party:
             return (
@@ -430,7 +455,15 @@ class PolicyEngine:
                 True,
             )
 
-        # Rule 4 — Critical or high risk → mask unconditionally
+        # Rule 6 — First-party direct personal identifiers (e.g. "my name is Julie", "my email is...")
+        if role.is_first_party and role.role_category == RoleCategory.PERSONAL_IDENTIFIER:
+            return (
+                PolicyDecision.MASK,
+                f"First-party personal identifier ({role.entity_type.value}) — masked to protect personal data.",
+                True,
+            )
+
+        # Rule 7 — Critical or high risk → mask unconditionally
         if risk_level in (RiskLevel.CRITICAL, RiskLevel.HIGH):
             SEMANTIC_DESCRIPTIONS = {
                 EntityType.PASSPORT: "Government-issued identity document number",
@@ -459,7 +492,7 @@ class PolicyEngine:
                 True,
             )
 
-        # Rule 5 — Medium risk but task-essential and not personal → user approval
+        # Rule 8 — Medium risk but task-essential and not personal → user approval
         if risk_level == RiskLevel.MEDIUM and role.is_task_relevant and not role.is_first_party:
             return (
                 PolicyDecision.USER_APPROVAL,
@@ -468,7 +501,7 @@ class PolicyEngine:
                 True,
             )
 
-        # Rule 6 — Medium risk without task relevance → mask
+        # Rule 9 — Medium risk without task relevance → mask
         if risk_level == RiskLevel.MEDIUM:
             return (
                 PolicyDecision.MASK,
@@ -476,7 +509,7 @@ class PolicyEngine:
                 True,
             )
 
-        # Rule 7 — Low / no risk → retain
+        # Rule 10 — Low / no risk → retain
         return (
             PolicyDecision.RETAIN,
             f"Low risk ({score:.2f}) — retained; no significant privacy concern.",

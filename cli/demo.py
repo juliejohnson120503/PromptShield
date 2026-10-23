@@ -62,8 +62,8 @@ SAMPLE_PROMPTS = [
         "i m julie and my psswrd is 98765432"
     ),
     (
-        "Customer Support Multi-Entity (Anjali Nair, Infosys, Kochi, ORD-78291)",
-        "Yesterday, Rahul Menon from Infosys contacted me about customer Anjali Nair, whose order ORD-78291 was shipped to Kochi. Her email is anjali.nair@gmail.com and she can be reached at +91 9876543210. The support team recorded her customer ID as CUST-10458 and the request came from IP address 192.168.1.45."
+        "Isolated Entity / Insufficient Context ('rahul s7')",
+        "rahul s7"
     ),
 ]
 
@@ -140,6 +140,11 @@ def display_results(shield: PromptShieldCore, prompt: str):
     print(f"\n{BOLD}[3] PHASE 2 — TASK & CONTEXT UNDERSTANDING:{RESET}")
     print(f"    Task: {CYAN}{policy_report.task_type}{RESET}  "
           f"(Confidence: {policy_report.task_confidence:.2f})")
+
+    if getattr(policy_report, "has_insufficient_context", False):
+        print(f"\n    {YELLOW}{BOLD}⚠️  [INSUFFICIENT CONTEXT WARNING]:{RESET}")
+        print(f"    {YELLOW}{policy_report.context_warning}{RESET}")
+        print(f"    {CYAN}💡 Actionable Guidance: Add an operational verb (e.g., 'Draft an email to Rahul regarding S7') to clarify intended usage.{RESET}\n")
 
     ctx_result = shield.analyze_context(prompt)
     if not ctx_result.entity_contexts:

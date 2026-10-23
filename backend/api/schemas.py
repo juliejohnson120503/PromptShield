@@ -19,6 +19,7 @@ class EntitySchema(BaseModel):
 
 
 class EntityPolicySchema(BaseModel):
+    entity_id: Optional[str] = Field(None, description="Deterministic entity ID for approval (<TYPE>:<normalized_value>)")
     entity_text: str = Field(..., description="The entity text evaluated")
     entity_type: str = Field(..., description="The entity type")
     risk_score: float = Field(..., description="Privacy risk score from 0 to 100")
@@ -43,6 +44,8 @@ class AnalyzeResponse(BaseModel):
     entity_policies: List[EntityPolicySchema]
     overall_risk_score: float
     analysis_latency_ms: float
+    has_insufficient_context: bool = Field(False, description="True if prompt lacks operational task context")
+    context_warning: Optional[str] = Field(None, description="Actionable guidance when context is missing")
 
 
 # ── /sanitize ────────────────────────────────────────────────────────────────
@@ -64,6 +67,8 @@ class SanitizeResponse(BaseModel):
     has_pending_approvals: bool
     pending_approval_entities: List[EntityPolicySchema]
     latency_ms: float
+    has_insufficient_context: bool = Field(False, description="True if prompt lacks operational task context")
+    context_warning: Optional[str] = Field(None, description="Actionable guidance when context is missing")
 
 
 # ── /restore ─────────────────────────────────────────────────────────────────

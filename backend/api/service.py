@@ -94,6 +94,7 @@ class PromptShieldService:
 
         policy_schemas = [
             EntityPolicySchema(
+                entity_id=f"{ep.entity_type.value}:{ep.normalized_value or ep.entity_text}",
                 entity_text=ep.entity_text,
                 entity_type=ep.entity_type.value,
                 risk_score=round(ep.risk_score * 100.0, 1) if ep.risk_score <= 1.0 else round(ep.risk_score, 1),
@@ -117,6 +118,8 @@ class PromptShieldService:
             entity_policies=policy_schemas,
             overall_risk_score=round(overall_risk, 1),
             analysis_latency_ms=round(latency, 2),
+            has_insufficient_context=policy.has_insufficient_context,
+            context_warning=policy.context_warning,
         )
 
     def sanitize_prompt(
@@ -141,6 +144,7 @@ class PromptShieldService:
 
         pending_schemas = [
             EntityPolicySchema(
+                entity_id=rec.entity_id,
                 entity_text=rec.entity_text,
                 entity_type=rec.entity_type.value,
                 risk_score=rec.risk_score,
@@ -150,6 +154,9 @@ class PromptShieldService:
             )
             for rec in mask_res.approval_required
         ]
+
+        # Context evaluation for reporting
+        policy_eval = self.shield.evaluate_policy(prompt)
 
         return SanitizeResponse(
             session_id=mask_res.session_id,
@@ -161,6 +168,8 @@ class PromptShieldService:
             has_pending_approvals=len(mask_res.approval_required) > 0,
             pending_approval_entities=pending_schemas,
             latency_ms=round(latency, 2),
+            has_insufficient_context=policy_eval.has_insufficient_context,
+            context_warning=policy_eval.context_warning,
         )
 
     def restore_response(
