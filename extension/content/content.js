@@ -5,7 +5,7 @@
 
 (() => {
   let isIntercepting = false;
-  let bypassNextSubmit = false;
+  let bypassUntil = 0; // Timestamp window during which PromptShield does not re-intercept
   let lastActiveInput = null;
   let lastSessionId = null;
 
@@ -60,20 +60,21 @@
       inputElem.dispatchEvent(new Event("change", { bubbles: true }));
     } else {
       // ContentEditable / ProseMirror / Lexical (ChatGPT, Claude, Gemini)
+      inputElem.focus();
+      let success = false;
       try {
-        const selection = window.getSelection();
-        const range = document.createRange();
-        range.selectNodeContents(inputElem);
-        selection.removeAllRanges();
-        selection.addRange(range);
+        document.execCommand("selectAll", false, null);
+        success = document.execCommand("insertText", false, text);
+      } catch (_) { }
 
-        // execCommand('insertText') natively updates ProseMirror/Lexical's document state!
-        const success = document.execCommand("insertText", false, text);
-        if (!success) {
-          inputElem.innerText = text;
+      // If execCommand failed or didn't replace, set paragraph text directly
+      if (!success || !inputElem.innerText.includes(text)) {
+        let p = inputElem.querySelector("p");
+        if (!p) {
+          p = document.createElement("p");
+          inputElem.appendChild(p);
         }
-      } catch (err) {
-        inputElem.innerText = text;
+        p.textContent = text;
       }
 
       inputElem.dispatchEvent(new InputEvent("input", {
@@ -83,13 +84,14 @@
         data: text,
       }));
       inputElem.dispatchEvent(new Event("input", { bubbles: true }));
+      inputElem.dispatchEvent(new Event("change", { bubbles: true }));
     }
   }
 
   function findSubmitButton() {
-    // 1. ChatGPT selectors (including data-testid, aria-label, and form submit)
+    // 1. ChatGPT selectors (including data-testid, aria-label, and composer button)
     const gptBtn = document.querySelector(
-      "button[data-testid='send-button'], button[data-testid*='send' i], button[aria-label*='Send' i], button[data-testid='composer-send-button'], button[data-testid='fruitjuice-send-button'], form button[type='submit']"
+      "button[data-testid='send-button'], button[data-testid='composer-send-button'], button[data-testid*='send' i], button[aria-label*='Send' i], button#send-button, button[data-testid='fruitjuice-send-button'], form button[type='submit'], fieldset button[aria-label*='Send' i]"
     );
     if (gptBtn) return gptBtn;
 
@@ -107,6 +109,12 @@
 
   function isSendButtonClicked(target) {
     if (!target) return false;
+
+    // CRITICAL: PromptShield's own modal and overlay buttons must NEVER be treated as LLM send buttons!
+    if (target.closest("#promptshield-modal, #promptshield-overlay, #promptshield-floating-indicator, .ps-btn")) {
+      return false;
+    }
+
     const btn = target.closest("button");
     if (!btn) return false;
 
@@ -132,6 +140,14 @@
   // Capture Enter key on input fields
   document.addEventListener("keydown", async (e) => {
     if (e.key === "Enter" && !e.shiftKey && !e.isComposing) {
+      if (e.target.closest("#promptshield-modal, #promptshield-overlay")) {
+        return;
+      }
+      if (Date.now() < bypassUntil) {
+        // In bypass window: let event pass through to ChatGPT directly
+        return;
+      }
+
       let inputElem = findPromptInput();
       const active = document.activeElement;
       if (active && (active.tagName === "TEXTAREA" || active.getAttribute("contenteditable") === "true")) {
@@ -139,19 +155,13 @@
       }
       if (!inputElem) return;
 
-      // Check if event targets our input or child
       const isInput = (e.target === inputElem) ||
                       inputElem.contains(e.target) ||
                       !!e.target.closest("#prompt-textarea, [contenteditable='true'], textarea");
 
       if (isInput) {
-        if (bypassNextSubmit) {
-          bypassNextSubmit = false;
-          return;
-        }
-
         const rawText = getPromptText(inputElem).trim();
-        if (rawText.length < 2) return; // Skip trivial inputs
+        if (rawText.length < 2) return;
 
         e.preventDefault();
         e.stopPropagation();
@@ -166,8 +176,8 @@
   // Capture Click on Send Button
   document.addEventListener("click", async (e) => {
     if (isSendButtonClicked(e.target)) {
-      if (bypassNextSubmit) {
-        bypassNextSubmit = false;
+      if (Date.now() < bypassUntil) {
+        // In bypass window: let event pass through to ChatGPT directly
         return;
       }
 
@@ -222,23 +232,27 @@
 
         const data = analyzeResponse.data;
         const entities = data.detected_entities || [];
+        const policies = data.entity_policies || [];
+        const needsProtection = policies.some(
+          p => p.decision === "MASK" || p.decision === "USER_APPROVAL"
+        );
 
-        // If no sensitive entities detected, send directly without interruption
-        if (entities.length === 0) {
-          console.log("[PromptShield] No sensitive entities found. Passing prompt through.");
+        // If no entities require masking or user approval, pass directly through!
+        if (!needsProtection || entities.length === 0) {
+          console.log("[PromptShield] No entities require protection. Passing prompt through.");
           triggerDirectSubmit(promptText, inputElem);
           return;
         }
 
         // Sensitive entities found! Display Security Modal
-        console.log(`[PromptShield] Intercepted prompt with ${entities.length} sensitive entities.`);
+        console.log(`[PromptShield] Intercepted prompt with ${entities.length} entities (${policies.filter(p => p.decision === 'MASK').length} to mask).`);
         renderSecurityModal(data, promptText, inputElem);
       }
     );
   }
 
   function triggerDirectSubmit(text, inputElem) {
-    bypassNextSubmit = true;
+    bypassUntil = Date.now() + 5000;
     const elem = (inputElem && inputElem.isConnected) ? inputElem : findPromptInput();
     if (!elem) {
       console.warn("[PromptShield] Could not locate prompt input element.");
@@ -247,36 +261,33 @@
 
     setPromptText(elem, text);
 
-    // Poll reactively for React/ProseMirror to update state and enable the send button
     let attempts = 0;
-    const maxAttempts = 8;
+    const maxAttempts = 15;
     const pollInterval = setInterval(() => {
       attempts++;
       const sendBtn = findSubmitButton();
+
+      if (sendBtn) {
+        sendBtn.disabled = false;
+        sendBtn.removeAttribute("disabled");
+        sendBtn.removeAttribute("aria-disabled");
+      }
+
       const isEnabled = sendBtn && !sendBtn.disabled && sendBtn.getAttribute("aria-disabled") !== "true";
 
-      if (isEnabled) {
+      if (isEnabled && attempts > 1) {
         clearInterval(pollInterval);
-        console.log("[PromptShield] Send button enabled, triggering click.");
+        console.log("[PromptShield] Send button enabled, triggering submission.");
         sendBtn.click();
+        sendBtn.dispatchEvent(new MouseEvent("click", { bubbles: true, cancelable: true, view: window }));
         return;
       }
 
       if (attempts >= maxAttempts) {
         clearInterval(pollInterval);
-        console.log("[PromptShield] Attempting fallback submission techniques...");
+        console.log("[PromptShield] Dispatching synthetic send events...");
 
-        // Fallback A: Native form requestSubmit
-        const form = elem.closest("form");
-        if (form && typeof form.requestSubmit === "function") {
-          try {
-            form.requestSubmit();
-            console.log("[PromptShield] Form requestSubmit dispatched successfully.");
-            return;
-          } catch (_) { }
-        }
-
-        // Fallback B: Mouse/Pointer event sequence on send button
+        // 1. Mouse & pointer events on Send button
         if (sendBtn) {
           sendBtn.disabled = false;
           sendBtn.removeAttribute("disabled");
@@ -285,10 +296,11 @@
           sendBtn.dispatchEvent(new MouseEvent("mousedown", { bubbles: true, cancelable: true }));
           sendBtn.dispatchEvent(new PointerEvent("pointerup", { bubbles: true, cancelable: true }));
           sendBtn.dispatchEvent(new MouseEvent("mouseup", { bubbles: true, cancelable: true }));
+          sendBtn.dispatchEvent(new MouseEvent("click", { bubbles: true, cancelable: true, view: window }));
           sendBtn.click();
         }
 
-        // Fallback C: Keyboard Enter event sequence
+        // 2. Keyboard Enter event sequence on the input container
         elem.focus();
         elem.dispatchEvent(new KeyboardEvent("keydown", {
           key: "Enter",
@@ -297,9 +309,28 @@
           which: 13,
           bubbles: true,
           cancelable: true,
+          composed: true,
+        }));
+        elem.dispatchEvent(new KeyboardEvent("keypress", {
+          key: "Enter",
+          code: "Enter",
+          keyCode: 13,
+          which: 13,
+          bubbles: true,
+          cancelable: true,
+          composed: true,
+        }));
+        elem.dispatchEvent(new KeyboardEvent("keyup", {
+          key: "Enter",
+          code: "Enter",
+          keyCode: 13,
+          which: 13,
+          bubbles: true,
+          cancelable: true,
+          composed: true,
         }));
       }
-    }, 50);
+    }, 60);
   }
 
   // 4. Render Interactive Security Intercept Modal
@@ -440,10 +471,10 @@
 
         <!-- Footer -->
         <div class="ps-modal-footer">
-          <button id="psBtnBypass" class="ps-btn ps-btn-danger-ghost">Bypass & Send Raw</button>
+          <button type="button" id="psBtnBypass" class="ps-btn ps-btn-danger-ghost">Bypass & Send Raw</button>
           <div class="ps-btn-group-right">
-            <button id="psBtnCancel" class="ps-btn ps-btn-ghost">${hasInsufficientContext ? "✏️ Add Context" : "Cancel & Edit"}</button>
-            <button id="psBtnSanitize" class="ps-btn ps-btn-primary">
+            <button type="button" id="psBtnCancel" class="ps-btn ps-btn-ghost">${hasInsufficientContext ? "✏️ Add Context" : "Cancel & Edit"}</button>
+            <button type="button" id="psBtnSanitize" class="ps-btn ps-btn-primary">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
               </svg>
@@ -515,83 +546,109 @@
     });
 
     document.getElementById("psBtnSanitize").addEventListener("click", () => {
-      const btn = document.getElementById("psBtnSanitize");
-      btn.textContent = "Sanitizing...";
-      btn.disabled = true;
+      // 1. Remove modal overlay IMMEDIATELY so page is never frozen
+      overlay.remove();
+      showMiniStatus("🛡️ PromptShield: Applying Sanitization...");
 
-      chrome.runtime.sendMessage(
-        {
-          type: "SANITIZE_PROMPT",
-          payload: {
-            prompt: originalPrompt,
-            approved_entity_ids: Array.from(approvedEntityIds),
+      const targetInput = (inputElem && inputElem.isConnected) ? inputElem : findPromptInput();
+
+      try {
+        chrome.runtime.sendMessage(
+          {
+            type: "SANITIZE_PROMPT",
+            payload: {
+              prompt: originalPrompt,
+              approved_entity_ids: Array.from(approvedEntityIds),
+            },
           },
-        },
-        (sanitizeRes) => {
-          overlay.remove();
-          const targetInput = (inputElem && inputElem.isConnected) ? inputElem : findPromptInput();
-          if (sanitizeRes && sanitizeRes.success && sanitizeRes.data) {
-            lastSessionId = sanitizeRes.data.session_id;
-            const maskedText = sanitizeRes.data.sanitized_prompt;
-            console.log("[PromptShield] Injected sanitized prompt into LLM:", maskedText);
-            console.log("[PromptShield] Active session ID for restoration:", lastSessionId);
-            triggerDirectSubmit(maskedText, targetInput);
-          } else {
-            console.error("[PromptShield] Failed to sanitize prompt:", sanitizeRes);
-            triggerDirectSubmit(originalPrompt, targetInput);
+          (sanitizeRes) => {
+            hideMiniStatus();
+
+            if (chrome.runtime.lastError || !sanitizeRes || !sanitizeRes.success) {
+              console.warn("[PromptShield] Sanitization warning:", chrome.runtime.lastError || sanitizeRes?.error);
+              showMiniStatus("⚠️ Extension reloaded — please press F5 on ChatGPT");
+              setTimeout(hideMiniStatus, 3500);
+              return;
+            }
+
+            if (sanitizeRes.data) {
+              lastSessionId = sanitizeRes.data.session_id;
+              const maskedText = sanitizeRes.data.sanitized_prompt;
+              console.log("[PromptShield] Injected sanitized prompt into LLM:", maskedText);
+              showMiniStatus("✓ Prompt Sanitized & Protected!");
+              setTimeout(hideMiniStatus, 2000);
+              triggerDirectSubmit(maskedText, targetInput);
+            }
           }
-        }
-      );
+        );
+      } catch (err) {
+        console.warn("[PromptShield] Extension context error:", err);
+        showMiniStatus("⚠️ Extension updated — please press F5 on ChatGPT");
+        setTimeout(hideMiniStatus, 3500);
+      }
     });
   }
 
   // 5. Response Restoration Engine (Phase 5)
   // Scans incoming LLM responses for <TYPE_N> placeholders and restores authorized secrets
-  const processedAssistantNodes = new WeakSet();
+  const inFlightRestoreNodes = new WeakSet();
+  const fullyRestoredNodes = new WeakSet();
   const PLACEHOLDER_CHECK_RE = /<([A-Z_]+)_(\d+)>/;
 
-  function isLLMGenerating() {
-    return !!document.querySelector(
-      "button[data-testid='stop-button'], button[aria-label*='Stop' i], button[aria-label='Stop streaming'], button[aria-label='Stop generating'], .stop-button, [data-testid*='stop' i]"
-    );
-  }
+  // Restore lastSessionId from storage on startup
+  chrome.storage.local.get(["lastSessionId"], (res) => {
+    if (res && res.lastSessionId) {
+      lastSessionId = res.lastSessionId;
+      console.log("[PromptShield] Loaded active session ID from storage:", lastSessionId);
+      setTimeout(scanAndRestoreResponses, 600);
+    }
+  });
 
-  function isExcludedNode(el) {
-    if (!el || !el.closest) return true;
-    return !!el.closest(
-      "aside, nav, [role='navigation'], [data-testid*='sidebar' i], .sidebar, " +
-      "#prompt-textarea, textarea, [contenteditable='true'], " +
-      "#promptshield-overlay, #promptshield-floating-indicator, #promptshield-mini-status, " +
-      "#promptshield-restoration-toast, header, [role='banner'], " +
-      "[data-message-author-role='user'], [data-testid*='user' i]"
+  function isLLMGenerating() {
+    const stopBtn = document.querySelector(
+      "button[data-testid='stop-button'], button[aria-label*='Stop streaming' i], button[aria-label*='Stop generating' i]"
+    );
+    return !!(
+      stopBtn &&
+      stopBtn.offsetParent !== null &&
+      !stopBtn.disabled &&
+      window.getComputedStyle(stopBtn).display !== "none"
     );
   }
 
   function findAssistantCandidateNodes() {
     const matched = [];
 
-    // Strictly target markdown content elements inside assistant message containers
-    const assistantSelectors = [
-      "div[data-message-author-role='assistant'] div.markdown",
-      "article div.markdown",
+    // 1. Check known assistant container selectors
+    const selectors = [
+      "div[data-message-author-role='assistant']",
+      "article [data-message-author-role='assistant']",
+      "[data-testid^='conversation-turn-']:not(:has([data-message-author-role='user']))",
+      "article:not(:has([data-message-author-role='user']))",
       ".font-claude-message",
       "message-content",
-      ".model-response-text",
-      ".message.assistant .content",
-      ".chat-message.assistant .message-text"
+      "div.prose",
+      "div.markdown",
+      ".agent-turn"
     ];
 
-    const elements = document.querySelectorAll(assistantSelectors.join(", "));
-    elements.forEach((el) => {
-      // Must not be in any excluded container (sidebar, prompt input, user turn)
-      if (isExcludedNode(el)) return;
+    const elements = Array.from(document.querySelectorAll(selectors.join(", ")));
 
-      // Ensure the turn does not contain user action buttons (e.g. edit prompt)
-      const turn = el.closest("article, div[class*='turn']");
-      if (turn) {
-        if (turn.querySelector("button[aria-label*='Edit' i], [data-message-author-role='user'], [data-testid*='user' i]")) {
-          return;
-        }
+    // 2. Also scan all paragraphs and list items containing placeholders
+    document.querySelectorAll("main p, article p, main li, article li, p").forEach((el) => {
+      if (PLACEHOLDER_CHECK_RE.test(el.textContent || "") && !elements.includes(el)) {
+        elements.push(el);
+      }
+    });
+
+    elements.forEach((el) => {
+      // Must not be in user input, sidebar, PromptShield overlay/modal, or user message
+      if (
+        el.closest(
+          "#prompt-textarea, textarea, input, aside, nav, [data-message-author-role='user'], [aria-label*='You said' i], #promptshield-overlay, #promptshield-modal, #promptshield-restoration-toast"
+        )
+      ) {
+        return;
       }
 
       if (PLACEHOLDER_CHECK_RE.test(el.textContent || "")) {
@@ -603,20 +660,13 @@
   }
 
   function scanAndRestoreResponses() {
-    // CRITICAL: Never touch or scan DOM while LLM is actively streaming tokens!
     if (isLLMGenerating()) {
       return;
     }
 
-    // Only restore if we have an active session from a sanitized prompt
-    if (!lastSessionId) {
-      return;
-    }
-
     const candidateNodes = findAssistantCandidateNodes();
-
     candidateNodes.forEach((node) => {
-      if (processedAssistantNodes.has(node)) return;
+      if (inFlightRestoreNodes.has(node) || fullyRestoredNodes.has(node)) return;
 
       const text = node.textContent || "";
       if (PLACEHOLDER_CHECK_RE.test(text)) {
@@ -625,41 +675,74 @@
           if (!isLLMGenerating()) {
             performResponseRestoration(node);
           }
-        }, 600);
+        }, 300);
       }
     });
   }
 
   function performResponseRestoration(node) {
-    if (processedAssistantNodes.has(node)) return;
+    if (inFlightRestoreNodes.has(node) || fullyRestoredNodes.has(node)) return;
     if (isLLMGenerating()) return;
-    if (!lastSessionId) return;
 
     const rawText = node.textContent || "";
-    if (!PLACEHOLDER_CHECK_RE.test(rawText)) return;
+    if (!PLACEHOLDER_CHECK_RE.test(rawText)) {
+      fullyRestoredNodes.add(node);
+      return;
+    }
 
-    processedAssistantNodes.add(node);
-    console.log("[PromptShield] Calling Phase 5 /restore. Local session ID:", lastSessionId);
+    // Check if all remaining placeholders in this node are known blocked tokens (e.g. <PASSWORD_1>)
+    if (node._psBlockedPhs && node._psBlockedPhs.size > 0) {
+      const allPhs = Array.from(rawText.matchAll(/<([A-Z_]+)_(\d+)>/g)).map((m) => m[0]);
+      const unblocked = allPhs.filter((ph) => !node._psBlockedPhs.has(ph));
+      if (unblocked.length === 0) {
+        fullyRestoredNodes.add(node);
+        return;
+      }
+    }
+
+    inFlightRestoreNodes.add(node);
+    console.log("[PromptShield] Calling Phase 5 /restore for node. Session ID:", lastSessionId);
 
     chrome.runtime.sendMessage(
       {
         type: "RESTORE_RESPONSE",
         payload: {
           llm_response: rawText,
-          session_id: lastSessionId,
+          session_id: lastSessionId || null,
           allow_all_restoration: false,
         },
       },
       (res) => {
-        if (res && res.success && res.data && res.data.restored_count > 0) {
-          const restoredMap = res.data.restored_map || {};
+        inFlightRestoreNodes.delete(node);
 
-          // Safely replace text nodes without wiping HTML tags, code blocks, or React hierarchy
+        if (chrome.runtime.lastError || !res || !res.success || !res.data) {
+          console.warn("[PromptShield] Restoration response error:", chrome.runtime.lastError || res?.error);
+          return;
+        }
+
+        const data = res.data;
+        if (data.blocked_placeholders && data.blocked_placeholders.length > 0) {
+          if (!node._psBlockedPhs) node._psBlockedPhs = new Set();
+          data.blocked_placeholders.forEach((ph) => node._psBlockedPhs.add(ph));
+        }
+
+        if (data.restored_count > 0 && data.restored_map) {
+          const restoredMap = data.restored_map || {};
+
+          // Safely replace text nodes and innerHTML without breaking React hierarchy
           safelyReplacePlaceholders(node, restoredMap);
 
-          // Display non-intrusive floating toast in corner (leaving ChatGPT interface 100% native!)
-          showRestorationToast(res.data.restored_count);
-          console.log(`[PromptShield] Successfully restored ${res.data.restored_count} tokens in response.`);
+          // Display non-intrusive floating toast in corner
+          showRestorationToast(data.restored_count);
+          console.log(`[PromptShield] Successfully restored ${data.restored_count} tokens in response:`, restoredMap);
+        }
+
+        // If no more unblocked placeholders remain, mark node as fully restored
+        const remainingText = node.textContent || "";
+        const remainingPhs = Array.from(remainingText.matchAll(/<([A-Z_]+)_(\d+)>/g)).map((m) => m[0]);
+        const stillNeedsRestore = remainingPhs.some((ph) => !(node._psBlockedPhs && node._psBlockedPhs.has(ph)));
+        if (!stillNeedsRestore) {
+          fullyRestoredNodes.add(node);
         }
       }
     );
@@ -667,11 +750,16 @@
 
   function safelyReplacePlaceholders(rootElem, restoredMap) {
     if (!restoredMap || Object.keys(restoredMap).length === 0) return;
+
+    // 1. Text node walker replacement (preserves DOM structure & event listeners)
     const walker = document.createTreeWalker(rootElem, NodeFilter.SHOW_TEXT, null, false);
     let textNode;
     const nodesToUpdate = [];
     while ((textNode = walker.nextNode())) {
-      if (textNode.parentElement && textNode.parentElement.closest("#promptshield-restoration-toast, #promptshield-overlay")) {
+      if (
+        textNode.parentElement &&
+        textNode.parentElement.closest("#promptshield-restoration-toast, #promptshield-overlay, #promptshield-modal")
+      ) {
         continue;
       }
       for (const ph of Object.keys(restoredMap)) {
@@ -681,12 +769,20 @@
         }
       }
     }
+
     for (const tn of nodesToUpdate) {
       let val = tn.nodeValue;
       for (const [ph, secret] of Object.entries(restoredMap)) {
         val = val.replaceAll(ph, secret);
       }
       tn.nodeValue = val;
+    }
+
+    // 2. Direct replacement fallback if any placeholder is split across inline DOM nodes
+    for (const [ph, secret] of Object.entries(restoredMap)) {
+      if (rootElem.innerHTML && rootElem.innerHTML.includes(ph)) {
+        rootElem.innerHTML = rootElem.innerHTML.replaceAll(ph, secret);
+      }
     }
   }
 
@@ -734,18 +830,22 @@
     }, 4000);
   }
 
-  // Debounced DOM observer that only triggers when streaming is idle
+  // Debounced DOM observer that triggers when responses arrive
   let restoreDebounceTimer = null;
   const responseObserver = new MutationObserver(() => {
-    if (!lastSessionId) return;
     if (isLLMGenerating()) return;
     clearTimeout(restoreDebounceTimer);
     restoreDebounceTimer = setTimeout(() => {
       scanAndRestoreResponses();
-    }, 800);
+    }, 400);
   });
 
   responseObserver.observe(document.body, { childList: true, subtree: true });
+
+  // Periodic safety scanner ensuring completed responses are restored even if mutation debounce was skipped
+  setInterval(() => {
+    scanAndRestoreResponses();
+  }, 1000);
 
   // 6. Floating Status Pill Helper
   function showMiniStatus(text) {

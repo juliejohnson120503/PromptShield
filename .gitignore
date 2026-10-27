@@ -57,3 +57,6 @@ htmlcov/
 scratch/
 tmp/
 temp/
+
+# Documentation
+docs/

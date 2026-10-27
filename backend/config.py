@@ -701,8 +701,8 @@ ENTITY_TYPE_PRIORITY: Dict[str, int] = {
     "API_KEY":          10,
     "ACCESS_TOKEN":     10,
     "RECOVERY_CODE":    10,
+    "PASSWORD":         10,  # Top-tier credential: deterministic regex password beats generic neural 'secret'
     "CREDIT_CARD":       9,
-    "PASSWORD":          8,
     "NATIONAL_ID":       8,
     "PASSPORT":          8,
     "DRIVER_LICENSE":    8,

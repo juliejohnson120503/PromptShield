@@ -153,7 +153,17 @@ class EntityFusionEngine:
         # --- Step 0: integrity filter ---
         from backend.normalization import normalize_entity_value
         valid: List[DetectedEntity] = []
+
+        # Identify existing placeholder spans (e.g. <PERSON_1>, <EMAIL_1>) to prevent re-detecting them
+        placeholder_spans = [
+            (m.start(), m.end()) for m in re.finditer(r"<[A-Za-z0-9_]+>", prompt)
+        ]
+
         for ent in candidates:
+            # Skip any detection that overlaps with an existing placeholder token
+            if any(not (ent.end <= ps_start or ent.start >= ps_end) for ps_start, ps_end in placeholder_spans):
+                continue
+
             # Discard excluded tokens falsely tagged as named entities (e.g. 'IP', 'email', 'password')
             if ent.entity_type in (EntityType.ORGANIZATION, EntityType.PERSON, EntityType.LOCATION):
                 clean_norm = ent.text.strip().lower()

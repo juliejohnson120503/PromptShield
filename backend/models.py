@@ -16,7 +16,11 @@ Changelog (Phase 1 — Hybrid Detection Foundation)
 
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Dict, List, Optional, Any, Set
+from typing import Dict, List, Optional, Any, Set, TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from backend.policy_engine import EntityPolicyResult
+
 
 
 class EntityType(str, Enum):
