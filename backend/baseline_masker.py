@@ -115,7 +115,7 @@ class BaselineMasker:
             if ph is None:
                 counter = type_counters.get(prefix, 0) + 1
                 type_counters[prefix] = counter
-                ph = f"<{prefix}_{counter}>"
+                ph = f"{{{{{prefix}_{counter}}}}}"
                 seen_entity_map[cache_key] = ph
 
                 # Register in local mapping store

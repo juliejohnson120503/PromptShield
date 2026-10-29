@@ -35,8 +35,8 @@ from backend.mapping_store import MappingStore
 
 logger = logging.getLogger(__name__)
 
-# Pattern to capture PromptShield placeholder formats, e.g.: <PERSON_1>, <API_KEY_2>, <ORG_1>
-PLACEHOLDER_REGEX = re.compile(r"<([A-Z_]+)_(\d+)>")
+# Pattern to capture PromptShield placeholder formats, e.g.: {{PERSON_1}}, <PERSON_1>
+PLACEHOLDER_REGEX = re.compile(r"(?:\{\{|\<)([A-Z_]+)_(\d+)(?:\}\}|\>)")
 
 
 class ResponseRestorer:

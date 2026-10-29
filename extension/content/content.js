@@ -593,7 +593,7 @@
   // Scans incoming LLM responses for <TYPE_N> placeholders and restores authorized secrets
   const inFlightRestoreNodes = new WeakSet();
   const fullyRestoredNodes = new WeakSet();
-  const PLACEHOLDER_CHECK_RE = /<([A-Z_]+)_(\d+)>/;
+  const PLACEHOLDER_CHECK_RE = /(?:\{\{|\<)([A-Z_]+)_(\d+)(?:\}\}|\>)/;
 
   // Restore lastSessionId from storage on startup
   chrome.storage.local.get(["lastSessionId"], (res) => {
@@ -605,8 +605,14 @@
   });
 
   function isLLMGenerating() {
+    // 1. Check for active streaming class on message turns in ChatGPT / Claude / Gemini
+    if (document.querySelector(".result-streaming, .streaming, [data-is-streaming='true'], .font-claude-message.streaming")) {
+      return true;
+    }
+
+    // 2. Check stop buttons
     const stopBtn = document.querySelector(
-      "button[data-testid='stop-button'], button[aria-label*='Stop streaming' i], button[aria-label*='Stop generating' i]"
+      "button[data-testid='stop-button'], button[aria-label*='Stop streaming' i], button[aria-label*='Stop generating' i], button[data-testid='fruitjuice-send-button']:has(rect), button[aria-label*='Stop' i]"
     );
     return !!(
       stopBtn &&
@@ -614,6 +620,13 @@
       !stopBtn.disabled &&
       window.getComputedStyle(stopBtn).display !== "none"
     );
+  }
+
+  function hasUnrestoredPlaceholders(node) {
+    const rawText = node.textContent || "";
+    if (!PLACEHOLDER_CHECK_RE.test(rawText)) return false;
+    const allPhs = Array.from(rawText.matchAll(/(?:\{\{|\<)([A-Z_]+)_(\d+)(?:\}\}|\>)/g)).map((m) => m[0]);
+    return allPhs.some((ph) => !(node._psBlockedPhs && node._psBlockedPhs.has(ph)));
   }
 
   function findAssistantCandidateNodes() {
@@ -666,40 +679,34 @@
 
     const candidateNodes = findAssistantCandidateNodes();
     candidateNodes.forEach((node) => {
+      // If node still has unrestored placeholders (e.g. from subsequent streaming chunks), allow restoration
+      if (hasUnrestoredPlaceholders(node)) {
+        fullyRestoredNodes.delete(node);
+      } else {
+        fullyRestoredNodes.add(node);
+      }
+
       if (inFlightRestoreNodes.has(node) || fullyRestoredNodes.has(node)) return;
 
-      const text = node.textContent || "";
-      if (PLACEHOLDER_CHECK_RE.test(text)) {
-        clearTimeout(node._psRestoreDebounce);
-        node._psRestoreDebounce = setTimeout(() => {
-          if (!isLLMGenerating()) {
-            performResponseRestoration(node);
-          }
-        }, 300);
-      }
+      clearTimeout(node._psRestoreDebounce);
+      node._psRestoreDebounce = setTimeout(() => {
+        if (!isLLMGenerating()) {
+          performResponseRestoration(node);
+        }
+      }, 300);
     });
   }
 
   function performResponseRestoration(node) {
-    if (inFlightRestoreNodes.has(node) || fullyRestoredNodes.has(node)) return;
+    if (inFlightRestoreNodes.has(node)) return;
     if (isLLMGenerating()) return;
 
-    const rawText = node.textContent || "";
-    if (!PLACEHOLDER_CHECK_RE.test(rawText)) {
+    if (!hasUnrestoredPlaceholders(node)) {
       fullyRestoredNodes.add(node);
       return;
     }
 
-    // Check if all remaining placeholders in this node are known blocked tokens (e.g. <PASSWORD_1>)
-    if (node._psBlockedPhs && node._psBlockedPhs.size > 0) {
-      const allPhs = Array.from(rawText.matchAll(/<([A-Z_]+)_(\d+)>/g)).map((m) => m[0]);
-      const unblocked = allPhs.filter((ph) => !node._psBlockedPhs.has(ph));
-      if (unblocked.length === 0) {
-        fullyRestoredNodes.add(node);
-        return;
-      }
-    }
-
+    const rawText = node.textContent || "";
     inFlightRestoreNodes.add(node);
     console.log("[PromptShield] Calling Phase 5 /restore for node. Session ID:", lastSessionId);
 
@@ -739,7 +746,7 @@
 
         // If no more unblocked placeholders remain, mark node as fully restored
         const remainingText = node.textContent || "";
-        const remainingPhs = Array.from(remainingText.matchAll(/<([A-Z_]+)_(\d+)>/g)).map((m) => m[0]);
+        const remainingPhs = Array.from(remainingText.matchAll(/(?:\{\{|\<)([A-Z_]+)_(\d+)(?:\}\}|\>)/g)).map((m) => m[0]);
         const stillNeedsRestore = remainingPhs.some((ph) => !(node._psBlockedPhs && node._psBlockedPhs.has(ph)));
         if (!stillNeedsRestore) {
           fullyRestoredNodes.add(node);

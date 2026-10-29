@@ -94,8 +94,8 @@ class MockLLMProvider(BaseLLMProvider):
             return self.default_template
 
         # 3. Dynamic context-aware mock response preserving placeholders
-        # Extract any placeholders present in the prompt (e.g. <PERSON_1>, <ORG_1>)
-        placeholders = re.findall(r"<[A-Z_]+_\d+>", prompt)
+        # Extract any placeholders present in the prompt (e.g. {{PERSON_1}}, <PERSON_1>)
+        placeholders = re.findall(r"(?:\{\{|\<)[A-Z_]+_\d+(?:\}\}|\>)", prompt)
         prompt_lower = prompt.lower()
 
         # Task: Incident / Security / Investigation Report

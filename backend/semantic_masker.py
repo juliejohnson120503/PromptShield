@@ -230,7 +230,7 @@ class SemanticMasker:
             prefix = _placeholder_prefix(p.entity_type)
             idx = type_counters.get(prefix, 0) + 1
             type_counters[prefix] = idx
-            ph = f"<{prefix}_{idx}>"
+            ph = f"{{{{{prefix}_{idx}}}}}"
             placeholder_cache[key] = ph
             return ph
 

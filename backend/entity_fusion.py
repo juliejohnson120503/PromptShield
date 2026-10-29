@@ -154,9 +154,9 @@ class EntityFusionEngine:
         from backend.normalization import normalize_entity_value
         valid: List[DetectedEntity] = []
 
-        # Identify existing placeholder spans (e.g. <PERSON_1>, <EMAIL_1>) to prevent re-detecting them
+        # Identify existing placeholder spans (e.g. {{PERSON_1}}, <PERSON_1>) to prevent re-detecting them
         placeholder_spans = [
-            (m.start(), m.end()) for m in re.finditer(r"<[A-Za-z0-9_]+>", prompt)
+            (m.start(), m.end()) for m in re.finditer(r"(?:\{\{|\<)[A-Za-z0-9_]+(?:\}\}|\>)", prompt)
         ]
 
         for ent in candidates:
