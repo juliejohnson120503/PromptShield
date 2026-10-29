@@ -172,10 +172,12 @@ class SemanticMasker:
         prompt: str,
         policy_report: PolicyReport,
         approved_entity_ids: Optional[Set[str]] = None,
+        masked_entity_ids: Optional[Set[str]] = None,
         session_id: Optional[str] = None,
     ) -> SemanticMaskingResult:
         """
-        Execute Phase 3 policy decisions on *prompt*.
+        Execute Phase 3 policy decisions on *prompt*, applying any explicit user
+        decision overrides from the interactive security modal.
 
         Parameters
         ----------
@@ -185,8 +187,9 @@ class SemanticMasker:
             Output from Phase 3 PolicyEngine.evaluate().
         approved_entity_ids : set of str, optional
             Stable entity IDs ('<TYPE>:<normalized_value>') that the user
-            has explicitly approved.  Matching USER_APPROVAL entities are
-            released as literals in the sanitized prompt.
+            has explicitly approved to retain as plaintext literals.
+        masked_entity_ids : set of str, optional
+            Stable entity IDs that the user has explicitly chosen to mask as tokens.
         session_id : str, optional
             Session identifier for the local MappingStore.
 
@@ -195,6 +198,7 @@ class SemanticMasker:
         SemanticMaskingResult
         """
         approved_ids: Set[str] = approved_entity_ids or set()
+        masked_ids: Set[str] = masked_entity_ids or set()
         sid = self._store.create_session(session_id)
 
         if not prompt or not prompt.strip():
@@ -249,22 +253,59 @@ class SemanticMasker:
             nv = p.normalized_value or p.entity_text
             eid = _entity_id(p.entity_type, nv)
 
-            if decision == PolicyDecision.MASK:
+            # Security invariant: mandatory technical credentials cannot be released as literals
+            is_mandatory_credential = p.entity_type in (
+                EntityType.PASSWORD, EntityType.API_KEY, EntityType.ACCESS_TOKEN, EntityType.RECOVERY_CODE
+            )
+
+            # Check explicit user decision overrides from interactive modal
+            user_approved = (eid in approved_ids or p.entity_text in approved_ids) and not is_mandatory_credential
+            user_force_masked = (eid in masked_ids or p.entity_text in masked_ids)
+
+            if user_force_masked:
+                effective_decision = PolicyDecision.MASK
+            elif user_approved:
+                effective_decision = PolicyDecision.RETAIN
+            else:
+                effective_decision = decision
+
+            if effective_decision == PolicyDecision.MASK:
                 ph = _get_or_create_placeholder(p)
                 self._store.store_mapping(
                     session_id=sid, placeholder=ph,
                     raw_value=p.entity_text, entity_type=p.entity_type,
                     normalized_value=nv,
                     entity_id=eid,
-                    policy_decision=decision.value,
+                    policy_decision=effective_decision.value,
                     disclosure_allowed=getattr(p, "disclosure_allowed", True),
                 )
                 masked_entities.append(p)
 
-            elif decision == PolicyDecision.RETAIN:
+            elif effective_decision == PolicyDecision.RETAIN:
+                ph = _get_or_create_placeholder(p)
+                self._store.store_mapping(
+                    session_id=sid, placeholder=ph,
+                    raw_value=p.entity_text, entity_type=p.entity_type,
+                    normalized_value=nv,
+                    entity_id=eid,
+                    policy_decision=effective_decision.value,
+                    disclosure_allowed=True,
+                )
+                if user_approved and decision != PolicyDecision.RETAIN:
+                    record = ApprovalRecord(
+                        entity_id=eid,
+                        entity_type=p.entity_type,
+                        entity_text=p.entity_text,
+                        normalized_value=nv,
+                        placeholder=ph,
+                        risk_score=p.risk_score,
+                        risk_level=p.risk_level.value,
+                        decision_reason=p.reason,
+                    )
+                    approved_entities.append(record)
                 retained_entities.append(p)
 
-            elif decision == PolicyDecision.USER_APPROVAL:
+            elif effective_decision == PolicyDecision.USER_APPROVAL:
                 ph = _get_or_create_placeholder(p)
                 record = ApprovalRecord(
                     entity_id=eid,
@@ -276,7 +317,7 @@ class SemanticMasker:
                     risk_level=p.risk_level.value,
                     decision_reason=p.reason,
                 )
-                if eid in approved_ids:
+                if user_approved:
                     approved_entities.append(record)
                     ua_placeholder_map[eid] = "__APPROVED__"
                 else:
@@ -285,20 +326,20 @@ class SemanticMasker:
                         raw_value=p.entity_text, entity_type=p.entity_type,
                         normalized_value=nv,
                         entity_id=eid,
-                        policy_decision=decision.value,
+                        policy_decision=effective_decision.value,
                         disclosure_allowed=getattr(p, "disclosure_allowed", True),
                     )
                     approval_required.append(record)
                     ua_placeholder_map[eid] = ph
 
-            elif decision == PolicyDecision.REVIEW:
+            elif effective_decision == PolicyDecision.REVIEW:
                 ph = _get_or_create_placeholder(p)
                 self._store.store_mapping(
                     session_id=sid, placeholder=ph,
                     raw_value=p.entity_text, entity_type=p.entity_type,
                     normalized_value=nv,
                     entity_id=eid,
-                    policy_decision=decision.value,
+                    policy_decision=effective_decision.value,
                     disclosure_allowed=getattr(p, "disclosure_allowed", True),
                 )
                 review_required.append(ApprovalRecord(
@@ -318,19 +359,31 @@ class SemanticMasker:
         replacements: List[Tuple[int, int, str]] = []
 
         for p in resolved:
-            decision = p.decision
             nv = p.normalized_value or p.entity_text
             eid = _entity_id(p.entity_type, nv)
             key = (p.entity_type, nv)
 
-            if decision == PolicyDecision.RETAIN:
+            is_mandatory_credential = p.entity_type in (
+                EntityType.PASSWORD, EntityType.API_KEY, EntityType.ACCESS_TOKEN, EntityType.RECOVERY_CODE
+            )
+            user_approved = (eid in approved_ids or p.entity_text in approved_ids) and not is_mandatory_credential
+            user_force_masked = (eid in masked_ids or p.entity_text in masked_ids)
+
+            if user_force_masked:
+                ph = placeholder_cache.get(key)
+                if ph:
+                    replacements.append((p.start, p.end, ph))
+            elif user_approved:
+                # User approved this entity: keep literal in prompt
                 continue
-            elif decision == PolicyDecision.USER_APPROVAL:
+            elif p.decision == PolicyDecision.RETAIN:
+                continue
+            elif p.decision == PolicyDecision.USER_APPROVAL:
                 ua_ph = ua_placeholder_map.get(eid, "__APPROVED__")
                 if ua_ph == "__APPROVED__":
                     continue
                 replacements.append((p.start, p.end, ua_ph))
-            elif decision in (PolicyDecision.MASK, PolicyDecision.REVIEW):
+            elif p.decision in (PolicyDecision.MASK, PolicyDecision.REVIEW):
                 ph = placeholder_cache.get(key)
                 if ph:
                     replacements.append((p.start, p.end, ph))

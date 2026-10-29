@@ -128,14 +128,17 @@ class PromptShieldService:
         session_id: Optional[str] = None,
         security_level_str: str = "BALANCED",
         approved_entity_ids: Optional[List[str]] = None,
+        masked_entity_ids: Optional[List[str]] = None,
     ) -> SanitizeResponse:
         t0 = time.perf_counter()
 
         approved_set = set(approved_entity_ids) if approved_entity_ids else None
+        masked_set = set(masked_entity_ids) if masked_entity_ids else None
         mask_res = self.shield.sanitize(
             prompt=prompt,
             session_id=session_id,
             approved_entity_ids=approved_set,
+            masked_entity_ids=masked_set,
         )
         latency = (time.perf_counter() - t0) * 1000.0
 
@@ -197,7 +200,18 @@ class PromptShieldService:
 
         restored_phs = [r.placeholder for r in res.restorations if r.restored]
         blocked_phs = [r.placeholder for r in res.restorations if not r.restored] + list(res.unrestored_placeholders)
-        restored_map = {r.placeholder: r.original_value for r in res.restorations if r.restored}
+
+        # Build bracket-agnostic restored map so frontend can match any tag style
+        restored_map = {}
+        for r in res.restorations:
+            if r.restored:
+                clean = re.sub(r"[\{\}\<\>\[\]]", "", r.placeholder).strip()
+                restored_map[r.placeholder] = r.original_value
+                restored_map[f"{{{{{clean}}}}}"] = r.original_value
+                restored_map[f"<{clean}>"] = r.original_value
+                restored_map[f"[{clean}]"] = r.original_value
+                restored_map[clean] = r.original_value
+
         restored_count = len(restored_phs)
         blocked_count = len(blocked_phs)
 

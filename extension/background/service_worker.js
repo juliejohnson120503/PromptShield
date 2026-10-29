@@ -120,6 +120,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                 session_id: payload.session_id,
                 security_level: config.securityLevel || "BALANCED",
                 approved_entity_ids: payload.approved_entity_ids || [],
+                masked_entity_ids: payload.masked_entity_ids || [],
               }),
             });
 

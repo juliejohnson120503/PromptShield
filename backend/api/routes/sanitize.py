@@ -23,6 +23,7 @@ def sanitize_prompt(request: SanitizeRequest):
             session_id=request.session_id,
             security_level_str=request.security_level or "BALANCED",
             approved_entity_ids=request.approved_entity_ids,
+            masked_entity_ids=request.masked_entity_ids,
         )
     except Exception as exc:
         raise HTTPException(status_code=500, detail=str(exc))

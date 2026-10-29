@@ -55,6 +55,7 @@ class SanitizeRequest(BaseModel):
     session_id: Optional[str] = Field(None, description="Session ID for local mapping memory. Generated if omitted.")
     security_level: Optional[str] = Field("BALANCED", description="Security level: STRICT, BALANCED, PERMISSIVE")
     approved_entity_ids: Optional[List[str]] = Field(None, description="Set of entity IDs approved by user ('<TYPE>:<value>')")
+    masked_entity_ids: Optional[List[str]] = Field(None, description="Set of entity IDs explicitly masked by user ('<TYPE>:<value>')")
 
 
 class SanitizeResponse(BaseModel):

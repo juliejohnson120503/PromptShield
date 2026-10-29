@@ -369,8 +369,18 @@
     const hasInsufficientContext = Boolean(analysisData.has_insufficient_context);
     const firstEntityText = policies[0]?.entity_text || "this entity";
 
-    // Track user approved entity IDs for release as literals
+    // Track user approved entity IDs for release as literals, and user forced mask IDs
     const approvedEntityIds = new Set();
+    const maskedEntityIds = new Set();
+
+    policies.forEach((p) => {
+      const eid = p.entity_id || `${p.entity_type}:${p.entity_text}`;
+      if (p.decision === "RETAIN") {
+        approvedEntityIds.add(eid);
+      } else {
+        maskedEntityIds.add(eid);
+      }
+    });
 
     overlay.innerHTML = `
       <div id="promptshield-modal">
@@ -500,6 +510,22 @@
       });
     });
 
+    // Update live Prompt Privacy Preview in modal
+    function updatePromptPreview() {
+      let previewText = escapeHtml(originalPrompt);
+      policies.forEach((p) => {
+        const eid = p.entity_id || `${p.entity_type}:${p.entity_text}`;
+        const isMasked = maskedEntityIds.has(eid);
+        const cls = isMasked ? "ps-highlight-mask" : "ps-highlight-retain";
+        const regex = new RegExp(`\\b${escapeRegExp(escapeHtml(p.entity_text))}\\b`, "gi");
+        previewText = previewText.replace(regex, `<span class="${cls}">$&</span>`);
+      });
+      const previewBox = overlay.querySelector(".ps-prompt-preview");
+      if (previewBox) {
+        previewBox.innerHTML = previewText;
+      }
+    }
+
     // Interactive Approval / Mask Toggle Buttons
     overlay.querySelectorAll(".ps-toggle-btn").forEach((btn) => {
       btn.addEventListener("click", (e) => {
@@ -514,6 +540,7 @@
         if (btn.classList.contains("ps-toggle-btn-approve")) {
           // User approved this entity! Release as literal
           approvedEntityIds.add(eid);
+          maskedEntityIds.delete(eid);
           approveBtn.classList.add("active");
           maskBtn.classList.remove("active");
           if (badge) {
@@ -523,6 +550,7 @@
         } else {
           // User wants entity masked as token
           approvedEntityIds.delete(eid);
+          maskedEntityIds.add(eid);
           maskBtn.classList.add("active");
           approveBtn.classList.remove("active");
           if (badge) {
@@ -530,6 +558,7 @@
             badge.textContent = "🔒 MASK TOKEN";
           }
         }
+        updatePromptPreview();
       });
     });
 
@@ -559,6 +588,7 @@
             payload: {
               prompt: originalPrompt,
               approved_entity_ids: Array.from(approvedEntityIds),
+              masked_entity_ids: Array.from(maskedEntityIds),
             },
           },
           (sanitizeRes) => {
@@ -590,10 +620,10 @@
   }
 
   // 5. Response Restoration Engine (Phase 5)
-  // Scans incoming LLM responses for <TYPE_N> placeholders and restores authorized secrets
+  // Scans incoming LLM responses for {{TYPE_N}} or <TYPE_N> placeholders and restores authorized secrets
   const inFlightRestoreNodes = new WeakSet();
   const fullyRestoredNodes = new WeakSet();
-  const PLACEHOLDER_CHECK_RE = /(?:\{\{|\<)([A-Z_]+)_(\d+)(?:\}\}|\>)/;
+  const PLACEHOLDER_CHECK_RE = /(?:\{\{|\{|\<|\[)([A-Z_]+)_(\d+)(?:\}\}|\}|\>|\])/;
 
   // Restore lastSessionId from storage on startup
   chrome.storage.local.get(["lastSessionId"], (res) => {
@@ -610,9 +640,9 @@
       return true;
     }
 
-    // 2. Check stop buttons
+    // 2. Check stop buttons (specific to LLM generation, avoiding audio/voice controls)
     const stopBtn = document.querySelector(
-      "button[data-testid='stop-button'], button[aria-label*='Stop streaming' i], button[aria-label*='Stop generating' i], button[data-testid='fruitjuice-send-button']:has(rect), button[aria-label*='Stop' i]"
+      "button[data-testid='stop-button'], button[aria-label='Stop streaming'], button[aria-label='Stop generating'], button[aria-label='Stop Streaming'], button[aria-label='Stop Generating']"
     );
     return !!(
       stopBtn &&
@@ -623,16 +653,36 @@
   }
 
   function hasUnrestoredPlaceholders(node) {
-    const rawText = node.textContent || "";
-    if (!PLACEHOLDER_CHECK_RE.test(rawText)) return false;
-    const allPhs = Array.from(rawText.matchAll(/(?:\{\{|\<)([A-Z_]+)_(\d+)(?:\}\}|\>)/g)).map((m) => m[0]);
-    return allPhs.some((ph) => !(node._psBlockedPhs && node._psBlockedPhs.has(ph)));
+    const target = node.closest("article, [data-testid^='conversation-turn-']") || node;
+    let rawText = target.textContent || "";
+    if (target.querySelectorAll) {
+      target.querySelectorAll("input, textarea").forEach((inp) => {
+        if (inp.value && !inp.closest("#prompt-textarea, [data-message-author-role='user'], [aria-label*='You said' i]")) {
+          rawText += " " + inp.value;
+        }
+      });
+      // Also check for custom HTML tags like <LOCATION_1>, <EMAIL_1> created by browser parser
+      target.querySelectorAll("*").forEach((el) => {
+        if (/^[A-Z_]+_\d+$/i.test(el.tagName)) {
+          rawText += ` {{${el.tagName.toUpperCase()}}}`;
+        }
+      });
+    }
+    if (PLACEHOLDER_CHECK_RE.test(rawText)) {
+      const allPhs = Array.from(rawText.matchAll(/(?:\{\{|\{|\<|\[)([A-Z_]+)_(\d+)(?:\}\}|\}|\>|\])/g)).map((m) => m[0]);
+      return allPhs.some((ph) => {
+        const clean = ph.replace(/[\{\}\<\>\[\]]/g, "");
+        return !(node._psBlockedPhs && (node._psBlockedPhs.has(ph) || node._psBlockedPhs.has(clean) || node._psBlockedPhs.has(`{{${clean}}}`)));
+      });
+    }
+    return false;
   }
 
   function findAssistantCandidateNodes() {
-    const matched = [];
+    const matched = new Set();
+    const root = document.querySelector("main") || document.body;
 
-    // 1. Check known assistant container selectors
+    // 1. Target standard assistant message containers and markdown turns
     const selectors = [
       "div[data-message-author-role='assistant']",
       "article [data-message-author-role='assistant']",
@@ -645,31 +695,77 @@
       ".agent-turn"
     ];
 
-    const elements = Array.from(document.querySelectorAll(selectors.join(", ")));
-
-    // 2. Also scan all paragraphs and list items containing placeholders
-    document.querySelectorAll("main p, article p, main li, article li, p").forEach((el) => {
-      if (PLACEHOLDER_CHECK_RE.test(el.textContent || "") && !elements.includes(el)) {
-        elements.push(el);
+    document.querySelectorAll(selectors.join(", ")).forEach((el) => {
+      if (
+        !el.closest(
+          "#prompt-textarea, [data-message-author-role='user'], [aria-label*='You said' i], #promptshield-overlay, #promptshield-modal, #promptshield-restoration-toast"
+        ) &&
+        hasUnrestoredPlaceholders(el)
+      ) {
+        matched.add(el);
       }
     });
 
-    elements.forEach((el) => {
-      // Must not be in user input, sidebar, PromptShield overlay/modal, or user message
+    // 2. Scan all text nodes in main to catch interactive cards, headers, email previews, or widgets
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null, false);
+    let textNode;
+    while ((textNode = walker.nextNode())) {
+      const parent = textNode.parentElement;
+      if (!parent) continue;
       if (
-        el.closest(
-          "#prompt-textarea, textarea, input, aside, nav, [data-message-author-role='user'], [aria-label*='You said' i], #promptshield-overlay, #promptshield-modal, #promptshield-restoration-toast"
+        parent.closest(
+          "#prompt-textarea, [data-message-author-role='user'], [aria-label*='You said' i], #promptshield-overlay, #promptshield-modal, #promptshield-restoration-toast"
+        )
+      ) {
+        continue;
+      }
+      if (PLACEHOLDER_CHECK_RE.test(textNode.nodeValue || "")) {
+        const container = parent.closest(
+          "article, [data-message-author-role='assistant'], [data-testid^='conversation-turn-'], div[class*='rounded'], div.markdown"
+        ) || parent;
+        if (hasUnrestoredPlaceholders(container)) {
+          matched.add(container);
+        }
+      }
+    }
+
+    // 3. Scan inputs and textareas in main that may contain placeholders in cards
+    root.querySelectorAll("input, textarea").forEach((inp) => {
+      if (
+        inp.closest(
+          "#prompt-textarea, [data-message-author-role='user'], [aria-label*='You said' i], #promptshield-overlay, #promptshield-modal, #promptshield-restoration-toast"
         )
       ) {
         return;
       }
-
-      if (PLACEHOLDER_CHECK_RE.test(el.textContent || "")) {
-        matched.push(el);
+      if (inp.value && PLACEHOLDER_CHECK_RE.test(inp.value)) {
+        const container = inp.closest(
+          "article, [data-message-author-role='assistant'], [data-testid^='conversation-turn-'], div[class*='rounded']"
+        ) || inp;
+        if (hasUnrestoredPlaceholders(container)) {
+          matched.add(container);
+        }
       }
     });
 
-    return matched;
+    // 4. Scan for custom tag elements (e.g. <LOCATION_1>, <EMAIL_1>) in main
+    root.querySelectorAll("*").forEach((el) => {
+      if (
+        !el.closest(
+          "#prompt-textarea, [data-message-author-role='user'], [aria-label*='You said' i], #promptshield-overlay, #promptshield-modal, #promptshield-restoration-toast"
+        ) &&
+        /^[A-Z_]+_\d+$/i.test(el.tagName)
+      ) {
+        const container = el.closest(
+          "article, [data-message-author-role='assistant'], [data-testid^='conversation-turn-'], main"
+        ) || el.parentElement;
+        if (container && hasUnrestoredPlaceholders(container)) {
+          matched.add(container);
+        }
+      }
+    });
+
+    return Array.from(matched);
   }
 
   function scanAndRestoreResponses() {
@@ -679,7 +775,6 @@
 
     const candidateNodes = findAssistantCandidateNodes();
     candidateNodes.forEach((node) => {
-      // If node still has unrestored placeholders (e.g. from subsequent streaming chunks), allow restoration
       if (hasUnrestoredPlaceholders(node)) {
         fullyRestoredNodes.delete(node);
       } else {
@@ -706,9 +801,25 @@
       return;
     }
 
-    const rawText = node.textContent || "";
+    // Gather comprehensive text across the turn container and any associated card widgets
+    const turn = node.closest("article, [data-testid^='conversation-turn-'], main") || node;
+    let rawText = turn.textContent || node.textContent || "";
+    if (turn.querySelectorAll) {
+      turn.querySelectorAll("input, textarea").forEach((inp) => {
+        if (inp.value && !inp.closest("#prompt-textarea, [data-message-author-role='user'], [aria-label*='You said' i]")) {
+          rawText += " " + inp.value;
+        }
+      });
+      // Capture any custom HTML tag elements (e.g. <location_1></location_1>)
+      turn.querySelectorAll("*").forEach((el) => {
+        if (/^[A-Z_]+_\d+$/i.test(el.tagName)) {
+          rawText += ` {{${el.tagName.toUpperCase()}}}`;
+        }
+      });
+    }
+
     inFlightRestoreNodes.add(node);
-    console.log("[PromptShield] Calling Phase 5 /restore for node. Session ID:", lastSessionId);
+    console.log("[PromptShield] Calling Phase 5 /restore for turn. Session ID:", lastSessionId);
 
     chrome.runtime.sendMessage(
       {
@@ -730,14 +841,26 @@
         const data = res.data;
         if (data.blocked_placeholders && data.blocked_placeholders.length > 0) {
           if (!node._psBlockedPhs) node._psBlockedPhs = new Set();
-          data.blocked_placeholders.forEach((ph) => node._psBlockedPhs.add(ph));
+          data.blocked_placeholders.forEach((ph) => {
+            node._psBlockedPhs.add(ph);
+            const clean = ph.replace(/[\{\}\<\>\[\]]/g, "");
+            node._psBlockedPhs.add(clean);
+            node._psBlockedPhs.add(`{{${clean}}}`);
+          });
         }
 
         if (data.restored_count > 0 && data.restored_map) {
           const restoredMap = data.restored_map || {};
 
-          // Safely replace text nodes and innerHTML without breaking React hierarchy
-          safelyReplacePlaceholders(node, restoredMap);
+          // Safely replace text nodes, inputs, attributes, and custom tag elements
+          const targetScope = node.closest("article, [data-testid^='conversation-turn-'], main") || document.body;
+          safelyReplacePlaceholders(targetScope, restoredMap);
+
+          // Also execute a sweep across main to ensure sibling cards/headers are 100% updated
+          const mainScope = document.querySelector("main") || document.body;
+          if (mainScope !== targetScope) {
+            safelyReplacePlaceholders(mainScope, restoredMap);
+          }
 
           // Display non-intrusive floating toast in corner
           showRestorationToast(data.restored_count);
@@ -745,27 +868,45 @@
         }
 
         // If no more unblocked placeholders remain, mark node as fully restored
-        const remainingText = node.textContent || "";
-        const remainingPhs = Array.from(remainingText.matchAll(/(?:\{\{|\<)([A-Z_]+)_(\d+)(?:\}\}|\>)/g)).map((m) => m[0]);
-        const stillNeedsRestore = remainingPhs.some((ph) => !(node._psBlockedPhs && node._psBlockedPhs.has(ph)));
-        if (!stillNeedsRestore) {
+        if (!hasUnrestoredPlaceholders(node)) {
           fullyRestoredNodes.add(node);
         }
       }
     );
   }
 
-  function safelyReplacePlaceholders(rootElem, restoredMap) {
-    if (!restoredMap || Object.keys(restoredMap).length === 0) return;
+  function setNativeInputValue(element, value) {
+    try {
+      const isTextarea = element.tagName === "TEXTAREA";
+      const proto = isTextarea ? window.HTMLTextAreaElement.prototype : window.HTMLInputElement.prototype;
+      const setter = Object.getOwnPropertyDescriptor(proto, "value")?.set;
+      if (setter) {
+        setter.call(element, value);
+      } else {
+        element.value = value;
+      }
+    } catch (_) {
+      element.value = value;
+    }
+    try {
+      element.dispatchEvent(new Event("input", { bubbles: true }));
+      element.dispatchEvent(new Event("change", { bubbles: true }));
+    } catch (_) {}
+  }
 
-    // 1. Text node walker replacement (preserves DOM structure & event listeners)
+  function safelyReplacePlaceholders(rootElem, restoredMap) {
+    if (!restoredMap || Object.keys(restoredMap).length === 0 || !rootElem) return;
+
+    // 1. Safe text node walker replacement (preserves React virtual DOM and event listeners)
     const walker = document.createTreeWalker(rootElem, NodeFilter.SHOW_TEXT, null, false);
     let textNode;
     const nodesToUpdate = [];
     while ((textNode = walker.nextNode())) {
       if (
         textNode.parentElement &&
-        textNode.parentElement.closest("#promptshield-restoration-toast, #promptshield-overlay, #promptshield-modal")
+        textNode.parentElement.closest(
+          "#promptshield-restoration-toast, #promptshield-overlay, #promptshield-modal, #prompt-textarea, [data-message-author-role='user'], [aria-label*='You said' i]"
+        )
       ) {
         continue;
       }
@@ -785,11 +926,73 @@
       tn.nodeValue = val;
     }
 
-    // 2. Direct replacement fallback if any placeholder is split across inline DOM nodes
-    for (const [ph, secret] of Object.entries(restoredMap)) {
-      if (rootElem.innerHTML && rootElem.innerHTML.includes(ph)) {
-        rootElem.innerHTML = rootElem.innerHTML.replaceAll(ph, secret);
-      }
+    // 2. Safe input / textarea value updates with native React prototype setter
+    if (rootElem.querySelectorAll) {
+      rootElem.querySelectorAll("input, textarea").forEach((inp) => {
+        if (inp.closest("#prompt-textarea, [data-message-author-role='user'], [aria-label*='You said' i]")) {
+          return;
+        }
+        try {
+          if (inp.value && typeof inp.value === "string") {
+            let val = inp.value;
+            let modified = false;
+            for (const [ph, secret] of Object.entries(restoredMap)) {
+              if (val.includes(ph)) {
+                val = val.replaceAll(ph, secret);
+                modified = true;
+              }
+            }
+            if (modified) {
+              setNativeInputValue(inp, val);
+            }
+          }
+        } catch (_) {}
+      });
+
+      // 3. Update any element attributes (e.g. placeholder, title, aria-label)
+      const attributeNames = ["placeholder", "title", "aria-label"];
+      rootElem.querySelectorAll("*").forEach((el) => {
+        if (el.closest("#prompt-textarea, [data-message-author-role='user'], [aria-label*='You said' i]")) {
+          return;
+        }
+        for (const attr of attributeNames) {
+          if (el.hasAttribute(attr)) {
+            let attrVal = el.getAttribute(attr);
+            if (attrVal) {
+              let updated = false;
+              for (const [ph, secret] of Object.entries(restoredMap)) {
+                if (attrVal.includes(ph)) {
+                  attrVal = attrVal.replaceAll(ph, secret);
+                  updated = true;
+                }
+              }
+              if (updated) {
+                el.setAttribute(attr, attrVal);
+              }
+            }
+          }
+        }
+      });
+
+      // 4. Safe replacement for custom HTML tag elements created by browser (e.g. <LOCATION_1></LOCATION_1>)
+      rootElem.querySelectorAll("*").forEach((el) => {
+        if (
+          el.closest(
+            "#promptshield-restoration-toast, #promptshield-overlay, #promptshield-modal, #prompt-textarea, [data-message-author-role='user'], [aria-label*='You said' i]"
+          )
+        ) {
+          return;
+        }
+        const tag = el.tagName.toUpperCase();
+        for (const [ph, secret] of Object.entries(restoredMap)) {
+          const cleanPh = ph.replace(/[\{\}\<\>\[\]]/g, "").toUpperCase();
+          if (tag === cleanPh && secret) {
+            const textNode = document.createTextNode(secret);
+            el.replaceWith(textNode);
+            break;
+          }
+        }
+      });
     }
   }
 

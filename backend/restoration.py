@@ -35,8 +35,8 @@ from backend.mapping_store import MappingStore
 
 logger = logging.getLogger(__name__)
 
-# Pattern to capture PromptShield placeholder formats, e.g.: {{PERSON_1}}, <PERSON_1>
-PLACEHOLDER_REGEX = re.compile(r"(?:\{\{|\<)([A-Z_]+)_(\d+)(?:\}\}|\>)")
+# Pattern to capture PromptShield placeholder formats, e.g.: {{PERSON_1}}, <PERSON_1>, [PERSON_1], {PERSON_1}
+PLACEHOLDER_REGEX = re.compile(r"(?:\{\{|\{|\<|\[)([A-Z_]+)_(\d+)(?:\}\}|\}|\>|\])")
 
 
 class ResponseRestorer:
@@ -137,6 +137,27 @@ class ResponseRestorer:
             local_mapping = self.mapping_store.get_mappings("default")
             mapping_details = self.mapping_store.get_mapping_details("default")
 
+        # Build bracket-agnostic normalized lookups (e.g. "LOCATION_1" -> "London")
+        def _clean_token(t: str) -> str:
+            return re.sub(r"[\{\}\<\>\[\]]", "", t).strip()
+
+        norm_mapping: Dict[str, str] = {}
+        norm_details: Dict[str, Dict[str, Any]] = {}
+        for k, v in local_mapping.items():
+            norm_k = _clean_token(k)
+            norm_mapping[norm_k] = v
+            norm_mapping[f"{{{{{norm_k}}}}}"] = v
+            norm_mapping[f"<{norm_k}>"] = v
+            norm_mapping[f"[{norm_k}]"] = v
+            norm_mapping[k] = v
+        for k, v in mapping_details.items():
+            norm_k = _clean_token(k)
+            norm_details[norm_k] = v
+            norm_details[f"{{{{{norm_k}}}}}"] = v
+            norm_details[f"<{norm_k}>"] = v
+            norm_details[f"[{norm_k}]"] = v
+            norm_details[k] = v
+
         # Track unique placeholders and plan substitutions
         unique_placeholders: Set[str] = set()
         approved_substitutions: Dict[str, str] = {}
@@ -152,6 +173,8 @@ class ResponseRestorer:
             unique_placeholders.add(ph)
 
             type_name = m.group(1)
+            clean_ph = _clean_token(ph)
+
             # Map placeholder type name to EntityType enum
             entity_type: Optional[EntityType] = None
             try:
@@ -165,8 +188,11 @@ class ResponseRestorer:
                 else:
                     entity_type = None
 
-            # 1. Check if placeholder exists in local mapping
-            if ph not in local_mapping:
+            # 1. Check if placeholder exists in local mapping (bracket-agnostic)
+            raw_secret = norm_mapping.get(clean_ph) or local_mapping.get(ph)
+            details = norm_details.get(clean_ph) or mapping_details.get(ph, {})
+
+            if raw_secret is None:
                 unrestored_list.append(ph)
                 restoration_records.append(
                     RestoredPlaceholder(
@@ -178,9 +204,6 @@ class ResponseRestorer:
                     )
                 )
                 continue
-
-            raw_secret = local_mapping[ph]
-            details = mapping_details.get(ph, {})
 
             # 2. Check Explicit Non-Disclosure Policy (Controlled Restoration Gate)
             if not details.get("disclosure_allowed", True):

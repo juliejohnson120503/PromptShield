@@ -102,33 +102,21 @@ class PromptShieldCore:
         prompt: str,
         session_id: Optional[str] = None,
         approved_entity_ids: Optional[Set[str]] = None,
+        masked_entity_ids: Optional[Set[str]] = None,
     ) -> SemanticMaskingResult:
         """
         [Phase 4] Context-Aware Semantic Masking.
 
         Full pipeline: Detect (P1) -> Context (P2) -> Policy (P3) -> Semantic Mask (P4).
-        Respects MASK / RETAIN / USER_APPROVAL / REVIEW decisions from Phase 3.
-
-        Parameters
-        ----------
-        prompt : str
-            The user prompt to sanitize.
-        session_id : str, optional
-            Session identifier for the local MappingStore.
-        approved_entity_ids : set of str, optional
-            Set of stable entity IDs approved by the user. Approved USER_APPROVAL
-            entities are released as literals in the sanitized prompt.
-
-        Returns
-        -------
-        SemanticMaskingResult
-            Contains sanitized_prompt, local mapping, and per-decision entity lists.
+        Respects MASK / RETAIN / USER_APPROVAL / REVIEW decisions from Phase 3,
+        while honoring explicit user approval and masking overrides.
         """
         policy_report = self.evaluate_policy(prompt)
         return self.semantic_masker.mask(
             prompt=prompt,
             policy_report=policy_report,
             approved_entity_ids=approved_entity_ids,
+            masked_entity_ids=masked_entity_ids,
             session_id=session_id,
         )
 
