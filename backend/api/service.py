@@ -3,6 +3,7 @@ PromptShield AI — Phase 6 Service Manager
 Singleton provider for PromptShieldCore and REST endpoint orchestration.
 """
 
+import re
 import time
 import logging
 from enum import Enum
