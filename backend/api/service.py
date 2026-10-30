@@ -151,7 +151,7 @@ class PromptShieldService:
                 entity_id=rec.entity_id,
                 entity_text=rec.entity_text,
                 entity_type=rec.entity_type.value,
-                risk_score=rec.risk_score,
+                risk_score=round(rec.risk_score * 100.0, 1) if rec.risk_score <= 1.0 else round(rec.risk_score, 1),
                 decision="USER_APPROVAL",
                 disclosure_allowed=False,
                 rationale=rec.decision_reason,
@@ -199,8 +199,9 @@ class PromptShieldService:
         )
         latency = (time.perf_counter() - t0) * 1000.0
 
-        restored_phs = [r.placeholder for r in res.restorations if r.restored]
-        blocked_phs = [r.placeholder for r in res.restorations if not r.restored] + list(res.unrestored_placeholders)
+        restored_phs = list(dict.fromkeys(r.placeholder for r in res.restorations if r.restored))
+        blocked_raw = [r.placeholder for r in res.restorations if not r.restored] + list(res.unrestored_placeholders)
+        blocked_phs = list(dict.fromkeys(blocked_raw))
 
         # Build bracket-agnostic restored map so frontend can match any tag style
         restored_map = {}
@@ -212,6 +213,23 @@ class PromptShieldService:
                 restored_map[f"<{clean}>"] = r.original_value
                 restored_map[f"[{clean}]"] = r.original_value
                 restored_map[clean] = r.original_value
+
+        # Also enrich restored_map with all authorized session mappings so the frontend
+        # can restore both the user's prompt turns and the assistant's responses
+        if session_id:
+            session_details = self.shield.mapping_store.get_mapping_details(session_id)
+            for ph, det in session_details.items():
+                if ph not in blocked_phs and det.get("disclosure_allowed", True):
+                    et = det.get("entity_type")
+                    if not (et in rest_policy.blocked_entity_types and not rest_policy.allow_credentials_restoration):
+                        raw_val = det.get("raw_value")
+                        if raw_val:
+                            clean = re.sub(r"[\{\}\<\>\[\]]", "", ph).strip()
+                            restored_map[ph] = raw_val
+                            restored_map[f"{{{{{clean}}}}}"] = raw_val
+                            restored_map[f"<{clean}>"] = raw_val
+                            restored_map[f"[{clean}]"] = raw_val
+                            restored_map[clean] = raw_val
 
         restored_count = len(restored_phs)
         blocked_count = len(blocked_phs)

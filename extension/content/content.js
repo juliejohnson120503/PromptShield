@@ -11,6 +11,33 @@
 
   console.log("[PromptShield] Content script injected and active.");
 
+  // Helper: verify Chrome extension runtime context is still connected
+  function isExtensionContextValid() {
+    return typeof chrome !== "undefined" && Boolean(chrome?.runtime?.id) && typeof chrome.runtime?.sendMessage === "function";
+  }
+
+  // Safe wrapper around chrome.runtime.sendMessage that gracefully handles extension reloads & context invalidation
+  function safeSendMessage(message, callback) {
+    if (!isExtensionContextValid()) {
+      console.warn("[PromptShield] Extension runtime disconnected or context invalidated. Please refresh the page (F5).");
+      if (callback) callback({ success: false, error: "EXTENSION_CONTEXT_INVALIDATED" });
+      return;
+    }
+    try {
+      chrome.runtime.sendMessage(message, (response) => {
+        if (chrome.runtime?.lastError) {
+          console.warn("[PromptShield] Runtime message error:", chrome.runtime.lastError.message);
+          if (callback) callback({ success: false, error: chrome.runtime.lastError.message });
+          return;
+        }
+        if (callback) callback(response);
+      });
+    } catch (err) {
+      console.warn("[PromptShield] sendMessage threw:", err);
+      if (callback) callback({ success: false, error: err?.message || "EXTENSION_SEND_ERROR" });
+    }
+  }
+
   // 1. Selector utilities for LLM input boxes and submit buttons
   function findPromptInput() {
     // 1. ChatGPT
@@ -44,66 +71,109 @@
 
   function setPromptText(inputElem, text) {
     if (!inputElem) return;
+
+    // 1. If input already contains the EXACT desired text, DO NOT touch it!
+    const current = getPromptText(inputElem).trim();
+    if (current === text.trim()) {
+      return;
+    }
+
     inputElem.focus();
 
     if (inputElem.tagName === "TEXTAREA" || inputElem.tagName === "INPUT") {
-      const nativeSetter = Object.getOwnPropertyDescriptor(
-        window.HTMLTextAreaElement.prototype,
-        "value"
-      )?.set;
+      const proto = window.HTMLTextAreaElement ? window.HTMLTextAreaElement.prototype : HTMLInputElement.prototype;
+      const nativeSetter = Object.getOwnPropertyDescriptor(proto, "value")?.set;
       if (nativeSetter) {
         nativeSetter.call(inputElem, text);
       } else {
         inputElem.value = text;
       }
-      inputElem.dispatchEvent(new Event("input", { bubbles: true }));
-      inputElem.dispatchEvent(new Event("change", { bubbles: true }));
+      inputElem.dispatchEvent(new Event("input", { bubbles: true, composed: true }));
+      inputElem.dispatchEvent(new Event("change", { bubbles: true, composed: true }));
     } else {
       // ContentEditable / ProseMirror / Lexical (ChatGPT, Claude, Gemini)
       inputElem.focus();
-      let success = false;
+
+      // Step 1: Select all existing content and replace using execCommand
+      let replaced = false;
       try {
         document.execCommand("selectAll", false, null);
-        success = document.execCommand("insertText", false, text);
-      } catch (_) { }
+        replaced = document.execCommand("insertText", false, text);
+      } catch (_) {}
 
-      // If execCommand failed or didn't replace, set paragraph text directly
-      if (!success || !inputElem.innerText.includes(text)) {
-        let p = inputElem.querySelector("p");
-        if (!p) {
-          p = document.createElement("p");
-          inputElem.appendChild(p);
-        }
-        p.textContent = text;
+      // Step 2: If execCommand didn't replace cleanly, clear ProseMirror nodes and set text
+      if (!replaced || getPromptText(inputElem).trim() !== text.trim()) {
+        try {
+          inputElem.innerHTML = "<p><br></p>";
+          const p = inputElem.querySelector("p");
+          if (p) {
+            p.textContent = text;
+          }
+        } catch (_) {}
       }
 
+      // Step 3: If still not exact, use simulated paste on the cleared editor
+      if (getPromptText(inputElem).trim() !== text.trim()) {
+        try {
+          document.execCommand("selectAll", false, null);
+          document.execCommand("delete", false, null);
+          const dt = new DataTransfer();
+          dt.setData("text/plain", text);
+          const pasteEvt = new ClipboardEvent("paste", {
+            clipboardData: dt,
+            bubbles: true,
+            cancelable: true,
+            composed: true,
+          });
+          inputElem.dispatchEvent(pasteEvt);
+        } catch (_) {}
+      }
+
+      // Step 4: Final DOM cleanup fallback
+      if (getPromptText(inputElem).trim() !== text.trim()) {
+        inputElem.textContent = text;
+      }
+
+      // Step 5: Dispatch synthetic input and change events with composed: true
       inputElem.dispatchEvent(new InputEvent("input", {
         bubbles: true,
         cancelable: true,
+        composed: true,
         inputType: "insertText",
         data: text,
       }));
-      inputElem.dispatchEvent(new Event("input", { bubbles: true }));
-      inputElem.dispatchEvent(new Event("change", { bubbles: true }));
+      inputElem.dispatchEvent(new Event("input", { bubbles: true, composed: true }));
+      inputElem.dispatchEvent(new Event("change", { bubbles: true, composed: true }));
     }
   }
 
-  function findSubmitButton() {
-    // 1. ChatGPT selectors (including data-testid, aria-label, and composer button)
+  function findSubmitButton(inputElem) {
+    // 1. Search within the active form, fieldset, or composer container first
+    if (inputElem) {
+      const container = inputElem.closest("form, fieldset, [class*='composer'], main");
+      if (container) {
+        const scopedBtn = container.querySelector(
+          "button[data-testid='send-button'], button[data-testid='composer-send-button'], button[aria-label*='Send prompt' i], button[aria-label*='Send message' i], button[aria-label*='Send' i], button[type='submit']"
+        );
+        if (scopedBtn) return scopedBtn;
+      }
+    }
+
+    // 2. Global ChatGPT selectors (including testid, aria-labels, and buttons)
     const gptBtn = document.querySelector(
-      "button[data-testid='send-button'], button[data-testid='composer-send-button'], button[data-testid*='send' i], button[aria-label*='Send' i], button#send-button, button[data-testid='fruitjuice-send-button'], form button[type='submit'], fieldset button[aria-label*='Send' i]"
+      "button[data-testid='send-button'], button[data-testid='composer-send-button'], button[data-testid*='send' i], button[aria-label*='Send prompt' i], button[aria-label*='Send message' i], button[aria-label*='Send' i], button#send-button, button[data-testid='fruitjuice-send-button'], form button[type='submit'], fieldset button[aria-label*='Send' i]"
     );
     if (gptBtn) return gptBtn;
 
-    // 2. Claude
-    const claudeBtn = document.querySelector("button[aria-label='Send Message'], button:has(svg[viewBox*='24'])");
+    // 3. Claude
+    const claudeBtn = document.querySelector("button[aria-label='Send Message'], button[aria-label*='Send' i], button:has(svg[viewBox*='24'])");
     if (claudeBtn) return claudeBtn;
 
-    // 3. Gemini
+    // 4. Gemini
     const geminiBtn = document.querySelector("button[aria-label*='Send' i], .send-button");
     if (geminiBtn) return geminiBtn;
 
-    // 4. Generic / Sandbox
+    // 5. Generic / Sandbox
     return document.querySelector("button[type='submit'], #sendBtn, .btn-send");
   }
 
@@ -201,25 +271,47 @@
     if (isIntercepting) return;
     isIntercepting = true;
 
+    // Check if extension context is valid
+    if (!isExtensionContextValid()) {
+      isIntercepting = false;
+      console.warn("[PromptShield] Extension context invalidated (extension was reloaded). Please refresh page (F5).");
+      showMiniStatus("⚠️ Extension reloaded — please refresh page (F5)");
+      setTimeout(hideMiniStatus, 3500);
+      triggerDirectSubmit(promptText, inputElem);
+      return;
+    }
+
     showMiniStatus("PromptShield Analyzing...");
 
-    chrome.runtime.sendMessage(
+    // Safety timeout: if analysis takes longer than 7 seconds, release to prevent freezing
+    let completed = false;
+    const safetyTimer = setTimeout(() => {
+      if (!completed) {
+        completed = true;
+        isIntercepting = false;
+        hideMiniStatus();
+        console.warn("[PromptShield] Analysis timeout. Releasing prompt directly.");
+        triggerDirectSubmit(promptText, inputElem);
+      }
+    }, 7000);
+
+    safeSendMessage(
       { type: "ANALYZE_PROMPT", payload: { prompt: promptText } },
       (analyzeResponse) => {
+        if (completed) return;
+        completed = true;
+        clearTimeout(safetyTimer);
         isIntercepting = false;
         hideMiniStatus();
 
-        if (chrome.runtime.lastError) {
-          console.warn("[PromptShield] Extension context error:", chrome.runtime.lastError.message);
-          showMiniStatus("⚠️ Extension reloaded — please refresh page (F5)");
-          setTimeout(hideMiniStatus, 3500);
-          triggerDirectSubmit(promptText, inputElem);
-          return;
-        }
-
         if (!analyzeResponse || !analyzeResponse.success) {
-          console.warn("[PromptShield] Analysis error or offline:", analyzeResponse?.error);
-          showMiniStatus("⚠️ PromptShield offline (start python run_server.py)");
+          const err = analyzeResponse?.error || "offline";
+          console.warn("[PromptShield] Analysis error or offline:", err);
+          if (err === "EXTENSION_CONTEXT_INVALIDATED" || (typeof err === "string" && (err.includes("context invalidated") || err.includes("reloaded")))) {
+            showMiniStatus("⚠️ Extension reloaded — please refresh page (F5)");
+          } else {
+            showMiniStatus("⚠️ PromptShield offline (start python run_server.py)");
+          }
           setTimeout(hideMiniStatus, 3500);
           triggerDirectSubmit(promptText, inputElem);
           return;
@@ -252,8 +344,8 @@
   }
 
   function triggerDirectSubmit(text, inputElem) {
-    bypassUntil = Date.now() + 5000;
-    const elem = (inputElem && inputElem.isConnected) ? inputElem : findPromptInput();
+    bypassUntil = Date.now() + 6000;
+    const elem = (inputElem && inputElem.isConnected) ? inputElem : (findPromptInput() || lastActiveInput);
     if (!elem) {
       console.warn("[PromptShield] Could not locate prompt input element.");
       return;
@@ -261,76 +353,71 @@
 
     setPromptText(elem, text);
 
-    let attempts = 0;
-    const maxAttempts = 15;
-    const pollInterval = setInterval(() => {
-      attempts++;
-      const sendBtn = findSubmitButton();
+    let submitted = false;
 
+    const dispatchSubmission = () => {
+      if (submitted) return;
+
+      const currentInput = (elem && elem.isConnected) ? elem : (findPromptInput() || lastActiveInput);
+      if (!currentInput) return;
+
+      currentInput.focus();
+      const sendBtn = findSubmitButton(currentInput);
+
+      // Strategy: Click send button if found, otherwise dispatch Enter key on the input
       if (sendBtn) {
-        sendBtn.disabled = false;
-        sendBtn.removeAttribute("disabled");
-        sendBtn.removeAttribute("aria-disabled");
-      }
-
-      const isEnabled = sendBtn && !sendBtn.disabled && sendBtn.getAttribute("aria-disabled") !== "true";
-
-      if (isEnabled && attempts > 1) {
-        clearInterval(pollInterval);
-        console.log("[PromptShield] Send button enabled, triggering submission.");
-        sendBtn.click();
-        sendBtn.dispatchEvent(new MouseEvent("click", { bubbles: true, cancelable: true, view: window }));
-        return;
-      }
-
-      if (attempts >= maxAttempts) {
-        clearInterval(pollInterval);
-        console.log("[PromptShield] Dispatching synthetic send events...");
-
-        // 1. Mouse & pointer events on Send button
-        if (sendBtn) {
+        try {
           sendBtn.disabled = false;
           sendBtn.removeAttribute("disabled");
           sendBtn.removeAttribute("aria-disabled");
-          sendBtn.dispatchEvent(new PointerEvent("pointerdown", { bubbles: true, cancelable: true }));
-          sendBtn.dispatchEvent(new MouseEvent("mousedown", { bubbles: true, cancelable: true }));
-          sendBtn.dispatchEvent(new PointerEvent("pointerup", { bubbles: true, cancelable: true }));
-          sendBtn.dispatchEvent(new MouseEvent("mouseup", { bubbles: true, cancelable: true }));
-          sendBtn.dispatchEvent(new MouseEvent("click", { bubbles: true, cancelable: true, view: window }));
-          sendBtn.click();
-        }
 
-        // 2. Keyboard Enter event sequence on the input container
-        elem.focus();
-        elem.dispatchEvent(new KeyboardEvent("keydown", {
-          key: "Enter",
-          code: "Enter",
-          keyCode: 13,
-          which: 13,
-          bubbles: true,
-          cancelable: true,
-          composed: true,
-        }));
-        elem.dispatchEvent(new KeyboardEvent("keypress", {
-          key: "Enter",
-          code: "Enter",
-          keyCode: 13,
-          which: 13,
-          bubbles: true,
-          cancelable: true,
-          composed: true,
-        }));
-        elem.dispatchEvent(new KeyboardEvent("keyup", {
-          key: "Enter",
-          code: "Enter",
-          keyCode: 13,
-          which: 13,
-          bubbles: true,
-          cancelable: true,
-          composed: true,
-        }));
+          const evtOpts = { bubbles: true, cancelable: true, composed: true, view: window };
+          sendBtn.dispatchEvent(new PointerEvent("pointerdown", evtOpts));
+          sendBtn.dispatchEvent(new MouseEvent("mousedown", evtOpts));
+          sendBtn.dispatchEvent(new PointerEvent("pointerup", evtOpts));
+          sendBtn.dispatchEvent(new MouseEvent("mouseup", evtOpts));
+          sendBtn.click();
+          submitted = true;
+          console.log("[PromptShield] Clicked send button.");
+          return;
+        } catch (err) {
+          console.warn("[PromptShield] Error clicking send button:", err);
+        }
       }
-    }, 60);
+
+      // If no send button found, dispatch Enter keydown on the input element
+      const kOpts = {
+        key: "Enter",
+        code: "Enter",
+        keyCode: 13,
+        which: 13,
+        bubbles: true,
+        cancelable: true,
+        composed: true,
+        view: window,
+      };
+      currentInput.dispatchEvent(new KeyboardEvent("keydown", kOpts));
+      currentInput.dispatchEvent(new KeyboardEvent("keypress", kOpts));
+      currentInput.dispatchEvent(new KeyboardEvent("keyup", kOpts));
+      submitted = true;
+      console.log("[PromptShield] Dispatched Enter keyboard events to input.");
+    };
+
+    // Initial dispatch (80ms)
+    setTimeout(() => {
+      dispatchSubmission();
+    }, 80);
+
+    // Follow-up verification (300ms): if not submitted and LLM hasn't started generating, retry
+    setTimeout(() => {
+      if (!isLLMGenerating()) {
+        const remaining = getPromptText(elem).trim();
+        if (remaining.length > 0 && !submitted) {
+          console.log("[PromptShield] Retrying submission...");
+          dispatchSubmission();
+        }
+      }
+    }, 300);
   }
 
   // 4. Render Interactive Security Intercept Modal
@@ -565,57 +652,53 @@
     // Event Listeners for Modal Buttons
     document.getElementById("psBtnCancel").addEventListener("click", () => {
       overlay.remove();
-      inputElem.focus();
+      const targetInput = (inputElem && inputElem.isConnected) ? inputElem : (findPromptInput() || lastActiveInput);
+      if (targetInput) targetInput.focus();
     });
 
     document.getElementById("psBtnBypass").addEventListener("click", () => {
       overlay.remove();
-      const targetInput = (inputElem && inputElem.isConnected) ? inputElem : findPromptInput();
+      const targetInput = (inputElem && inputElem.isConnected) ? inputElem : (findPromptInput() || lastActiveInput);
       triggerDirectSubmit(originalPrompt, targetInput);
     });
 
     document.getElementById("psBtnSanitize").addEventListener("click", () => {
+      // Capture targetInput immediately before removing modal overlay
+      const targetInput = (inputElem && inputElem.isConnected) ? inputElem : (findPromptInput() || lastActiveInput);
+
       // 1. Remove modal overlay IMMEDIATELY so page is never frozen
       overlay.remove();
       showMiniStatus("🛡️ PromptShield: Applying Sanitization...");
 
-      const targetInput = (inputElem && inputElem.isConnected) ? inputElem : findPromptInput();
-
-      try {
-        chrome.runtime.sendMessage(
-          {
-            type: "SANITIZE_PROMPT",
-            payload: {
-              prompt: originalPrompt,
-              approved_entity_ids: Array.from(approvedEntityIds),
-              masked_entity_ids: Array.from(maskedEntityIds),
-            },
+      safeSendMessage(
+        {
+          type: "SANITIZE_PROMPT",
+          payload: {
+            prompt: originalPrompt,
+            approved_entity_ids: Array.from(approvedEntityIds),
+            masked_entity_ids: Array.from(maskedEntityIds),
           },
-          (sanitizeRes) => {
-            hideMiniStatus();
+        },
+        (sanitizeRes) => {
+          hideMiniStatus();
 
-            if (chrome.runtime.lastError || !sanitizeRes || !sanitizeRes.success) {
-              console.warn("[PromptShield] Sanitization warning:", chrome.runtime.lastError || sanitizeRes?.error);
-              showMiniStatus("⚠️ Extension reloaded — please press F5 on ChatGPT");
-              setTimeout(hideMiniStatus, 3500);
-              return;
-            }
-
-            if (sanitizeRes.data) {
-              lastSessionId = sanitizeRes.data.session_id;
-              const maskedText = sanitizeRes.data.sanitized_prompt;
-              console.log("[PromptShield] Injected sanitized prompt into LLM:", maskedText);
-              showMiniStatus("✓ Prompt Sanitized & Protected!");
-              setTimeout(hideMiniStatus, 2000);
-              triggerDirectSubmit(maskedText, targetInput);
-            }
+          if (!sanitizeRes || !sanitizeRes.success) {
+            console.warn("[PromptShield] Sanitization warning:", sanitizeRes?.error);
+            showMiniStatus("⚠️ Extension reloaded — please press F5 on ChatGPT");
+            setTimeout(hideMiniStatus, 3500);
+            return;
           }
-        );
-      } catch (err) {
-        console.warn("[PromptShield] Extension context error:", err);
-        showMiniStatus("⚠️ Extension updated — please press F5 on ChatGPT");
-        setTimeout(hideMiniStatus, 3500);
-      }
+
+          if (sanitizeRes.data) {
+            lastSessionId = sanitizeRes.data.session_id;
+            const maskedText = sanitizeRes.data.sanitized_prompt;
+            console.log("[PromptShield] Injected sanitized prompt into LLM:", maskedText);
+            showMiniStatus("✓ Prompt Sanitized & Protected!");
+            setTimeout(hideMiniStatus, 2000);
+            triggerDirectSubmit(maskedText, targetInput);
+          }
+        }
+      );
     });
   }
 
@@ -653,11 +736,11 @@
   }
 
   function hasUnrestoredPlaceholders(node) {
-    const target = node.closest("article, [data-testid^='conversation-turn-']") || node;
+    const target = node.closest("article, [data-testid^='conversation-turn-'], main") || node;
     let rawText = target.textContent || "";
     if (target.querySelectorAll) {
       target.querySelectorAll("input, textarea").forEach((inp) => {
-        if (inp.value && !inp.closest("#prompt-textarea, [data-message-author-role='user'], [aria-label*='You said' i]")) {
+        if (inp.value && !inp.closest("#prompt-textarea, #promptshield-overlay, #promptshield-modal, #promptshield-restoration-toast")) {
           rawText += " " + inp.value;
         }
       });
@@ -682,23 +765,31 @@
     const matched = new Set();
     const root = document.querySelector("main") || document.body;
 
-    // 1. Target standard assistant message containers and markdown turns
+    // 1. Target both assistant messages AND user prompt messages in the chat
     const selectors = [
+      // Assistant turns
       "div[data-message-author-role='assistant']",
       "article [data-message-author-role='assistant']",
-      "[data-testid^='conversation-turn-']:not(:has([data-message-author-role='user']))",
-      "article:not(:has([data-message-author-role='user']))",
       ".font-claude-message",
       "message-content",
       "div.prose",
       "div.markdown",
-      ".agent-turn"
+      ".agent-turn",
+      // User prompt turns (restore prompt turn after response)
+      "div[data-message-author-role='user']",
+      "article [data-message-author-role='user']",
+      "[data-testid*='user-turn']",
+      "[aria-label*='You said' i]",
+      ".user-message",
+      // General conversation turns
+      "[data-testid^='conversation-turn-']",
+      "article"
     ];
 
     document.querySelectorAll(selectors.join(", ")).forEach((el) => {
       if (
         !el.closest(
-          "#prompt-textarea, [data-message-author-role='user'], [aria-label*='You said' i], #promptshield-overlay, #promptshield-modal, #promptshield-restoration-toast"
+          "#prompt-textarea, #promptshield-overlay, #promptshield-modal, #promptshield-restoration-toast"
         ) &&
         hasUnrestoredPlaceholders(el)
       ) {
@@ -706,7 +797,7 @@
       }
     });
 
-    // 2. Scan all text nodes in main to catch interactive cards, headers, email previews, or widgets
+    // 2. Scan all text nodes in main to catch prompt turns, response cards, headers, email previews, or widgets
     const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null, false);
     let textNode;
     while ((textNode = walker.nextNode())) {
@@ -714,14 +805,14 @@
       if (!parent) continue;
       if (
         parent.closest(
-          "#prompt-textarea, [data-message-author-role='user'], [aria-label*='You said' i], #promptshield-overlay, #promptshield-modal, #promptshield-restoration-toast"
+          "#prompt-textarea, #promptshield-overlay, #promptshield-modal, #promptshield-restoration-toast"
         )
       ) {
         continue;
       }
       if (PLACEHOLDER_CHECK_RE.test(textNode.nodeValue || "")) {
         const container = parent.closest(
-          "article, [data-message-author-role='assistant'], [data-testid^='conversation-turn-'], div[class*='rounded'], div.markdown"
+          "article, [data-message-author-role='assistant'], [data-message-author-role='user'], [data-testid^='conversation-turn-'], div[class*='rounded'], div.markdown"
         ) || parent;
         if (hasUnrestoredPlaceholders(container)) {
           matched.add(container);
@@ -733,14 +824,14 @@
     root.querySelectorAll("input, textarea").forEach((inp) => {
       if (
         inp.closest(
-          "#prompt-textarea, [data-message-author-role='user'], [aria-label*='You said' i], #promptshield-overlay, #promptshield-modal, #promptshield-restoration-toast"
+          "#prompt-textarea, #promptshield-overlay, #promptshield-modal, #promptshield-restoration-toast"
         )
       ) {
         return;
       }
       if (inp.value && PLACEHOLDER_CHECK_RE.test(inp.value)) {
         const container = inp.closest(
-          "article, [data-message-author-role='assistant'], [data-testid^='conversation-turn-'], div[class*='rounded']"
+          "article, [data-message-author-role='assistant'], [data-message-author-role='user'], [data-testid^='conversation-turn-'], div[class*='rounded']"
         ) || inp;
         if (hasUnrestoredPlaceholders(container)) {
           matched.add(container);
@@ -752,12 +843,12 @@
     root.querySelectorAll("*").forEach((el) => {
       if (
         !el.closest(
-          "#prompt-textarea, [data-message-author-role='user'], [aria-label*='You said' i], #promptshield-overlay, #promptshield-modal, #promptshield-restoration-toast"
+          "#prompt-textarea, #promptshield-overlay, #promptshield-modal, #promptshield-restoration-toast"
         ) &&
         /^[A-Z_]+_\d+$/i.test(el.tagName)
       ) {
         const container = el.closest(
-          "article, [data-message-author-role='assistant'], [data-testid^='conversation-turn-'], main"
+          "article, [data-message-author-role='assistant'], [data-message-author-role='user'], [data-testid^='conversation-turn-'], main"
         ) || el.parentElement;
         if (container && hasUnrestoredPlaceholders(container)) {
           matched.add(container);
@@ -806,7 +897,7 @@
     let rawText = turn.textContent || node.textContent || "";
     if (turn.querySelectorAll) {
       turn.querySelectorAll("input, textarea").forEach((inp) => {
-        if (inp.value && !inp.closest("#prompt-textarea, [data-message-author-role='user'], [aria-label*='You said' i]")) {
+        if (inp.value && !inp.closest("#prompt-textarea, #promptshield-overlay, #promptshield-modal, #promptshield-restoration-toast")) {
           rawText += " " + inp.value;
         }
       });
@@ -821,7 +912,7 @@
     inFlightRestoreNodes.add(node);
     console.log("[PromptShield] Calling Phase 5 /restore for turn. Session ID:", lastSessionId);
 
-    chrome.runtime.sendMessage(
+    safeSendMessage(
       {
         type: "RESTORE_RESPONSE",
         payload: {
@@ -833,8 +924,8 @@
       (res) => {
         inFlightRestoreNodes.delete(node);
 
-        if (chrome.runtime.lastError || !res || !res.success || !res.data) {
-          console.warn("[PromptShield] Restoration response error:", chrome.runtime.lastError || res?.error);
+        if (!res || !res.success || !res.data) {
+          console.warn("[PromptShield] Restoration response error:", res?.error);
           return;
         }
 
@@ -852,11 +943,11 @@
         if (data.restored_count > 0 && data.restored_map) {
           const restoredMap = data.restored_map || {};
 
-          // Safely replace text nodes, inputs, attributes, and custom tag elements
+          // Safely replace text nodes, inputs, attributes, and custom tag elements in this turn
           const targetScope = node.closest("article, [data-testid^='conversation-turn-'], main") || document.body;
           safelyReplacePlaceholders(targetScope, restoredMap);
 
-          // Also execute a sweep across main to ensure sibling cards/headers are 100% updated
+          // Also execute a sweep across main to ensure user prompt turns & sibling cards are 100% restored
           const mainScope = document.querySelector("main") || document.body;
           if (mainScope !== targetScope) {
             safelyReplacePlaceholders(mainScope, restoredMap);
@@ -864,7 +955,7 @@
 
           // Display non-intrusive floating toast in corner
           showRestorationToast(data.restored_count);
-          console.log(`[PromptShield] Successfully restored ${data.restored_count} tokens in response:`, restoredMap);
+          console.log(`[PromptShield] Successfully restored ${data.restored_count} tokens in conversation:`, restoredMap);
         }
 
         // If no more unblocked placeholders remain, mark node as fully restored
@@ -898,6 +989,7 @@
     if (!restoredMap || Object.keys(restoredMap).length === 0 || !rootElem) return;
 
     // 1. Safe text node walker replacement (preserves React virtual DOM and event listeners)
+    // Exclude only the active compose input (#prompt-textarea) and PromptShield's own modal UI
     const walker = document.createTreeWalker(rootElem, NodeFilter.SHOW_TEXT, null, false);
     let textNode;
     const nodesToUpdate = [];
@@ -905,7 +997,7 @@
       if (
         textNode.parentElement &&
         textNode.parentElement.closest(
-          "#promptshield-restoration-toast, #promptshield-overlay, #promptshield-modal, #prompt-textarea, [data-message-author-role='user'], [aria-label*='You said' i]"
+          "#promptshield-restoration-toast, #promptshield-overlay, #promptshield-modal, #prompt-textarea"
         )
       ) {
         continue;
@@ -929,7 +1021,7 @@
     // 2. Safe input / textarea value updates with native React prototype setter
     if (rootElem.querySelectorAll) {
       rootElem.querySelectorAll("input, textarea").forEach((inp) => {
-        if (inp.closest("#prompt-textarea, [data-message-author-role='user'], [aria-label*='You said' i]")) {
+        if (inp.closest("#promptshield-restoration-toast, #promptshield-overlay, #promptshield-modal, #prompt-textarea")) {
           return;
         }
         try {
@@ -952,7 +1044,7 @@
       // 3. Update any element attributes (e.g. placeholder, title, aria-label)
       const attributeNames = ["placeholder", "title", "aria-label"];
       rootElem.querySelectorAll("*").forEach((el) => {
-        if (el.closest("#prompt-textarea, [data-message-author-role='user'], [aria-label*='You said' i]")) {
+        if (el.closest("#promptshield-restoration-toast, #promptshield-overlay, #promptshield-modal, #prompt-textarea")) {
           return;
         }
         for (const attr of attributeNames) {
@@ -978,7 +1070,7 @@
       rootElem.querySelectorAll("*").forEach((el) => {
         if (
           el.closest(
-            "#promptshield-restoration-toast, #promptshield-overlay, #promptshield-modal, #prompt-textarea, [data-message-author-role='user'], [aria-label*='You said' i]"
+            "#promptshield-restoration-toast, #promptshield-overlay, #promptshield-modal, #prompt-textarea"
           )
         ) {
           return;

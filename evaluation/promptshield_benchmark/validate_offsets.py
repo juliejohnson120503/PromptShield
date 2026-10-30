@@ -1,6 +1,7 @@
 import json, sys
-sys.path.insert(0, 'c:/Prompshield')
-with open('c:/Prompshield/evaluation/promptshield_benchmark/ground_truth.json', encoding='utf-8') as f:
+from pathlib import Path
+gt_path = Path(__file__).resolve().parent / 'ground_truth.json'
+with open(gt_path, encoding='utf-8') as f:
     data = json.load(f)
 errors = []
 total_ents = 0

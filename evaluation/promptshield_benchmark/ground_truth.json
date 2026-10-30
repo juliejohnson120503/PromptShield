@@ -88,6 +88,12 @@
     "text": "The OpenAI key is sk-proj-AbCdEfGhIjKlMnOpQrStUvWxYz1234567890abcdef and must not be shared.",
     "entities": [
       {
+        "text": "OpenAI",
+        "start": 4,
+        "end": 10,
+        "label": "ORGANIZATION"
+      },
+      {
         "text": "sk-proj-AbCdEfGhIjKlMnOpQrStUvWxYz1234567890abcdef",
         "start": 18,
         "end": 68,
@@ -317,6 +323,12 @@
     "id": "test_021",
     "text": "AWS key AKIAIOSFODNN7EXAMPLE was found in the public repository.",
     "entities": [
+      {
+        "text": "AWS",
+        "start": 0,
+        "end": 3,
+        "label": "ORGANIZATION"
+      },
       {
         "text": "AKIAIOSFODNN7EXAMPLE",
         "start": 8,
@@ -629,6 +641,12 @@
     "text": "Mastercard 5500 0000 0000 0004 was used for the hotel booking.",
     "entities": [
       {
+        "text": "Mastercard",
+        "start": 0,
+        "end": 10,
+        "label": "ORGANIZATION"
+      },
+      {
         "text": "5500 0000 0000 0004",
         "start": 11,
         "end": 30,
@@ -663,6 +681,12 @@
     "id": "test_043",
     "text": "The Google API key AIzaSyExampleKey1234567890abcdefghij is hardcoded.",
     "entities": [
+      {
+        "text": "Google",
+        "start": 4,
+        "end": 10,
+        "label": "ORGANIZATION"
+      },
       {
         "text": "AIzaSyExampleKey1234567890abcdefghij",
         "start": 19,
@@ -1007,6 +1031,12 @@
     "id": "test_064",
     "text": "The Visa card 4012888888881881 was charged $500.",
     "entities": [
+      {
+        "text": "Visa",
+        "start": 4,
+        "end": 8,
+        "label": "ORGANIZATION"
+      },
       {
         "text": "4012888888881881",
         "start": 14,
@@ -1457,6 +1487,12 @@
     "text": "The AWS secret access key: secret_token: AKIA4example1234567890ABCDEF must be revoked.",
     "entities": [
       {
+        "text": "AWS",
+        "start": 4,
+        "end": 7,
+        "label": "ORGANIZATION"
+      },
+      {
         "text": "AKIA4example1234567890ABCDEF",
         "start": 41,
         "end": 69,
@@ -1705,5 +1741,2880 @@
         "label": "LOCATION"
       }
     ]
+  },
+  {
+    "text": "Rotate the production OpenAI key sk-live-9928374610293847561029384756 and update the AWS secret AKIAIOSFODNN7EXAMPLE before deploying to Frankfurt.",
+    "entities": [
+      {
+        "text": "OpenAI",
+        "start": 22,
+        "end": 28,
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "sk-live-9928374610293847561029384756",
+        "start": 33,
+        "end": 69,
+        "label": "API_KEY"
+      },
+      {
+        "text": "AWS",
+        "start": 85,
+        "end": 88,
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "AKIAIOSFODNN7EXAMPLE",
+        "start": 96,
+        "end": 116,
+        "label": "API_KEY"
+      },
+      {
+        "text": "Frankfurt",
+        "start": 137,
+        "end": 146,
+        "label": "LOCATION"
+      }
+    ],
+    "id": "test_106"
+  },
+  {
+    "text": "Use the Google Cloud API key AIzaSyD-9xK2Lm3No4Pq5Rs6Tu7Vw8Xy9Za0Bc to authenticate the maps service for our Siemens client.",
+    "entities": [
+      {
+        "text": "Google",
+        "start": 8,
+        "end": 14,
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "AIzaSyD-9xK2Lm3No4Pq5Rs6Tu7Vw8Xy9Za0Bc",
+        "start": 29,
+        "end": 67,
+        "label": "API_KEY"
+      },
+      {
+        "text": "Siemens",
+        "start": 109,
+        "end": 116,
+        "label": "ORGANIZATION"
+      }
+    ],
+    "id": "test_107"
+  },
+  {
+    "text": "The authorization header should contain the bearer token Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.dozG42iP_k8xT for the API gateway.",
+    "entities": [
+      {
+        "text": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.dozG42iP_k8xT",
+        "start": 57,
+        "end": 142,
+        "label": "ACCESS_TOKEN"
+      }
+    ],
+    "id": "test_108"
+  },
+  {
+    "text": "GitHub personal access token ghp_9876543210abcdefghijklmnopqrstuvwx was revoked by security administrator Marcus Vance.",
+    "entities": [
+      {
+        "text": "ghp_9876543210abcdefghijklmnopqrstuvwx",
+        "start": 29,
+        "end": 67,
+        "label": "API_KEY"
+      },
+      {
+        "text": "Marcus Vance",
+        "start": 106,
+        "end": 118,
+        "label": "PERSON"
+      }
+    ],
+    "id": "test_109"
+  },
+  {
+    "text": "Database connection URI is postgresql://dbadmin:P@ssw0rd2024!@10.0.12.44:5432/finance for the billing replica.",
+    "entities": [
+      {
+        "text": "postgresql://dbadmin:P@ssw0rd2024!@10.0.12.44:5432/finance",
+        "start": 27,
+        "end": 85,
+        "label": "PASSWORD"
+      }
+    ],
+    "id": "test_110"
+  },
+  {
+    "text": "Please reset the admin password to Sapphire#9834@Secure on server 192.168.100.25.",
+    "entities": [
+      {
+        "text": "Sapphire#9834@Secure",
+        "start": 35,
+        "end": 55,
+        "label": "PASSWORD"
+      },
+      {
+        "text": "192.168.100.25",
+        "start": 66,
+        "end": 80,
+        "label": "IP_ADDRESS"
+      }
+    ],
+    "id": "test_111"
+  },
+  {
+    "text": "Temporary access pin for locker room is 9482 given to contractor David Chen.",
+    "entities": [
+      {
+        "text": "9482",
+        "start": 40,
+        "end": 44,
+        "label": "PASSWORD"
+      },
+      {
+        "text": "David Chen",
+        "start": 65,
+        "end": 75,
+        "label": "PERSON"
+      }
+    ],
+    "id": "test_112"
+  },
+  {
+    "text": "Production Redis cluster requires password RedisAuthPass991# on port 6379.",
+    "entities": [
+      {
+        "text": "RedisAuthPass991#",
+        "start": 43,
+        "end": 60,
+        "label": "PASSWORD"
+      }
+    ],
+    "id": "test_113"
+  },
+  {
+    "text": "Wire the milestone fee of 45,000 EUR to IBAN DE89370400440532013000 at Deutsche Bank in Munich.",
+    "entities": [
+      {
+        "text": "DE89370400440532013000",
+        "start": 45,
+        "end": 67,
+        "label": "BANK_ACCOUNT"
+      },
+      {
+        "text": "Deutsche Bank",
+        "start": 71,
+        "end": 84,
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "Munich",
+        "start": 88,
+        "end": 94,
+        "label": "LOCATION"
+      }
+    ],
+    "id": "test_114"
+  },
+  {
+    "text": "Customer account number 987123456789 received a direct deposit on 24/10/2024.",
+    "entities": [
+      {
+        "text": "987123456789",
+        "start": 24,
+        "end": 36,
+        "label": "BANK_ACCOUNT"
+      },
+      {
+        "text": "24/10/2024",
+        "start": 66,
+        "end": 76,
+        "label": "DATE"
+      }
+    ],
+    "id": "test_115"
+  },
+  {
+    "text": "The customer used Visa card 4532015112830366 to pay for flight booking ORD-88210.",
+    "entities": [
+      {
+        "text": "Visa",
+        "start": 18,
+        "end": 22,
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "4532015112830366",
+        "start": 28,
+        "end": 44,
+        "label": "CREDIT_CARD"
+      },
+      {
+        "text": "ORD-88210",
+        "start": 71,
+        "end": 80,
+        "label": "ORDER_ID"
+      }
+    ],
+    "id": "test_116"
+  },
+  {
+    "text": "Charged Mastercard 5425233430109903 for annual subscription order ORD-44910.",
+    "entities": [
+      {
+        "text": "Mastercard",
+        "start": 8,
+        "end": 18,
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "5425233430109903",
+        "start": 19,
+        "end": 35,
+        "label": "CREDIT_CARD"
+      },
+      {
+        "text": "ORD-44910",
+        "start": 66,
+        "end": 75,
+        "label": "ORDER_ID"
+      }
+    ],
+    "id": "test_117"
+  },
+  {
+    "text": "American Express payment 378282246310005 was declined for invoice ORD-11029.",
+    "entities": [
+      {
+        "text": "American Express",
+        "start": 0,
+        "end": 16,
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "378282246310005",
+        "start": 25,
+        "end": 40,
+        "label": "CREDIT_CARD"
+      },
+      {
+        "text": "ORD-11029",
+        "start": 66,
+        "end": 75,
+        "label": "ORDER_ID"
+      }
+    ],
+    "id": "test_118"
+  },
+  {
+    "text": "Refund the deposit of 250 USD to account 112233445566 belonging to Elena Rostova.",
+    "entities": [
+      {
+        "text": "112233445566",
+        "start": 41,
+        "end": 53,
+        "label": "BANK_ACCOUNT"
+      },
+      {
+        "text": "Elena Rostova",
+        "start": 67,
+        "end": 80,
+        "label": "PERSON"
+      }
+    ],
+    "id": "test_119"
+  },
+  {
+    "text": "Beneficiary IBAN is GB29NWBK60161331926819 registered under NatWest Markets.",
+    "entities": [
+      {
+        "text": "GB29NWBK60161331926819",
+        "start": 20,
+        "end": 42,
+        "label": "BANK_ACCOUNT"
+      },
+      {
+        "text": "NatWest Markets",
+        "start": 60,
+        "end": 75,
+        "label": "ORGANIZATION"
+      }
+    ],
+    "id": "test_120"
+  },
+  {
+    "text": "Incident ticket TKT-44912 was assigned to senior engineer Siddharth Rao at Wipro.",
+    "entities": [
+      {
+        "text": "TKT-44912",
+        "start": 16,
+        "end": 25,
+        "label": "TICKET_ID"
+      },
+      {
+        "text": "Siddharth Rao",
+        "start": 58,
+        "end": 71,
+        "label": "PERSON"
+      },
+      {
+        "text": "Wipro",
+        "start": 75,
+        "end": 80,
+        "label": "ORGANIZATION"
+      }
+    ],
+    "id": "test_121"
+  },
+  {
+    "text": "Customer Amina Al-Mansoor (ID: CUST-99412) inquired about shipment ORD-77194 heading to Dubai.",
+    "entities": [
+      {
+        "text": "Amina Al-Mansoor",
+        "start": 9,
+        "end": 25,
+        "label": "PERSON"
+      },
+      {
+        "text": "CUST-99412",
+        "start": 31,
+        "end": 41,
+        "label": "CUSTOMER_ID"
+      },
+      {
+        "text": "ORD-77194",
+        "start": 67,
+        "end": 76,
+        "label": "ORDER_ID"
+      },
+      {
+        "text": "Dubai",
+        "start": 88,
+        "end": 93,
+        "label": "LOCATION"
+      }
+    ],
+    "id": "test_122"
+  },
+  {
+    "text": "Support ticket TKT-88319 created by support.client@acme.org regarding billing error on 19/09/2024.",
+    "entities": [
+      {
+        "text": "TKT-88319",
+        "start": 15,
+        "end": 24,
+        "label": "TICKET_ID"
+      },
+      {
+        "text": "support.client@acme.org",
+        "start": 36,
+        "end": 59,
+        "label": "EMAIL"
+      },
+      {
+        "text": "19/09/2024",
+        "start": 87,
+        "end": 97,
+        "label": "DATE"
+      }
+    ],
+    "id": "test_123"
+  },
+  {
+    "text": "Order ORD-20391 placed by customer CUST-33190 was delivered to 742 Evergreen Terrace, Springfield, OR 97477.",
+    "entities": [
+      {
+        "text": "ORD-20391",
+        "start": 6,
+        "end": 15,
+        "label": "ORDER_ID"
+      },
+      {
+        "text": "CUST-33190",
+        "start": 35,
+        "end": 45,
+        "label": "CUSTOMER_ID"
+      },
+      {
+        "text": "742 Evergreen Terrace, Springfield, OR 97477",
+        "start": 63,
+        "end": 107,
+        "label": "ADDRESS"
+      }
+    ],
+    "id": "test_124"
+  },
+  {
+    "text": "Please check ticket TKT-10928 opened by employee CUST-55102 on 03/11/2024.",
+    "entities": [
+      {
+        "text": "TKT-10928",
+        "start": 20,
+        "end": 29,
+        "label": "TICKET_ID"
+      },
+      {
+        "text": "CUST-55102",
+        "start": 49,
+        "end": 59,
+        "label": "CUSTOMER_ID"
+      },
+      {
+        "text": "03/11/2024",
+        "start": 63,
+        "end": 73,
+        "label": "DATE"
+      }
+    ],
+    "id": "test_125"
+  },
+  {
+    "text": "Dispatch technician Carlos Mendez to resolve order ORD-66291 at Madrid.",
+    "entities": [
+      {
+        "text": "Carlos Mendez",
+        "start": 20,
+        "end": 33,
+        "label": "PERSON"
+      },
+      {
+        "text": "ORD-66291",
+        "start": 51,
+        "end": 60,
+        "label": "ORDER_ID"
+      },
+      {
+        "text": "Madrid",
+        "start": 64,
+        "end": 70,
+        "label": "LOCATION"
+      }
+    ],
+    "id": "test_126"
+  },
+  {
+    "text": "Customer Fatima Zahra registered with email fatima.zahra@casablanca.ma under client account CUST-88321.",
+    "entities": [
+      {
+        "text": "Fatima Zahra",
+        "start": 9,
+        "end": 21,
+        "label": "PERSON"
+      },
+      {
+        "text": "fatima.zahra@casablanca.ma",
+        "start": 44,
+        "end": 70,
+        "label": "EMAIL"
+      },
+      {
+        "text": "CUST-88321",
+        "start": 92,
+        "end": 102,
+        "label": "CUSTOMER_ID"
+      }
+    ],
+    "id": "test_127"
+  },
+  {
+    "text": "Dr. Sunita Deshmukh can be reached at s.deshmukh@aiims.edu.in or mobile +91 9988776655.",
+    "entities": [
+      {
+        "text": "Sunita Deshmukh",
+        "start": 4,
+        "end": 19,
+        "label": "PERSON"
+      },
+      {
+        "text": "s.deshmukh@aiims.edu.in",
+        "start": 38,
+        "end": 61,
+        "label": "EMAIL"
+      },
+      {
+        "text": "+91 9988776655",
+        "start": 72,
+        "end": 86,
+        "label": "PHONE"
+      }
+    ],
+    "id": "test_128"
+  },
+  {
+    "text": "Contact project lead Jean-Pierre Dubois in Lyon at +33 4 72 00 00 00.",
+    "entities": [
+      {
+        "text": "Jean-Pierre Dubois",
+        "start": 21,
+        "end": 39,
+        "label": "PERSON"
+      },
+      {
+        "text": "Lyon",
+        "start": 43,
+        "end": 47,
+        "label": "LOCATION"
+      },
+      {
+        "text": "+33 4 72 00 00 00",
+        "start": 51,
+        "end": 68,
+        "label": "PHONE"
+      }
+    ],
+    "id": "test_129"
+  },
+  {
+    "text": "Consultant Kenji Takahashi from Sony submitted the architectural review on 14 October 2024.",
+    "entities": [
+      {
+        "text": "Kenji Takahashi",
+        "start": 11,
+        "end": 26,
+        "label": "PERSON"
+      },
+      {
+        "text": "Sony",
+        "start": 32,
+        "end": 36,
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "14 October 2024",
+        "start": 75,
+        "end": 90,
+        "label": "DATE"
+      }
+    ],
+    "id": "test_130"
+  },
+  {
+    "text": "Send meeting minutes to Hannah Schmidt at hannah.schmidt@berlin-tech.de before end of day.",
+    "entities": [
+      {
+        "text": "Hannah Schmidt",
+        "start": 24,
+        "end": 38,
+        "label": "PERSON"
+      },
+      {
+        "text": "hannah.schmidt@berlin-tech.de",
+        "start": 42,
+        "end": 71,
+        "label": "EMAIL"
+      }
+    ],
+    "id": "test_131"
+  },
+  {
+    "text": "Senior architect Vikramaditya Singhania relocated from Delhi to Singapore for the new Temasek project.",
+    "entities": [
+      {
+        "text": "Vikramaditya Singhania",
+        "start": 17,
+        "end": 39,
+        "label": "PERSON"
+      },
+      {
+        "text": "Delhi",
+        "start": 55,
+        "end": 60,
+        "label": "LOCATION"
+      },
+      {
+        "text": "Singapore",
+        "start": 64,
+        "end": 73,
+        "label": "LOCATION"
+      },
+      {
+        "text": "Temasek",
+        "start": 86,
+        "end": 93,
+        "label": "ORGANIZATION"
+      }
+    ],
+    "id": "test_132"
+  },
+  {
+    "text": "Emergency contact for patient Maria Santos is +55 11 98765-4321.",
+    "entities": [
+      {
+        "text": "Maria Santos",
+        "start": 30,
+        "end": 42,
+        "label": "PERSON"
+      },
+      {
+        "text": "+55 11 98765-4321",
+        "start": 46,
+        "end": 63,
+        "label": "PHONE"
+      }
+    ],
+    "id": "test_133"
+  },
+  {
+    "text": "Lead researcher Li Wei published a paper on neural privacy on 28 August 2024.",
+    "entities": [
+      {
+        "text": "Li Wei",
+        "start": 16,
+        "end": 22,
+        "label": "PERSON"
+      },
+      {
+        "text": "28 August 2024",
+        "start": 62,
+        "end": 76,
+        "label": "DATE"
+      }
+    ],
+    "id": "test_134"
+  },
+  {
+    "text": "Notify HR specialist Tariq Mahmood at tariq.m@dubaicorp.ae regarding the job opening in Abu Dhabi.",
+    "entities": [
+      {
+        "text": "Tariq Mahmood",
+        "start": 21,
+        "end": 34,
+        "label": "PERSON"
+      },
+      {
+        "text": "tariq.m@dubaicorp.ae",
+        "start": 38,
+        "end": 58,
+        "label": "EMAIL"
+      },
+      {
+        "text": "Abu Dhabi",
+        "start": 88,
+        "end": 97,
+        "label": "LOCATION"
+      }
+    ],
+    "id": "test_135"
+  },
+  {
+    "text": "The external DNS gateway is hosted at 198.51.100.14 with backup at 203.0.113.89.",
+    "entities": [
+      {
+        "text": "198.51.100.14",
+        "start": 38,
+        "end": 51,
+        "label": "IP_ADDRESS"
+      },
+      {
+        "text": "203.0.113.89",
+        "start": 67,
+        "end": 79,
+        "label": "IP_ADDRESS"
+      }
+    ],
+    "id": "test_136"
+  },
+  {
+    "text": "Ingress traffic is routed through IPv6 node 2001:0db8:3333:4444:5555:6666:7777:8888 in data center Amsterdam.",
+    "entities": [
+      {
+        "text": "2001:0db8:3333:4444:5555:6666:7777:8888",
+        "start": 44,
+        "end": 83,
+        "label": "IP_ADDRESS"
+      },
+      {
+        "text": "Amsterdam",
+        "start": 99,
+        "end": 108,
+        "label": "LOCATION"
+      }
+    ],
+    "id": "test_137"
+  },
+  {
+    "text": "Internal monitoring agent connected from 10.244.15.8 to server in Stockholm.",
+    "entities": [
+      {
+        "text": "10.244.15.8",
+        "start": 41,
+        "end": 52,
+        "label": "IP_ADDRESS"
+      },
+      {
+        "text": "Stockholm",
+        "start": 66,
+        "end": 75,
+        "label": "LOCATION"
+      }
+    ],
+    "id": "test_138"
+  },
+  {
+    "text": "Firewall rule blocks inbound packets from subnet 172.16.45.100 to protect Nordea Bank systems.",
+    "entities": [
+      {
+        "text": "172.16.45.100",
+        "start": 49,
+        "end": 62,
+        "label": "IP_ADDRESS"
+      },
+      {
+        "text": "Nordea Bank",
+        "start": 74,
+        "end": 85,
+        "label": "ORGANIZATION"
+      }
+    ],
+    "id": "test_139"
+  },
+  {
+    "text": "VPC gateway interface IP 192.168.220.1 is managed by network lead Alexei Volkov.",
+    "entities": [
+      {
+        "text": "192.168.220.1",
+        "start": 25,
+        "end": 38,
+        "label": "IP_ADDRESS"
+      },
+      {
+        "text": "Alexei Volkov",
+        "start": 66,
+        "end": 79,
+        "label": "PERSON"
+      }
+    ],
+    "id": "test_140"
+  },
+  {
+    "text": "Ship the prototype hardware to 10 Downing Street, London, SW1A 2AA attention of Oliver Smith.",
+    "entities": [
+      {
+        "text": "10 Downing Street, London, SW1A 2AA",
+        "start": 31,
+        "end": 66,
+        "label": "ADDRESS"
+      },
+      {
+        "text": "Oliver Smith",
+        "start": 80,
+        "end": 92,
+        "label": "PERSON"
+      }
+    ],
+    "id": "test_141"
+  },
+  {
+    "text": "The headquarters of the subsidiary is located at 221B Baker Street, Marylebone, London NW1 6XE.",
+    "entities": [
+      {
+        "text": "221B Baker Street, Marylebone, London NW1 6XE",
+        "start": 49,
+        "end": 94,
+        "label": "ADDRESS"
+      }
+    ],
+    "id": "test_142"
+  },
+  {
+    "text": "Deliver parcel to 350 5th Avenue, New York, NY 10118 for recipient Rachel Green.",
+    "entities": [
+      {
+        "text": "350 5th Avenue, New York, NY 10118",
+        "start": 18,
+        "end": 52,
+        "label": "ADDRESS"
+      },
+      {
+        "text": "Rachel Green",
+        "start": 67,
+        "end": 79,
+        "label": "PERSON"
+      }
+    ],
+    "id": "test_143"
+  },
+  {
+    "text": "Billing address on record is 12 Rue de la Paix, 75002 Paris, France for customer CUST-44109.",
+    "entities": [
+      {
+        "text": "12 Rue de la Paix, 75002 Paris, France",
+        "start": 29,
+        "end": 67,
+        "label": "ADDRESS"
+      },
+      {
+        "text": "CUST-44109",
+        "start": 81,
+        "end": 91,
+        "label": "CUSTOMER_ID"
+      }
+    ],
+    "id": "test_144"
+  },
+  {
+    "text": "Branch office address: 50 Raffles Place, Singapore 048623 in Singapore.",
+    "entities": [
+      {
+        "text": "50 Raffles Place, Singapore 048623",
+        "start": 23,
+        "end": 57,
+        "label": "ADDRESS"
+      },
+      {
+        "text": "Singapore",
+        "start": 61,
+        "end": 70,
+        "label": "LOCATION"
+      }
+    ],
+    "id": "test_145"
+  },
+  {
+    "text": "On 15 November 2024, Rajesh Pillai from TCS met with Ingrid Bergman from Ericsson in Stockholm to sign agreement ORD-99012.",
+    "entities": [
+      {
+        "text": "15 November 2024",
+        "start": 3,
+        "end": 19,
+        "label": "DATE"
+      },
+      {
+        "text": "Rajesh Pillai",
+        "start": 21,
+        "end": 34,
+        "label": "PERSON"
+      },
+      {
+        "text": "TCS",
+        "start": 40,
+        "end": 43,
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "Ingrid Bergman",
+        "start": 53,
+        "end": 67,
+        "label": "PERSON"
+      },
+      {
+        "text": "Ericsson",
+        "start": 73,
+        "end": 81,
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "Stockholm",
+        "start": 85,
+        "end": 94,
+        "label": "LOCATION"
+      },
+      {
+        "text": "ORD-99012",
+        "start": 113,
+        "end": 122,
+        "label": "ORDER_ID"
+      }
+    ],
+    "id": "test_146"
+  },
+  {
+    "text": "Employee Kwame Mensah submitted expense report ORD-12840 on 05/10/2024 for travel to Accra. Contact: k.mensah@ghana-tech.com.",
+    "entities": [
+      {
+        "text": "Kwame Mensah",
+        "start": 9,
+        "end": 21,
+        "label": "PERSON"
+      },
+      {
+        "text": "ORD-12840",
+        "start": 47,
+        "end": 56,
+        "label": "ORDER_ID"
+      },
+      {
+        "text": "05/10/2024",
+        "start": 60,
+        "end": 70,
+        "label": "DATE"
+      },
+      {
+        "text": "Accra",
+        "start": 85,
+        "end": 90,
+        "label": "LOCATION"
+      },
+      {
+        "text": "k.mensah@ghana-tech.com",
+        "start": 101,
+        "end": 124,
+        "label": "EMAIL"
+      }
+    ],
+    "id": "test_147"
+  },
+  {
+    "text": "Customer Hiroshi Tanaka (phone: +81 3 1234 5678) reported fraudulent charge 4012888888881881 on ticket TKT-77201.",
+    "entities": [
+      {
+        "text": "Hiroshi Tanaka",
+        "start": 9,
+        "end": 23,
+        "label": "PERSON"
+      },
+      {
+        "text": "+81 3 1234 5678",
+        "start": 32,
+        "end": 47,
+        "label": "PHONE"
+      },
+      {
+        "text": "4012888888881881",
+        "start": 76,
+        "end": 92,
+        "label": "CREDIT_CARD"
+      },
+      {
+        "text": "TKT-77201",
+        "start": 103,
+        "end": 112,
+        "label": "TICKET_ID"
+      }
+    ],
+    "id": "test_148"
+  },
+  {
+    "text": "Dear Nadia Petrova, your password Nadia#Pass8812 for database 10.50.2.19 will expire on 30 November 2024.",
+    "entities": [
+      {
+        "text": "Nadia Petrova",
+        "start": 5,
+        "end": 18,
+        "label": "PERSON"
+      },
+      {
+        "text": "Nadia#Pass8812",
+        "start": 34,
+        "end": 48,
+        "label": "PASSWORD"
+      },
+      {
+        "text": "10.50.2.19",
+        "start": 62,
+        "end": 72,
+        "label": "IP_ADDRESS"
+      },
+      {
+        "text": "30 November 2024",
+        "start": 88,
+        "end": 104,
+        "label": "DATE"
+      }
+    ],
+    "id": "test_149"
+  },
+  {
+    "text": "Support specialist Ananya Sen at Cognizant closed ticket TKT-33910 for customer CUST-19402 on 18/07/2024.",
+    "entities": [
+      {
+        "text": "Ananya Sen",
+        "start": 19,
+        "end": 29,
+        "label": "PERSON"
+      },
+      {
+        "text": "Cognizant",
+        "start": 33,
+        "end": 42,
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "TKT-33910",
+        "start": 57,
+        "end": 66,
+        "label": "TICKET_ID"
+      },
+      {
+        "text": "CUST-19402",
+        "start": 80,
+        "end": 90,
+        "label": "CUSTOMER_ID"
+      },
+      {
+        "text": "18/07/2024",
+        "start": 94,
+        "end": 104,
+        "label": "DATE"
+      }
+    ],
+    "id": "test_150"
+  },
+  {
+    "text": "Transfer 12,000 USD from account 998877661122 to card 4222222222222 for customer Lucas Silva in Sao Paulo.",
+    "entities": [
+      {
+        "text": "998877661122",
+        "start": 33,
+        "end": 45,
+        "label": "BANK_ACCOUNT"
+      },
+      {
+        "text": "4222222222222",
+        "start": 54,
+        "end": 67,
+        "label": "CREDIT_CARD"
+      },
+      {
+        "text": "Lucas Silva",
+        "start": 81,
+        "end": 92,
+        "label": "PERSON"
+      },
+      {
+        "text": "Sao Paulo",
+        "start": 96,
+        "end": 105,
+        "label": "LOCATION"
+      }
+    ],
+    "id": "test_151"
+  },
+  {
+    "text": "Please send the contract to Claire Dupont at 45 Boulevard Saint-Germain, 75005 Paris. Email: claire.dupont@avocat.fr, Phone: +33 1 42 68 00 00.",
+    "entities": [
+      {
+        "text": "Claire Dupont",
+        "start": 28,
+        "end": 41,
+        "label": "PERSON"
+      },
+      {
+        "text": "45 Boulevard Saint-Germain, 75005 Paris",
+        "start": 45,
+        "end": 84,
+        "label": "ADDRESS"
+      },
+      {
+        "text": "claire.dupont@avocat.fr",
+        "start": 93,
+        "end": 116,
+        "label": "EMAIL"
+      },
+      {
+        "text": "+33 1 42 68 00 00",
+        "start": 125,
+        "end": 142,
+        "label": "PHONE"
+      }
+    ],
+    "id": "test_152"
+  },
+  {
+    "text": "Elon Musk founded Tesla and also oversees SpaceX based in Austin.",
+    "entities": [
+      {
+        "text": "Elon Musk",
+        "start": 0,
+        "end": 9,
+        "label": "PERSON"
+      },
+      {
+        "text": "Tesla",
+        "start": 18,
+        "end": 23,
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "SpaceX",
+        "start": 42,
+        "end": 48,
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "Austin",
+        "start": 58,
+        "end": 64,
+        "label": "LOCATION"
+      }
+    ],
+    "id": "test_153"
+  },
+  {
+    "text": "Tim Cook succeeded Steve Jobs as CEO of Apple in Cupertino.",
+    "entities": [
+      {
+        "text": "Tim Cook",
+        "start": 0,
+        "end": 8,
+        "label": "PERSON"
+      },
+      {
+        "text": "Steve Jobs",
+        "start": 19,
+        "end": 29,
+        "label": "PERSON"
+      },
+      {
+        "text": "Apple",
+        "start": 40,
+        "end": 45,
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "Cupertino",
+        "start": 49,
+        "end": 58,
+        "label": "LOCATION"
+      }
+    ],
+    "id": "test_154"
+  },
+  {
+    "text": "Jensen Huang leads Nvidia and announced new AI chips in Santa Clara.",
+    "entities": [
+      {
+        "text": "Jensen Huang",
+        "start": 0,
+        "end": 12,
+        "label": "PERSON"
+      },
+      {
+        "text": "Nvidia",
+        "start": 19,
+        "end": 25,
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "Santa Clara",
+        "start": 56,
+        "end": 67,
+        "label": "LOCATION"
+      }
+    ],
+    "id": "test_155"
+  },
+  {
+    "text": "Satya Nadella serves as the chief executive officer of Microsoft in Redmond.",
+    "entities": [
+      {
+        "text": "Satya Nadella",
+        "start": 0,
+        "end": 13,
+        "label": "PERSON"
+      },
+      {
+        "text": "Microsoft",
+        "start": 55,
+        "end": 64,
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "Redmond",
+        "start": 68,
+        "end": 75,
+        "label": "LOCATION"
+      }
+    ],
+    "id": "test_156"
+  },
+  {
+    "text": "Sam Altman co-founded OpenAI and co-created ChatGPT.",
+    "entities": [
+      {
+        "text": "Sam Altman",
+        "start": 0,
+        "end": 10,
+        "label": "PERSON"
+      },
+      {
+        "text": "OpenAI",
+        "start": 22,
+        "end": 28,
+        "label": "ORGANIZATION"
+      }
+    ],
+    "id": "test_157"
+  },
+  {
+    "text": "Linus Torvalds created Linux and Git while living in Helsinki.",
+    "entities": [
+      {
+        "text": "Linus Torvalds",
+        "start": 0,
+        "end": 14,
+        "label": "PERSON"
+      },
+      {
+        "text": "Helsinki",
+        "start": 53,
+        "end": 61,
+        "label": "LOCATION"
+      }
+    ],
+    "id": "test_158"
+  },
+  {
+    "text": "Binary search has a logarithmic time complexity of O(log n) in the worst case.",
+    "entities": [],
+    "id": "test_159"
+  },
+  {
+    "text": "The quick brown fox jumps over the lazy dog in standard English typography tests.",
+    "entities": [],
+    "id": "test_160"
+  },
+  {
+    "text": "Photosynthesis converts carbon dioxide and water into glucose and oxygen using sunlight.",
+    "entities": [],
+    "id": "test_161"
+  },
+  {
+    "text": "Database normalization reduces data redundancy and improves data integrity across tables.",
+    "entities": [],
+    "id": "test_162"
+  },
+  {
+    "text": "In mathematics, the Pythagorean theorem states that a squared plus b squared equals c squared.",
+    "entities": [],
+    "id": "test_163"
+  },
+  {
+    "text": "HTTP 404 is an error status code indicating that the server cannot find the requested resource.",
+    "entities": [],
+    "id": "test_164"
+  },
+  {
+    "text": "TCP provides reliable, ordered, and error-checked delivery of a stream of octets between applications.",
+    "entities": [],
+    "id": "test_165"
+  },
+  {
+    "text": "Machine learning models utilize gradient descent optimization to minimize the loss function.",
+    "entities": [],
+    "id": "test_166"
+  },
+  {
+    "text": "Recursion occurs when a function calls itself directly or indirectly to solve smaller subproblems.",
+    "entities": [],
+    "id": "test_167"
+  },
+  {
+    "text": "Unit testing verifies that individual components of software work as expected in isolation.",
+    "entities": [],
+    "id": "test_168"
+  },
+  {
+    "text": "Continuous integration pipelines automatically build, test, and package application artifacts.",
+    "entities": [],
+    "id": "test_169"
+  },
+  {
+    "text": "Refactoring improves internal code structure without altering external observable behavior.",
+    "entities": [],
+    "id": "test_170"
+  },
+  {
+    "text": "The capital asset pricing model estimates the expected return of an asset given its systematic risk.",
+    "entities": [],
+    "id": "test_171"
+  },
+  {
+    "text": "Object-oriented programming principles include encapsulation, abstraction, inheritance, and polymorphism.",
+    "entities": [],
+    "id": "test_172"
+  },
+  {
+    "text": "Hash tables offer average O(1) time complexity for lookup, insertion, and deletion operations.",
+    "entities": [],
+    "id": "test_173"
+  },
+  {
+    "text": "Support incident TKT-50174 filed by p.sundaram@chennaitech.co.in was resolved by technician Priya Sundaram in Chennai.",
+    "entities": [
+      {
+        "text": "TKT-50174",
+        "start": 17,
+        "end": 26,
+        "label": "TICKET_ID"
+      },
+      {
+        "text": "p.sundaram@chennaitech.co.in",
+        "start": 36,
+        "end": 64,
+        "label": "EMAIL"
+      },
+      {
+        "text": "Priya Sundaram",
+        "start": 92,
+        "end": 106,
+        "label": "PERSON"
+      },
+      {
+        "text": "Chennai",
+        "start": 110,
+        "end": 117,
+        "label": "LOCATION"
+      }
+    ],
+    "id": "test_174"
+  },
+  {
+    "text": "Wire the consulting payment to account 900000002275 under Alexander Wright at Barclays.",
+    "entities": [
+      {
+        "text": "900000002275",
+        "start": 39,
+        "end": 51,
+        "label": "BANK_ACCOUNT"
+      },
+      {
+        "text": "Alexander Wright",
+        "start": 58,
+        "end": 74,
+        "label": "PERSON"
+      },
+      {
+        "text": "Barclays",
+        "start": 78,
+        "end": 86,
+        "label": "ORGANIZATION"
+      }
+    ],
+    "id": "test_175"
+  },
+  {
+    "text": "Algorithm efficiency can be benchmarked using asymptotic notation and empirical runtime profiling.",
+    "entities": [],
+    "id": "test_176"
+  },
+  {
+    "text": "Encrypted communication channels rely on public key cryptography to establish secure shared secrets.",
+    "entities": [],
+    "id": "test_177"
+  },
+  {
+    "text": "Contact lead engineer Ibrahim Hassan from Vodafone at ibrahim.h@cairo-data.eg regarding project deployment in Cairo.",
+    "entities": [
+      {
+        "text": "Ibrahim Hassan",
+        "start": 22,
+        "end": 36,
+        "label": "PERSON"
+      },
+      {
+        "text": "Vodafone",
+        "start": 42,
+        "end": 50,
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "ibrahim.h@cairo-data.eg",
+        "start": 54,
+        "end": 77,
+        "label": "EMAIL"
+      },
+      {
+        "text": "Cairo",
+        "start": 110,
+        "end": 115,
+        "label": "LOCATION"
+      }
+    ],
+    "id": "test_178"
+  },
+  {
+    "text": "Customer Zoe Tremblay reached support by phone at +1 514 555 0188 concerning invoice order ORD-70179.",
+    "entities": [
+      {
+        "text": "Zoe Tremblay",
+        "start": 9,
+        "end": 21,
+        "label": "PERSON"
+      },
+      {
+        "text": "+1 514 555 0188",
+        "start": 50,
+        "end": 65,
+        "label": "PHONE"
+      },
+      {
+        "text": "ORD-70179",
+        "start": 91,
+        "end": 100,
+        "label": "ORDER_ID"
+      }
+    ],
+    "id": "test_179"
+  },
+  {
+    "text": "System administrator Johan Lindqvist renewed the SSL token for internal server 10.30.4.180 on 13/11/2024.",
+    "entities": [
+      {
+        "text": "Johan Lindqvist",
+        "start": 21,
+        "end": 36,
+        "label": "PERSON"
+      },
+      {
+        "text": "10.30.4.180",
+        "start": 79,
+        "end": 90,
+        "label": "IP_ADDRESS"
+      },
+      {
+        "text": "13/11/2024",
+        "start": 94,
+        "end": 104,
+        "label": "DATE"
+      }
+    ],
+    "id": "test_180"
+  },
+  {
+    "text": "Please update account credentials for client Mei-Ling Chen (ID: CUST-80181). Temporary password is PassKey#3077!.",
+    "entities": [
+      {
+        "text": "Mei-Ling Chen",
+        "start": 45,
+        "end": 58,
+        "label": "PERSON"
+      },
+      {
+        "text": "CUST-80181",
+        "start": 64,
+        "end": 74,
+        "label": "CUSTOMER_ID"
+      },
+      {
+        "text": "PassKey#3077!",
+        "start": 99,
+        "end": 112,
+        "label": "PASSWORD"
+      }
+    ],
+    "id": "test_181"
+  },
+  {
+    "text": "Support incident TKT-50182 filed by dmitri.ivanov@moscow-sec.ru was resolved by technician Dmitri Ivanov in Moscow.",
+    "entities": [
+      {
+        "text": "TKT-50182",
+        "start": 17,
+        "end": 26,
+        "label": "TICKET_ID"
+      },
+      {
+        "text": "dmitri.ivanov@moscow-sec.ru",
+        "start": 36,
+        "end": 63,
+        "label": "EMAIL"
+      },
+      {
+        "text": "Dmitri Ivanov",
+        "start": 91,
+        "end": 104,
+        "label": "PERSON"
+      },
+      {
+        "text": "Moscow",
+        "start": 108,
+        "end": 114,
+        "label": "LOCATION"
+      }
+    ],
+    "id": "test_182"
+  },
+  {
+    "text": "Wire the consulting payment to account 900000002379 under Chioma Okonjo at Flutterwave.",
+    "entities": [
+      {
+        "text": "900000002379",
+        "start": 39,
+        "end": 51,
+        "label": "BANK_ACCOUNT"
+      },
+      {
+        "text": "Chioma Okonjo",
+        "start": 58,
+        "end": 71,
+        "label": "PERSON"
+      },
+      {
+        "text": "Flutterwave",
+        "start": 75,
+        "end": 86,
+        "label": "ORGANIZATION"
+      }
+    ],
+    "id": "test_183"
+  },
+  {
+    "text": "Algorithm efficiency can be benchmarked using asymptotic notation and empirical runtime profiling.",
+    "entities": [],
+    "id": "test_184"
+  },
+  {
+    "text": "Encrypted communication channels rely on public key cryptography to establish secure shared secrets.",
+    "entities": [],
+    "id": "test_185"
+  },
+  {
+    "text": "Contact lead engineer Sora Yamamoto from Sony at sora.y@tokyo-robotics.jp regarding project deployment in Tokyo.",
+    "entities": [
+      {
+        "text": "Sora Yamamoto",
+        "start": 22,
+        "end": 35,
+        "label": "PERSON"
+      },
+      {
+        "text": "Sony",
+        "start": 41,
+        "end": 45,
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "sora.y@tokyo-robotics.jp",
+        "start": 49,
+        "end": 73,
+        "label": "EMAIL"
+      },
+      {
+        "text": "Tokyo",
+        "start": 106,
+        "end": 111,
+        "label": "LOCATION"
+      }
+    ],
+    "id": "test_186"
+  },
+  {
+    "text": "Customer Beatriz Morales reached support by phone at +34 91 123 4567 concerning invoice order ORD-70187.",
+    "entities": [
+      {
+        "text": "Beatriz Morales",
+        "start": 9,
+        "end": 24,
+        "label": "PERSON"
+      },
+      {
+        "text": "+34 91 123 4567",
+        "start": 53,
+        "end": 68,
+        "label": "PHONE"
+      },
+      {
+        "text": "ORD-70187",
+        "start": 94,
+        "end": 103,
+        "label": "ORDER_ID"
+      }
+    ],
+    "id": "test_187"
+  },
+  {
+    "text": "System administrator Ibrahim Hassan renewed the SSL token for internal server 10.38.4.188 on 21/11/2024.",
+    "entities": [
+      {
+        "text": "Ibrahim Hassan",
+        "start": 21,
+        "end": 35,
+        "label": "PERSON"
+      },
+      {
+        "text": "10.38.4.188",
+        "start": 78,
+        "end": 89,
+        "label": "IP_ADDRESS"
+      },
+      {
+        "text": "21/11/2024",
+        "start": 93,
+        "end": 103,
+        "label": "DATE"
+      }
+    ],
+    "id": "test_188"
+  },
+  {
+    "text": "Please update account credentials for client Zoe Tremblay (ID: CUST-80189). Temporary password is PassKey#3213!.",
+    "entities": [
+      {
+        "text": "Zoe Tremblay",
+        "start": 45,
+        "end": 57,
+        "label": "PERSON"
+      },
+      {
+        "text": "CUST-80189",
+        "start": 63,
+        "end": 73,
+        "label": "CUSTOMER_ID"
+      },
+      {
+        "text": "PassKey#3213!",
+        "start": 98,
+        "end": 111,
+        "label": "PASSWORD"
+      }
+    ],
+    "id": "test_189"
+  },
+  {
+    "text": "Support incident TKT-50190 filed by j.lindqvist@stockholm-fin.se was resolved by technician Johan Lindqvist in Stockholm.",
+    "entities": [
+      {
+        "text": "TKT-50190",
+        "start": 17,
+        "end": 26,
+        "label": "TICKET_ID"
+      },
+      {
+        "text": "j.lindqvist@stockholm-fin.se",
+        "start": 36,
+        "end": 64,
+        "label": "EMAIL"
+      },
+      {
+        "text": "Johan Lindqvist",
+        "start": 92,
+        "end": 107,
+        "label": "PERSON"
+      },
+      {
+        "text": "Stockholm",
+        "start": 111,
+        "end": 120,
+        "label": "LOCATION"
+      }
+    ],
+    "id": "test_190"
+  },
+  {
+    "text": "Wire the consulting payment to account 900000002483 under Mei-Ling Chen at TSMC.",
+    "entities": [
+      {
+        "text": "900000002483",
+        "start": 39,
+        "end": 51,
+        "label": "BANK_ACCOUNT"
+      },
+      {
+        "text": "Mei-Ling Chen",
+        "start": 58,
+        "end": 71,
+        "label": "PERSON"
+      },
+      {
+        "text": "TSMC",
+        "start": 75,
+        "end": 79,
+        "label": "ORGANIZATION"
+      }
+    ],
+    "id": "test_191"
+  },
+  {
+    "text": "Algorithm efficiency can be benchmarked using asymptotic notation and empirical runtime profiling.",
+    "entities": [],
+    "id": "test_192"
+  },
+  {
+    "text": "Encrypted communication channels rely on public key cryptography to establish secure shared secrets.",
+    "entities": [],
+    "id": "test_193"
+  },
+  {
+    "text": "Contact lead engineer Priya Sundaram from Infosys at p.sundaram@chennaitech.co.in regarding project deployment in Chennai.",
+    "entities": [
+      {
+        "text": "Priya Sundaram",
+        "start": 22,
+        "end": 36,
+        "label": "PERSON"
+      },
+      {
+        "text": "Infosys",
+        "start": 42,
+        "end": 49,
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "p.sundaram@chennaitech.co.in",
+        "start": 53,
+        "end": 81,
+        "label": "EMAIL"
+      },
+      {
+        "text": "Chennai",
+        "start": 114,
+        "end": 121,
+        "label": "LOCATION"
+      }
+    ],
+    "id": "test_194"
+  },
+  {
+    "text": "Customer Alexander Wright reached support by phone at +44 161 275 0000 concerning invoice order ORD-70195.",
+    "entities": [
+      {
+        "text": "Alexander Wright",
+        "start": 9,
+        "end": 25,
+        "label": "PERSON"
+      },
+      {
+        "text": "+44 161 275 0000",
+        "start": 54,
+        "end": 70,
+        "label": "PHONE"
+      },
+      {
+        "text": "ORD-70195",
+        "start": 96,
+        "end": 105,
+        "label": "ORDER_ID"
+      }
+    ],
+    "id": "test_195"
+  },
+  {
+    "text": "System administrator Sora Yamamoto renewed the SSL token for internal server 10.46.4.196 on 01/11/2024.",
+    "entities": [
+      {
+        "text": "Sora Yamamoto",
+        "start": 21,
+        "end": 34,
+        "label": "PERSON"
+      },
+      {
+        "text": "10.46.4.196",
+        "start": 77,
+        "end": 88,
+        "label": "IP_ADDRESS"
+      },
+      {
+        "text": "01/11/2024",
+        "start": 92,
+        "end": 102,
+        "label": "DATE"
+      }
+    ],
+    "id": "test_196"
+  },
+  {
+    "text": "Please update account credentials for client Beatriz Morales (ID: CUST-80197). Temporary password is PassKey#3349!.",
+    "entities": [
+      {
+        "text": "Beatriz Morales",
+        "start": 45,
+        "end": 60,
+        "label": "PERSON"
+      },
+      {
+        "text": "CUST-80197",
+        "start": 66,
+        "end": 76,
+        "label": "CUSTOMER_ID"
+      },
+      {
+        "text": "PassKey#3349!",
+        "start": 101,
+        "end": 114,
+        "label": "PASSWORD"
+      }
+    ],
+    "id": "test_197"
+  },
+  {
+    "text": "Support incident TKT-50198 filed by ibrahim.h@cairo-data.eg was resolved by technician Ibrahim Hassan in Cairo.",
+    "entities": [
+      {
+        "text": "TKT-50198",
+        "start": 17,
+        "end": 26,
+        "label": "TICKET_ID"
+      },
+      {
+        "text": "ibrahim.h@cairo-data.eg",
+        "start": 36,
+        "end": 59,
+        "label": "EMAIL"
+      },
+      {
+        "text": "Ibrahim Hassan",
+        "start": 87,
+        "end": 101,
+        "label": "PERSON"
+      },
+      {
+        "text": "Cairo",
+        "start": 105,
+        "end": 110,
+        "label": "LOCATION"
+      }
+    ],
+    "id": "test_198"
+  },
+  {
+    "text": "Wire the consulting payment to account 900000002587 under Zoe Tremblay at Element AI.",
+    "entities": [
+      {
+        "text": "900000002587",
+        "start": 39,
+        "end": 51,
+        "label": "BANK_ACCOUNT"
+      },
+      {
+        "text": "Zoe Tremblay",
+        "start": 58,
+        "end": 70,
+        "label": "PERSON"
+      },
+      {
+        "text": "Element AI",
+        "start": 74,
+        "end": 84,
+        "label": "ORGANIZATION"
+      }
+    ],
+    "id": "test_199"
+  },
+  {
+    "text": "Algorithm efficiency can be benchmarked using asymptotic notation and empirical runtime profiling.",
+    "entities": [],
+    "id": "test_200"
+  },
+  {
+    "text": "Encrypted communication channels rely on public key cryptography to establish secure shared secrets.",
+    "entities": [],
+    "id": "test_201"
+  },
+  {
+    "text": "Contact lead engineer Dmitri Ivanov from Kaspersky at dmitri.ivanov@moscow-sec.ru regarding project deployment in Moscow.",
+    "entities": [
+      {
+        "text": "Dmitri Ivanov",
+        "start": 22,
+        "end": 35,
+        "label": "PERSON"
+      },
+      {
+        "text": "Kaspersky",
+        "start": 41,
+        "end": 50,
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "dmitri.ivanov@moscow-sec.ru",
+        "start": 54,
+        "end": 81,
+        "label": "EMAIL"
+      },
+      {
+        "text": "Moscow",
+        "start": 114,
+        "end": 120,
+        "label": "LOCATION"
+      }
+    ],
+    "id": "test_202"
+  },
+  {
+    "text": "Customer Chioma Okonjo reached support by phone at +234 1 234 5678 concerning invoice order ORD-70203.",
+    "entities": [
+      {
+        "text": "Chioma Okonjo",
+        "start": 9,
+        "end": 22,
+        "label": "PERSON"
+      },
+      {
+        "text": "+234 1 234 5678",
+        "start": 51,
+        "end": 66,
+        "label": "PHONE"
+      },
+      {
+        "text": "ORD-70203",
+        "start": 92,
+        "end": 101,
+        "label": "ORDER_ID"
+      }
+    ],
+    "id": "test_203"
+  },
+  {
+    "text": "System administrator Priya Sundaram renewed the SSL token for internal server 10.4.4.204 on 09/11/2024.",
+    "entities": [
+      {
+        "text": "Priya Sundaram",
+        "start": 21,
+        "end": 35,
+        "label": "PERSON"
+      },
+      {
+        "text": "10.4.4.204",
+        "start": 78,
+        "end": 88,
+        "label": "IP_ADDRESS"
+      },
+      {
+        "text": "09/11/2024",
+        "start": 92,
+        "end": 102,
+        "label": "DATE"
+      }
+    ],
+    "id": "test_204"
+  },
+  {
+    "text": "Please update account credentials for client Alexander Wright (ID: CUST-80205). Temporary password is PassKey#3485!.",
+    "entities": [
+      {
+        "text": "Alexander Wright",
+        "start": 45,
+        "end": 61,
+        "label": "PERSON"
+      },
+      {
+        "text": "CUST-80205",
+        "start": 67,
+        "end": 77,
+        "label": "CUSTOMER_ID"
+      },
+      {
+        "text": "PassKey#3485!",
+        "start": 102,
+        "end": 115,
+        "label": "PASSWORD"
+      }
+    ],
+    "id": "test_205"
+  },
+  {
+    "text": "Support incident TKT-50206 filed by sora.y@tokyo-robotics.jp was resolved by technician Sora Yamamoto in Tokyo.",
+    "entities": [
+      {
+        "text": "TKT-50206",
+        "start": 17,
+        "end": 26,
+        "label": "TICKET_ID"
+      },
+      {
+        "text": "sora.y@tokyo-robotics.jp",
+        "start": 36,
+        "end": 60,
+        "label": "EMAIL"
+      },
+      {
+        "text": "Sora Yamamoto",
+        "start": 88,
+        "end": 101,
+        "label": "PERSON"
+      },
+      {
+        "text": "Tokyo",
+        "start": 105,
+        "end": 110,
+        "label": "LOCATION"
+      }
+    ],
+    "id": "test_206"
+  },
+  {
+    "text": "Wire the consulting payment to account 900000002691 under Beatriz Morales at Telefonica.",
+    "entities": [
+      {
+        "text": "900000002691",
+        "start": 39,
+        "end": 51,
+        "label": "BANK_ACCOUNT"
+      },
+      {
+        "text": "Beatriz Morales",
+        "start": 58,
+        "end": 73,
+        "label": "PERSON"
+      },
+      {
+        "text": "Telefonica",
+        "start": 77,
+        "end": 87,
+        "label": "ORGANIZATION"
+      }
+    ],
+    "id": "test_207"
+  },
+  {
+    "text": "Algorithm efficiency can be benchmarked using asymptotic notation and empirical runtime profiling.",
+    "entities": [],
+    "id": "test_208"
+  },
+  {
+    "text": "Encrypted communication channels rely on public key cryptography to establish secure shared secrets.",
+    "entities": [],
+    "id": "test_209"
+  },
+  {
+    "text": "Contact lead engineer Johan Lindqvist from Klarna at j.lindqvist@stockholm-fin.se regarding project deployment in Stockholm.",
+    "entities": [
+      {
+        "text": "Johan Lindqvist",
+        "start": 22,
+        "end": 37,
+        "label": "PERSON"
+      },
+      {
+        "text": "Klarna",
+        "start": 43,
+        "end": 49,
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "j.lindqvist@stockholm-fin.se",
+        "start": 53,
+        "end": 81,
+        "label": "EMAIL"
+      },
+      {
+        "text": "Stockholm",
+        "start": 114,
+        "end": 123,
+        "label": "LOCATION"
+      }
+    ],
+    "id": "test_210"
+  },
+  {
+    "text": "Customer Mei-Ling Chen reached support by phone at +886 2 2345 6789 concerning invoice order ORD-70211.",
+    "entities": [
+      {
+        "text": "Mei-Ling Chen",
+        "start": 9,
+        "end": 22,
+        "label": "PERSON"
+      },
+      {
+        "text": "+886 2 2345 6789",
+        "start": 51,
+        "end": 67,
+        "label": "PHONE"
+      },
+      {
+        "text": "ORD-70211",
+        "start": 93,
+        "end": 102,
+        "label": "ORDER_ID"
+      }
+    ],
+    "id": "test_211"
+  },
+  {
+    "text": "System administrator Dmitri Ivanov renewed the SSL token for internal server 10.12.4.212 on 17/11/2024.",
+    "entities": [
+      {
+        "text": "Dmitri Ivanov",
+        "start": 21,
+        "end": 34,
+        "label": "PERSON"
+      },
+      {
+        "text": "10.12.4.212",
+        "start": 77,
+        "end": 88,
+        "label": "IP_ADDRESS"
+      },
+      {
+        "text": "17/11/2024",
+        "start": 92,
+        "end": 102,
+        "label": "DATE"
+      }
+    ],
+    "id": "test_212"
+  },
+  {
+    "text": "Please update account credentials for client Chioma Okonjo (ID: CUST-80213). Temporary password is PassKey#3621!.",
+    "entities": [
+      {
+        "text": "Chioma Okonjo",
+        "start": 45,
+        "end": 58,
+        "label": "PERSON"
+      },
+      {
+        "text": "CUST-80213",
+        "start": 64,
+        "end": 74,
+        "label": "CUSTOMER_ID"
+      },
+      {
+        "text": "PassKey#3621!",
+        "start": 99,
+        "end": 112,
+        "label": "PASSWORD"
+      }
+    ],
+    "id": "test_213"
+  },
+  {
+    "text": "Support incident TKT-50214 filed by p.sundaram@chennaitech.co.in was resolved by technician Priya Sundaram in Chennai.",
+    "entities": [
+      {
+        "text": "TKT-50214",
+        "start": 17,
+        "end": 26,
+        "label": "TICKET_ID"
+      },
+      {
+        "text": "p.sundaram@chennaitech.co.in",
+        "start": 36,
+        "end": 64,
+        "label": "EMAIL"
+      },
+      {
+        "text": "Priya Sundaram",
+        "start": 92,
+        "end": 106,
+        "label": "PERSON"
+      },
+      {
+        "text": "Chennai",
+        "start": 110,
+        "end": 117,
+        "label": "LOCATION"
+      }
+    ],
+    "id": "test_214"
+  },
+  {
+    "text": "Wire the consulting payment to account 900000002795 under Alexander Wright at Barclays.",
+    "entities": [
+      {
+        "text": "900000002795",
+        "start": 39,
+        "end": 51,
+        "label": "BANK_ACCOUNT"
+      },
+      {
+        "text": "Alexander Wright",
+        "start": 58,
+        "end": 74,
+        "label": "PERSON"
+      },
+      {
+        "text": "Barclays",
+        "start": 78,
+        "end": 86,
+        "label": "ORGANIZATION"
+      }
+    ],
+    "id": "test_215"
+  },
+  {
+    "text": "Algorithm efficiency can be benchmarked using asymptotic notation and empirical runtime profiling.",
+    "entities": [],
+    "id": "test_216"
+  },
+  {
+    "text": "Encrypted communication channels rely on public key cryptography to establish secure shared secrets.",
+    "entities": [],
+    "id": "test_217"
+  },
+  {
+    "text": "Contact lead engineer Ibrahim Hassan from Vodafone at ibrahim.h@cairo-data.eg regarding project deployment in Cairo.",
+    "entities": [
+      {
+        "text": "Ibrahim Hassan",
+        "start": 22,
+        "end": 36,
+        "label": "PERSON"
+      },
+      {
+        "text": "Vodafone",
+        "start": 42,
+        "end": 50,
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "ibrahim.h@cairo-data.eg",
+        "start": 54,
+        "end": 77,
+        "label": "EMAIL"
+      },
+      {
+        "text": "Cairo",
+        "start": 110,
+        "end": 115,
+        "label": "LOCATION"
+      }
+    ],
+    "id": "test_218"
+  },
+  {
+    "text": "Customer Zoe Tremblay reached support by phone at +1 514 555 0188 concerning invoice order ORD-70219.",
+    "entities": [
+      {
+        "text": "Zoe Tremblay",
+        "start": 9,
+        "end": 21,
+        "label": "PERSON"
+      },
+      {
+        "text": "+1 514 555 0188",
+        "start": 50,
+        "end": 65,
+        "label": "PHONE"
+      },
+      {
+        "text": "ORD-70219",
+        "start": 91,
+        "end": 100,
+        "label": "ORDER_ID"
+      }
+    ],
+    "id": "test_219"
+  },
+  {
+    "text": "System administrator Johan Lindqvist renewed the SSL token for internal server 10.20.4.220 on 25/11/2024.",
+    "entities": [
+      {
+        "text": "Johan Lindqvist",
+        "start": 21,
+        "end": 36,
+        "label": "PERSON"
+      },
+      {
+        "text": "10.20.4.220",
+        "start": 79,
+        "end": 90,
+        "label": "IP_ADDRESS"
+      },
+      {
+        "text": "25/11/2024",
+        "start": 94,
+        "end": 104,
+        "label": "DATE"
+      }
+    ],
+    "id": "test_220"
+  },
+  {
+    "text": "Please update account credentials for client Mei-Ling Chen (ID: CUST-80221). Temporary password is PassKey#3757!.",
+    "entities": [
+      {
+        "text": "Mei-Ling Chen",
+        "start": 45,
+        "end": 58,
+        "label": "PERSON"
+      },
+      {
+        "text": "CUST-80221",
+        "start": 64,
+        "end": 74,
+        "label": "CUSTOMER_ID"
+      },
+      {
+        "text": "PassKey#3757!",
+        "start": 99,
+        "end": 112,
+        "label": "PASSWORD"
+      }
+    ],
+    "id": "test_221"
+  },
+  {
+    "text": "Support incident TKT-50222 filed by dmitri.ivanov@moscow-sec.ru was resolved by technician Dmitri Ivanov in Moscow.",
+    "entities": [
+      {
+        "text": "TKT-50222",
+        "start": 17,
+        "end": 26,
+        "label": "TICKET_ID"
+      },
+      {
+        "text": "dmitri.ivanov@moscow-sec.ru",
+        "start": 36,
+        "end": 63,
+        "label": "EMAIL"
+      },
+      {
+        "text": "Dmitri Ivanov",
+        "start": 91,
+        "end": 104,
+        "label": "PERSON"
+      },
+      {
+        "text": "Moscow",
+        "start": 108,
+        "end": 114,
+        "label": "LOCATION"
+      }
+    ],
+    "id": "test_222"
+  },
+  {
+    "text": "Wire the consulting payment to account 900000002899 under Chioma Okonjo at Flutterwave.",
+    "entities": [
+      {
+        "text": "900000002899",
+        "start": 39,
+        "end": 51,
+        "label": "BANK_ACCOUNT"
+      },
+      {
+        "text": "Chioma Okonjo",
+        "start": 58,
+        "end": 71,
+        "label": "PERSON"
+      },
+      {
+        "text": "Flutterwave",
+        "start": 75,
+        "end": 86,
+        "label": "ORGANIZATION"
+      }
+    ],
+    "id": "test_223"
+  },
+  {
+    "text": "Algorithm efficiency can be benchmarked using asymptotic notation and empirical runtime profiling.",
+    "entities": [],
+    "id": "test_224"
+  },
+  {
+    "text": "Encrypted communication channels rely on public key cryptography to establish secure shared secrets.",
+    "entities": [],
+    "id": "test_225"
+  },
+  {
+    "text": "Contact lead engineer Sora Yamamoto from Sony at sora.y@tokyo-robotics.jp regarding project deployment in Tokyo.",
+    "entities": [
+      {
+        "text": "Sora Yamamoto",
+        "start": 22,
+        "end": 35,
+        "label": "PERSON"
+      },
+      {
+        "text": "Sony",
+        "start": 41,
+        "end": 45,
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "sora.y@tokyo-robotics.jp",
+        "start": 49,
+        "end": 73,
+        "label": "EMAIL"
+      },
+      {
+        "text": "Tokyo",
+        "start": 106,
+        "end": 111,
+        "label": "LOCATION"
+      }
+    ],
+    "id": "test_226"
+  },
+  {
+    "text": "Customer Beatriz Morales reached support by phone at +34 91 123 4567 concerning invoice order ORD-70227.",
+    "entities": [
+      {
+        "text": "Beatriz Morales",
+        "start": 9,
+        "end": 24,
+        "label": "PERSON"
+      },
+      {
+        "text": "+34 91 123 4567",
+        "start": 53,
+        "end": 68,
+        "label": "PHONE"
+      },
+      {
+        "text": "ORD-70227",
+        "start": 94,
+        "end": 103,
+        "label": "ORDER_ID"
+      }
+    ],
+    "id": "test_227"
+  },
+  {
+    "text": "System administrator Ibrahim Hassan renewed the SSL token for internal server 10.28.4.228 on 05/11/2024.",
+    "entities": [
+      {
+        "text": "Ibrahim Hassan",
+        "start": 21,
+        "end": 35,
+        "label": "PERSON"
+      },
+      {
+        "text": "10.28.4.228",
+        "start": 78,
+        "end": 89,
+        "label": "IP_ADDRESS"
+      },
+      {
+        "text": "05/11/2024",
+        "start": 93,
+        "end": 103,
+        "label": "DATE"
+      }
+    ],
+    "id": "test_228"
+  },
+  {
+    "text": "Please update account credentials for client Zoe Tremblay (ID: CUST-80229). Temporary password is PassKey#3893!.",
+    "entities": [
+      {
+        "text": "Zoe Tremblay",
+        "start": 45,
+        "end": 57,
+        "label": "PERSON"
+      },
+      {
+        "text": "CUST-80229",
+        "start": 63,
+        "end": 73,
+        "label": "CUSTOMER_ID"
+      },
+      {
+        "text": "PassKey#3893!",
+        "start": 98,
+        "end": 111,
+        "label": "PASSWORD"
+      }
+    ],
+    "id": "test_229"
+  },
+  {
+    "text": "Support incident TKT-50230 filed by j.lindqvist@stockholm-fin.se was resolved by technician Johan Lindqvist in Stockholm.",
+    "entities": [
+      {
+        "text": "TKT-50230",
+        "start": 17,
+        "end": 26,
+        "label": "TICKET_ID"
+      },
+      {
+        "text": "j.lindqvist@stockholm-fin.se",
+        "start": 36,
+        "end": 64,
+        "label": "EMAIL"
+      },
+      {
+        "text": "Johan Lindqvist",
+        "start": 92,
+        "end": 107,
+        "label": "PERSON"
+      },
+      {
+        "text": "Stockholm",
+        "start": 111,
+        "end": 120,
+        "label": "LOCATION"
+      }
+    ],
+    "id": "test_230"
+  },
+  {
+    "text": "Wire the consulting payment to account 900000003003 under Mei-Ling Chen at TSMC.",
+    "entities": [
+      {
+        "text": "900000003003",
+        "start": 39,
+        "end": 51,
+        "label": "BANK_ACCOUNT"
+      },
+      {
+        "text": "Mei-Ling Chen",
+        "start": 58,
+        "end": 71,
+        "label": "PERSON"
+      },
+      {
+        "text": "TSMC",
+        "start": 75,
+        "end": 79,
+        "label": "ORGANIZATION"
+      }
+    ],
+    "id": "test_231"
+  },
+  {
+    "text": "Algorithm efficiency can be benchmarked using asymptotic notation and empirical runtime profiling.",
+    "entities": [],
+    "id": "test_232"
+  },
+  {
+    "text": "Encrypted communication channels rely on public key cryptography to establish secure shared secrets.",
+    "entities": [],
+    "id": "test_233"
+  },
+  {
+    "text": "Contact lead engineer Priya Sundaram from Infosys at p.sundaram@chennaitech.co.in regarding project deployment in Chennai.",
+    "entities": [
+      {
+        "text": "Priya Sundaram",
+        "start": 22,
+        "end": 36,
+        "label": "PERSON"
+      },
+      {
+        "text": "Infosys",
+        "start": 42,
+        "end": 49,
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "p.sundaram@chennaitech.co.in",
+        "start": 53,
+        "end": 81,
+        "label": "EMAIL"
+      },
+      {
+        "text": "Chennai",
+        "start": 114,
+        "end": 121,
+        "label": "LOCATION"
+      }
+    ],
+    "id": "test_234"
+  },
+  {
+    "text": "Customer Alexander Wright reached support by phone at +44 161 275 0000 concerning invoice order ORD-70235.",
+    "entities": [
+      {
+        "text": "Alexander Wright",
+        "start": 9,
+        "end": 25,
+        "label": "PERSON"
+      },
+      {
+        "text": "+44 161 275 0000",
+        "start": 54,
+        "end": 70,
+        "label": "PHONE"
+      },
+      {
+        "text": "ORD-70235",
+        "start": 96,
+        "end": 105,
+        "label": "ORDER_ID"
+      }
+    ],
+    "id": "test_235"
+  },
+  {
+    "text": "System administrator Sora Yamamoto renewed the SSL token for internal server 10.36.4.236 on 13/11/2024.",
+    "entities": [
+      {
+        "text": "Sora Yamamoto",
+        "start": 21,
+        "end": 34,
+        "label": "PERSON"
+      },
+      {
+        "text": "10.36.4.236",
+        "start": 77,
+        "end": 88,
+        "label": "IP_ADDRESS"
+      },
+      {
+        "text": "13/11/2024",
+        "start": 92,
+        "end": 102,
+        "label": "DATE"
+      }
+    ],
+    "id": "test_236"
+  },
+  {
+    "text": "Please update account credentials for client Beatriz Morales (ID: CUST-80237). Temporary password is PassKey#4029!.",
+    "entities": [
+      {
+        "text": "Beatriz Morales",
+        "start": 45,
+        "end": 60,
+        "label": "PERSON"
+      },
+      {
+        "text": "CUST-80237",
+        "start": 66,
+        "end": 76,
+        "label": "CUSTOMER_ID"
+      },
+      {
+        "text": "PassKey#4029!",
+        "start": 101,
+        "end": 114,
+        "label": "PASSWORD"
+      }
+    ],
+    "id": "test_237"
+  },
+  {
+    "text": "Support incident TKT-50238 filed by ibrahim.h@cairo-data.eg was resolved by technician Ibrahim Hassan in Cairo.",
+    "entities": [
+      {
+        "text": "TKT-50238",
+        "start": 17,
+        "end": 26,
+        "label": "TICKET_ID"
+      },
+      {
+        "text": "ibrahim.h@cairo-data.eg",
+        "start": 36,
+        "end": 59,
+        "label": "EMAIL"
+      },
+      {
+        "text": "Ibrahim Hassan",
+        "start": 87,
+        "end": 101,
+        "label": "PERSON"
+      },
+      {
+        "text": "Cairo",
+        "start": 105,
+        "end": 110,
+        "label": "LOCATION"
+      }
+    ],
+    "id": "test_238"
+  },
+  {
+    "text": "Wire the consulting payment to account 900000003107 under Zoe Tremblay at Element AI.",
+    "entities": [
+      {
+        "text": "900000003107",
+        "start": 39,
+        "end": 51,
+        "label": "BANK_ACCOUNT"
+      },
+      {
+        "text": "Zoe Tremblay",
+        "start": 58,
+        "end": 70,
+        "label": "PERSON"
+      },
+      {
+        "text": "Element AI",
+        "start": 74,
+        "end": 84,
+        "label": "ORGANIZATION"
+      }
+    ],
+    "id": "test_239"
+  },
+  {
+    "text": "Algorithm efficiency can be benchmarked using asymptotic notation and empirical runtime profiling.",
+    "entities": [],
+    "id": "test_240"
+  },
+  {
+    "text": "Encrypted communication channels rely on public key cryptography to establish secure shared secrets.",
+    "entities": [],
+    "id": "test_241"
+  },
+  {
+    "text": "Contact lead engineer Dmitri Ivanov from Kaspersky at dmitri.ivanov@moscow-sec.ru regarding project deployment in Moscow.",
+    "entities": [
+      {
+        "text": "Dmitri Ivanov",
+        "start": 22,
+        "end": 35,
+        "label": "PERSON"
+      },
+      {
+        "text": "Kaspersky",
+        "start": 41,
+        "end": 50,
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "dmitri.ivanov@moscow-sec.ru",
+        "start": 54,
+        "end": 81,
+        "label": "EMAIL"
+      },
+      {
+        "text": "Moscow",
+        "start": 114,
+        "end": 120,
+        "label": "LOCATION"
+      }
+    ],
+    "id": "test_242"
+  },
+  {
+    "text": "Customer Chioma Okonjo reached support by phone at +234 1 234 5678 concerning invoice order ORD-70243.",
+    "entities": [
+      {
+        "text": "Chioma Okonjo",
+        "start": 9,
+        "end": 22,
+        "label": "PERSON"
+      },
+      {
+        "text": "+234 1 234 5678",
+        "start": 51,
+        "end": 66,
+        "label": "PHONE"
+      },
+      {
+        "text": "ORD-70243",
+        "start": 92,
+        "end": 101,
+        "label": "ORDER_ID"
+      }
+    ],
+    "id": "test_243"
+  },
+  {
+    "text": "System administrator Priya Sundaram renewed the SSL token for internal server 10.44.4.244 on 21/11/2024.",
+    "entities": [
+      {
+        "text": "Priya Sundaram",
+        "start": 21,
+        "end": 35,
+        "label": "PERSON"
+      },
+      {
+        "text": "10.44.4.244",
+        "start": 78,
+        "end": 89,
+        "label": "IP_ADDRESS"
+      },
+      {
+        "text": "21/11/2024",
+        "start": 93,
+        "end": 103,
+        "label": "DATE"
+      }
+    ],
+    "id": "test_244"
+  },
+  {
+    "text": "Please update account credentials for client Alexander Wright (ID: CUST-80245). Temporary password is PassKey#4165!.",
+    "entities": [
+      {
+        "text": "Alexander Wright",
+        "start": 45,
+        "end": 61,
+        "label": "PERSON"
+      },
+      {
+        "text": "CUST-80245",
+        "start": 67,
+        "end": 77,
+        "label": "CUSTOMER_ID"
+      },
+      {
+        "text": "PassKey#4165!",
+        "start": 102,
+        "end": 115,
+        "label": "PASSWORD"
+      }
+    ],
+    "id": "test_245"
+  },
+  {
+    "text": "Support incident TKT-50246 filed by sora.y@tokyo-robotics.jp was resolved by technician Sora Yamamoto in Tokyo.",
+    "entities": [
+      {
+        "text": "TKT-50246",
+        "start": 17,
+        "end": 26,
+        "label": "TICKET_ID"
+      },
+      {
+        "text": "sora.y@tokyo-robotics.jp",
+        "start": 36,
+        "end": 60,
+        "label": "EMAIL"
+      },
+      {
+        "text": "Sora Yamamoto",
+        "start": 88,
+        "end": 101,
+        "label": "PERSON"
+      },
+      {
+        "text": "Tokyo",
+        "start": 105,
+        "end": 110,
+        "label": "LOCATION"
+      }
+    ],
+    "id": "test_246"
+  },
+  {
+    "text": "Wire the consulting payment to account 900000003211 under Beatriz Morales at Telefonica.",
+    "entities": [
+      {
+        "text": "900000003211",
+        "start": 39,
+        "end": 51,
+        "label": "BANK_ACCOUNT"
+      },
+      {
+        "text": "Beatriz Morales",
+        "start": 58,
+        "end": 73,
+        "label": "PERSON"
+      },
+      {
+        "text": "Telefonica",
+        "start": 77,
+        "end": 87,
+        "label": "ORGANIZATION"
+      }
+    ],
+    "id": "test_247"
+  },
+  {
+    "text": "Algorithm efficiency can be benchmarked using asymptotic notation and empirical runtime profiling.",
+    "entities": [],
+    "id": "test_248"
+  },
+  {
+    "text": "Encrypted communication channels rely on public key cryptography to establish secure shared secrets.",
+    "entities": [],
+    "id": "test_249"
+  },
+  {
+    "text": "Contact lead engineer Johan Lindqvist from Klarna at j.lindqvist@stockholm-fin.se regarding project deployment in Stockholm.",
+    "entities": [
+      {
+        "text": "Johan Lindqvist",
+        "start": 22,
+        "end": 37,
+        "label": "PERSON"
+      },
+      {
+        "text": "Klarna",
+        "start": 43,
+        "end": 49,
+        "label": "ORGANIZATION"
+      },
+      {
+        "text": "j.lindqvist@stockholm-fin.se",
+        "start": 53,
+        "end": 81,
+        "label": "EMAIL"
+      },
+      {
+        "text": "Stockholm",
+        "start": 114,
+        "end": 123,
+        "label": "LOCATION"
+      }
+    ],
+    "id": "test_250"
   }
 ]

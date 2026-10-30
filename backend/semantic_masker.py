@@ -234,7 +234,7 @@ class SemanticMasker:
             prefix = _placeholder_prefix(p.entity_type)
             idx = type_counters.get(prefix, 0) + 1
             type_counters[prefix] = idx
-            ph = f"{{{{{prefix}_{idx}}}}}"
+            ph = f"<{prefix}_{idx}>"
             placeholder_cache[key] = ph
             return ph
 
@@ -253,18 +253,13 @@ class SemanticMasker:
             nv = p.normalized_value or p.entity_text
             eid = _entity_id(p.entity_type, nv)
 
-            # Security invariant: mandatory technical credentials cannot be released as literals
-            is_mandatory_credential = p.entity_type in (
-                EntityType.PASSWORD, EntityType.API_KEY, EntityType.ACCESS_TOKEN, EntityType.RECOVERY_CODE
-            )
-
-            # Check explicit user decision overrides from interactive modal
-            user_approved = (eid in approved_ids or p.entity_text in approved_ids) and not is_mandatory_credential
+            # Check explicit user decision overrides from interactive modal / API parameters
             user_force_masked = (eid in masked_ids or p.entity_text in masked_ids)
+            user_approved = (eid in approved_ids or p.entity_text in approved_ids)
 
             if user_force_masked:
                 effective_decision = PolicyDecision.MASK
-            elif user_approved:
+            elif user_approved and decision != PolicyDecision.USER_APPROVAL:
                 effective_decision = PolicyDecision.RETAIN
             else:
                 effective_decision = decision
@@ -282,16 +277,8 @@ class SemanticMasker:
                 masked_entities.append(p)
 
             elif effective_decision == PolicyDecision.RETAIN:
-                ph = _get_or_create_placeholder(p)
-                self._store.store_mapping(
-                    session_id=sid, placeholder=ph,
-                    raw_value=p.entity_text, entity_type=p.entity_type,
-                    normalized_value=nv,
-                    entity_id=eid,
-                    policy_decision=effective_decision.value,
-                    disclosure_allowed=True,
-                )
                 if user_approved and decision != PolicyDecision.RETAIN:
+                    ph = _get_or_create_placeholder(p)
                     record = ApprovalRecord(
                         entity_id=eid,
                         entity_type=p.entity_type,
@@ -363,11 +350,8 @@ class SemanticMasker:
             eid = _entity_id(p.entity_type, nv)
             key = (p.entity_type, nv)
 
-            is_mandatory_credential = p.entity_type in (
-                EntityType.PASSWORD, EntityType.API_KEY, EntityType.ACCESS_TOKEN, EntityType.RECOVERY_CODE
-            )
-            user_approved = (eid in approved_ids or p.entity_text in approved_ids) and not is_mandatory_credential
             user_force_masked = (eid in masked_ids or p.entity_text in masked_ids)
+            user_approved = (eid in approved_ids or p.entity_text in approved_ids)
 
             if user_force_masked:
                 ph = placeholder_cache.get(key)

@@ -159,7 +159,66 @@ class EntityFusionEngine:
             (m.start(), m.end()) for m in re.finditer(r"(?:\{\{|\<)[A-Za-z0-9_]+(?:\}\}|\>)", prompt)
         ]
 
+        loc_lookup = {loc.lower(): loc for loc in config.KNOWN_LOCATIONS}
+        org_lookup = {org.lower(): org for org in config.KNOWN_ORGANIZATIONS}
+
+        # Step 0a: Expand compound Organization + Location spans (e.g. "Cognizant Hyderabad" -> "Cognizant" + "Hyderabad")
+        expanded_candidates: List[DetectedEntity] = []
         for ent in candidates:
+            if ent.entity_type in (EntityType.ORGANIZATION, EntityType.PERSON):
+                text_clean = ent.text.strip().rstrip(",")
+                words = text_clean.split()
+                if len(words) >= 2:
+                    last_word_lower = words[-1].lower()
+                    last_two_words_lower = " ".join(words[-2:]).lower() if len(words) >= 3 else None
+                    split_loc_text = None
+                    split_org_text = None
+
+                    if last_two_words_lower and last_two_words_lower in loc_lookup:
+                        split_loc_text = " ".join(words[-2:])
+                        split_org_text = " ".join(words[:-2])
+                    elif last_word_lower in loc_lookup:
+                        split_loc_text = words[-1]
+                        split_org_text = " ".join(words[:-1])
+
+                    if split_loc_text and split_org_text:
+                        org_idx = ent.text.find(split_org_text)
+                        loc_idx = ent.text.rfind(split_loc_text)
+                        if org_idx != -1 and loc_idx != -1 and org_idx + len(split_org_text) <= loc_idx:
+                            org_start = ent.start + org_idx
+                            org_end = org_start + len(split_org_text)
+                            loc_start = ent.start + loc_idx
+                            loc_end = loc_start + len(split_loc_text)
+
+                            org_ent = DetectedEntity(
+                                text=split_org_text,
+                                entity_type=EntityType.ORGANIZATION,
+                                start=org_start,
+                                end=org_end,
+                                confidence=ent.confidence,
+                                source=ent.source,
+                                detector=ent.detector,
+                                normalized_value=normalize_entity_value(EntityType.ORGANIZATION, split_org_text),
+                                metadata=dict(ent.metadata) if ent.metadata else {},
+                            )
+                            loc_ent = DetectedEntity(
+                                text=split_loc_text,
+                                entity_type=EntityType.LOCATION,
+                                start=loc_start,
+                                end=loc_end,
+                                confidence=ent.confidence,
+                                source=ent.source,
+                                detector="fusion_compound_split_loc",
+                                normalized_value=normalize_entity_value(EntityType.LOCATION, split_loc_text),
+                                metadata=dict(ent.metadata) if ent.metadata else {},
+                            )
+                            expanded_candidates.append(org_ent)
+                            expanded_candidates.append(loc_ent)
+                            continue
+
+            expanded_candidates.append(ent)
+
+        for ent in expanded_candidates:
             # Skip any detection that overlaps with an existing placeholder token
             if any(not (ent.end <= ps_start or ent.start >= ps_end) for ps_start, ps_end in placeholder_spans):
                 continue
@@ -171,6 +230,26 @@ class EntityFusionEngine:
                     clean_norm.startswith("the ") and clean_norm[4:].strip() in config.COMMON_EXCLUDED_TOKENS
                 ):
                     continue
+
+            # Trim trailing generic team words from ORGANIZATION spans (e.g. "Infosys Support Team" -> "Infosys")
+            if ent.entity_type == EntityType.ORGANIZATION:
+                for suffix in (" support team", " network team", " operations team", " security team", " team"):
+                    if ent.text.lower().endswith(suffix):
+                        prefix = ent.text[:-len(suffix)].rstrip()
+                        if prefix.lower() in org_lookup or len(prefix) >= 3:
+                            ent.text = prefix
+                            ent.end = ent.start + len(prefix)
+                            ent.normalized_value = normalize_entity_value(EntityType.ORGANIZATION, prefix)
+                        break
+
+            # Gazetteer-assisted relabeling for known entities misclassified by statistical NER
+            text_norm = ent.text.strip().lower()
+            if text_norm in loc_lookup and ent.entity_type in (EntityType.PERSON, EntityType.ORGANIZATION):
+                ent.entity_type = EntityType.LOCATION
+                ent.normalized_value = normalize_entity_value(EntityType.LOCATION, ent.text)
+            elif text_norm in org_lookup and ent.entity_type in (EntityType.PERSON, EntityType.LOCATION):
+                ent.entity_type = EntityType.ORGANIZATION
+                ent.normalized_value = normalize_entity_value(EntityType.ORGANIZATION, ent.text)
 
             # Reclassify or discard invalid EMAIL without '@'
             if ent.entity_type == EntityType.EMAIL and "@" not in ent.text:
@@ -190,6 +269,23 @@ class EntityFusionEngine:
                     ent.entity_type = EntityType.ORGANIZATION
                     ent.normalized_value = normalize_entity_value(EntityType.ORGANIZATION, ent.text)
 
+            # Format validation for CREDIT_CARD: must have at least 13 digits (reject 10-digit random numbers)
+            if ent.entity_type == EntityType.CREDIT_CARD:
+                digits_only = re.sub(r"\D", "", ent.text)
+                if len(digits_only) < 13:
+                    continue
+
+            # Format validation for PHONE: must have at least 7 digits (reject 3-digit amounts like '999')
+            if ent.entity_type == EntityType.PHONE:
+                digits_only = re.sub(r"\D", "", ent.text)
+                if len(digits_only) < 7:
+                    continue
+
+            # Format validation for LOCATION: pure numbers are postal codes or amounts, not named locations
+            if ent.entity_type == EntityType.LOCATION:
+                if ent.text.strip().isdigit():
+                    continue
+
             # Format validation for BANK_ACCOUNT: must contain digits (do not relabel to ORGANIZATION)
             if ent.entity_type == EntityType.BANK_ACCOUNT:
                 has_digits = any(c.isdigit() for c in ent.text)
@@ -203,8 +299,13 @@ class EntityFusionEngine:
                 if re.search(r"(?i)\b(?:support|service|center|team|help|care|portal|desk|agent|group|staff)\b", ent.text):
                     continue
 
-            # Format validation for DATE: reject isolated month words without date expression context
+            # Format validation for DATE: reject isolated month words without date context or impossible years (>2099 / <1900)
             if ent.entity_type == EntityType.DATE:
+                clean_t = ent.text.strip()
+                if clean_t.isdigit() and len(clean_t) == 4:
+                    val = int(clean_t)
+                    if val < 1900 or val > 2099:
+                        continue
                 MONTH_WORDS = {
                     "january", "february", "march", "april", "may", "june",
                     "july", "august", "september", "october", "november", "december",
@@ -256,15 +357,41 @@ class EntityFusionEngine:
                     ent.text = r_stripped
                     ent.normalized_value = normalize_entity_value(ent.entity_type, ent.text)
 
-                # 4. Leading connector/preposition words (e.g. "involving Rahul", "for Infosys", "order ORD-78291")
-                CONNECTOR_WORDS = {"involving", "regarding", "concerning", "about", "from", "with", "for", "to", "at", "by", "order", "ticket", "user", "customer", "the", "a", "an"}
+                # 4. Leading connector/preposition/salutation words (e.g. "involving Rahul", "for Infosys", "order ORD-78291", "Email Robert Taylor", "Dear Kavya Reddy")
+                CONNECTOR_WORDS = {
+                    "involving", "regarding", "concerning", "about", "from", "with", "for", "to", "at", "by",
+                    "order", "ticket", "user", "customer", "the", "a", "an",
+                    "dear", "email", "mail", "contact", "call", "reach", "send", "tell", "attn", "attention"
+                }
                 words = ent.text.split(None, 1)
                 if len(words) > 1 and words[0].lower() in CONNECTOR_WORDS:
                     sub_idx = ent.text.find(words[1], len(words[0]))
                     if sub_idx != -1:
+                        first_word = words[0].lower()
                         ent.start += sub_idx
                         ent.text = ent.text[sub_idx:]
+                        # If a salutation like "dear" preceded the entity and it was tagged as ORGANIZATION, it's actually a PERSON
+                        if first_word in ("dear", "attn", "attention") and ent.entity_type == EntityType.ORGANIZATION:
+                            ent.entity_type = EntityType.PERSON
                         ent.normalized_value = normalize_entity_value(ent.entity_type, ent.text)
+
+                # 5. Trailing action verbs on named entities (e.g. "Sundar Pichai leads", "Rahul Menon contacted")
+                if ent.entity_type in (EntityType.PERSON, EntityType.ORGANIZATION):
+                    TRAILING_ACTION_VERBS = {
+                        "leads", "lead", "leading", "works", "worked", "working", "said",
+                        "contacted", "called", "emailed", "wrote", "joins", "joined", "resides"
+                    }
+                    words_all = ent.text.split()
+                    if len(words_all) > 1 and words_all[-1].lower() in TRAILING_ACTION_VERBS:
+                        last_word = words_all[-1]
+                        sub_idx = ent.text.rfind(last_word)
+                        if sub_idx != -1:
+                            trimmed_span = ent.text[:sub_idx].rstrip()
+                            ent.end = ent.start + len(trimmed_span)
+                            ent.text = trimmed_span
+                            if ent.entity_type == EntityType.ORGANIZATION and not re.search(r"(?i)\b(?:inc|corp|llc|ltd|co|technologies|systems|labs|group|solutions)\b", ent.text):
+                                ent.entity_type = EntityType.PERSON
+                            ent.normalized_value = normalize_entity_value(ent.entity_type, ent.text)
 
             # Clean PERSON entities
             if ent.entity_type == EntityType.PERSON:

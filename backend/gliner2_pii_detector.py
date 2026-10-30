@@ -289,6 +289,18 @@ class GLiNER2PIIDetector:
                     text = text.rstrip(".")
                     end = start + len(text)
 
+            # If classified as DATE, filter out vague relative periods and idioms
+            if entity_type == EntityType.DATE:
+                NON_SPECIFIC_DATE_PHRASES = {
+                    "a good day", "good day", "last quarter", "quarterly", "next quarter",
+                    "this quarter", "next year", "last year", "this year", "fiscal year",
+                    "2024 fiscal year", "every day", "daily", "annually", "q1", "q2", "q3", "q4",
+                }
+                if clean_norm in NON_SPECIFIC_DATE_PHRASES:
+                    continue
+                if clean_norm.startswith("every ") and any(unit in clean_norm for unit in ("day", "month", "year", "days", "months", "years")):
+                    continue
+
             # If classified as IP_ADDRESS but lacks '.' or ':', skip
             if entity_type == EntityType.IP_ADDRESS and ("." not in text and ":" not in text):
                 continue

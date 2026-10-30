@@ -52,7 +52,12 @@ def _load_analyzer() -> Optional[Any]:
             from presidio_analyzer.nlp_engine import NlpEngineProvider
             provider = NlpEngineProvider(nlp_configuration={
                 "nlp_engine_name": "spacy",
-                "models": [{"lang_code": "en", "model_name": "en_core_web_sm"}]
+                "models": [{"lang_code": "en", "model_name": "en_core_web_sm"}],
+                "ner_model_configuration": {
+                    "labels_to_ignore": [
+                        "CARDINAL", "LAW", "ORDINAL", "PERCENT", "QUANTITY", "TIME"
+                    ]
+                }
             })
             nlp_engine = provider.create_engine()
             engine = AnalyzerEngine(nlp_engine=nlp_engine)
@@ -170,6 +175,18 @@ class PresidioDetector:
             if entity_type == EntityType.DATE:
                 if re.search(r"(?i)\b(?:road|rd\.?|street|st\.?|avenue|ave\.?|lane|ln\.?|drive|dr\.?|mg|marg|nagar|sector)\b", raw_text):
                     continue
+
+                # Filter conversational idioms, periodic phrases, or vague relative expressions
+                NON_SPECIFIC_DATE_PHRASES = {
+                    "a good day", "good day", "last quarter", "quarterly", "next quarter",
+                    "this quarter", "next year", "last year", "this year", "fiscal year",
+                    "2024 fiscal year", "every day", "daily", "annually", "q1", "q2", "q3", "q4",
+                }
+                if clean_text in NON_SPECIFIC_DATE_PHRASES:
+                    continue
+                if clean_text.startswith("every ") and any(unit in clean_text for unit in ("day", "month", "year", "days", "months", "years")):
+                    continue
+
                 # Reject isolated month words like "MAY", "march" that do not form a date expression
                 MONTH_WORDS = {
                     "january", "february", "march", "april", "may", "june",
@@ -184,8 +201,11 @@ class PresidioDetector:
                     if not (has_nearby_digits or has_date_prep):
                         continue
 
-                # Filter false positive numeric dates preceded by password/credential/identifier/code cues
+                # Filter false positive numeric dates:
+                # Standalone digits must be valid 4-digit years (e.g. 1900-2099)
                 if clean_text.isdigit():
+                    if len(clean_text) != 4 or not (1900 <= int(clean_text) <= 2099):
+                        continue
                     w_before = prompt[max(0, result.start - 40):result.start]
                     if re.search(r"(?i)\b(?:password|passwd|psswrd|pswrd|pswd|pass|pwd|pin|passcode|otp|token|code|key|secret|id|order|ticket|tracking|port|ext|account|acc)\b", w_before):
                         continue

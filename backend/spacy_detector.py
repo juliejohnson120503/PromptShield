@@ -87,24 +87,9 @@ def _load_spacy_model() -> Optional[Any]:
 # Heuristic NER Fallback (zero-dependency)
 # ============================================================
 
-# Static gazetteers — kept in this module for the fallback path.
-# These are NOT the primary detection mechanism when spaCy is available.
-KNOWN_ORGANIZATIONS: Set[str] = {
-    "Google", "Microsoft", "Apple", "Apple Inc.", "Amazon", "Meta", "Facebook", "Netflix",
-    "OpenAI", "Anthropic", "IBM", "Intel", "Cisco", "Oracle", "Nvidia",
-    "TCS", "Infosys", "Wipro", "Accenture", "Cognizant", "Capgemini",
-    "ABC Technologies", "XYZ Corp", "Acme Corp", "Tech Solutions",
-    "Harvard University", "MIT", "Stanford University", "Oxford University",
-}
-
-KNOWN_LOCATIONS: Set[str] = {
-    "India", "United States", "USA", "UK", "United Kingdom", "Canada",
-    "Australia", "Germany", "France", "Japan", "China", "Singapore",
-    "New York", "London", "San Francisco", "Paris", "Tokyo", "Berlin",
-    "Sydney", "Toronto", "Delhi", "New Delhi", "Mumbai", "Bangalore",
-    "Bengaluru", "Hyderabad", "Chennai", "Kolkata", "Pune", "Kochi",
-    "California", "Texas", "Washington",
-}
+# Static gazetteers — references central config gazetteers.
+KNOWN_ORGANIZATIONS: Set[str] = config.KNOWN_ORGANIZATIONS
+KNOWN_LOCATIONS: Set[str] = config.KNOWN_LOCATIONS
 
 KNOWN_PUBLIC_PERSONS: Set[str] = {
     "Elon Musk", "Bill Gates", "Steve Jobs", "Albert Einstein",
@@ -138,6 +123,12 @@ PERSON_STOP_WORDS: Set[str] = {
     "will", "what", "when", "where", "why", "how", "just", "also", "so",
     "but", "has", "had", "letter", "mail", "message", "note", "report", "document", "text",
     "psswrd", "pswd", "pwd", "password", "pin", "passcode", "pass", "pword",
+    "preparing", "drafting", "developing", "requesting", "reviewing",
+    "testing", "submitting", "configuring", "sharing", "building",
+    "operating", "managing", "handling", "evaluating", "checking",
+    "sending", "updating", "creating", "formatting", "planning",
+    "learning", "following", "joining", "leaving", "organizing",
+    "processing", "verifying",
 }
 
 _NAME_INTRO_RE = re.compile(
@@ -181,14 +172,22 @@ def _extract_name_from_intro(
         t_lower = t.lower()
         if (
             t_lower in PERSON_STOP_WORDS
+            or t_lower in config.COMMON_EXCLUDED_TOKENS
             or t in KNOWN_LOCATIONS
             or t in KNOWN_ORGANIZATIONS
+            or (t_lower.endswith("ing") and t_lower not in {"ling", "ming", "king", "qing", "ping", "ring", "sing", "wing"})
         ):
             break
         words.append(t)
         if len(words) >= 4:
             break
     if not words:
+        return None
+    if len(words) == 1 and words[0].islower() and (
+        words[0] in PERSON_STOP_WORDS
+        or words[0] in config.COMMON_EXCLUDED_TOKENS
+        or words[0].endswith("ing")
+    ):
         return None
     parts_pattern = r"[.\s]*".join(re.escape(w) for w in words)
     nm = re.search(parts_pattern, tail)
@@ -455,6 +454,15 @@ class SpacyNERDetector:
                     continue
                 if re.search(r"(?i)\b(?:road|rd\.?|street|st\.?|avenue|ave\.?|lane|ln\.?|drive|dr\.?|mg|marg|nagar)\b", text):
                     continue
+                NON_SPECIFIC_DATE_PHRASES = {
+                    "a good day", "good day", "last quarter", "quarterly", "next quarter",
+                    "this quarter", "next year", "last year", "this year", "fiscal year",
+                    "2024 fiscal year", "every day", "daily", "annually", "q1", "q2", "q3", "q4",
+                }
+                if clean_norm in NON_SPECIFIC_DATE_PHRASES:
+                    continue
+                if clean_norm.startswith("every ") and any(unit in clean_norm for unit in ("day", "month", "year", "days", "months", "years")):
+                    continue
                 MONTH_WORDS = {
                     "january", "february", "march", "april", "may", "june",
                     "july", "august", "september", "october", "november", "december",
@@ -499,6 +507,8 @@ class SpacyNERDetector:
                 }
                 words_clean = [re.sub(r"^\W+|\W+$", "", w).lower() for w in text.split()]
                 if any(w in disqualifying for w in words_clean):
+                    continue
+                if len(words_clean) == 1 and (words_clean[0] in PERSON_STOP_WORDS or words_clean[0] in config.COMMON_EXCLUDED_TOKENS):
                     continue
 
                 words = text.split()

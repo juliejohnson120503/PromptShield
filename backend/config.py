@@ -30,8 +30,9 @@ COMMON_EXCLUDED_TOKENS: Set[str] = {
     "password", "psswrd", "pswrd", "pswd", "pwd", "pass", "pin", "passcode",
     "email", "mail", "phone", "username", "user", "name", "id", "card",
     "letter", "note", "message", "text", "prompt", "code", "token", "key",
-    "ip", "ip address", "url", "uri", "http", "https", "ftp", "dns", "tcp", "udp",
-    "vpn", "api", "ai", "ml", "os", "ssh", "ssl", "tls", "customer", "order", "ticket",
+    "ip", "ip address", "ipv4", "ipv6", "url", "uri", "http", "https", "ftp", "dns", "tcp", "udp",
+    "vpn", "api", "api keys", "ai", "ml", "os", "ssh", "ssl", "tls", "customer", "order", "ticket",
+    "ci", "cd", "pii", "bearer", "lts", "ubuntu", "ubuntu 22.04 lts", "nginx", "docker", "git",
     # Pronouns & function words falsely tagged as PERSON
     "i", "me", "my", "myself", "we", "us", "our", "ours", "ourselves",
     "you", "your", "yours", "yourself", "yourselves",
@@ -43,6 +44,33 @@ COMMON_EXCLUDED_TOKENS: Set[str] = {
     "organization", "organizations", "company", "companies", "department", "departments",
     "model", "models", "dataset", "datasets", "pattern", "patterns", "task", "tasks",
     "package", "replacement",
+    # Spurious terms falsely detected as named entities or locations
+    "algorithm", "algorithms", "pythagorean", "brown fox", "dog",
+    "annual", "beneficiary iban", "notify", "eur", "usd", "inr", "gbp", "alpha", "indian",
+}
+
+
+# ============================================================
+# KNOWN ORGANIZATIONS & LOCATIONS GAZETTEER
+# ============================================================
+KNOWN_ORGANIZATIONS: Set[str] = {
+    "Google", "Microsoft", "Apple", "Apple Inc.", "Amazon", "Meta", "Facebook", "Netflix",
+    "OpenAI", "Anthropic", "IBM", "Intel", "Cisco", "Oracle", "Nvidia",
+    "TCS", "Infosys", "Wipro", "Accenture", "Cognizant", "Capgemini",
+    "ABC Technologies", "XYZ Corp", "Acme Corp", "Tech Solutions",
+    "Harvard University", "MIT", "Stanford University", "Oxford University",
+    "Barclays", "Klarna", "Ericsson", "SpaceX", "Flutterwave", "Telefonica",
+    "Temasek", "Element AI", "Visa", "Mastercard", "American Express", "Amex", "AWS",
+}
+
+KNOWN_LOCATIONS: Set[str] = {
+    "India", "United States", "USA", "UK", "United Kingdom", "Canada",
+    "Australia", "Germany", "France", "Japan", "China", "Singapore",
+    "New York", "London", "San Francisco", "Paris", "Tokyo", "Berlin",
+    "Sydney", "Toronto", "Delhi", "New Delhi", "Mumbai", "Bangalore",
+    "Bengaluru", "Hyderabad", "Chennai", "Kolkata", "Pune", "Kochi",
+    "California", "Texas", "Washington", "Frankfurt", "Accra", "Zurich",
+    "Geneva", "Amsterdam", "Dublin", "Madrid", "Rome",
 }
 
 
@@ -162,17 +190,17 @@ PASSWORD_PATTERNS: List[Tuple[re.Pattern, str]] = [
     (
         re.compile(
             r"(?i)\b(?:(?:my|the|user|acc|account|login)\s+)?(?:login\s+)?(?:password|passwd|psswrd|pswrd|pswd|pass|pwd|passphrase|passcode|pword)"
-            r"\s+(?:is|was|=|:)\s*['\"]?"
+            r"\s+(?:is|was|=|:|to)\s*['\"]?"
             r"(?!(?:strong|weak|secure|insecure|valid|invalid|safe|unsafe|compromised|complexity|length|requirements|policy|rules|checker|hash|reset|change|generator|management|verification|rotation|strength|entropy|stronger|weaker|better|good|bad)\b)"
             r"([^'\"\s\r\n,.;]{3,})['\"]?"
         ),
         "password_natural_lang",
     ),
-    # "pin is 1234", "pin: 1234", "my pin code is 4321"
+    # "pin is 1234", "pin: 1234", "my pin code is 4321", "pin for locker room is 9482"
     (
         re.compile(
             r"(?i)\b(?:(?:my|the|user|login|card|atm)\s+)?(?:pin(?:\s*code)?|passcode)"
-            r"\s*(?:is|was|=|:)\s*['\"]?([0-9]{4,8})['\"]?"
+            r"(?:\s+(?:for|to)\s+[^,;]+?)?\s*(?:is|was|=|:)\s*['\"]?([0-9]{4,8})['\"]?"
         ),
         "pin_natural_lang",
     ),

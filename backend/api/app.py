@@ -26,6 +26,12 @@ logger = logging.getLogger("promptshield.api")
 async def lifespan(app: FastAPI):
     """Lifecycle manager for PromptShield REST API."""
     logger.info("[PromptShield API] Starting up PromptShield REST service...")
+    try:
+        from backend.api.service import PromptShieldService
+        _ = PromptShieldService().shield
+        logger.info("[PromptShield API] Detection & masking models pre-warmed and ready.")
+    except Exception as e:
+        logger.warning("[PromptShield API] Pre-warm failed: %s", e)
     yield
     logger.info("[PromptShield API] Shutting down service.")
 

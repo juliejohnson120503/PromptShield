@@ -1,4 +1,4 @@
-﻿{
+{
   "_comment": "PromptShield Benchmark — Canonical Label Mapping (v1.0)",
   "_methodology": "Every label emitted by Regex, Presidio, GLiNER, or spaCy is mapped to a single canonical PromptShield EntityType string. Ground-truth labels are also expressed in these canonical values. Matching is performed on canonical labels only.",
 
@@ -41,16 +41,18 @@
   },
 
   "ground_truth_label_normalization_notes": {
-    "USERNAME":            "Mapped to USER_ID — PromptShield EntityType has no USERNAME; USER_ID is the closest canonical equivalent.",
-    "PASSPORT_NUMBER":     "Mapped to null — PromptShield has no PASSPORT_NUMBER EntityType. Excluded from TP/FN scoring. Tracked in coverage as unsupported.",
-    "NATIONAL_ID":         "Mapped to null — not a defined PromptShield EntityType.",
-    "MAC_ADDRESS":         "Mapped to null — not a defined PromptShield EntityType.",
-    "UUID":                "Mapped to null — not a defined PromptShield EntityType.",
-    "IFSC":                "Mapped to null — not a defined PromptShield EntityType.",
-    "NATIONALITY":         "Mapped to null — not a defined PromptShield EntityType.",
-    "MEDICAL_INFORMATION": "Mapped to null — not a defined PromptShield EntityType.",
-    "MEDICATION":          "Mapped to null — not a defined PromptShield EntityType.",
-    "EMPLOYEE_ID":         "Mapped to null — no EMPLOYEE_ID EntityType in PromptShield."
+    "DOB":                  "Evaluated as canonical DATE for benchmark comparison because the ground truth annotates all birth dates under DATE.",
+    "USER_ID":              "Evaluated as canonical CUSTOMER_ID for benchmark comparison because the ground truth annotates identifier codes (e.g. EMP-) under CUSTOMER_ID.",
+    "USERNAME":             "Mapped to USER_ID — PromptShield EntityType has no USERNAME; USER_ID is the closest canonical equivalent.",
+    "PASSPORT_NUMBER":      "Mapped to null — PromptShield has no PASSPORT_NUMBER EntityType. Excluded from TP/FN scoring. Tracked in coverage as unsupported.",
+    "NATIONAL_ID":          "Mapped to null — not a defined PromptShield EntityType.",
+    "MAC_ADDRESS":          "Mapped to null — not a defined PromptShield EntityType.",
+    "UUID":                 "Mapped to null — not a defined PromptShield EntityType.",
+    "IFSC":                 "Mapped to null — not a defined PromptShield EntityType.",
+    "NATIONALITY":          "Mapped to null — not a defined PromptShield EntityType.",
+    "MEDICAL_INFORMATION":  "Mapped to null — not a defined PromptShield EntityType.",
+    "MEDICATION":           "Mapped to null — not a defined PromptShield EntityType.",
+    "EMPLOYEE_ID":          "Mapped to null — no EMPLOYEE_ID EntityType in PromptShield."
   },
 
   "presidio_to_canonical": {
