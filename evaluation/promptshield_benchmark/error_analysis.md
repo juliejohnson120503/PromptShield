@@ -1,7 +1,7 @@
 # PromptShield Baseline — Error Analysis
 
 **Pipeline:** CURRENT PromptShield Detection Pipeline
-**Dataset:** 500 prompts — `ground_truth.json`
+**Dataset:** 600 prompts — `ground_truth.json`
 
 ---
 

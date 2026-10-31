@@ -1,25 +1,25 @@
 {
-  "dataset_size": 500,
-  "ground_truth_entities": 978,
-  "predicted_entities": 978,
-  "true_positives": 978,
+  "dataset_size": 600,
+  "ground_truth_entities": 1069,
+  "predicted_entities": 1069,
+  "true_positives": 1069,
   "false_positives": 0,
   "false_negatives": 0,
   "precision": 1.0,
   "recall": 1.0,
   "micro_f1": 1.0,
   "macro_f1": 1.0,
-  "mean_latency_ms": 313.6527,
-  "median_latency_ms": 302.7523,
-  "min_latency_ms": 261.0099,
-  "max_latency_ms": 619.0619,
-  "std_latency_ms": 40.94,
-  "p95_latency_ms": 406.4872,
-  "p99_latency_ms": 452.8752,
-  "throughput_prompts_per_second": 3.1882,
-  "model_init_time_ms": 4588.4366,
+  "mean_latency_ms": 871.3815,
+  "median_latency_ms": 690.9205,
+  "min_latency_ms": 561.6287,
+  "max_latency_ms": 2867.6531,
+  "std_latency_ms": 447.2064,
+  "p95_latency_ms": 1938.9761,
+  "p99_latency_ms": 2207.213,
+  "throughput_prompts_per_second": 1.1476,
+  "model_init_time_ms": 13128.6816,
   "warmup_runs": 5,
-  "measured_runs": 500,
+  "measured_runs": 600,
   "detector_status": {
     "regex": {
       "active": true,
@@ -47,22 +47,22 @@
   },
   "component_latency_ms": {
     "regex": {
-      "mean": 0.2835,
-      "median": 0.2075,
-      "min": 0.0939,
-      "max": 1.2275,
-      "std": 0.1873,
-      "p95": 0.6553,
-      "p99": 0.9387
+      "mean": 0.6619,
+      "median": 0.362,
+      "min": 0.0881,
+      "max": 22.4492,
+      "std": 1.1347,
+      "p95": 1.9154,
+      "p99": 3.7715
     },
     "presidio": {
-      "mean": 9.3724,
-      "median": 8.6348,
-      "min": 5.2678,
-      "max": 28.5019,
-      "std": 3.439,
-      "p95": 16.0495,
-      "p99": 22.0645
+      "mean": 18.2926,
+      "median": 12.7296,
+      "min": 6.0388,
+      "max": 109.303,
+      "std": 14.6229,
+      "p95": 50.7741,
+      "p99": 66.3208
     },
     "gliner": {
       "mean": 0.0,
@@ -74,36 +74,36 @@
       "p99": 0.0
     },
     "spacy": {
-      "mean": 24.0477,
-      "median": 23.1271,
-      "min": 19.7932,
-      "max": 43.1279,
-      "std": 2.8817,
-      "p95": 29.309,
-      "p99": 33.8577
+      "mean": 330.2795,
+      "median": 256.882,
+      "min": 186.3115,
+      "max": 948.0501,
+      "std": 191.6571,
+      "p95": 819.5355,
+      "p99": 883.9233
     },
     "fusion": {
-      "mean": 0.2579,
-      "median": 0.2238,
-      "min": 0.001,
-      "max": 1.3213,
-      "std": 0.2678,
-      "p95": 0.763,
-      "p99": 1.1197
+      "mean": 0.5861,
+      "median": 0.3622,
+      "min": 0.0013,
+      "max": 4.7136,
+      "std": 0.7873,
+      "p95": 2.1487,
+      "p99": 3.399
     }
   },
   "length_category_latency": [
     {
       "category": "SHORT",
-      "num_prompts": 376,
-      "mean_latency_ms": 307.6954,
-      "p95_latency_ms": 376.2759
+      "num_prompts": 476,
+      "mean_latency_ms": 827.7069,
+      "p95_latency_ms": 1928.8708
     },
     {
       "category": "MEDIUM",
       "num_prompts": 124,
-      "mean_latency_ms": 331.7167,
-      "p95_latency_ms": 432.8569
+      "mean_latency_ms": 1039.0353,
+      "p95_latency_ms": 2014.8661
     }
   ],
   "unsupported_gt_labels": {}

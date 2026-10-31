@@ -75,12 +75,14 @@ PLANT_OBJECT_NOUNS: Set[str] = {
     "bush", "tree", "flower", "plant", "river", "lake", "forest", "mountain",
 }
 
-# Title prefixes that should be stripped from the start of a PERSON span (occupational roles, not honorifics)
+# Title prefixes that should be stripped from the start of a PERSON span (occupational/political roles)
 TITLE_PREFIXES: Tuple[str, ...] = (
     "client ", "customer ", "recruiter ", "surgeon ", "physician ",
     "attorney ", "notary ", "nurse ",
     "engineer ", "architect ", "detective ", "pharmacist ", "patient ",
+    "prime minister ", "president ", "minister ", "chancellor ", "governor ", "senator ",
 )
+
 
 # Relative / vague date phrases that are NOT specific PII dates
 NON_SPECIFIC_DATE_PHRASES: Set[str] = {
@@ -103,18 +105,48 @@ _MALFORMED_PERSON_RE = re.compile(
     r"[.!?;:\n]{1,}\s*[-–—]|\.[a-zA-Z]{2,}|\b(?<![A-Z])\.[A-Z]"
 )
 
+# Mathematical / Algorithmic query pattern for abstract continuous number exclusion
+MATH_CUE_PATTERN = re.compile(
+    r"(?i)\b("
+    r"sum\s+of(?:\s+the)?\s+digits|digits\s+of(?:\s+the|\s+a)?\s+number|"
+    r"last\s+\d+\s+digits|first\s+\d+\s+digits|"
+    r"prime\s+factors?|binary(?:\s+representation|\s+of)?|hex(?:\s+representation|\s+of)?|"
+    r"modulo|square\s+root|factorial|convert\s+number|integer|calculate|solve|"
+    r"multiply|divide|divisible(?:\s+by)?|add|subtract|reverse(?:\s+the|\s+of)?\s+digits|"
+    r"sort(?:\s+the)?\s+digits|count\s+(?:the\s+number\s+of\s+)?digits|"
+    r"regex|matching\s+a\s+\d+[\s-]digit\s+number"
+    r")\b"
+)
+
 
 # ============================================================
 # PERSON VALIDATORS & CLEANERS
 # ============================================================
 
 def clean_person_possessive(text: str) -> str:
-    """Strip trailing possessive suffixes (e.g. \"Priya Nair's\" -> \"Priya Nair\")."""
-    if re.search(r"[''']s?$", text):
-        trimmed = re.sub(r"[''']s?$", "", text).rstrip()
+    """
+    Strip trailing possessive suffixes and possessive relation phrases.
+    Examples:
+      - "Priya Nair's" -> "Priya Nair"
+      - "Anand's" -> "Anand"
+      - "Anand's son" -> "Anand"
+      - "Sarah's manager" -> "Sarah"
+    Preserves names with internal apostrophes like "O'Connor", "D'Angelo".
+    """
+    # 1. Possessive with trailing noun: e.g. "Anand's son", "Priya's manager", "John's car"
+    match_phrase = re.match(r"^(.+?)(?:[''’]s?)\s+[a-zA-Z\s]+$", text)
+    if match_phrase:
+        candidate = match_phrase.group(1).rstrip()
+        if candidate and len(candidate) > 1:
+            return candidate
+
+    # 2. Direct trailing possessive: e.g. "Anand's", "Priya Nair's", "James'"
+    if re.search(r"[''’]s?$", text):
+        trimmed = re.sub(r"[''’]s?$", "", text).rstrip()
         if trimmed:
             return trimmed
     return text
+
 
 
 def strip_person_title_prefix(text: str) -> str:
@@ -158,9 +190,14 @@ def validate_person(text: str) -> Tuple[bool, str]:
 
     clean_norm = cleaned.lower().strip()
 
+    # Reject strings containing 3+ consecutive numbers (people's names do not contain number sequences)
+    if re.search(r"\d{3,}", cleaned):
+        return False, cleaned
+
     # Reject demonyms / nationalities / religions
     if clean_norm in DEMONYMS:
         return False, cleaned
+
 
     words = [w.strip() for w in cleaned.split() if w.strip()]
     if not words:
@@ -198,7 +235,12 @@ def trim_person_stop_words(text: str, stop_words: Set[str]) -> str:
 # DATE VALIDATORS
 # ============================================================
 
-def is_non_specific_date(text: str) -> bool:
+def is_non_specific_date(
+    text: str,
+    prompt: Optional[str] = None,
+    start: int = -1,
+    end: int = -1,
+) -> bool:
     """Check if date text is a vague/relative phrase that isn't specific PII."""
     clean_norm = text.lower().strip()
 
@@ -207,8 +249,14 @@ def is_non_specific_date(text: str) -> bool:
         return True
 
     # Check against relative date words
-    # "Yesterday" (capitalized) is preserved for compatibility with multi-entity regression tests
     if clean_norm in RELATIVE_DATE_WORDS:
+        # If the relative date is tied to a personal lifecycle event (birthday, anniversary, dob),
+        # it directly anchors a personal biographical date to the request timestamp and must NOT be filtered!
+        if prompt and start >= 0 and end >= start:
+            window = prompt[max(0, start - 40): min(len(prompt), end + 40)]
+            if re.search(r"(?i)\b(?:birth\s*day|b'?day|anniversary|d\.?o\.?b\.?|date\s+of\s+birth|born)\b", window):
+                return False
+        # "Yesterday" (capitalized) is preserved for compatibility with multi-entity regression tests
         if clean_norm == "yesterday" and text.strip() == "Yesterday":
             return False
         return True
@@ -297,7 +345,7 @@ def validate_date(text: str, prompt: str, start: int, end: int) -> bool:
     if clean_t.isdigit() and len(clean_t) > 4:
         return False
 
-    if is_non_specific_date(text):
+    if is_non_specific_date(text, prompt, start, end):
         return False
 
     if is_isolated_month_word(text, prompt, start, end):
@@ -467,9 +515,10 @@ def validate_structured_id(
 # PHONE VALIDATORS
 # ============================================================
 
-def validate_phone(text: str) -> bool:
+def validate_phone(text: str, prompt: Optional[str] = None, start: int = 0) -> bool:
     """
     Phone number must have at least 7 digits and not be dummy/sequential numbers.
+    Also rejects unformatted continuous digit sequences in mathematical/abstract computation contexts.
     """
     digits_only = re.sub(r"\D", "", text)
     if len(digits_only) < 7:
@@ -484,7 +533,22 @@ def validate_phone(text: str) -> bool:
         if not text.startswith("+") and not any(c in text for c in " -()."):
             return False
 
+    # Mathematical / Abstract Number Exclusion for continuous unformatted numbers:
+    # E.g. "find the sum of digits of a number 9845124523" vs "call me at 9845124523"
+    if prompt and text.strip().isdigit():
+        has_math_cue = bool(MATH_CUE_PATTERN.search(prompt)) or bool(re.search(
+            r"(?i)\b(?:number|integer|value|input|digits)\s*[:=]?\s*$",
+            prompt[max(0, start - 60):start]
+        ))
+        has_phone_cue = bool(re.search(
+            r"(?i)\b(?:call|phone|mobile|mob|cell|contact|reach|tel|telephone|sms|text|whatsapp|ping|fax)\b",
+            prompt
+        ))
+        if has_math_cue and not has_phone_cue:
+            return False
+
     return True
+
 
 
 # ============================================================
@@ -516,3 +580,53 @@ def is_excluded_token(text: str) -> bool:
     if clean_norm.startswith("the ") and clean_norm[4:].strip() in config.COMMON_EXCLUDED_TOKENS:
         return True
     return False
+
+
+# ============================================================
+# INDIAN NATIONAL ID & TAX ID VALIDATORS
+# ============================================================
+
+_VERHOEFF_D = (
+    (0, 1, 2, 3, 4, 5, 6, 7, 8, 9),
+    (1, 2, 3, 4, 0, 6, 7, 8, 9, 5),
+    (2, 3, 4, 0, 1, 7, 8, 9, 5, 6),
+    (3, 4, 0, 1, 2, 8, 9, 5, 6, 7),
+    (4, 0, 1, 2, 3, 9, 5, 6, 7, 8),
+    (5, 9, 8, 7, 6, 0, 4, 3, 2, 1),
+    (6, 5, 9, 8, 7, 1, 0, 4, 3, 2),
+    (7, 6, 5, 9, 8, 2, 1, 0, 4, 3),
+    (8, 7, 6, 5, 9, 3, 2, 1, 0, 4),
+    (9, 8, 7, 6, 5, 4, 3, 2, 1, 0),
+)
+_VERHOEFF_P = (
+    (0, 1, 2, 3, 4, 5, 6, 7, 8, 9),
+    (1, 5, 7, 6, 2, 8, 3, 0, 9, 4),
+    (5, 8, 0, 3, 7, 9, 6, 1, 4, 2),
+    (8, 9, 1, 6, 0, 4, 3, 5, 2, 7),
+    (9, 4, 5, 3, 1, 2, 6, 8, 7, 0),
+    (4, 2, 8, 6, 5, 7, 3, 9, 0, 1),
+    (2, 7, 9, 3, 8, 0, 6, 4, 1, 5),
+    (7, 0, 4, 6, 9, 1, 3, 2, 5, 8),
+)
+
+
+def is_verhoeff_valid(number_str: str) -> bool:
+    """Validate 12-digit Aadhaar number using official UIDAI Verhoeff checksum algorithm."""
+    digits = re.sub(r"\D", "", number_str)
+    if len(digits) != 12:
+        return False
+    if digits[0] in ("0", "1"):
+        return False
+    c = 0
+    for i, item in enumerate(reversed(digits)):
+        c = _VERHOEFF_D[c][_VERHOEFF_P[i % 8][int(item)]]
+    return c == 0
+
+
+def is_valid_pan(pan_str: str) -> bool:
+    """Validate Indian Permanent Account Number (PAN) format."""
+    clean = pan_str.strip().upper()
+    if len(clean) != 10:
+        return False
+    return bool(re.match(r"^[A-Z]{3}[PCHFATBLJG][A-Z][0-9]{4}[A-Z]$", clean))
+

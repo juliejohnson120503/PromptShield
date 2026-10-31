@@ -72,10 +72,12 @@ def normalize_id(raw_val: str) -> str:
 
 
 def normalize_text_entity(raw_val: str) -> str:
-    """Normalize names, organizations, and locations by collapsing redundant spaces."""
+    """Normalize names, organizations, and locations by collapsing redundant spaces and stripping trailing punctuation/possessives."""
     cleaned = re.sub(r"\s+", " ", raw_val.strip())
+    cleaned = re.sub(r"[''’]s?$", "", cleaned)
     cleaned = re.sub(r"[.,;:!]+$", "", cleaned)
     return cleaned
+
 
 
 def normalize_date(raw_val: str) -> str:

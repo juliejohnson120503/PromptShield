@@ -218,8 +218,9 @@ class PresidioDetector:
                 continue
 
             # Validate PHONE
-            if entity_type == EntityType.PHONE and not validators.validate_phone(raw_text):
+            if entity_type == EntityType.PHONE and not validators.validate_phone(raw_text, prompt, result.start):
                 continue
+
 
             # Validate LOCATION
             if entity_type == EntityType.LOCATION and not validators.validate_location(raw_text):

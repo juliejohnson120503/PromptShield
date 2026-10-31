@@ -255,16 +255,38 @@ PUBLIC_ORGANIZATIONS: Set[str] = {
 }
 
 
+from pathlib import Path
+import logging
+
+logger = logging.getLogger(__name__)
+
+GAZETTEER_DIR = Path(__file__).resolve().parent / "data" / "gazetteers"
+FIGURES_FILE = GAZETTEER_DIR / "public_figures.txt"
+ORGS_FILE = GAZETTEER_DIR / "public_orgs.txt"
+
+
+def _load_gazetteer_file(filepath: Path, fallback_set: Set[str]) -> Set[str]:
+    """Load lowercase entries from text file into an in-memory set with graceful fallback."""
+    if filepath.is_file():
+        try:
+            with open(filepath, "r", encoding="utf-8") as f:
+                entries = {line.strip().lower() for line in f if line.strip()}
+            return entries.union(fallback_set)
+        except Exception as e:
+            logger.warning("[KnownEntitiesResolver] Failed reading %s: %s — using fallback", filepath, e)
+    return set(fallback_set)
+
+
 # ============================================================
 # Normalized lookup caches (built once at import time)
 # ============================================================
 
-_PUBLIC_FIGURES_LOWER: Set[str] = PUBLIC_FIGURES
-_PUBLIC_ORGS_LOWER: Set[str] = PUBLIC_ORGANIZATIONS
+_PUBLIC_FIGURES_LOWER: Set[str] = _load_gazetteer_file(FIGURES_FILE, PUBLIC_FIGURES)
+_PUBLIC_ORGS_LOWER: Set[str] = _load_gazetteer_file(ORGS_FILE, PUBLIC_ORGANIZATIONS)
 
 # Build first-name and last-name indexes for partial matching
 _FIGURE_PARTS: Set[str] = set()
-for _name in PUBLIC_FIGURES:
+for _name in _PUBLIC_FIGURES_LOWER:
     _parts = _name.split()
     if len(_parts) >= 2:
         _FIGURE_PARTS.add(_parts[-1])  # last name
@@ -286,6 +308,22 @@ class KnownEntitiesResolver:
         self._figures = _PUBLIC_FIGURES_LOWER
         self._orgs = _PUBLIC_ORGS_LOWER
         self._figure_parts = _FIGURE_PARTS
+
+    @property
+    def total_figures_count(self) -> int:
+        """Return total count of known public figures."""
+        return len(self._figures)
+
+    @property
+    def total_orgs_count(self) -> int:
+        """Return total count of known public organizations."""
+        return len(self._orgs)
+
+    @property
+    def total_entities_count(self) -> int:
+        """Return combined total count of known public entities."""
+        return len(self._figures) + len(self._orgs)
+
 
     def is_public_figure(self, name: str) -> bool:
         """

@@ -29,7 +29,9 @@ COMMON_EXCLUDED_TOKENS: Set[str] = {
     # Credentials, technical protocols & field labels
     "password", "psswrd", "pswrd", "pswd", "pwd", "pass", "pin", "passcode",
     "email", "mail", "phone", "username", "user", "name", "id", "card",
+    "pan", "aadhaar", "adhar", "adhr", "uidai", "ssn", "tin",
     "letter", "note", "message", "text", "prompt", "code", "token", "key",
+
     "ip", "ip address", "ipv4", "ipv6", "url", "uri", "http", "https", "ftp", "dns", "tcp", "udp",
     "vpn", "api", "api keys", "ai", "ml", "os", "ssh", "ssl", "tls", "customer", "order", "ticket",
     "ci", "cd", "pii", "bearer", "lts", "ubuntu", "ubuntu 22.04 lts", "nginx", "docker", "git",
@@ -54,6 +56,8 @@ COMMON_EXCLUDED_TOKENS: Set[str] = {
     "algorithm", "algorithms", "pythagorean", "brown fox", "dog", "fox",
     "annual", "beneficiary iban", "notify", "eur", "usd", "inr", "gbp", "alpha", "indian",
     "oauth", "gtc", "claude", "michaelis", "menten", "michaelis-menten",
+    # Imperative verbs, abbreviations and PII labels falsely detected as entities
+    "kyc", "p@ssword", "pan card", "parliament", "contact", "reach", "call", "compute", "software",
 }
 
 
@@ -117,6 +121,7 @@ KNOWN_LOCATIONS: Set[str] = {
     "Kerala", "Tamil Nadu", "Karnataka", "Maharashtra", "Gujarat",
     "Rajasthan", "West Bengal", "Uttar Pradesh", "Madhya Pradesh",
     "Marylebone", "Springfield", "Waterloo", "Torquay", "Cape Canaveral",
+    "UAE", "United Arab Emirates",
 }
 
 
@@ -139,11 +144,45 @@ PHONE_PATTERNS: List[Tuple[re.Pattern, str]] = [
         ),
         "phone_international",
     ),
-    # Separated local/national phone numbers (must contain parens, spaces, or hyphens):
-    # e.g. (555) 234-5678, 020-7946-0958, 98765-43210, 98765 43210
+    # North American Numbering Plan: (202) 555-0199, 202-555-0199, 202.555.0199, 1-800-555-0199
     (
         re.compile(
-            r"(?:\(\d{2,4}\)[\s.-]?\d{3,4}[\s.-]?\d{3,5}|\b[6-9]\d{4}[\s.-]\d{5}\b|\b\d{3}[.-]\d{3}[.-]\d{4}\b|\b\d{4,5}[\s.-]\d{5,6}\b)\b"
+            r"\b(?:1[-. ]?)?(?:\([2-9]\d{2}\)|[2-9]\d{2})[-. ][2-9]\d{2}[-. ]\d{4}\b"
+        ),
+        "phone_nanp",
+    ),
+    # UK National phone numbers: 020 7946 0958, 07911 123456, 01632 960001
+    (
+        re.compile(
+            r"\b0[12378]\d{1,3}[\s.-]?\d{3,4}[\s.-]?\d{3,4}\b"
+        ),
+        "phone_uk_national",
+    ),
+    # Australian National numbers: 0412 345 678, 02 9876 5432
+    (
+        re.compile(
+            r"\b0[23478]\d{1}[\s.-]?\d{4}[\s.-]?\d{4}\b"
+        ),
+        "phone_australia",
+    ),
+    # European National (France, Germany, Spain): 01 42 68 55 55, 06 12 34 56 78
+    (
+        re.compile(
+            r"\b0[1-9](?:[\s.-]?\d{2}){4}\b"
+        ),
+        "phone_europe_national",
+    ),
+    # Middle East mobile (UAE, Saudi, Qatar): 050 123 4567, 055 123 4567
+    (
+        re.compile(
+            r"\b05[0-9][\s.-]?\d{3}[\s.-]?\d{4}\b"
+        ),
+        "phone_middle_east",
+    ),
+    # Separated local/national phone numbers: (555) 234-5678, 98765-43210, 98765 43210
+    (
+        re.compile(
+            r"(?:\(\d{2,4}\)[\s.-]?\d{3,4}[\s.-]?\d{3,5}|\b[6-9]\d{4}[\s.-]\d{5}\b|\b\d{4,5}[\s.-]\d{5,6}\b)\b"
         ),
         "phone_separated",
     ),
@@ -153,6 +192,7 @@ PHONE_PATTERNS: List[Tuple[re.Pattern, str]] = [
         "phone_10digit",
     ),
 ]
+
 
 # ============================================================
 # CREDIT CARD  (candidates – must be Luhn-validated downstream)
@@ -242,18 +282,18 @@ ACCESS_TOKEN_PATTERNS: List[Tuple[re.Pattern, str, float]] = [
 # PASSWORD / CREDENTIAL
 # ============================================================
 PASSWORD_PATTERNS: List[Tuple[re.Pattern, str]] = [
-    # password = "...", pwd: "...", psswrd: '...', pass: '...'
+    # password = "...", pwd: "...", psswrd: '...', pass: '...', passwrd: '...', p@ssword: '...'
     (
         re.compile(
-            r"(?i)\b(?:password|passwd|psswrd|pswrd|pswd|pass|pwd|passphrase|userpass|passcode|pword)"
+            r"(?i)\b(?:pass(?:w(?:or)?d|wrd|code|phrase)?|p@ss(?:word)?|passwd|psswrd|pswrd|pswd|pass|pwd|userpass|pword)"
             r"\s*[:=]\s*['\"]?([^'\"\s\r\n,.;]{3,})['\"]?"
         ),
         "password_assignment",
     ),
-    # "my password is ...", "psswrd is 98765432", "my psswrd is ...", "secret was set to ..."
+    # "my password is ...", "psswrd is 98765432", "my psswrd is ...", "passwrd: ...", "secret was set to ..."
     (
         re.compile(
-            r"(?i)\b(?:(?:my|the|user|acc|account|login|pipeline|build)\s+)?(?:login\s+)?(?:password|passwd|psswrd|pswrd|pswd|pass|pwd|passphrase|passcode|pword|secret)"
+            r"(?i)\b(?:(?:my|the|user|acc|account|login|pipeline|build)\s+)?(?:login\s+)?(?:pass(?:w(?:or)?d|wrd|code|phrase)?|p@ss(?:word)?|passwd|psswrd|pswrd|pswd|pass|pwd|userpass|pword|secret)"
             r"\s+(?:(?:was\s+)?(?:set|configured|changed|reset)\s+(?:to|as)|\b(?:is|was|to)\b|[:=])\s*['\"]?"
             r"(?!(?:strong|weak|secure|insecure|valid|invalid|safe|unsafe|compromised|complexity|length|requirements|policy|rules|checker|hash|reset|change|generator|management|verification|rotation|strength|entropy|stronger|weaker|better|good|bad|token)\b)"
             r"([^'\"\s\r\n,.;]{3,})['\"]?"
@@ -278,7 +318,7 @@ PASSWORD_PATTERNS: List[Tuple[re.Pattern, str]] = [
     # password followed directly by secret value with space: "password RiverStone#9472", "password 1234", "credential token Jenk!nsBld#7719"
     (
         re.compile(
-            r"(?i)\b(?:(?:my|the|user|acc|account|login)\s+)?(?:login\s+)?(?:password|passwd|psswrd|pswrd|pswd|pass|pwd|passcode|passphrase|pword|credential(?:\s+token)?)\s+"
+            r"(?i)\b(?:(?:my|the|user|acc|account|login)\s+)?(?:login\s+)?(?:pass(?:w(?:or)?d|wrd|code|phrase)?|p@ss(?:word)?|passwd|psswrd|pswrd|pswd|pass|pwd|userpass|pword|credential(?:\s+token)?)\s+"
             r"(?!(?:strong|weak|secure|insecure|valid|invalid|safe|unsafe|compromised|complexity|length|requirements|policy|rules|checker|hash|reset|change|generator|management|verification|rotation|strength|entropy|stronger|weaker|better|good|bad|should|must|will|would|can|could|is|was|are|were|has|have|had|and|or|not|with|for|from|that|this|which|to|in|at)\b)"
             r"([A-Za-z0-9!@#$%^&*()_+\-=\[\]{}|;:'\"/]{3,64})"
             r"(?=[.,;!?]?(?:\s|$))"
@@ -318,10 +358,16 @@ BANK_ACCOUNT_PATTERNS: List[Tuple[re.Pattern, str, float]] = [
         "swift_bic",
         0.95,
     ),
-    # Generic account number keyword trigger: customer account number is 1234567890, account no: 123456
+    # Generic account number keyword trigger: customer account number is 1234567890, account no: 123456, acc no: 123456, act no: 123456, a/c no: 123456
     (
         re.compile(
-            r"(?i)\b(?:(?:customer|client|user|bank|personal|savings|checking|current|holder|employee)?\s*account\s*(?:number|no\.?|id|#)?\s*(?:is|was|[:\-#=])?\s*)(\d{6,20})\b"
+            r"(?i)\b(?:"
+            r"(?:(?:customer|client|user|bank|personal|savings|checking|current|holder|employee|my|his|her)?\s*)?"
+            r"(?:account|accnt|acc)\s*(?:number|no\.?|num(?:ber)?|id|#)?\s*(?:is|was|[:\-#=])?\s*"
+            r"|(?:(?:customer|client|user|bank|personal|savings|checking|current|holder|employee|my|his|her)?\s*)?"
+            r"(?:a/c|act|ac)\s*(?:number|no\.?|num(?:ber)?|id|#)\s*(?:is|was|[:\-#=])?\s*"
+            r"|(?:\b(?:bank\s+)?a/c\s*(?:is|was|[:\-#=])\s*)"
+            r")(\d{6,20})\b"
         ),
         "account_number",
         0.95,
@@ -436,17 +482,69 @@ GOVERNMENT_ID_PATTERNS: List[Tuple[re.Pattern, str, float, str]] = [
     ),
     # Driver license contextual
     (
-        re.compile(r"(?i)\bdriver'?s?\s*license(?:\s+(?:number|no\.?|#))?\s*(?:is|as|[:\-#=])?\s*([A-Za-z0-9\-]{8,24})\b"),
+        re.compile(r"(?i)\bdriver'?s?\s*licen[sc]e(?:\s+(?:number|no\.?|#))?\s*(?:is|as|[:\-#=])?\s*([A-Za-z0-9\-]{8,24})\b"),
         "driver_license_contextual",
         0.98,
         "DRIVER_LICENSE",
     ),
-    # National ID contextual
+    # Indian Driving License: State code (DL, MH, KA, KL, TN, HR, etc.) + RTO/Year + digits
+    (
+        re.compile(
+            r"(?i)\b(?:driving\s*licen[sc]e|dl(?:\s*no\.?)?)\s*(?:is|as|[:\-#=])?\s*([A-Za-z]{2}[-\s]?[0-9]{2}[-\s]?[0-9]{4}[-\s]?[0-9]{7})\b"
+        ),
+        "indian_dl_contextual",
+        0.98,
+        "DRIVER_LICENSE",
+    ),
+    # Aadhaar / National ID with aliases (adhr, adhar, aadhar, uidai, uid)
+    (
+        re.compile(
+            r"(?i)\b(?:aad?ha?a?r|adhr|uidai|uid)(?:\s*(?:card|number|no\.?|id|#))?\s*(?:is|as|[:\-#=])?\s*([2-9]\d{3}[\s-]?\d{4}[\s-]?\d{4})\b"
+        ),
+        "aadhaar_contextual",
+        0.98,
+        "NATIONAL_ID",
+    ),
+    # Spaced 12-digit Aadhaar format with explicit identity/ownership context (e.g. "my id: 4562 4562 7895", "identity card number 9876 5432 1098")
+    (
+        re.compile(
+            r"(?i)\b(?:(?:my|his|her|client's|customer's|user's)\s+(?:id|identity|aadhaar|adhr|national\s+id)|(?:national\s+)?identity\s*card(?:\s*(?:number|no\.?|id|#))?|id\s*card(?:\s*(?:number|no\.?|id|#))?)\s*(?:is|as|[:\-#=])?\s*([2-9]\d{3}\s\d{4}\s\d{4})\b"
+        ),
+        "aadhaar_spaced_ownership",
+        0.96,
+        "NATIONAL_ID",
+    ),
+    # General National ID contextual
     (
         re.compile(r"(?i)\bnational\s*(?:identification|id)?(?:\s+(?:number|no\.?|#))?\s*(?:is|as|[:\-#=])?\s*([A-Za-z0-9\-]{8,24})\b"),
         "national_id_contextual",
         0.98,
         "NATIONAL_ID",
+    ),
+    # Voter ID / EPIC: 3 letters + 7 digits (e.g. WBD1234567, ABC1234567)
+    (
+        re.compile(
+            r"(?i)\b(?:voter\s*id|epic(?:\s*card)?(?:\s*no\.?)?)\s*(?:is|as|[:\-#=])?\s*([A-Za-z]{3}[0-9]{7})\b"
+        ),
+        "voter_id_contextual",
+        0.98,
+        "NATIONAL_ID",
+    ),
+    # Indian PAN Card (Permanent Account Number): 5 uppercase letters + 4 digits + 1 letter
+    (
+        re.compile(
+            r"(?i)\b(?:pan(?:\s*(?:card|number|no\.?|#))?|permanent\s+account\s+number)\s*(?:is|as|[:\-#=])?\s*([A-Za-z]{5}[0-9]{4}[A-Za-z])\b"
+        ),
+        "pan_contextual",
+        0.99,
+        "TAX_ID",
+    ),
+    # Direct PAN Card format with valid 4th status letter [PCHFATBLJG]
+    (
+        re.compile(r"\b([A-Z]{3}[PCHFATBLJG][A-Z][0-9]{4}[A-Z])\b"),
+        "pan_direct",
+        0.96,
+        "TAX_ID",
     ),
     # Tax ID / SSN contextual
     (

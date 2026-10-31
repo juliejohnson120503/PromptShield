@@ -441,6 +441,15 @@ class EntityFusionEngine:
                     continue
                 if not validators.validate_bank_account(ent.text):
                     continue
+                # Reject purely numeric continuous digits when in math/algorithmic context without banking cues
+                if ent.text.strip().isdigit():
+                    has_math_cue = bool(validators.MATH_CUE_PATTERN.search(prompt))
+                    has_bank_cue = bool(re.search(
+                        r"(?i)\b(?:account|acc|act|a/c|acct|iban|routing|wire|transfer|deposit|balance|bank|funds|credit|debit)\b",
+                        prompt
+                    ))
+                    if has_math_cue and not has_bank_cue:
+                        continue
 
             # Format validation for project-specific IDs and usernames
             if ent.entity_type in (EntityType.CUSTOMER_ID, EntityType.ORDER_ID, EntityType.TICKET_ID, EntityType.USER_ID, EntityType.USERNAME):
@@ -527,9 +536,29 @@ class EntityFusionEngine:
                 if not trimmed:
                     continue
                 if trimmed != ent.text and trimmed:
+                    offset_shift = prompt.find(trimmed, ent.start)
+                    if offset_shift != -1 and offset_shift < ent.end:
+                        ent.start = offset_shift
                     ent.text = trimmed
                     ent.end = ent.start + len(trimmed)
-                    ent.normalized_value = normalize_entity_value(EntityType.PERSON, trimmed)
+            # Strip trailing sentence punctuation from entities (preserving corporate 'Inc.' and password '!')
+            while ent.text:
+                if ent.entity_type == EntityType.ORGANIZATION and ent.text.endswith("Inc."):
+                    break
+                if ent.entity_type == EntityType.PASSWORD and ent.text[-1] == "!":
+                    break
+                if ent.text[-1] in ".,!?;:":
+                    ent.text = ent.text[:-1]
+                    ent.end -= 1
+                    ent.normalized_value = normalize_entity_value(ent.entity_type, ent.text)
+                else:
+                    break
+            while ent.text and ent.text[-1] in " \t\r\n":
+                ent.text = ent.text[:-1]
+                ent.end -= 1
+            while ent.text and ent.text[0] in " \t\r\n":
+                ent.text = ent.text[1:]
+                ent.start += 1
 
             if 0 <= ent.start < ent.end <= len(prompt):
                 actual = prompt[ent.start: ent.end]

@@ -123,6 +123,12 @@ PERSON_STOP_WORDS: Set[str] = {
     "sending", "updating", "creating", "formatting", "planning",
     "learning", "following", "joining", "leaving", "organizing",
     "processing", "verifying",
+    # Conjunctions, pronouns, and prepositions
+    "if", "then", "because", "since", "while", "until", "unless", "that",
+    "you", "he", "she", "they", "we", "i", "me", "him", "her", "us", "them",
+    "it", "its", "our", "ours", "their", "theirs", "myself", "yourself",
+    "himself", "herself", "on", "by", "off", "over", "under", "again",
+    "further", "once", "any", "some", "all", "both", "each", "few", "more", "most", "other",
 }
 
 _NAME_INTRO_RE = re.compile(

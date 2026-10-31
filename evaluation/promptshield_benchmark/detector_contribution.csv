@@ -32,7 +32,7 @@ test_019,10.0.0.1,IP_ADDRESS,regex,regex_ipv4,0.9999,True
 test_019,10.0.0.2,IP_ADDRESS,regex,regex_ipv4,0.9999,True
 test_020,Sanjay Mehta,PERSON,presidio,presidio_person,0.85,True
 test_020,sanjay.mehta@corp.com,EMAIL,regex,regex_email,1.0,True
-test_020,022-2345-6789,PHONE,gliner2,gliner2_phone_number,1.0,True
+test_020,022-2345-6789,PHONE,regex,regex_phone_uk_national,1.0,True
 test_021,AWS,ORGANIZATION,spacy,spacy_org,0.9,True
 test_021,AKIAIOSFODNN7EXAMPLE,API_KEY,regex,regex_aws_access_key,0.9987,True
 test_022,GB82 WEST 1234 5698 7654 32,BANK_ACCOUNT,regex,regex_iban,1.0,True
@@ -182,7 +182,7 @@ test_103,Kolkata,LOCATION,gliner2,gliner2_city,0.9999,True
 test_105,Kavya Reddy,PERSON,gliner2,gliner2_full_name,0.9987,True
 test_105,SR-1091,TICKET_ID,regex,regex_ticket_id,0.95,True
 test_105,support@helpdesk.in,EMAIL,regex,regex_email,1.0,True
-test_105,040-66554433,PHONE,gliner2,gliner2_phone_number,1.0,True
+test_105,040-66554433,PHONE,regex,regex_phone_australia,1.0,True
 test_105,CUST-71200,CUSTOMER_ID,regex,regex_customer_id,0.95,True
 test_105,Infosys,ORGANIZATION,spacy,spacy_org,0.85,True
 test_105,Hyderabad,LOCATION,gliner2,gliner2_city,0.9962,True
@@ -927,13 +927,13 @@ test_432,Gita Gopinath,PERSON,presidio,presidio_person,0.85,True
 test_432,London,LOCATION,gliner2,gliner2_city,0.9996,True
 test_433,Thierry Henry,PERSON,presidio,presidio_person,0.85,True
 test_433,Bill Gates,PERSON,presidio,presidio_person,0.85,True
-test_434,Emmanuel Macron,PERSON,presidio,presidio_person,0.85,True
+test_434,Emmanuel Macron,PERSON,spacy,spacy_person,0.92,True
 test_434,Paris,LOCATION,gliner2,gliner2_city,0.9993,True
-test_435,Narendra Modi,PERSON,presidio,presidio_person,0.85,True
+test_435,Narendra Modi,PERSON,spacy,spacy_person,0.92,True
 test_435,Bengaluru,LOCATION,gliner2,gliner2_city,0.9989,True
 test_436,Olaf Scholz,PERSON,gliner2,gliner2_person,0.7481,True
 test_436,Munich,LOCATION,gliner2,gliner2_city,0.9998,True
-test_437,Keir Starmer,PERSON,presidio,presidio_person,0.85,True
+test_437,Keir Starmer,PERSON,spacy,spacy_person,0.92,True
 test_437,European Union,ORGANIZATION,spacy,spacy_org,0.9,True
 test_437,Brussels,LOCATION,gliner2,gliner2_city,0.9989,True
 test_438,UNESCO,ORGANIZATION,spacy,spacy_org,0.9,True
@@ -977,3 +977,94 @@ test_498,"October 31, 2024",DATE,regex,regex_date_month_dd_yyyy,0.9011,True
 test_499,Joy Mukherjee,PERSON,presidio,presidio_person,0.85,True
 test_500,Hunter Thompson,PERSON,presidio,presidio_person,0.85,True
 test_500,CUST-99201,CUSTOMER_ID,regex,regex_customer_id,0.95,True
+test_501,anand,PERSON,gliner2,gliner2_person,0.5942,True
+test_502,deepak,PERSON,gliner2,gliner2_person,0.6002,True
+test_503,priya,PERSON,gliner2,gliner2_person,0.6082,True
+test_504,rohit,PERSON,gliner2,gliner2_person,0.6341,True
+test_505,sunil,PERSON,gliner2,gliner2_person,0.6297,True
+test_506,anand,PERSON,gliner2,gliner2_person,0.5802,True
+test_507,deepak,PERSON,gliner2,gliner2_person,0.6466,True
+test_508,priya,PERSON,gliner2,gliner2_person,0.7903,True
+test_509,rohit,PERSON,gliner2,gliner2_person,0.624,True
+test_510,sunil,PERSON,gliner2,gliner2_person,0.6782,True
+test_511,AnAnD,PERSON,spacy,spacy_org,0.85,True
+test_512,SuNiL,PERSON,gliner2,gliner2_person,0.651,True
+test_513,RoHiT,PERSON,gliner2,gliner2_person,0.7428,True
+test_514,PrIyA,PERSON,gliner2,gliner2_person,0.5766,True
+test_515,AnAnD,PERSON,gliner2,gliner2_full_name,0.544,True
+test_516,ANAND,PERSON,gliner2,gliner2_person,0.5942,True
+test_517,ROHIT,PERSON,gliner2,gliner2_person,0.7881,True
+test_518,DEEPAK,PERSON,gliner2,gliner2_person,0.7234,True
+test_519,PRIYA,PERSON,gliner2,gliner2_person,0.6924,True
+test_520,SUNIL,PERSON,gliner2,gliner2_person,0.6333,True
+test_521,AlphaSecret#99,PASSWORD,regex,regex_password_assignment,0.9862,True
+test_522,MyTopSecret99!,PASSWORD,regex,regex_password_natural_lang,0.92,True
+test_523,WinterPass#2024,PASSWORD,regex,regex_password_assignment,0.9927,True
+test_524,K9#mP2$vL8,PASSWORD,regex,regex_password_assignment,0.9928,True
+test_525,CloudAdmin#772,PASSWORD,regex,regex_password_natural_lang,0.92,True
+test_526,SuperSecr3t!,PASSWORD,regex,regex_password_assignment,0.92,True
+test_527,VaultKey#9182,PASSWORD,regex,regex_password_natural_lang,0.9787,True
+test_528,TestPass1234#,PASSWORD,regex,regex_password_assignment,0.9862,True
+test_529,SecureDev#5544,PASSWORD,regex,regex_password_natural_lang,0.9929,True
+test_530,TempCode#881,PASSWORD,regex,regex_password_assignment,0.932,True
+test_531,RiverStone#9472,PASSWORD,regex,regex_password_assignment,0.9783,True
+test_532,MixedCase#9911,PASSWORD,regex,regex_password_assignment,0.9837,True
+test_533,ALLCAPSPASS#12,PASSWORD,regex,regex_password_assignment,0.9893,True
+test_534,admin/SecretRoot#88,PASSWORD,regex,regex_credential_assignment,0.92,True
+test_535,948271,PASSWORD,regex,regex_password_assignment,0.9796,True
+test_536,123456789012,BANK_ACCOUNT,regex,regex_account_number,0.9987,True
+test_537,987654321098,BANK_ACCOUNT,regex,regex_account_number,0.9991,True
+test_538,554433221100,BANK_ACCOUNT,regex,regex_account_number,0.9976,True
+test_539,987654321012,BANK_ACCOUNT,regex,regex_account_number,0.95,True
+test_540,112233445566,BANK_ACCOUNT,regex,regex_account_number,0.95,True
+test_541,445566778899,BANK_ACCOUNT,gliner2,gliner2_account_number,0.9327,True
+test_542,998877665544,BANK_ACCOUNT,regex,regex_account_number,0.9948,True
+test_543,123123123123,BANK_ACCOUNT,regex,regex_account_number,0.9825,True
+test_544,321321321321,BANK_ACCOUNT,regex,regex_account_number,0.975,True
+test_545,665544332211,BANK_ACCOUNT,regex,regex_account_number,0.9984,True
+test_546,778899001122,BANK_ACCOUNT,regex,regex_account_number,0.9988,True
+test_547,889900112233,BANK_ACCOUNT,regex,regex_account_number,0.9987,True
+test_548,456789012345,BANK_ACCOUNT,regex,regex_account_number,0.9976,True
+test_563,456245627895,NATIONAL_ID,regex,regex_aadhaar_contextual,0.98,True
+test_564,987654321098,NATIONAL_ID,gliner2,gliner2_national_id_number,0.9611,True
+test_565,345678901234,NATIONAL_ID,regex,regex_aadhaar_contextual,0.98,True
+test_566,567890123456,NATIONAL_ID,regex,regex_aadhaar_contextual,0.98,True
+test_567,4562 4562 7895,NATIONAL_ID,regex,regex_aadhaar_contextual,0.98,True
+test_568,9876 5432 1098,NATIONAL_ID,regex,regex_aadhaar_spaced_ownership,0.96,True
+test_569,ABCDE1234F,TAX_ID,regex,regex_pan_contextual,0.99,True
+test_570,BKRPD5432M,TAX_ID,regex,regex_pan_direct,0.96,True
+test_571,XYZPA9876K,TAX_ID,regex,regex_pan_contextual,0.99,True
+test_572,CRKPS1234L,TAX_ID,regex,regex_pan_contextual,0.99,True
+test_573,DL-1420110012345,DRIVER_LICENSE,regex,regex_indian_dl_contextual,0.9899,True
+test_574,MH-0220190054321,DRIVER_LICENSE,regex,regex_indian_dl_contextual,0.9863,True
+test_575,WBD1234567,NATIONAL_ID,regex,regex_voter_id_contextual,0.98,True
+test_576,ABC9876543,NATIONAL_ID,regex,regex_voter_id_contextual,0.98,True
+test_578,+1 (202) 555-0199,PHONE,regex,regex_phone_international,1.0,True
+test_579,Chicago,LOCATION,gliner2,gliner2_city,0.9879,True
+test_579,312-555-0143,PHONE,regex,regex_phone_nanp,1.0,True
+test_580,1-800-555-0199,PHONE,regex,regex_phone_nanp,1.0,True
+test_581,UK,LOCATION,gliner2,gliner2_country,0.9872,True
+test_581,020 7946 0958,PHONE,regex,regex_phone_uk_national,1.0,True
+test_582,London,LOCATION,gliner2,gliner2_city,0.9949,True
+test_582,01632 960001,PHONE,regex,regex_phone_uk_national,1.0,True
+test_583,UK,LOCATION,gliner2,gliner2_country,0.9864,True
+test_583,07911 123456,PHONE,regex,regex_phone_uk_national,1.0,True
+test_584,Tariq,PERSON,gliner2,gliner2_full_name,0.8006,True
+test_584,+971 50 123 4567,PHONE,regex,regex_phone_international,1.0,True
+test_584,Dubai,LOCATION,gliner2,gliner2_city,0.9934,True
+test_585,UAE,LOCATION,gliner2,gliner2_country,0.85,True
+test_585,050 123 4567,PHONE,regex,regex_phone_middle_east,1.0,True
+test_586,Sydney,LOCATION,gliner2,gliner2_city,0.9792,True
+test_586,02 9876 5432,PHONE,regex,regex_phone_europe_national,1.0,True
+test_587,Paris,LOCATION,gliner2,gliner2_city,0.9877,True
+test_587,01 42 68 55 55,PHONE,regex,regex_phone_europe_national,1.0,True
+test_588,Today,DATE,gliner2,gliner2_date_of_birth,0.6125,True
+test_589,today,DATE,gliner2,gliner2_date_of_birth,0.9503,True
+test_590,Tomorrow,DATE,gliner2,gliner2_date_of_birth,0.5057,True
+test_591,Yesterday,DATE,gliner2,gliner2_sensitive_date,0.9505,True
+test_592,New York,LOCATION,gliner2,gliner2_city,0.9906,True
+test_596,Narendra Modi,PERSON,presidio,presidio_person,0.85,True
+test_597,Microsoft,ORGANIZATION,spacy,spacy_org,0.9,True
+test_598,Priya Nair,PERSON,presidio,presidio_person,0.85,True
+test_599,Rahul Verma,PERSON,presidio,presidio_person,0.85,True
+test_600,Acme Corp,ORGANIZATION,spacy,spacy_org,0.85,True

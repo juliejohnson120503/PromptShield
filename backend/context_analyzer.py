@@ -198,11 +198,11 @@ EXCLUSION_DIRECTIVE_PATTERN = re.compile(
 )
 
 TYPE_DIRECTIVE_KEYWORDS: Dict[EntityType, List[str]] = {
-    EntityType.EMAIL: ["email", "e-mail", "email address", "customer's email", "customer email", "support email", "support emails", "emails"],
-    EntityType.PHONE: ["phone", "phone number", "mobile", "cell", "telephone", "contact number"],
-    EntityType.BANK_ACCOUNT: ["account", "account number", "bank account", "account no", "iban", "customer account number", "customer's account"],
+    EntityType.EMAIL: ["email", "e-mail", "email address", "customer's email", "customer email", "support email", "support emails", "emails", "mail id"],
+    EntityType.PHONE: ["phone", "phone number", "mobile", "cell", "telephone", "contact number", "ph no", "mob no", "cntct no", "ph", "mob"],
+    EntityType.BANK_ACCOUNT: ["account", "account number", "bank account", "account no", "iban", "customer account number", "customer's account", "acc no", "act no", "a/c", "a/c no", "acct no"],
     EntityType.API_KEY: ["api key", "apikey", "api_key", "secret key"],
-    EntityType.PASSWORD: ["password", "passcode", "secret", "credentials"],
+    EntityType.PASSWORD: ["password", "passcode", "secret", "credentials", "passwrd", "pswd", "pwd", "p@ss"],
     EntityType.ACCESS_TOKEN: ["token", "access token", "jwt", "bearer token"],
     EntityType.CREDIT_CARD: ["card", "credit card", "debit card", "card number"],
     EntityType.IP_ADDRESS: ["ip", "ip address", "server ip", "server ip address"],
@@ -213,7 +213,11 @@ TYPE_DIRECTIVE_KEYWORDS: Dict[EntityType, List[str]] = {
     EntityType.PERSON: ["name", "person", "customer name", "client name", "employee name"],
     EntityType.ORGANIZATION: ["company", "organization", "org", "firm", "business"],
     EntityType.LOCATION: ["location", "city", "place"],
+    EntityType.NATIONAL_ID: ["national id", "national identity", "id number", "aadhaar", "aadhar", "adhr", "adhr no", "adhar no", "uidai", "uid", "voter id", "epic"],
+    EntityType.TAX_ID: ["tax id", "ssn", "tin", "pan", "pan card", "pan number", "pan no"],
+    EntityType.DRIVER_LICENSE: ["driver's license", "driving license", "driver license", "driving licence", "dl", "dl no"],
 }
+
 
 
 def extract_linguistic_directives(prompt: str) -> Tuple[List[str], List[str]]:

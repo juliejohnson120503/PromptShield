@@ -31,7 +31,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 304.3065
+    "latency_ms": 680.7041
   },
   {
     "prompt_id": "test_002",
@@ -47,7 +47,7 @@
         "detector": "regex_email"
       }
     ],
-    "latency_ms": 324.1284
+    "latency_ms": 627.9444
   },
   {
     "prompt_id": "test_003",
@@ -72,7 +72,7 @@
         "detector": "regex_phone_international"
       }
     ],
-    "latency_ms": 315.7009
+    "latency_ms": 650.464
   },
   {
     "prompt_id": "test_004",
@@ -88,7 +88,7 @@
         "detector": "regex_ipv4"
       }
     ],
-    "latency_ms": 306.4992
+    "latency_ms": 703.4273
   },
   {
     "prompt_id": "test_005",
@@ -113,7 +113,7 @@
         "detector": "luhn_credit_card"
       }
     ],
-    "latency_ms": 331.79
+    "latency_ms": 651.6719
   },
   {
     "prompt_id": "test_006",
@@ -138,7 +138,7 @@
         "detector": "regex_openai_api_key"
       }
     ],
-    "latency_ms": 330.9459
+    "latency_ms": 696.5634
   },
   {
     "prompt_id": "test_007",
@@ -154,7 +154,7 @@
         "detector": "regex_password_assignment"
       }
     ],
-    "latency_ms": 288.3396
+    "latency_ms": 654.3521
   },
   {
     "prompt_id": "test_008",
@@ -179,7 +179,7 @@
         "detector": "spacy_org"
       }
     ],
-    "latency_ms": 302.6917
+    "latency_ms": 678.1235
   },
   {
     "prompt_id": "test_009",
@@ -213,7 +213,7 @@
         "detector": "regex_date_iso"
       }
     ],
-    "latency_ms": 342.9167
+    "latency_ms": 717.0903
   },
   {
     "prompt_id": "test_010",
@@ -247,7 +247,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 303.2945
+    "latency_ms": 653.2658
   },
   {
     "prompt_id": "test_011",
@@ -263,7 +263,7 @@
         "detector": "regex_jwt_token"
       }
     ],
-    "latency_ms": 371.0803
+    "latency_ms": 805.8969
   },
   {
     "prompt_id": "test_012",
@@ -288,19 +288,19 @@
         "detector": "regex_address_with_postal_code"
       }
     ],
-    "latency_ms": 329.1899
+    "latency_ms": 674.7411
   },
   {
     "prompt_id": "test_013",
     "text": "Machine learning models process large amounts of data to find patterns.",
     "detected_entities": [],
-    "latency_ms": 287.8342
+    "latency_ms": 705.2481
   },
   {
     "prompt_id": "test_014",
     "text": "The network team discussed the IP protocol standards.",
     "detected_entities": [],
-    "latency_ms": 272.6048
+    "latency_ms": 645.6448
   },
   {
     "prompt_id": "test_015",
@@ -316,19 +316,19 @@
         "detector": "spacy_org"
       }
     ],
-    "latency_ms": 300.8695
+    "latency_ms": 610.7241
   },
   {
     "prompt_id": "test_016",
     "text": "The order was delayed yesterday due to weather conditions.",
     "detected_entities": [],
-    "latency_ms": 273.2283
+    "latency_ms": 610.9928
   },
   {
     "prompt_id": "test_017",
     "text": "Password management is critical for enterprise security policies.",
     "detected_entities": [],
-    "latency_ms": 292.3823
+    "latency_ms": 649.0672
   },
   {
     "prompt_id": "test_018",
@@ -380,7 +380,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 314.641
+    "latency_ms": 629.9242
   },
   {
     "prompt_id": "test_019",
@@ -405,7 +405,7 @@
         "detector": "regex_ipv4"
       }
     ],
-    "latency_ms": 306.9732
+    "latency_ms": 665.4506
   },
   {
     "prompt_id": "test_020",
@@ -435,11 +435,11 @@
         "end": 79,
         "label": "PHONE",
         "confidence": 1.0,
-        "source": "gliner2",
-        "detector": "gliner2_phone_number"
+        "source": "regex",
+        "detector": "regex_phone_uk_national"
       }
     ],
-    "latency_ms": 355.7561
+    "latency_ms": 726.3959
   },
   {
     "prompt_id": "test_021",
@@ -464,7 +464,7 @@
         "detector": "regex_aws_access_key"
       }
     ],
-    "latency_ms": 295.6995
+    "latency_ms": 648.3649
   },
   {
     "prompt_id": "test_022",
@@ -480,7 +480,7 @@
         "detector": "regex_iban"
       }
     ],
-    "latency_ms": 296.7729
+    "latency_ms": 658.0284
   },
   {
     "prompt_id": "test_023",
@@ -505,7 +505,7 @@
         "detector": "regex_date_month_dd_yyyy"
       }
     ],
-    "latency_ms": 384.9466
+    "latency_ms": 692.674
   },
   {
     "prompt_id": "test_024",
@@ -539,7 +539,7 @@
         "detector": "spacy_org"
       }
     ],
-    "latency_ms": 339.2207
+    "latency_ms": 791.3615
   },
   {
     "prompt_id": "test_025",
@@ -564,7 +564,7 @@
         "detector": "regex_pin_natural_lang"
       }
     ],
-    "latency_ms": 308.2142
+    "latency_ms": 964.7627
   },
   {
     "prompt_id": "test_026",
@@ -580,7 +580,7 @@
         "detector": "regex_ipv6"
       }
     ],
-    "latency_ms": 361.1555
+    "latency_ms": 793.9127
   },
   {
     "prompt_id": "test_027",
@@ -623,7 +623,7 @@
         "detector": "regex_date_dmy"
       }
     ],
-    "latency_ms": 302.0608
+    "latency_ms": 798.7219
   },
   {
     "prompt_id": "test_028",
@@ -639,7 +639,7 @@
         "detector": "regex_github_pat"
       }
     ],
-    "latency_ms": 295.9395
+    "latency_ms": 760.5517
   },
   {
     "prompt_id": "test_029",
@@ -664,7 +664,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 271.4573
+    "latency_ms": 660.6923
   },
   {
     "prompt_id": "test_030",
@@ -680,7 +680,7 @@
         "detector": "gliner2_address"
       }
     ],
-    "latency_ms": 302.4101
+    "latency_ms": 574.9727
   },
   {
     "prompt_id": "test_031",
@@ -696,7 +696,7 @@
         "detector": "gliner2_account_id"
       }
     ],
-    "latency_ms": 284.325
+    "latency_ms": 612.5167
   },
   {
     "prompt_id": "test_032",
@@ -712,7 +712,7 @@
         "detector": "gliner2_date_of_birth"
       }
     ],
-    "latency_ms": 298.7141
+    "latency_ms": 631.2279
   },
   {
     "prompt_id": "test_033",
@@ -737,7 +737,7 @@
         "detector": "regex_email"
       }
     ],
-    "latency_ms": 307.3192
+    "latency_ms": 597.3562
   },
   {
     "prompt_id": "test_034",
@@ -771,13 +771,13 @@
         "detector": "regex_phone_international"
       }
     ],
-    "latency_ms": 299.843
+    "latency_ms": 644.1455
   },
   {
     "prompt_id": "test_035",
     "text": "The 2024 fiscal year budget review is scheduled for Q3.",
     "detected_entities": [],
-    "latency_ms": 335.8036
+    "latency_ms": 630.0372
   },
   {
     "prompt_id": "test_036",
@@ -793,7 +793,7 @@
         "detector": "regex_generic_key_assignment"
       }
     ],
-    "latency_ms": 320.3191
+    "latency_ms": 642.559
   },
   {
     "prompt_id": "test_037",
@@ -827,7 +827,7 @@
         "detector": "regex_customer_id"
       }
     ],
-    "latency_ms": 298.4968
+    "latency_ms": 650.4294
   },
   {
     "prompt_id": "test_038",
@@ -843,7 +843,7 @@
         "detector": "regex_password_assignment"
       }
     ],
-    "latency_ms": 321.8611
+    "latency_ms": 639.4876
   },
   {
     "prompt_id": "test_039",
@@ -868,7 +868,7 @@
         "detector": "regex_ipv4"
       }
     ],
-    "latency_ms": 302.2367
+    "latency_ms": 651.8888
   },
   {
     "prompt_id": "test_040",
@@ -893,13 +893,13 @@
         "detector": "luhn_credit_card"
       }
     ],
-    "latency_ms": 279.6975
+    "latency_ms": 628.1843
   },
   {
     "prompt_id": "test_041",
     "text": "The data science team analyzed revenue trends across all regions.",
     "detected_entities": [],
-    "latency_ms": 276.8162
+    "latency_ms": 647.1069
   },
   {
     "prompt_id": "test_042",
@@ -924,7 +924,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 275.1116
+    "latency_ms": 587.0482
   },
   {
     "prompt_id": "test_043",
@@ -949,7 +949,7 @@
         "detector": "regex_google_api_key"
       }
     ],
-    "latency_ms": 304.1925
+    "latency_ms": 608.167
   },
   {
     "prompt_id": "test_044",
@@ -983,7 +983,7 @@
         "detector": "regex_phone_international"
       }
     ],
-    "latency_ms": 306.1747
+    "latency_ms": 648.2688
   },
   {
     "prompt_id": "test_045",
@@ -1008,13 +1008,13 @@
         "detector": "regex_address_with_postal_code"
       }
     ],
-    "latency_ms": 286.2959
+    "latency_ms": 637.8847
   },
   {
     "prompt_id": "test_046",
     "text": "All database connections should use encrypted tunnels over TLS.",
     "detected_entities": [],
-    "latency_ms": 317.5617
+    "latency_ms": 643.2481
   },
   {
     "prompt_id": "test_047",
@@ -1030,7 +1030,7 @@
         "detector": "regex_bearer_token"
       }
     ],
-    "latency_ms": 287.825
+    "latency_ms": 708.6625
   },
   {
     "prompt_id": "test_048",
@@ -1055,13 +1055,13 @@
         "detector": "presidio_person"
       }
     ],
-    "latency_ms": 288.6403
+    "latency_ms": 723.3172
   },
   {
     "prompt_id": "test_049",
     "text": "The AI model was trained on a publicly available dataset from 2022.",
     "detected_entities": [],
-    "latency_ms": 290.5217
+    "latency_ms": 627.3052
   },
   {
     "prompt_id": "test_050",
@@ -1086,7 +1086,7 @@
         "detector": "gliner2_address"
       }
     ],
-    "latency_ms": 273.7145
+    "latency_ms": 582.1439
   },
   {
     "prompt_id": "test_051",
@@ -1102,7 +1102,7 @@
         "detector": "regex_jwt_token"
       }
     ],
-    "latency_ms": 342.2362
+    "latency_ms": 695.0677
   },
   {
     "prompt_id": "test_052",
@@ -1118,7 +1118,7 @@
         "detector": "luhn_credit_card"
       }
     ],
-    "latency_ms": 290.3728
+    "latency_ms": 705.5504
   },
   {
     "prompt_id": "test_053",
@@ -1152,7 +1152,7 @@
         "detector": "regex_account_number"
       }
     ],
-    "latency_ms": 309.11
+    "latency_ms": 671.7546
   },
   {
     "prompt_id": "test_054",
@@ -1168,7 +1168,7 @@
         "detector": "regex_date_month_dd_yyyy"
       }
     ],
-    "latency_ms": 273.5123
+    "latency_ms": 650.1176
   },
   {
     "prompt_id": "test_055",
@@ -1184,7 +1184,7 @@
         "detector": "gliner2_address"
       }
     ],
-    "latency_ms": 304.305
+    "latency_ms": 668.6312
   },
   {
     "prompt_id": "test_056",
@@ -1227,13 +1227,13 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 299.5896
+    "latency_ms": 852.7385
   },
   {
     "prompt_id": "test_057",
     "text": "This is a test prompt with no sensitive information whatsoever.",
     "detected_entities": [],
-    "latency_ms": 290.4162
+    "latency_ms": 813.7321
   },
   {
     "prompt_id": "test_058",
@@ -1276,7 +1276,7 @@
         "detector": "regex_date_iso"
       }
     ],
-    "latency_ms": 286.2723
+    "latency_ms": 739.8975
   },
   {
     "prompt_id": "test_059",
@@ -1301,7 +1301,7 @@
         "detector": "regex_ipv4"
       }
     ],
-    "latency_ms": 315.6185
+    "latency_ms": 669.5813
   },
   {
     "prompt_id": "test_060",
@@ -1335,7 +1335,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 288.5944
+    "latency_ms": 643.1595
   },
   {
     "prompt_id": "test_061",
@@ -1360,13 +1360,13 @@
         "detector": "gliner2_password"
       }
     ],
-    "latency_ms": 297.0834
+    "latency_ms": 730.4703
   },
   {
     "prompt_id": "test_062",
     "text": "Refer to the quarterly report for team metrics and KPIs.",
     "detected_entities": [],
-    "latency_ms": 283.7684
+    "latency_ms": 686.4203
   },
   {
     "prompt_id": "test_063",
@@ -1391,7 +1391,7 @@
         "detector": "regex_ticket_id"
       }
     ],
-    "latency_ms": 277.0088
+    "latency_ms": 629.9478
   },
   {
     "prompt_id": "test_064",
@@ -1416,7 +1416,7 @@
         "detector": "luhn_credit_card"
       }
     ],
-    "latency_ms": 289.4756
+    "latency_ms": 650.2073
   },
   {
     "prompt_id": "test_065",
@@ -1459,19 +1459,19 @@
         "detector": "regex_order_id"
       }
     ],
-    "latency_ms": 301.1902
+    "latency_ms": 695.1502
   },
   {
     "prompt_id": "test_066",
     "text": "The number 1234567890 appears in the report but is not a phone number.",
     "detected_entities": [],
-    "latency_ms": 296.5754
+    "latency_ms": 649.1849
   },
   {
     "prompt_id": "test_067",
     "text": "The 12345 code refers to a postal zone in our delivery map.",
     "detected_entities": [],
-    "latency_ms": 277.4467
+    "latency_ms": 673.0996
   },
   {
     "prompt_id": "test_068",
@@ -1514,7 +1514,7 @@
         "detector": "gliner2_state_or_region"
       }
     ],
-    "latency_ms": 273.7025
+    "latency_ms": 669.5808
   },
   {
     "prompt_id": "test_069",
@@ -1548,7 +1548,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 279.2354
+    "latency_ms": 731.1782
   },
   {
     "prompt_id": "test_070",
@@ -1564,7 +1564,7 @@
         "detector": "regex_credential_assignment"
       }
     ],
-    "latency_ms": 329.2401
+    "latency_ms": 674.0378
   },
   {
     "prompt_id": "test_071",
@@ -1580,13 +1580,13 @@
         "detector": "presidio_person"
       }
     ],
-    "latency_ms": 326.0306
+    "latency_ms": 691.5563
   },
   {
     "prompt_id": "test_072",
     "text": "I need to pay my phone bill. The amount is 999.",
     "detected_entities": [],
-    "latency_ms": 319.6221
+    "latency_ms": 690.6174
   },
   {
     "prompt_id": "test_073",
@@ -1638,7 +1638,7 @@
         "detector": "regex_order_id"
       }
     ],
-    "latency_ms": 312.7494
+    "latency_ms": 738.8381
   },
   {
     "prompt_id": "test_074",
@@ -1654,13 +1654,13 @@
         "detector": "regex_generic_key_assignment"
       }
     ],
-    "latency_ms": 312.9629
+    "latency_ms": 708.3001
   },
   {
     "prompt_id": "test_075",
     "text": "Today is a good day for a code review.",
     "detected_entities": [],
-    "latency_ms": 261.0099
+    "latency_ms": 781.8076
   },
   {
     "prompt_id": "test_076",
@@ -1685,7 +1685,7 @@
         "detector": "gliner2_date_of_birth"
       }
     ],
-    "latency_ms": 300.3674
+    "latency_ms": 735.9471
   },
   {
     "prompt_id": "test_077",
@@ -1701,7 +1701,7 @@
         "detector": "regex_ipv4"
       }
     ],
-    "latency_ms": 311.5426
+    "latency_ms": 678.5406
   },
   {
     "prompt_id": "test_078",
@@ -1735,7 +1735,7 @@
         "detector": "spacy_org"
       }
     ],
-    "latency_ms": 301.728
+    "latency_ms": 694.3211
   },
   {
     "prompt_id": "test_079",
@@ -1751,7 +1751,7 @@
         "detector": "gliner2_password"
       }
     ],
-    "latency_ms": 293.7268
+    "latency_ms": 696.0103
   },
   {
     "prompt_id": "test_080",
@@ -1767,7 +1767,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 316.7282
+    "latency_ms": 800.4096
   },
   {
     "prompt_id": "test_081",
@@ -1783,7 +1783,7 @@
         "detector": "luhn_credit_card"
       }
     ],
-    "latency_ms": 280.5384
+    "latency_ms": 648.2862
   },
   {
     "prompt_id": "test_082",
@@ -1808,7 +1808,7 @@
         "detector": "gliner2_person"
       }
     ],
-    "latency_ms": 300.4028
+    "latency_ms": 699.3895
   },
   {
     "prompt_id": "test_083",
@@ -1833,13 +1833,13 @@
         "detector": "regex_date_iso"
       }
     ],
-    "latency_ms": 302.6956
+    "latency_ms": 666.1961
   },
   {
     "prompt_id": "test_084",
     "text": "The software runs on Ubuntu 22.04 LTS with kernel 5.15.",
     "detected_entities": [],
-    "latency_ms": 313.9534
+    "latency_ms": 665.9336
   },
   {
     "prompt_id": "test_085",
@@ -1882,13 +1882,13 @@
         "detector": "regex_date_dd_month_yyyy"
       }
     ],
-    "latency_ms": 283.0216
+    "latency_ms": 697.237
   },
   {
     "prompt_id": "test_086",
     "text": "Policy update: all API keys must be rotated every 90 days.",
     "detected_entities": [],
-    "latency_ms": 303.2473
+    "latency_ms": 668.1462
   },
   {
     "prompt_id": "test_087",
@@ -1922,7 +1922,7 @@
         "detector": "regex_email"
       }
     ],
-    "latency_ms": 289.0363
+    "latency_ms": 680.7057
   },
   {
     "prompt_id": "test_088",
@@ -1938,7 +1938,7 @@
         "detector": "regex_generic_key_assignment"
       }
     ],
-    "latency_ms": 321.6741
+    "latency_ms": 693.822
   },
   {
     "prompt_id": "test_089",
@@ -1954,13 +1954,13 @@
         "detector": "regex_address_with_postal_code"
       }
     ],
-    "latency_ms": 619.0619
+    "latency_ms": 694.7055
   },
   {
     "prompt_id": "test_090",
     "text": "The number 55 is not an ID, and May is not a name.",
     "detected_entities": [],
-    "latency_ms": 371.1368
+    "latency_ms": 661.1957
   },
   {
     "prompt_id": "test_091",
@@ -2003,7 +2003,7 @@
         "detector": "regex_date_dd_month_yyyy"
       }
     ],
-    "latency_ms": 361.1151
+    "latency_ms": 714.5613
   },
   {
     "prompt_id": "test_092",
@@ -2028,7 +2028,7 @@
         "detector": "regex_email"
       }
     ],
-    "latency_ms": 278.6062
+    "latency_ms": 688.4033
   },
   {
     "prompt_id": "test_093",
@@ -2053,7 +2053,7 @@
         "detector": "regex_generic_key_assignment"
       }
     ],
-    "latency_ms": 370.2239
+    "latency_ms": 695.1456
   },
   {
     "prompt_id": "test_094",
@@ -2096,13 +2096,13 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 327.3229
+    "latency_ms": 648.9318
   },
   {
     "prompt_id": "test_095",
     "text": "All transactions above 10000 require additional verification steps.",
     "detected_entities": [],
-    "latency_ms": 288.4911
+    "latency_ms": 670.2865
   },
   {
     "prompt_id": "test_096",
@@ -2127,13 +2127,13 @@
         "detector": "presidio_person"
       }
     ],
-    "latency_ms": 310.9619
+    "latency_ms": 688.5181
   },
   {
     "prompt_id": "test_097",
     "text": "The data pipeline runs nightly at 02:00 UTC. No PII is processed.",
     "detected_entities": [],
-    "latency_ms": 318.731
+    "latency_ms": 658.9424
   },
   {
     "prompt_id": "test_098",
@@ -2158,7 +2158,7 @@
         "detector": "gliner2_password"
       }
     ],
-    "latency_ms": 291.4608
+    "latency_ms": 690.2789
   },
   {
     "prompt_id": "test_099",
@@ -2192,7 +2192,7 @@
         "detector": "spacy_org"
       }
     ],
-    "latency_ms": 289.461
+    "latency_ms": 656.6952
   },
   {
     "prompt_id": "test_100",
@@ -2235,13 +2235,13 @@
         "detector": "regex_phone_international"
       }
     ],
-    "latency_ms": 302.3044
+    "latency_ms": 695.937
   },
   {
     "prompt_id": "test_101",
     "text": "Network protocol TCP/IP is fundamental for internet communications.",
     "detected_entities": [],
-    "latency_ms": 301.0791
+    "latency_ms": 704.5118
   },
   {
     "prompt_id": "test_102",
@@ -2284,7 +2284,7 @@
         "detector": "regex_date_month_dd_yyyy"
       }
     ],
-    "latency_ms": 362.4661
+    "latency_ms": 711.6804
   },
   {
     "prompt_id": "test_103",
@@ -2318,13 +2318,13 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 321.2141
+    "latency_ms": 714.7677
   },
   {
     "prompt_id": "test_104",
     "text": "The organization chart shows three departments with 200 employees each.",
     "detected_entities": [],
-    "latency_ms": 268.2596
+    "latency_ms": 674.503
   },
   {
     "prompt_id": "test_105",
@@ -2363,8 +2363,8 @@
         "end": 112,
         "label": "PHONE",
         "confidence": 1.0,
-        "source": "gliner2",
-        "detector": "gliner2_phone_number"
+        "source": "regex",
+        "detector": "regex_phone_australia"
       },
       {
         "text": "CUST-71200",
@@ -2394,7 +2394,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 379.5524
+    "latency_ms": 812.459
   },
   {
     "prompt_id": "test_106",
@@ -2446,7 +2446,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 305.3682
+    "latency_ms": 679.0917
   },
   {
     "prompt_id": "test_107",
@@ -2480,7 +2480,7 @@
         "detector": "spacy_org"
       }
     ],
-    "latency_ms": 425.5232
+    "latency_ms": 664.9251
   },
   {
     "prompt_id": "test_108",
@@ -2496,7 +2496,7 @@
         "detector": "regex_jwt_token"
       }
     ],
-    "latency_ms": 387.8852
+    "latency_ms": 743.626
   },
   {
     "prompt_id": "test_109",
@@ -2521,7 +2521,7 @@
         "detector": "presidio_person"
       }
     ],
-    "latency_ms": 361.5822
+    "latency_ms": 743.0343
   },
   {
     "prompt_id": "test_110",
@@ -2537,7 +2537,7 @@
         "detector": "regex_connection_string"
       }
     ],
-    "latency_ms": 421.3707
+    "latency_ms": 686.6074
   },
   {
     "prompt_id": "test_111",
@@ -2562,7 +2562,7 @@
         "detector": "regex_ipv4"
       }
     ],
-    "latency_ms": 331.5711
+    "latency_ms": 731.9587
   },
   {
     "prompt_id": "test_112",
@@ -2587,7 +2587,7 @@
         "detector": "presidio_person"
       }
     ],
-    "latency_ms": 336.2253
+    "latency_ms": 745.2718
   },
   {
     "prompt_id": "test_113",
@@ -2612,7 +2612,7 @@
         "detector": "regex_password_space_separated"
       }
     ],
-    "latency_ms": 266.3045
+    "latency_ms": 770.9997
   },
   {
     "prompt_id": "test_114",
@@ -2646,7 +2646,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 288.5885
+    "latency_ms": 740.5395
   },
   {
     "prompt_id": "test_115",
@@ -2671,7 +2671,7 @@
         "detector": "regex_date_dmy"
       }
     ],
-    "latency_ms": 331.4582
+    "latency_ms": 725.0957
   },
   {
     "prompt_id": "test_116",
@@ -2705,7 +2705,7 @@
         "detector": "regex_order_id"
       }
     ],
-    "latency_ms": 284.9186
+    "latency_ms": 628.7783
   },
   {
     "prompt_id": "test_117",
@@ -2739,7 +2739,7 @@
         "detector": "regex_order_id"
       }
     ],
-    "latency_ms": 271.0178
+    "latency_ms": 635.7937
   },
   {
     "prompt_id": "test_118",
@@ -2773,7 +2773,7 @@
         "detector": "regex_order_id"
       }
     ],
-    "latency_ms": 313.5585
+    "latency_ms": 644.2927
   },
   {
     "prompt_id": "test_119",
@@ -2798,7 +2798,7 @@
         "detector": "presidio_person"
       }
     ],
-    "latency_ms": 314.1132
+    "latency_ms": 647.4408
   },
   {
     "prompt_id": "test_120",
@@ -2823,7 +2823,7 @@
         "detector": "spacy_org"
       }
     ],
-    "latency_ms": 332.1481
+    "latency_ms": 660.348
   },
   {
     "prompt_id": "test_121",
@@ -2857,7 +2857,7 @@
         "detector": "spacy_org"
       }
     ],
-    "latency_ms": 305.7223
+    "latency_ms": 656.425
   },
   {
     "prompt_id": "test_122",
@@ -2900,7 +2900,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 326.5754
+    "latency_ms": 641.7609
   },
   {
     "prompt_id": "test_123",
@@ -2934,7 +2934,7 @@
         "detector": "regex_date_dmy"
       }
     ],
-    "latency_ms": 360.2988
+    "latency_ms": 654.3205
   },
   {
     "prompt_id": "test_124",
@@ -2968,7 +2968,7 @@
         "detector": "gliner2_address"
       }
     ],
-    "latency_ms": 320.0643
+    "latency_ms": 647.6599
   },
   {
     "prompt_id": "test_125",
@@ -3002,7 +3002,7 @@
         "detector": "regex_date_dmy"
       }
     ],
-    "latency_ms": 352.1676
+    "latency_ms": 692.512
   },
   {
     "prompt_id": "test_126",
@@ -3036,7 +3036,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 345.8818
+    "latency_ms": 641.194
   },
   {
     "prompt_id": "test_127",
@@ -3070,7 +3070,7 @@
         "detector": "regex_customer_id"
       }
     ],
-    "latency_ms": 321.5553
+    "latency_ms": 798.049
   },
   {
     "prompt_id": "test_128",
@@ -3104,7 +3104,7 @@
         "detector": "regex_phone_international"
       }
     ],
-    "latency_ms": 305.5443
+    "latency_ms": 605.0731
   },
   {
     "prompt_id": "test_129",
@@ -3138,7 +3138,7 @@
         "detector": "gliner2_phone_number"
       }
     ],
-    "latency_ms": 388.222
+    "latency_ms": 667.0317
   },
   {
     "prompt_id": "test_130",
@@ -3172,7 +3172,7 @@
         "detector": "regex_date_dd_month_yyyy"
       }
     ],
-    "latency_ms": 290.8092
+    "latency_ms": 670.3289
   },
   {
     "prompt_id": "test_131",
@@ -3197,7 +3197,7 @@
         "detector": "regex_email"
       }
     ],
-    "latency_ms": 365.0494
+    "latency_ms": 653.3407
   },
   {
     "prompt_id": "test_132",
@@ -3240,7 +3240,7 @@
         "detector": "spacy_org"
       }
     ],
-    "latency_ms": 294.9014
+    "latency_ms": 724.3761
   },
   {
     "prompt_id": "test_133",
@@ -3265,7 +3265,7 @@
         "detector": "regex_phone_international"
       }
     ],
-    "latency_ms": 265.7935
+    "latency_ms": 653.4912
   },
   {
     "prompt_id": "test_134",
@@ -3290,7 +3290,7 @@
         "detector": "regex_date_dd_month_yyyy"
       }
     ],
-    "latency_ms": 362.7942
+    "latency_ms": 730.6913
   },
   {
     "prompt_id": "test_135",
@@ -3324,7 +3324,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 447.515
+    "latency_ms": 801.8386
   },
   {
     "prompt_id": "test_136",
@@ -3349,7 +3349,7 @@
         "detector": "regex_ipv4"
       }
     ],
-    "latency_ms": 520.4437
+    "latency_ms": 713.5163
   },
   {
     "prompt_id": "test_137",
@@ -3374,7 +3374,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 452.8752
+    "latency_ms": 763.88
   },
   {
     "prompt_id": "test_138",
@@ -3399,7 +3399,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 400.6632
+    "latency_ms": 675.752
   },
   {
     "prompt_id": "test_139",
@@ -3424,7 +3424,7 @@
         "detector": "spacy_org"
       }
     ],
-    "latency_ms": 420.8086
+    "latency_ms": 681.9756
   },
   {
     "prompt_id": "test_140",
@@ -3449,7 +3449,7 @@
         "detector": "gliner2_person"
       }
     ],
-    "latency_ms": 314.8985
+    "latency_ms": 661.4121
   },
   {
     "prompt_id": "test_141",
@@ -3474,7 +3474,7 @@
         "detector": "presidio_person"
       }
     ],
-    "latency_ms": 313.4305
+    "latency_ms": 668.784
   },
   {
     "prompt_id": "test_142",
@@ -3490,7 +3490,7 @@
         "detector": "fusion_compound_address"
       }
     ],
-    "latency_ms": 305.6583
+    "latency_ms": 653.8804
   },
   {
     "prompt_id": "test_143",
@@ -3515,7 +3515,7 @@
         "detector": "presidio_person"
       }
     ],
-    "latency_ms": 351.3432
+    "latency_ms": 688.3933
   },
   {
     "prompt_id": "test_144",
@@ -3540,7 +3540,7 @@
         "detector": "regex_customer_id"
       }
     ],
-    "latency_ms": 311.5776
+    "latency_ms": 722.3544
   },
   {
     "prompt_id": "test_145",
@@ -3565,7 +3565,7 @@
         "detector": "gliner2_country"
       }
     ],
-    "latency_ms": 332.5681
+    "latency_ms": 620.9552
   },
   {
     "prompt_id": "test_146",
@@ -3635,7 +3635,7 @@
         "detector": "regex_order_id"
       }
     ],
-    "latency_ms": 432.8569
+    "latency_ms": 649.3041
   },
   {
     "prompt_id": "test_147",
@@ -3687,7 +3687,7 @@
         "detector": "regex_email"
       }
     ],
-    "latency_ms": 503.726
+    "latency_ms": 694.2758
   },
   {
     "prompt_id": "test_148",
@@ -3730,7 +3730,7 @@
         "detector": "regex_ticket_id"
       }
     ],
-    "latency_ms": 426.0816
+    "latency_ms": 768.0641
   },
   {
     "prompt_id": "test_149",
@@ -3773,7 +3773,7 @@
         "detector": "regex_date_dd_month_yyyy"
       }
     ],
-    "latency_ms": 410.8381
+    "latency_ms": 730.8107
   },
   {
     "prompt_id": "test_150",
@@ -3825,7 +3825,7 @@
         "detector": "regex_date_dmy"
       }
     ],
-    "latency_ms": 334.4099
+    "latency_ms": 776.3834
   },
   {
     "prompt_id": "test_151",
@@ -3868,7 +3868,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 360.836
+    "latency_ms": 682.6889
   },
   {
     "prompt_id": "test_152",
@@ -3911,7 +3911,7 @@
         "detector": "gliner2_phone_number"
       }
     ],
-    "latency_ms": 368.2464
+    "latency_ms": 783.3356
   },
   {
     "prompt_id": "test_153",
@@ -3954,7 +3954,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 288.2357
+    "latency_ms": 670.5718
   },
   {
     "prompt_id": "test_154",
@@ -3997,7 +3997,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 290.0387
+    "latency_ms": 693.7284
   },
   {
     "prompt_id": "test_155",
@@ -4031,7 +4031,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 275.5237
+    "latency_ms": 679.0513
   },
   {
     "prompt_id": "test_156",
@@ -4065,7 +4065,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 295.9592
+    "latency_ms": 683.7697
   },
   {
     "prompt_id": "test_157",
@@ -4090,7 +4090,7 @@
         "detector": "spacy_org"
       }
     ],
-    "latency_ms": 280.5339
+    "latency_ms": 661.8414
   },
   {
     "prompt_id": "test_158",
@@ -4115,97 +4115,97 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 286.6589
+    "latency_ms": 713.3071
   },
   {
     "prompt_id": "test_159",
     "text": "Binary search has a logarithmic time complexity of O(log n) in the worst case.",
     "detected_entities": [],
-    "latency_ms": 315.8838
+    "latency_ms": 721.9653
   },
   {
     "prompt_id": "test_160",
     "text": "The quick brown fox jumps over the lazy dog in standard English typography tests.",
     "detected_entities": [],
-    "latency_ms": 299.7683
+    "latency_ms": 670.3347
   },
   {
     "prompt_id": "test_161",
     "text": "Photosynthesis converts carbon dioxide and water into glucose and oxygen using sunlight.",
     "detected_entities": [],
-    "latency_ms": 283.13
+    "latency_ms": 666.1343
   },
   {
     "prompt_id": "test_162",
     "text": "Database normalization reduces data redundancy and improves data integrity across tables.",
     "detected_entities": [],
-    "latency_ms": 348.4809
+    "latency_ms": 673.5253
   },
   {
     "prompt_id": "test_163",
     "text": "In mathematics, the Pythagorean theorem states that a squared plus b squared equals c squared.",
     "detected_entities": [],
-    "latency_ms": 347.0457
+    "latency_ms": 685.1463
   },
   {
     "prompt_id": "test_164",
     "text": "HTTP 404 is an error status code indicating that the server cannot find the requested resource.",
     "detected_entities": [],
-    "latency_ms": 280.8853
+    "latency_ms": 661.2377
   },
   {
     "prompt_id": "test_165",
     "text": "TCP provides reliable, ordered, and error-checked delivery of a stream of octets between applications.",
     "detected_entities": [],
-    "latency_ms": 321.2897
+    "latency_ms": 709.6285
   },
   {
     "prompt_id": "test_166",
     "text": "Machine learning models utilize gradient descent optimization to minimize the loss function.",
     "detected_entities": [],
-    "latency_ms": 310.124
+    "latency_ms": 696.7568
   },
   {
     "prompt_id": "test_167",
     "text": "Recursion occurs when a function calls itself directly or indirectly to solve smaller subproblems.",
     "detected_entities": [],
-    "latency_ms": 280.1444
+    "latency_ms": 697.9029
   },
   {
     "prompt_id": "test_168",
     "text": "Unit testing verifies that individual components of software work as expected in isolation.",
     "detected_entities": [],
-    "latency_ms": 304.6106
+    "latency_ms": 674.7557
   },
   {
     "prompt_id": "test_169",
     "text": "Continuous integration pipelines automatically build, test, and package application artifacts.",
     "detected_entities": [],
-    "latency_ms": 285.5614
+    "latency_ms": 669.6701
   },
   {
     "prompt_id": "test_170",
     "text": "Refactoring improves internal code structure without altering external observable behavior.",
     "detected_entities": [],
-    "latency_ms": 275.2637
+    "latency_ms": 630.9114
   },
   {
     "prompt_id": "test_171",
     "text": "The capital asset pricing model estimates the expected return of an asset given its systematic risk.",
     "detected_entities": [],
-    "latency_ms": 279.3481
+    "latency_ms": 669.3642
   },
   {
     "prompt_id": "test_172",
     "text": "Object-oriented programming principles include encapsulation, abstraction, inheritance, and polymorphism.",
     "detected_entities": [],
-    "latency_ms": 287.4924
+    "latency_ms": 648.5409
   },
   {
     "prompt_id": "test_173",
     "text": "Hash tables offer average O(1) time complexity for lookup, insertion, and deletion operations.",
     "detected_entities": [],
-    "latency_ms": 296.6712
+    "latency_ms": 699.2565
   },
   {
     "prompt_id": "test_174",
@@ -4248,7 +4248,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 341.5566
+    "latency_ms": 705.0053
   },
   {
     "prompt_id": "test_175",
@@ -4282,19 +4282,19 @@
         "detector": "spacy_org"
       }
     ],
-    "latency_ms": 305.3668
+    "latency_ms": 680.8172
   },
   {
     "prompt_id": "test_176",
     "text": "Algorithm efficiency can be benchmarked using asymptotic notation and empirical runtime profiling.",
     "detected_entities": [],
-    "latency_ms": 293.6967
+    "latency_ms": 676.7078
   },
   {
     "prompt_id": "test_177",
     "text": "Encrypted communication channels rely on public key cryptography to establish secure shared secrets.",
     "detected_entities": [],
-    "latency_ms": 333.5747
+    "latency_ms": 644.3512
   },
   {
     "prompt_id": "test_178",
@@ -4337,7 +4337,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 362.4808
+    "latency_ms": 659.5706
   },
   {
     "prompt_id": "test_179",
@@ -4371,7 +4371,7 @@
         "detector": "regex_order_id"
       }
     ],
-    "latency_ms": 325.9466
+    "latency_ms": 685.2392
   },
   {
     "prompt_id": "test_180",
@@ -4405,7 +4405,7 @@
         "detector": "regex_date_dmy"
       }
     ],
-    "latency_ms": 316.7784
+    "latency_ms": 741.6119
   },
   {
     "prompt_id": "test_181",
@@ -4439,7 +4439,7 @@
         "detector": "regex_password_natural_lang"
       }
     ],
-    "latency_ms": 317.8285
+    "latency_ms": 793.9991
   },
   {
     "prompt_id": "test_182",
@@ -4482,7 +4482,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 315.0442
+    "latency_ms": 736.2464
   },
   {
     "prompt_id": "test_183",
@@ -4516,19 +4516,19 @@
         "detector": "spacy_org"
       }
     ],
-    "latency_ms": 299.5898
+    "latency_ms": 669.1406
   },
   {
     "prompt_id": "test_184",
     "text": "Algorithm efficiency can be benchmarked using asymptotic notation and empirical runtime profiling.",
     "detected_entities": [],
-    "latency_ms": 285.1721
+    "latency_ms": 669.1312
   },
   {
     "prompt_id": "test_185",
     "text": "Encrypted communication channels rely on public key cryptography to establish secure shared secrets.",
     "detected_entities": [],
-    "latency_ms": 298.2546
+    "latency_ms": 652.0328
   },
   {
     "prompt_id": "test_186",
@@ -4571,7 +4571,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 287.6077
+    "latency_ms": 729.2114
   },
   {
     "prompt_id": "test_187",
@@ -4605,7 +4605,7 @@
         "detector": "regex_order_id"
       }
     ],
-    "latency_ms": 306.8007
+    "latency_ms": 678.9296
   },
   {
     "prompt_id": "test_188",
@@ -4639,7 +4639,7 @@
         "detector": "regex_date_dmy"
       }
     ],
-    "latency_ms": 317.6656
+    "latency_ms": 710.5889
   },
   {
     "prompt_id": "test_189",
@@ -4673,7 +4673,7 @@
         "detector": "regex_password_natural_lang"
       }
     ],
-    "latency_ms": 316.5575
+    "latency_ms": 750.8363
   },
   {
     "prompt_id": "test_190",
@@ -4716,7 +4716,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 327.992
+    "latency_ms": 699.6932
   },
   {
     "prompt_id": "test_191",
@@ -4750,19 +4750,19 @@
         "detector": "spacy_org"
       }
     ],
-    "latency_ms": 284.2774
+    "latency_ms": 805.7799
   },
   {
     "prompt_id": "test_192",
     "text": "Algorithm efficiency can be benchmarked using asymptotic notation and empirical runtime profiling.",
     "detected_entities": [],
-    "latency_ms": 288.0206
+    "latency_ms": 689.7786
   },
   {
     "prompt_id": "test_193",
     "text": "Encrypted communication channels rely on public key cryptography to establish secure shared secrets.",
     "detected_entities": [],
-    "latency_ms": 316.0342
+    "latency_ms": 785.9426
   },
   {
     "prompt_id": "test_194",
@@ -4805,7 +4805,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 293.9096
+    "latency_ms": 601.1717
   },
   {
     "prompt_id": "test_195",
@@ -4839,7 +4839,7 @@
         "detector": "regex_order_id"
       }
     ],
-    "latency_ms": 315.2194
+    "latency_ms": 707.7167
   },
   {
     "prompt_id": "test_196",
@@ -4873,7 +4873,7 @@
         "detector": "regex_date_dmy"
       }
     ],
-    "latency_ms": 296.683
+    "latency_ms": 660.3653
   },
   {
     "prompt_id": "test_197",
@@ -4907,7 +4907,7 @@
         "detector": "regex_password_natural_lang"
       }
     ],
-    "latency_ms": 298.3049
+    "latency_ms": 717.0346
   },
   {
     "prompt_id": "test_198",
@@ -4950,7 +4950,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 323.6696
+    "latency_ms": 797.3029
   },
   {
     "prompt_id": "test_199",
@@ -4984,19 +4984,19 @@
         "detector": "spacy_org"
       }
     ],
-    "latency_ms": 337.2244
+    "latency_ms": 670.4256
   },
   {
     "prompt_id": "test_200",
     "text": "Algorithm efficiency can be benchmarked using asymptotic notation and empirical runtime profiling.",
     "detected_entities": [],
-    "latency_ms": 293.7443
+    "latency_ms": 628.7933
   },
   {
     "prompt_id": "test_201",
     "text": "Encrypted communication channels rely on public key cryptography to establish secure shared secrets.",
     "detected_entities": [],
-    "latency_ms": 287.2174
+    "latency_ms": 642.0513
   },
   {
     "prompt_id": "test_202",
@@ -5039,7 +5039,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 324.5122
+    "latency_ms": 663.438
   },
   {
     "prompt_id": "test_203",
@@ -5073,7 +5073,7 @@
         "detector": "regex_order_id"
       }
     ],
-    "latency_ms": 323.8607
+    "latency_ms": 662.3355
   },
   {
     "prompt_id": "test_204",
@@ -5107,7 +5107,7 @@
         "detector": "regex_date_dmy"
       }
     ],
-    "latency_ms": 336.5245
+    "latency_ms": 726.9791
   },
   {
     "prompt_id": "test_205",
@@ -5141,7 +5141,7 @@
         "detector": "regex_password_natural_lang"
       }
     ],
-    "latency_ms": 317.5252
+    "latency_ms": 749.7692
   },
   {
     "prompt_id": "test_206",
@@ -5184,7 +5184,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 304.5993
+    "latency_ms": 706.2629
   },
   {
     "prompt_id": "test_207",
@@ -5218,19 +5218,19 @@
         "detector": "spacy_org"
       }
     ],
-    "latency_ms": 293.2124
+    "latency_ms": 631.9308
   },
   {
     "prompt_id": "test_208",
     "text": "Algorithm efficiency can be benchmarked using asymptotic notation and empirical runtime profiling.",
     "detected_entities": [],
-    "latency_ms": 274.953
+    "latency_ms": 700.6294
   },
   {
     "prompt_id": "test_209",
     "text": "Encrypted communication channels rely on public key cryptography to establish secure shared secrets.",
     "detected_entities": [],
-    "latency_ms": 292.4424
+    "latency_ms": 682.1506
   },
   {
     "prompt_id": "test_210",
@@ -5273,7 +5273,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 415.7347
+    "latency_ms": 721.8648
   },
   {
     "prompt_id": "test_211",
@@ -5307,7 +5307,7 @@
         "detector": "regex_order_id"
       }
     ],
-    "latency_ms": 365.1503
+    "latency_ms": 747.5784
   },
   {
     "prompt_id": "test_212",
@@ -5341,7 +5341,7 @@
         "detector": "regex_date_dmy"
       }
     ],
-    "latency_ms": 406.4872
+    "latency_ms": 706.4219
   },
   {
     "prompt_id": "test_213",
@@ -5375,7 +5375,7 @@
         "detector": "regex_password_natural_lang"
       }
     ],
-    "latency_ms": 306.9436
+    "latency_ms": 713.5954
   },
   {
     "prompt_id": "test_214",
@@ -5418,7 +5418,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 303.7121
+    "latency_ms": 712.095
   },
   {
     "prompt_id": "test_215",
@@ -5452,19 +5452,19 @@
         "detector": "spacy_org"
       }
     ],
-    "latency_ms": 288.0597
+    "latency_ms": 673.773
   },
   {
     "prompt_id": "test_216",
     "text": "Algorithm efficiency can be benchmarked using asymptotic notation and empirical runtime profiling.",
     "detected_entities": [],
-    "latency_ms": 275.224
+    "latency_ms": 683.3889
   },
   {
     "prompt_id": "test_217",
     "text": "Encrypted communication channels rely on public key cryptography to establish secure shared secrets.",
     "detected_entities": [],
-    "latency_ms": 280.7449
+    "latency_ms": 690.7164
   },
   {
     "prompt_id": "test_218",
@@ -5507,7 +5507,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 322.9028
+    "latency_ms": 738.7349
   },
   {
     "prompt_id": "test_219",
@@ -5541,7 +5541,7 @@
         "detector": "regex_order_id"
       }
     ],
-    "latency_ms": 287.4363
+    "latency_ms": 718.5638
   },
   {
     "prompt_id": "test_220",
@@ -5575,7 +5575,7 @@
         "detector": "regex_date_dmy"
       }
     ],
-    "latency_ms": 319.2989
+    "latency_ms": 731.5737
   },
   {
     "prompt_id": "test_221",
@@ -5609,7 +5609,7 @@
         "detector": "regex_password_natural_lang"
       }
     ],
-    "latency_ms": 332.1151
+    "latency_ms": 761.8748
   },
   {
     "prompt_id": "test_222",
@@ -5652,7 +5652,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 317.2955
+    "latency_ms": 701.1181
   },
   {
     "prompt_id": "test_223",
@@ -5686,19 +5686,19 @@
         "detector": "spacy_org"
       }
     ],
-    "latency_ms": 277.6871
+    "latency_ms": 693.3086
   },
   {
     "prompt_id": "test_224",
     "text": "Algorithm efficiency can be benchmarked using asymptotic notation and empirical runtime profiling.",
     "detected_entities": [],
-    "latency_ms": 301.3798
+    "latency_ms": 697.4569
   },
   {
     "prompt_id": "test_225",
     "text": "Encrypted communication channels rely on public key cryptography to establish secure shared secrets.",
     "detected_entities": [],
-    "latency_ms": 290.3054
+    "latency_ms": 664.7518
   },
   {
     "prompt_id": "test_226",
@@ -5741,7 +5741,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 289.3414
+    "latency_ms": 657.5874
   },
   {
     "prompt_id": "test_227",
@@ -5775,7 +5775,7 @@
         "detector": "regex_order_id"
       }
     ],
-    "latency_ms": 310.3324
+    "latency_ms": 690.319
   },
   {
     "prompt_id": "test_228",
@@ -5809,7 +5809,7 @@
         "detector": "regex_date_dmy"
       }
     ],
-    "latency_ms": 318.5732
+    "latency_ms": 732.7055
   },
   {
     "prompt_id": "test_229",
@@ -5843,7 +5843,7 @@
         "detector": "regex_password_natural_lang"
       }
     ],
-    "latency_ms": 322.8184
+    "latency_ms": 748.8177
   },
   {
     "prompt_id": "test_230",
@@ -5886,7 +5886,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 306.8972
+    "latency_ms": 701.4032
   },
   {
     "prompt_id": "test_231",
@@ -5920,19 +5920,19 @@
         "detector": "spacy_org"
       }
     ],
-    "latency_ms": 296.0519
+    "latency_ms": 675.2701
   },
   {
     "prompt_id": "test_232",
     "text": "Algorithm efficiency can be benchmarked using asymptotic notation and empirical runtime profiling.",
     "detected_entities": [],
-    "latency_ms": 289.9994
+    "latency_ms": 802.9212
   },
   {
     "prompt_id": "test_233",
     "text": "Encrypted communication channels rely on public key cryptography to establish secure shared secrets.",
     "detected_entities": [],
-    "latency_ms": 283.1436
+    "latency_ms": 1586.1922
   },
   {
     "prompt_id": "test_234",
@@ -5975,7 +5975,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 293.553
+    "latency_ms": 2083.8009
   },
   {
     "prompt_id": "test_235",
@@ -6009,7 +6009,7 @@
         "detector": "regex_order_id"
       }
     ],
-    "latency_ms": 291.9787
+    "latency_ms": 1841.4568
   },
   {
     "prompt_id": "test_236",
@@ -6043,7 +6043,7 @@
         "detector": "regex_date_dmy"
       }
     ],
-    "latency_ms": 305.1422
+    "latency_ms": 1859.341
   },
   {
     "prompt_id": "test_237",
@@ -6077,7 +6077,7 @@
         "detector": "regex_password_natural_lang"
       }
     ],
-    "latency_ms": 305.6263
+    "latency_ms": 1973.255
   },
   {
     "prompt_id": "test_238",
@@ -6120,7 +6120,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 441.6884
+    "latency_ms": 1945.9158
   },
   {
     "prompt_id": "test_239",
@@ -6154,19 +6154,19 @@
         "detector": "spacy_org"
       }
     ],
-    "latency_ms": 312.3494
+    "latency_ms": 1774.538
   },
   {
     "prompt_id": "test_240",
     "text": "Algorithm efficiency can be benchmarked using asymptotic notation and empirical runtime profiling.",
     "detected_entities": [],
-    "latency_ms": 286.3986
+    "latency_ms": 1769.6791
   },
   {
     "prompt_id": "test_241",
     "text": "Encrypted communication channels rely on public key cryptography to establish secure shared secrets.",
     "detected_entities": [],
-    "latency_ms": 306.2831
+    "latency_ms": 1763.4748
   },
   {
     "prompt_id": "test_242",
@@ -6209,7 +6209,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 306.3987
+    "latency_ms": 1835.8282
   },
   {
     "prompt_id": "test_243",
@@ -6243,7 +6243,7 @@
         "detector": "regex_order_id"
       }
     ],
-    "latency_ms": 300.0189
+    "latency_ms": 794.0857
   },
   {
     "prompt_id": "test_244",
@@ -6277,7 +6277,7 @@
         "detector": "regex_date_dmy"
       }
     ],
-    "latency_ms": 332.5817
+    "latency_ms": 1836.3986
   },
   {
     "prompt_id": "test_245",
@@ -6311,7 +6311,7 @@
         "detector": "regex_password_natural_lang"
       }
     ],
-    "latency_ms": 315.1409
+    "latency_ms": 2867.6531
   },
   {
     "prompt_id": "test_246",
@@ -6354,7 +6354,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 296.2702
+    "latency_ms": 2279.9848
   },
   {
     "prompt_id": "test_247",
@@ -6388,19 +6388,19 @@
         "detector": "spacy_org"
       }
     ],
-    "latency_ms": 272.3038
+    "latency_ms": 1992.3503
   },
   {
     "prompt_id": "test_248",
     "text": "Algorithm efficiency can be benchmarked using asymptotic notation and empirical runtime profiling.",
     "detected_entities": [],
-    "latency_ms": 284.7336
+    "latency_ms": 1932.9848
   },
   {
     "prompt_id": "test_249",
     "text": "Encrypted communication channels rely on public key cryptography to establish secure shared secrets.",
     "detected_entities": [],
-    "latency_ms": 266.9658
+    "latency_ms": 1901.4875
   },
   {
     "prompt_id": "test_250",
@@ -6443,7 +6443,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 299.7818
+    "latency_ms": 1875.8633
   },
   {
     "prompt_id": "test_251",
@@ -6477,7 +6477,7 @@
         "detector": "fusion_compound_address"
       }
     ],
-    "latency_ms": 337.9651
+    "latency_ms": 2163.6436
   },
   {
     "prompt_id": "test_252",
@@ -6511,7 +6511,7 @@
         "detector": "regex_date_month_dd_yyyy"
       }
     ],
-    "latency_ms": 480.4191
+    "latency_ms": 1937.4397
   },
   {
     "prompt_id": "test_253",
@@ -6536,7 +6536,7 @@
         "detector": "regex_order_id"
       }
     ],
-    "latency_ms": 426.5498
+    "latency_ms": 1885.4554
   },
   {
     "prompt_id": "test_254",
@@ -6561,7 +6561,7 @@
         "detector": "regex_phone_international"
       }
     ],
-    "latency_ms": 462.9662
+    "latency_ms": 2564.8286
   },
   {
     "prompt_id": "test_255",
@@ -6586,7 +6586,7 @@
         "detector": "regex_address_with_postal_code"
       }
     ],
-    "latency_ms": 379.0206
+    "latency_ms": 2207.213
   },
   {
     "prompt_id": "test_256",
@@ -6611,7 +6611,7 @@
         "detector": "regex_date_month_dd_yyyy"
       }
     ],
-    "latency_ms": 355.4103
+    "latency_ms": 2041.3334
   },
   {
     "prompt_id": "test_257",
@@ -6636,7 +6636,7 @@
         "detector": "regex_order_id"
       }
     ],
-    "latency_ms": 384.5278
+    "latency_ms": 1865.8991
   },
   {
     "prompt_id": "test_258",
@@ -6661,7 +6661,7 @@
         "detector": "regex_customer_id"
       }
     ],
-    "latency_ms": 318.6818
+    "latency_ms": 1917.4616
   },
   {
     "prompt_id": "test_259",
@@ -6686,7 +6686,7 @@
         "detector": "gliner2_phone_number"
       }
     ],
-    "latency_ms": 442.7143
+    "latency_ms": 2083.5161
   },
   {
     "prompt_id": "test_260",
@@ -6720,7 +6720,7 @@
         "detector": "regex_date_month_dd_yyyy"
       }
     ],
-    "latency_ms": 327.061
+    "latency_ms": 1923.6011
   },
   {
     "prompt_id": "test_261",
@@ -6745,7 +6745,7 @@
         "detector": "regex_order_id"
       }
     ],
-    "latency_ms": 281.2414
+    "latency_ms": 1919.6953
   },
   {
     "prompt_id": "test_262",
@@ -6779,7 +6779,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 296.1044
+    "latency_ms": 1925.0081
   },
   {
     "prompt_id": "test_263",
@@ -6804,7 +6804,7 @@
         "detector": "regex_email"
       }
     ],
-    "latency_ms": 315.3969
+    "latency_ms": 1938.7011
   },
   {
     "prompt_id": "test_264",
@@ -6829,7 +6829,7 @@
         "detector": "regex_address_with_postal_code"
       }
     ],
-    "latency_ms": 298.4636
+    "latency_ms": 1984.8857
   },
   {
     "prompt_id": "test_265",
@@ -6854,7 +6854,7 @@
         "detector": "regex_user_id"
       }
     ],
-    "latency_ms": 305.0675
+    "latency_ms": 1872.5675
   },
   {
     "prompt_id": "test_266",
@@ -6879,7 +6879,7 @@
         "detector": "regex_phone_international"
       }
     ],
-    "latency_ms": 316.1586
+    "latency_ms": 2004.0286
   },
   {
     "prompt_id": "test_267",
@@ -6904,7 +6904,7 @@
         "detector": "presidio_person"
       }
     ],
-    "latency_ms": 291.1341
+    "latency_ms": 1937.8841
   },
   {
     "prompt_id": "test_268",
@@ -6929,7 +6929,7 @@
         "detector": "regex_email"
       }
     ],
-    "latency_ms": 322.4182
+    "latency_ms": 1637.2916
   },
   {
     "prompt_id": "test_269",
@@ -6954,7 +6954,7 @@
         "detector": "regex_email"
       }
     ],
-    "latency_ms": 289.4395
+    "latency_ms": 717.1265
   },
   {
     "prompt_id": "test_270",
@@ -6979,7 +6979,7 @@
         "detector": "presidio_person"
       }
     ],
-    "latency_ms": 335.3814
+    "latency_ms": 823.0735
   },
   {
     "prompt_id": "test_271",
@@ -7004,7 +7004,7 @@
         "detector": "regex_phone_international"
       }
     ],
-    "latency_ms": 346.9841
+    "latency_ms": 892.1129
   },
   {
     "prompt_id": "test_272",
@@ -7038,7 +7038,7 @@
         "detector": "regex_date_month_dd_yyyy"
       }
     ],
-    "latency_ms": 301.5202
+    "latency_ms": 813.3608
   },
   {
     "prompt_id": "test_273",
@@ -7063,7 +7063,7 @@
         "detector": "regex_phone_international"
       }
     ],
-    "latency_ms": 301.3206
+    "latency_ms": 773.1875
   },
   {
     "prompt_id": "test_274",
@@ -7088,7 +7088,7 @@
         "detector": "presidio_person"
       }
     ],
-    "latency_ms": 301.8074
+    "latency_ms": 1902.876
   },
   {
     "prompt_id": "test_275",
@@ -7113,7 +7113,7 @@
         "detector": "regex_email"
       }
     ],
-    "latency_ms": 303.528
+    "latency_ms": 2014.8661
   },
   {
     "prompt_id": "test_276",
@@ -7147,7 +7147,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 269.129
+    "latency_ms": 1822.4797
   },
   {
     "prompt_id": "test_277",
@@ -7172,7 +7172,7 @@
         "detector": "regex_email"
       }
     ],
-    "latency_ms": 302.8982
+    "latency_ms": 1928.8708
   },
   {
     "prompt_id": "test_278",
@@ -7188,7 +7188,7 @@
         "detector": "regex_ticket_id"
       }
     ],
-    "latency_ms": 279.8681
+    "latency_ms": 1840.566
   },
   {
     "prompt_id": "test_279",
@@ -7213,7 +7213,7 @@
         "detector": "gliner2_phone_number"
       }
     ],
-    "latency_ms": 301.0003
+    "latency_ms": 2008.8431
   },
   {
     "prompt_id": "test_280",
@@ -7238,7 +7238,7 @@
         "detector": "fusion_compound_address"
       }
     ],
-    "latency_ms": 311.2399
+    "latency_ms": 1955.3257
   },
   {
     "prompt_id": "test_281",
@@ -7272,7 +7272,7 @@
         "detector": "spacy_org"
       }
     ],
-    "latency_ms": 299.5292
+    "latency_ms": 1989.8462
   },
   {
     "prompt_id": "test_282",
@@ -7288,7 +7288,7 @@
         "detector": "regex_iban"
       }
     ],
-    "latency_ms": 309.3688
+    "latency_ms": 1961.0816
   },
   {
     "prompt_id": "test_283",
@@ -7313,7 +7313,7 @@
         "detector": "regex_iban"
       }
     ],
-    "latency_ms": 320.4739
+    "latency_ms": 1971.5041
   },
   {
     "prompt_id": "test_284",
@@ -7347,7 +7347,7 @@
         "detector": "gliner2_card_expiry"
       }
     ],
-    "latency_ms": 296.1537
+    "latency_ms": 1882.6423
   },
   {
     "prompt_id": "test_285",
@@ -7381,7 +7381,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 305.0592
+    "latency_ms": 1844.6587
   },
   {
     "prompt_id": "test_286",
@@ -7415,7 +7415,7 @@
         "detector": "spacy_org"
       }
     ],
-    "latency_ms": 291.5406
+    "latency_ms": 1804.8508
   },
   {
     "prompt_id": "test_287",
@@ -7440,7 +7440,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 284.7064
+    "latency_ms": 2563.4303
   },
   {
     "prompt_id": "test_288",
@@ -7465,7 +7465,7 @@
         "detector": "regex_email"
       }
     ],
-    "latency_ms": 351.7536
+    "latency_ms": 1878.5102
   },
   {
     "prompt_id": "test_289",
@@ -7490,7 +7490,7 @@
         "detector": "regex_account_number"
       }
     ],
-    "latency_ms": 301.0992
+    "latency_ms": 1959.6752
   },
   {
     "prompt_id": "test_290",
@@ -7515,7 +7515,7 @@
         "detector": "luhn_credit_card"
       }
     ],
-    "latency_ms": 298.3576
+    "latency_ms": 1929.2723
   },
   {
     "prompt_id": "test_291",
@@ -7540,7 +7540,7 @@
         "detector": "spacy_org"
       }
     ],
-    "latency_ms": 316.8835
+    "latency_ms": 1982.3259
   },
   {
     "prompt_id": "test_292",
@@ -7565,7 +7565,7 @@
         "detector": "presidio_person"
       }
     ],
-    "latency_ms": 288.2813
+    "latency_ms": 1897.0155
   },
   {
     "prompt_id": "test_293",
@@ -7590,7 +7590,7 @@
         "detector": "presidio_person"
       }
     ],
-    "latency_ms": 279.758
+    "latency_ms": 1925.5419
   },
   {
     "prompt_id": "test_294",
@@ -7615,7 +7615,7 @@
         "detector": "regex_date_month_dd_yyyy"
       }
     ],
-    "latency_ms": 343.6321
+    "latency_ms": 2196.0974
   },
   {
     "prompt_id": "test_295",
@@ -7640,7 +7640,7 @@
         "detector": "spacy_org"
       }
     ],
-    "latency_ms": 308.1272
+    "latency_ms": 1435.5643
   },
   {
     "prompt_id": "test_296",
@@ -7656,7 +7656,7 @@
         "detector": "regex_account_number"
       }
     ],
-    "latency_ms": 298.2403
+    "latency_ms": 1033.475
   },
   {
     "prompt_id": "test_297",
@@ -7681,7 +7681,7 @@
         "detector": "presidio_person"
       }
     ],
-    "latency_ms": 301.2702
+    "latency_ms": 903.8292
   },
   {
     "prompt_id": "test_298",
@@ -7697,7 +7697,7 @@
         "detector": "luhn_credit_card"
       }
     ],
-    "latency_ms": 294.6229
+    "latency_ms": 1358.5715
   },
   {
     "prompt_id": "test_299",
@@ -7731,7 +7731,7 @@
         "detector": "regex_date_month_dd_yyyy"
       }
     ],
-    "latency_ms": 284.3934
+    "latency_ms": 1861.6862
   },
   {
     "prompt_id": "test_300",
@@ -7756,7 +7756,7 @@
         "detector": "regex_email"
       }
     ],
-    "latency_ms": 289.555
+    "latency_ms": 1861.4269
   },
   {
     "prompt_id": "test_301",
@@ -7781,7 +7781,7 @@
         "detector": "spacy_org"
       }
     ],
-    "latency_ms": 306.4013
+    "latency_ms": 1989.4114
   },
   {
     "prompt_id": "test_302",
@@ -7806,7 +7806,7 @@
         "detector": "presidio_person"
       }
     ],
-    "latency_ms": 291.9332
+    "latency_ms": 1889.2606
   },
   {
     "prompt_id": "test_303",
@@ -7831,7 +7831,7 @@
         "detector": "spacy_org"
       }
     ],
-    "latency_ms": 296.0089
+    "latency_ms": 782.8523
   },
   {
     "prompt_id": "test_304",
@@ -7847,7 +7847,7 @@
         "detector": "regex_iban"
       }
     ],
-    "latency_ms": 331.1529
+    "latency_ms": 923.7026
   },
   {
     "prompt_id": "test_305",
@@ -7872,7 +7872,7 @@
         "detector": "presidio_person"
       }
     ],
-    "latency_ms": 318.0235
+    "latency_ms": 882.8856
   },
   {
     "prompt_id": "test_306",
@@ -7906,7 +7906,7 @@
         "detector": "regex_bearer_token"
       }
     ],
-    "latency_ms": 358.0563
+    "latency_ms": 984.2011
   },
   {
     "prompt_id": "test_307",
@@ -7940,7 +7940,7 @@
         "detector": "regex_password_space_separated"
       }
     ],
-    "latency_ms": 312.379
+    "latency_ms": 711.0534
   },
   {
     "prompt_id": "test_308",
@@ -7974,7 +7974,7 @@
         "detector": "spacy_org"
       }
     ],
-    "latency_ms": 305.9956
+    "latency_ms": 712.9457
   },
   {
     "prompt_id": "test_309",
@@ -7999,7 +7999,7 @@
         "detector": "regex_date_month_dd_yyyy"
       }
     ],
-    "latency_ms": 331.2105
+    "latency_ms": 2058.9022
   },
   {
     "prompt_id": "test_310",
@@ -8024,7 +8024,7 @@
         "detector": "regex_email"
       }
     ],
-    "latency_ms": 303.6045
+    "latency_ms": 1904.2596
   },
   {
     "prompt_id": "test_311",
@@ -8049,7 +8049,7 @@
         "detector": "regex_openai_api_key"
       }
     ],
-    "latency_ms": 319.1512
+    "latency_ms": 901.3911
   },
   {
     "prompt_id": "test_312",
@@ -8074,7 +8074,7 @@
         "detector": "gliner2_secret"
       }
     ],
-    "latency_ms": 332.7599
+    "latency_ms": 931.8402
   },
   {
     "prompt_id": "test_313",
@@ -8108,7 +8108,7 @@
         "detector": "regex_ipv4"
       }
     ],
-    "latency_ms": 301.2956
+    "latency_ms": 788.1881
   },
   {
     "prompt_id": "test_314",
@@ -8133,7 +8133,7 @@
         "detector": "regex_slack_token"
       }
     ],
-    "latency_ms": 303.8511
+    "latency_ms": 709.4716
   },
   {
     "prompt_id": "test_315",
@@ -8149,7 +8149,7 @@
         "detector": "regex_ipv4"
       }
     ],
-    "latency_ms": 295.9024
+    "latency_ms": 711.2039
   },
   {
     "prompt_id": "test_316",
@@ -8183,7 +8183,7 @@
         "detector": "spacy_org"
       }
     ],
-    "latency_ms": 287.7544
+    "latency_ms": 699.0093
   },
   {
     "prompt_id": "test_317",
@@ -8208,7 +8208,7 @@
         "detector": "regex_password_space_separated"
       }
     ],
-    "latency_ms": 318.661
+    "latency_ms": 925.4773
   },
   {
     "prompt_id": "test_318",
@@ -8224,7 +8224,7 @@
         "detector": "regex_bearer_token"
       }
     ],
-    "latency_ms": 301.8447
+    "latency_ms": 1824.9483
   },
   {
     "prompt_id": "test_319",
@@ -8249,7 +8249,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 291.2999
+    "latency_ms": 1796.9006
   },
   {
     "prompt_id": "test_320",
@@ -8283,7 +8283,7 @@
         "detector": "gliner2_api_key"
       }
     ],
-    "latency_ms": 307.3339
+    "latency_ms": 1734.5491
   },
   {
     "prompt_id": "test_321",
@@ -8308,7 +8308,7 @@
         "detector": "regex_password_space_separated"
       }
     ],
-    "latency_ms": 296.6668
+    "latency_ms": 1771.3773
   },
   {
     "prompt_id": "test_322",
@@ -8333,7 +8333,7 @@
         "detector": "regex_ipv4"
       }
     ],
-    "latency_ms": 412.9256
+    "latency_ms": 1788.5286
   },
   {
     "prompt_id": "test_323",
@@ -8367,7 +8367,7 @@
         "detector": "gliner2_person"
       }
     ],
-    "latency_ms": 439.0112
+    "latency_ms": 1938.9761
   },
   {
     "prompt_id": "test_324",
@@ -8392,7 +8392,7 @@
         "detector": "presidio_location"
       }
     ],
-    "latency_ms": 376.2759
+    "latency_ms": 1807.5927
   },
   {
     "prompt_id": "test_325",
@@ -8417,7 +8417,7 @@
         "detector": "regex_password_space_separated"
       }
     ],
-    "latency_ms": 402.4315
+    "latency_ms": 1779.3408
   },
   {
     "prompt_id": "test_326",
@@ -8442,7 +8442,7 @@
         "detector": "regex_date_month_dd_yyyy"
       }
     ],
-    "latency_ms": 362.406
+    "latency_ms": 1937.4126
   },
   {
     "prompt_id": "test_327",
@@ -8458,7 +8458,7 @@
         "detector": "regex_ipv4"
       }
     ],
-    "latency_ms": 306.8234
+    "latency_ms": 1732.8784
   },
   {
     "prompt_id": "test_328",
@@ -8483,7 +8483,7 @@
         "detector": "gliner2_api_key"
       }
     ],
-    "latency_ms": 298.0714
+    "latency_ms": 1891.4326
   },
   {
     "prompt_id": "test_329",
@@ -8508,7 +8508,7 @@
         "detector": "presidio_person"
       }
     ],
-    "latency_ms": 303.8043
+    "latency_ms": 1769.7504
   },
   {
     "prompt_id": "test_330",
@@ -8533,7 +8533,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 320.0128
+    "latency_ms": 1907.7439
   },
   {
     "prompt_id": "test_331",
@@ -8567,7 +8567,7 @@
         "detector": "regex_ipv4"
       }
     ],
-    "latency_ms": 310.9997
+    "latency_ms": 1922.5824
   },
   {
     "prompt_id": "test_332",
@@ -8592,7 +8592,7 @@
         "detector": "regex_openai_api_key"
       }
     ],
-    "latency_ms": 331.6348
+    "latency_ms": 1862.6767
   },
   {
     "prompt_id": "test_333",
@@ -8617,7 +8617,7 @@
         "detector": "regex_ipv4"
       }
     ],
-    "latency_ms": 294.0754
+    "latency_ms": 2129.2797
   },
   {
     "prompt_id": "test_334",
@@ -8633,7 +8633,7 @@
         "detector": "regex_bearer_token"
       }
     ],
-    "latency_ms": 309.1194
+    "latency_ms": 2235.3778
   },
   {
     "prompt_id": "test_335",
@@ -8649,7 +8649,7 @@
         "detector": "regex_password_space_separated"
       }
     ],
-    "latency_ms": 298.1752
+    "latency_ms": 1895.4737
   },
   {
     "prompt_id": "test_336",
@@ -8683,7 +8683,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 309.2418
+    "latency_ms": 1919.8835
   },
   {
     "prompt_id": "test_337",
@@ -8708,7 +8708,7 @@
         "detector": "regex_email"
       }
     ],
-    "latency_ms": 306.4495
+    "latency_ms": 1977.3046
   },
   {
     "prompt_id": "test_338",
@@ -8742,7 +8742,7 @@
         "detector": "regex_date_month_dd_yyyy"
       }
     ],
-    "latency_ms": 322.7502
+    "latency_ms": 1237.3333
   },
   {
     "prompt_id": "test_339",
@@ -8776,7 +8776,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 299.8713
+    "latency_ms": 794.2711
   },
   {
     "prompt_id": "test_340",
@@ -8792,7 +8792,7 @@
         "detector": "regex_email"
       }
     ],
-    "latency_ms": 292.7015
+    "latency_ms": 775.8999
   },
   {
     "prompt_id": "test_341",
@@ -8817,7 +8817,7 @@
         "detector": "gliner2_account_id"
       }
     ],
-    "latency_ms": 424.5279
+    "latency_ms": 716.8536
   },
   {
     "prompt_id": "test_342",
@@ -8842,7 +8842,7 @@
         "detector": "regex_phone_international"
       }
     ],
-    "latency_ms": 410.872
+    "latency_ms": 707.6889
   },
   {
     "prompt_id": "test_343",
@@ -8867,7 +8867,7 @@
         "detector": "spacy_org"
       }
     ],
-    "latency_ms": 332.1473
+    "latency_ms": 740.2662
   },
   {
     "prompt_id": "test_344",
@@ -8892,7 +8892,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 368.8033
+    "latency_ms": 699.5464
   },
   {
     "prompt_id": "test_345",
@@ -8917,7 +8917,7 @@
         "detector": "regex_address_with_postal_code"
       }
     ],
-    "latency_ms": 425.8848
+    "latency_ms": 735.6013
   },
   {
     "prompt_id": "test_346",
@@ -8942,7 +8942,7 @@
         "detector": "regex_date_month_dd_yyyy"
       }
     ],
-    "latency_ms": 390.8348
+    "latency_ms": 697.9478
   },
   {
     "prompt_id": "test_347",
@@ -8967,7 +8967,7 @@
         "detector": "spacy_org"
       }
     ],
-    "latency_ms": 324.744
+    "latency_ms": 681.7532
   },
   {
     "prompt_id": "test_348",
@@ -8992,7 +8992,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 284.4726
+    "latency_ms": 695.3547
   },
   {
     "prompt_id": "test_349",
@@ -9017,7 +9017,7 @@
         "detector": "regex_phone_international"
       }
     ],
-    "latency_ms": 301.3133
+    "latency_ms": 659.0226
   },
   {
     "prompt_id": "test_350",
@@ -9033,7 +9033,7 @@
         "detector": "regex_email"
       }
     ],
-    "latency_ms": 305.0429
+    "latency_ms": 694.693
   },
   {
     "prompt_id": "test_351",
@@ -9058,7 +9058,7 @@
         "detector": "spacy_org"
       }
     ],
-    "latency_ms": 280.7217
+    "latency_ms": 664.8219
   },
   {
     "prompt_id": "test_352",
@@ -9092,7 +9092,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 291.4765
+    "latency_ms": 673.674
   },
   {
     "prompt_id": "test_353",
@@ -9117,7 +9117,7 @@
         "detector": "gliner2_sensitive_account_id"
       }
     ],
-    "latency_ms": 315.2625
+    "latency_ms": 670.7116
   },
   {
     "prompt_id": "test_354",
@@ -9142,7 +9142,7 @@
         "detector": "spacy_org"
       }
     ],
-    "latency_ms": 275.9864
+    "latency_ms": 612.3154
   },
   {
     "prompt_id": "test_355",
@@ -9158,7 +9158,7 @@
         "detector": "presidio_person"
       }
     ],
-    "latency_ms": 292.5956
+    "latency_ms": 609.9051
   },
   {
     "prompt_id": "test_356",
@@ -9183,7 +9183,7 @@
         "detector": "gliner2_phone_number"
       }
     ],
-    "latency_ms": 330.1934
+    "latency_ms": 670.4088
   },
   {
     "prompt_id": "test_357",
@@ -9208,7 +9208,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 281.8573
+    "latency_ms": 633.9614
   },
   {
     "prompt_id": "test_358",
@@ -9233,7 +9233,7 @@
         "detector": "spacy_org"
       }
     ],
-    "latency_ms": 301.235
+    "latency_ms": 630.6634
   },
   {
     "prompt_id": "test_359",
@@ -9258,7 +9258,7 @@
         "detector": "regex_date_month_dd_yyyy"
       }
     ],
-    "latency_ms": 303.5951
+    "latency_ms": 654.0135
   },
   {
     "prompt_id": "test_360",
@@ -9283,7 +9283,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 451.3665
+    "latency_ms": 816.7108
   },
   {
     "prompt_id": "test_361",
@@ -9317,7 +9317,7 @@
         "detector": "regex_date_month_dd_yyyy"
       }
     ],
-    "latency_ms": 330.6118
+    "latency_ms": 673.1777
   },
   {
     "prompt_id": "test_362",
@@ -9351,7 +9351,7 @@
         "detector": "gliner2_person"
       }
     ],
-    "latency_ms": 391.8371
+    "latency_ms": 691.7542
   },
   {
     "prompt_id": "test_363",
@@ -9376,7 +9376,7 @@
         "detector": "regex_address_with_postal_code"
       }
     ],
-    "latency_ms": 319.9279
+    "latency_ms": 654.2515
   },
   {
     "prompt_id": "test_364",
@@ -9401,7 +9401,7 @@
         "detector": "presidio_person"
       }
     ],
-    "latency_ms": 340.0709
+    "latency_ms": 612.1326
   },
   {
     "prompt_id": "test_365",
@@ -9435,7 +9435,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 320.7807
+    "latency_ms": 745.3227
   },
   {
     "prompt_id": "test_366",
@@ -9460,7 +9460,7 @@
         "detector": "spacy_org"
       }
     ],
-    "latency_ms": 312.2769
+    "latency_ms": 664.1445
   },
   {
     "prompt_id": "test_367",
@@ -9485,7 +9485,7 @@
         "detector": "regex_date_month_dd_yyyy"
       }
     ],
-    "latency_ms": 285.6024
+    "latency_ms": 694.0852
   },
   {
     "prompt_id": "test_368",
@@ -9501,7 +9501,7 @@
         "detector": "regex_email"
       }
     ],
-    "latency_ms": 319.1385
+    "latency_ms": 696.1053
   },
   {
     "prompt_id": "test_369",
@@ -9526,7 +9526,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 266.473
+    "latency_ms": 686.0354
   },
   {
     "prompt_id": "test_370",
@@ -9551,7 +9551,7 @@
         "detector": "presidio_person"
       }
     ],
-    "latency_ms": 304.5173
+    "latency_ms": 685.9451
   },
   {
     "prompt_id": "test_371",
@@ -9585,7 +9585,7 @@
         "detector": "regex_date_month_dd_yyyy"
       }
     ],
-    "latency_ms": 290.823
+    "latency_ms": 771.0101
   },
   {
     "prompt_id": "test_372",
@@ -9601,7 +9601,7 @@
         "detector": "regex_phone_international"
       }
     ],
-    "latency_ms": 296.4322
+    "latency_ms": 687.0936
   },
   {
     "prompt_id": "test_373",
@@ -9617,7 +9617,7 @@
         "detector": "presidio_person"
       }
     ],
-    "latency_ms": 296.5981
+    "latency_ms": 663.0538
   },
   {
     "prompt_id": "test_374",
@@ -9633,7 +9633,7 @@
         "detector": "regex_email"
       }
     ],
-    "latency_ms": 303.1854
+    "latency_ms": 665.429
   },
   {
     "prompt_id": "test_375",
@@ -9658,7 +9658,7 @@
         "detector": "regex_date_month_dd_yyyy"
       }
     ],
-    "latency_ms": 289.495
+    "latency_ms": 694.5535
   },
   {
     "prompt_id": "test_376",
@@ -9683,7 +9683,7 @@
         "detector": "spacy_org"
       }
     ],
-    "latency_ms": 295.2753
+    "latency_ms": 645.0042
   },
   {
     "prompt_id": "test_377",
@@ -9708,7 +9708,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 289.0285
+    "latency_ms": 642.4049
   },
   {
     "prompt_id": "test_378",
@@ -9733,7 +9733,7 @@
         "detector": "regex_mrn_prefix"
       }
     ],
-    "latency_ms": 279.7568
+    "latency_ms": 681.2709
   },
   {
     "prompt_id": "test_379",
@@ -9758,7 +9758,7 @@
         "detector": "regex_phone_international"
       }
     ],
-    "latency_ms": 306.9615
+    "latency_ms": 722.1065
   },
   {
     "prompt_id": "test_380",
@@ -9783,7 +9783,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 312.461
+    "latency_ms": 690.8611
   },
   {
     "prompt_id": "test_381",
@@ -9808,7 +9808,7 @@
         "detector": "regex_address_with_postal_code"
       }
     ],
-    "latency_ms": 357.4161
+    "latency_ms": 743.2109
   },
   {
     "prompt_id": "test_382",
@@ -9824,7 +9824,7 @@
         "detector": "presidio_person"
       }
     ],
-    "latency_ms": 296.1277
+    "latency_ms": 661.5406
   },
   {
     "prompt_id": "test_383",
@@ -9849,7 +9849,7 @@
         "detector": "regex_date_month_dd_yyyy"
       }
     ],
-    "latency_ms": 291.4066
+    "latency_ms": 687.9645
   },
   {
     "prompt_id": "test_384",
@@ -9874,7 +9874,7 @@
         "detector": "regex_email"
       }
     ],
-    "latency_ms": 300.0903
+    "latency_ms": 685.6428
   },
   {
     "prompt_id": "test_385",
@@ -9899,7 +9899,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 294.1791
+    "latency_ms": 690.3144
   },
   {
     "prompt_id": "test_386",
@@ -9933,7 +9933,7 @@
         "detector": "regex_date_month_dd_yyyy"
       }
     ],
-    "latency_ms": 304.8524
+    "latency_ms": 713.9388
   },
   {
     "prompt_id": "test_387",
@@ -9958,7 +9958,7 @@
         "detector": "presidio_person"
       }
     ],
-    "latency_ms": 321.9993
+    "latency_ms": 800.3676
   },
   {
     "prompt_id": "test_388",
@@ -9983,7 +9983,7 @@
         "detector": "presidio_person"
       }
     ],
-    "latency_ms": 326.0666
+    "latency_ms": 718.5511
   },
   {
     "prompt_id": "test_389",
@@ -10008,7 +10008,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 304.6973
+    "latency_ms": 730.6814
   },
   {
     "prompt_id": "test_390",
@@ -10024,7 +10024,7 @@
         "detector": "regex_date_month_dd_yyyy"
       }
     ],
-    "latency_ms": 292.8077
+    "latency_ms": 645.1536
   },
   {
     "prompt_id": "test_391",
@@ -10049,7 +10049,7 @@
         "detector": "regex_ticket_id"
       }
     ],
-    "latency_ms": 313.7622
+    "latency_ms": 811.8079
   },
   {
     "prompt_id": "test_392",
@@ -10083,7 +10083,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 308.3188
+    "latency_ms": 663.7298
   },
   {
     "prompt_id": "test_393",
@@ -10099,7 +10099,7 @@
         "detector": "gliner2_address"
       }
     ],
-    "latency_ms": 283.5266
+    "latency_ms": 626.6054
   },
   {
     "prompt_id": "test_394",
@@ -10124,7 +10124,7 @@
         "detector": "regex_email"
       }
     ],
-    "latency_ms": 305.0187
+    "latency_ms": 668.1581
   },
   {
     "prompt_id": "test_395",
@@ -10149,7 +10149,7 @@
         "detector": "regex_date_month_dd_yyyy"
       }
     ],
-    "latency_ms": 301.2644
+    "latency_ms": 634.3555
   },
   {
     "prompt_id": "test_396",
@@ -10174,7 +10174,7 @@
         "detector": "spacy_org"
       }
     ],
-    "latency_ms": 278.817
+    "latency_ms": 724.0221
   },
   {
     "prompt_id": "test_397",
@@ -10199,7 +10199,7 @@
         "detector": "gliner2_address"
       }
     ],
-    "latency_ms": 332.7593
+    "latency_ms": 658.2991
   },
   {
     "prompt_id": "test_398",
@@ -10233,7 +10233,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 311.2538
+    "latency_ms": 608.9758
   },
   {
     "prompt_id": "test_399",
@@ -10249,7 +10249,7 @@
         "detector": "regex_email"
       }
     ],
-    "latency_ms": 279.5368
+    "latency_ms": 670.5756
   },
   {
     "prompt_id": "test_400",
@@ -10283,7 +10283,7 @@
         "detector": "regex_date_month_dd_yyyy"
       }
     ],
-    "latency_ms": 294.8862
+    "latency_ms": 655.6879
   },
   {
     "prompt_id": "test_401",
@@ -10299,7 +10299,7 @@
         "detector": "regex_order_id"
       }
     ],
-    "latency_ms": 273.4319
+    "latency_ms": 708.4733
   },
   {
     "prompt_id": "test_402",
@@ -10324,7 +10324,7 @@
         "detector": "spacy_org"
       }
     ],
-    "latency_ms": 279.571
+    "latency_ms": 694.6671
   },
   {
     "prompt_id": "test_403",
@@ -10349,7 +10349,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 324.6719
+    "latency_ms": 672.3118
   },
   {
     "prompt_id": "test_404",
@@ -10374,7 +10374,7 @@
         "detector": "regex_phone_international"
       }
     ],
-    "latency_ms": 298.8787
+    "latency_ms": 660.0317
   },
   {
     "prompt_id": "test_405",
@@ -10399,7 +10399,7 @@
         "detector": "regex_date_month_dd_yyyy"
       }
     ],
-    "latency_ms": 315.5824
+    "latency_ms": 757.0782
   },
   {
     "prompt_id": "test_406",
@@ -10424,7 +10424,7 @@
         "detector": "fusion_compound_address"
       }
     ],
-    "latency_ms": 348.6581
+    "latency_ms": 691.1393
   },
   {
     "prompt_id": "test_407",
@@ -10449,7 +10449,7 @@
         "detector": "spacy_org"
       }
     ],
-    "latency_ms": 278.4302
+    "latency_ms": 633.671
   },
   {
     "prompt_id": "test_408",
@@ -10474,7 +10474,7 @@
         "detector": "presidio_person"
       }
     ],
-    "latency_ms": 273.2709
+    "latency_ms": 660.0073
   },
   {
     "prompt_id": "test_409",
@@ -10499,7 +10499,7 @@
         "detector": "presidio_person"
       }
     ],
-    "latency_ms": 303.7716
+    "latency_ms": 715.6284
   },
   {
     "prompt_id": "test_410",
@@ -10524,7 +10524,7 @@
         "detector": "spacy_org"
       }
     ],
-    "latency_ms": 294.639
+    "latency_ms": 678.4294
   },
   {
     "prompt_id": "test_411",
@@ -10558,7 +10558,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 281.7342
+    "latency_ms": 666.6788
   },
   {
     "prompt_id": "test_412",
@@ -10592,7 +10592,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 290.4978
+    "latency_ms": 652.4052
   },
   {
     "prompt_id": "test_413",
@@ -10635,7 +10635,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 279.9889
+    "latency_ms": 712.2146
   },
   {
     "prompt_id": "test_414",
@@ -10669,7 +10669,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 286.1567
+    "latency_ms": 795.418
   },
   {
     "prompt_id": "test_415",
@@ -10703,7 +10703,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 281.7877
+    "latency_ms": 695.935
   },
   {
     "prompt_id": "test_416",
@@ -10737,7 +10737,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 287.44
+    "latency_ms": 709.4818
   },
   {
     "prompt_id": "test_417",
@@ -10780,7 +10780,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 297.252
+    "latency_ms": 712.4792
   },
   {
     "prompt_id": "test_418",
@@ -10814,7 +10814,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 329.1841
+    "latency_ms": 771.0856
   },
   {
     "prompt_id": "test_419",
@@ -10848,7 +10848,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 346.334
+    "latency_ms": 709.0422
   },
   {
     "prompt_id": "test_420",
@@ -10882,7 +10882,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 287.8987
+    "latency_ms": 716.6846
   },
   {
     "prompt_id": "test_421",
@@ -10916,7 +10916,7 @@
         "detector": "presidio_person"
       }
     ],
-    "latency_ms": 286.7104
+    "latency_ms": 721.7367
   },
   {
     "prompt_id": "test_422",
@@ -10950,7 +10950,7 @@
         "detector": "regex_phone_international"
       }
     ],
-    "latency_ms": 312.2326
+    "latency_ms": 936.4004
   },
   {
     "prompt_id": "test_423",
@@ -10993,7 +10993,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 275.2534
+    "latency_ms": 682.608
   },
   {
     "prompt_id": "test_424",
@@ -11036,7 +11036,7 @@
         "detector": "gliner2_country"
       }
     ],
-    "latency_ms": 282.8053
+    "latency_ms": 638.4695
   },
   {
     "prompt_id": "test_425",
@@ -11070,7 +11070,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 268.615
+    "latency_ms": 670.0517
   },
   {
     "prompt_id": "test_426",
@@ -11095,7 +11095,7 @@
         "detector": "presidio_person"
       }
     ],
-    "latency_ms": 310.4199
+    "latency_ms": 592.0133
   },
   {
     "prompt_id": "test_427",
@@ -11129,7 +11129,7 @@
         "detector": "gliner2_country"
       }
     ],
-    "latency_ms": 288.8042
+    "latency_ms": 656.0586
   },
   {
     "prompt_id": "test_428",
@@ -11172,7 +11172,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 294.3698
+    "latency_ms": 738.2292
   },
   {
     "prompt_id": "test_429",
@@ -11215,7 +11215,7 @@
         "detector": "regex_ticket_id"
       }
     ],
-    "latency_ms": 337.4528
+    "latency_ms": 679.2835
   },
   {
     "prompt_id": "test_430",
@@ -11240,7 +11240,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 293.0168
+    "latency_ms": 658.9787
   },
   {
     "prompt_id": "test_431",
@@ -11265,7 +11265,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 283.4348
+    "latency_ms": 628.7435
   },
   {
     "prompt_id": "test_432",
@@ -11299,7 +11299,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 288.2516
+    "latency_ms": 602.5619
   },
   {
     "prompt_id": "test_433",
@@ -11324,7 +11324,7 @@
         "detector": "presidio_person"
       }
     ],
-    "latency_ms": 306.4322
+    "latency_ms": 735.9348
   },
   {
     "prompt_id": "test_434",
@@ -11335,9 +11335,9 @@
         "start": 10,
         "end": 25,
         "label": "PERSON",
-        "confidence": 0.85,
-        "source": "presidio",
-        "detector": "presidio_person"
+        "confidence": 0.92,
+        "source": "spacy",
+        "detector": "spacy_person"
       },
       {
         "text": "Paris",
@@ -11349,7 +11349,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 309.9684
+    "latency_ms": 658.2529
   },
   {
     "prompt_id": "test_435",
@@ -11360,9 +11360,9 @@
         "start": 15,
         "end": 28,
         "label": "PERSON",
-        "confidence": 0.85,
-        "source": "presidio",
-        "detector": "presidio_person"
+        "confidence": 0.92,
+        "source": "spacy",
+        "detector": "spacy_person"
       },
       {
         "text": "Bengaluru",
@@ -11374,7 +11374,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 286.8502
+    "latency_ms": 666.2055
   },
   {
     "prompt_id": "test_436",
@@ -11399,7 +11399,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 314.5231
+    "latency_ms": 695.2047
   },
   {
     "prompt_id": "test_437",
@@ -11410,9 +11410,9 @@
         "start": 23,
         "end": 35,
         "label": "PERSON",
-        "confidence": 0.85,
-        "source": "presidio",
-        "detector": "presidio_person"
+        "confidence": 0.92,
+        "source": "spacy",
+        "detector": "spacy_person"
       },
       {
         "text": "European Union",
@@ -11433,7 +11433,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 390.7143
+    "latency_ms": 759.5282
   },
   {
     "prompt_id": "test_438",
@@ -11467,7 +11467,7 @@
         "detector": "gliner2_country"
       }
     ],
-    "latency_ms": 316.6697
+    "latency_ms": 625.174
   },
   {
     "prompt_id": "test_439",
@@ -11501,7 +11501,7 @@
         "detector": "regex_email"
       }
     ],
-    "latency_ms": 323.6953
+    "latency_ms": 694.7704
   },
   {
     "prompt_id": "test_440",
@@ -11526,7 +11526,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 297.0463
+    "latency_ms": 688.5839
   },
   {
     "prompt_id": "test_441",
@@ -11551,7 +11551,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 303.9151
+    "latency_ms": 649.8238
   },
   {
     "prompt_id": "test_442",
@@ -11585,7 +11585,7 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 280.1655
+    "latency_ms": 654.3026
   },
   {
     "prompt_id": "test_443",
@@ -11610,7 +11610,7 @@
         "detector": "presidio_person"
       }
     ],
-    "latency_ms": 302.8091
+    "latency_ms": 642.5913
   },
   {
     "prompt_id": "test_444",
@@ -11635,7 +11635,7 @@
         "detector": "gliner2_state_or_region"
       }
     ],
-    "latency_ms": 339.3596
+    "latency_ms": 697.3689
   },
   {
     "prompt_id": "test_445",
@@ -11660,217 +11660,217 @@
         "detector": "gliner2_city"
       }
     ],
-    "latency_ms": 297.4714
+    "latency_ms": 677.2337
   },
   {
     "prompt_id": "test_446",
     "text": "The quick brown fox jumps over the lazy dog in standard typographic pangrams.",
     "detected_entities": [],
-    "latency_ms": 290.5691
+    "latency_ms": 665.1647
   },
   {
     "prompt_id": "test_447",
     "text": "Calculus fundamental theorem relates differentiation with integration over continuous domains.",
     "detected_entities": [],
-    "latency_ms": 279.3606
+    "latency_ms": 691.4964
   },
   {
     "prompt_id": "test_448",
     "text": "Quantum entanglement demonstrates non-local correlations between entangled particle states.",
     "detected_entities": [],
-    "latency_ms": 291.5215
+    "latency_ms": 707.9635
   },
   {
     "prompt_id": "test_449",
     "text": "Binary search algorithm operates in logarithmic time complexity O(log n) on sorted arrays.",
     "detected_entities": [],
-    "latency_ms": 301.2742
+    "latency_ms": 696.4223
   },
   {
     "prompt_id": "test_450",
     "text": "Photosynthesis converts solar electromagnetic radiation into chemical energy in plant chloroplasts.",
     "detected_entities": [],
-    "latency_ms": 296.9237
+    "latency_ms": 707.4902
   },
   {
     "prompt_id": "test_451",
     "text": "Standard deviation measures the dispersion of a dataset relative to its statistical mean.",
     "detected_entities": [],
-    "latency_ms": 286.9715
+    "latency_ms": 676.3835
   },
   {
     "prompt_id": "test_452",
     "text": "HTTP status code 404 indicates that the requested resource could not be found on server.",
     "detected_entities": [],
-    "latency_ms": 276.6577
+    "latency_ms": 669.2347
   },
   {
     "prompt_id": "test_453",
     "text": "Database indexing utilizes B-tree data structures to accelerate record query execution.",
     "detected_entities": [],
-    "latency_ms": 298.3965
+    "latency_ms": 655.3636
   },
   {
     "prompt_id": "test_454",
     "text": "The Carnot cycle establishes the theoretical upper limit on heat engine thermodynamic efficiency.",
     "detected_entities": [],
-    "latency_ms": 306.6723
+    "latency_ms": 660.3227
   },
   {
     "prompt_id": "test_455",
     "text": "Convolutional neural networks extract hierarchical spatial features from input image matrices.",
     "detected_entities": [],
-    "latency_ms": 292.5799
+    "latency_ms": 722.0718
   },
   {
     "prompt_id": "test_456",
     "text": "Git version control uses directed acyclic graphs to track tree state snapshots.",
     "detected_entities": [],
-    "latency_ms": 277.6098
+    "latency_ms": 698.2699
   },
   {
     "prompt_id": "test_457",
     "text": "Mitochondria generate adenosine triphosphate through oxidative phosphorylation pathways.",
     "detected_entities": [],
-    "latency_ms": 279.8289
+    "latency_ms": 680.2941
   },
   {
     "prompt_id": "test_458",
     "text": "TCP congestion control implements slow start and additive increase multiplicative decrease.",
     "detected_entities": [],
-    "latency_ms": 276.0528
+    "latency_ms": 706.0648
   },
   {
     "prompt_id": "test_459",
     "text": "Electromagnetic waves propagate through vacuum at the invariant speed of light.",
     "detected_entities": [],
-    "latency_ms": 280.7284
+    "latency_ms": 645.2744
   },
   {
     "prompt_id": "test_460",
     "text": "Quick sort algorithm partitions arrays around a chosen pivot value recursively.",
     "detected_entities": [],
-    "latency_ms": 274.4928
+    "latency_ms": 660.3692
   },
   {
     "prompt_id": "test_461",
     "text": "Enzyme kinetics can be modeled using the Michaelis-Menten mathematical formulation.",
     "detected_entities": [],
-    "latency_ms": 267.1075
+    "latency_ms": 678.0611
   },
   {
     "prompt_id": "test_462",
     "text": "The general theory of relativity describes gravity as the curvature of spacetime.",
     "detected_entities": [],
-    "latency_ms": 266.1651
+    "latency_ms": 656.355
   },
   {
     "prompt_id": "test_463",
     "text": "Vector spaces are closed under vector addition and scalar multiplication operations.",
     "detected_entities": [],
-    "latency_ms": 416.4818
+    "latency_ms": 643.7379
   },
   {
     "prompt_id": "test_464",
     "text": "DNS lookups convert human-readable domain names into machine-readable network addresses.",
     "detected_entities": [],
-    "latency_ms": 417.0531
+    "latency_ms": 704.6371
   },
   {
     "prompt_id": "test_465",
     "text": "Refactoring code improves software maintainability without modifying observable runtime behavior.",
     "detected_entities": [],
-    "latency_ms": 374.3095
+    "latency_ms": 704.6118
   },
   {
     "prompt_id": "test_466",
     "text": "Polymorphism enables objects of different classes to respond to identical method signatures.",
     "detected_entities": [],
-    "latency_ms": 364.4572
+    "latency_ms": 609.3466
   },
   {
     "prompt_id": "test_467",
     "text": "Plate tectonics explains continental drift through convection currents in the mantle.",
     "detected_entities": [],
-    "latency_ms": 286.9446
+    "latency_ms": 639.6316
   },
   {
     "prompt_id": "test_468",
     "text": "Fourier transform decomposes complex time-domain signals into constituent sinusoidal frequencies.",
     "detected_entities": [],
-    "latency_ms": 311.5536
+    "latency_ms": 661.693
   },
   {
     "prompt_id": "test_469",
     "text": "Asynchronous programming uses event loops and non-blocking I/O multiplexing primitives.",
     "detected_entities": [],
-    "latency_ms": 307.5455
+    "latency_ms": 651.8815
   },
   {
     "prompt_id": "test_470",
     "text": "Thermodynamic entropy represents the microscopic statistical disorder of closed physical systems.",
     "detected_entities": [],
-    "latency_ms": 291.6766
+    "latency_ms": 650.2525
   },
   {
     "prompt_id": "test_471",
     "text": "Graph traversal algorithms like breadth-first search explore neighboring vertices level by level.",
     "detected_entities": [],
-    "latency_ms": 299.2423
+    "latency_ms": 655.7307
   },
   {
     "prompt_id": "test_472",
     "text": "Stochastic gradient descent updates model parameters using randomly sampled training mini-batches.",
     "detected_entities": [],
-    "latency_ms": 275.8225
+    "latency_ms": 637.9745
   },
   {
     "prompt_id": "test_473",
     "text": "Functional programming emphasizes immutable data structures and pure referentially transparent functions.",
     "detected_entities": [],
-    "latency_ms": 289.5452
+    "latency_ms": 642.5058
   },
   {
     "prompt_id": "test_474",
     "text": "Compiler optimization passes include dead code elimination and loop invariant code motion.",
     "detected_entities": [],
-    "latency_ms": 281.0772
+    "latency_ms": 580.9163
   },
   {
     "prompt_id": "test_475",
     "text": "Cellular mitosis produces two genetically identical daughter cells through nuclear division.",
     "detected_entities": [],
-    "latency_ms": 287.627
+    "latency_ms": 844.4111
   },
   {
     "prompt_id": "test_476",
     "text": "The system administrator executed sudo chmod 755 on localhost as root user.",
     "detected_entities": [],
-    "latency_ms": 291.0529
+    "latency_ms": 675.0582
   },
   {
     "prompt_id": "test_477",
     "text": "The superuser logged into admin_root console without multi-factor authentication.",
     "detected_entities": [],
-    "latency_ms": 300.2408
+    "latency_ms": 635.1578
   },
   {
     "prompt_id": "test_478",
     "text": "The number 55 is not an ID, and 1234567890 is merely a dummy test sequence.",
     "detected_entities": [],
-    "latency_ms": 323.7878
+    "latency_ms": 764.5743
   },
   {
     "prompt_id": "test_479",
     "text": "We have great hope that our new policy will bring lasting peace and goodwill.",
     "detected_entities": [],
-    "latency_ms": 291.563
+    "latency_ms": 797.2972
   },
   {
     "prompt_id": "test_480",
     "text": "She planted a red rose in the garden next to the blooming daisy bush.",
     "detected_entities": [],
-    "latency_ms": 284.7041
+    "latency_ms": 774.4316
   },
   {
     "prompt_id": "test_481",
@@ -11895,7 +11895,7 @@
         "detector": "spacy_org"
       }
     ],
-    "latency_ms": 303.4654
+    "latency_ms": 732.9197
   },
   {
     "prompt_id": "test_482",
@@ -11911,13 +11911,13 @@
         "detector": "presidio_person"
       }
     ],
-    "latency_ms": 291.6079
+    "latency_ms": 750.9494
   },
   {
     "prompt_id": "test_483",
     "text": "Please pay the restaurant bill of $85 before the end of the evening.",
     "detected_entities": [],
-    "latency_ms": 304.186
+    "latency_ms": 700.2296
   },
   {
     "prompt_id": "test_484",
@@ -11933,7 +11933,7 @@
         "detector": "presidio_person"
       }
     ],
-    "latency_ms": 293.0807
+    "latency_ms": 650.2229
   },
   {
     "prompt_id": "test_485",
@@ -11949,7 +11949,7 @@
         "detector": "presidio_person"
       }
     ],
-    "latency_ms": 285.8898
+    "latency_ms": 618.2389
   },
   {
     "prompt_id": "test_486",
@@ -11974,13 +11974,13 @@
         "detector": "regex_email"
       }
     ],
-    "latency_ms": 286.6005
+    "latency_ms": 692.9599
   },
   {
     "prompt_id": "test_487",
     "text": "The dancer moved with remarkable grace and artistic precision across the stage.",
     "detected_entities": [],
-    "latency_ms": 297.1872
+    "latency_ms": 653.8357
   },
   {
     "prompt_id": "test_488",
@@ -12005,7 +12005,7 @@
         "detector": "regex_phone_international"
       }
     ],
-    "latency_ms": 292.3663
+    "latency_ms": 680.6568
   },
   {
     "prompt_id": "test_489",
@@ -12021,7 +12021,7 @@
         "detector": "presidio_date_time"
       }
     ],
-    "latency_ms": 292.7465
+    "latency_ms": 670.0195
   },
   {
     "prompt_id": "test_490",
@@ -12037,7 +12037,7 @@
         "detector": "presidio_person"
       }
     ],
-    "latency_ms": 280.0355
+    "latency_ms": 647.5966
   },
   {
     "prompt_id": "test_491",
@@ -12053,7 +12053,7 @@
         "detector": "presidio_location"
       }
     ],
-    "latency_ms": 284.0143
+    "latency_ms": 670.2293
   },
   {
     "prompt_id": "test_492",
@@ -12069,13 +12069,13 @@
         "detector": "presidio_person"
       }
     ],
-    "latency_ms": 273.9445
+    "latency_ms": 628.3714
   },
   {
     "prompt_id": "test_493",
     "text": "To be completely frank, the project timeline requires substantial adjustment.",
     "detected_entities": [],
-    "latency_ms": 292.1359
+    "latency_ms": 674.799
   },
   {
     "prompt_id": "test_494",
@@ -12100,19 +12100,19 @@
         "detector": "regex_order_id"
       }
     ],
-    "latency_ms": 272.4195
+    "latency_ms": 683.5759
   },
   {
     "prompt_id": "test_495",
     "text": "At dawn the search and rescue team resumed operations in the valley.",
     "detected_entities": [],
-    "latency_ms": 267.1382
+    "latency_ms": 684.3921
   },
   {
     "prompt_id": "test_496",
     "text": "System test payload: 9999999999 is an invalid phone number placeholder.",
     "detected_entities": [],
-    "latency_ms": 283.6213
+    "latency_ms": 703.3668
   },
   {
     "prompt_id": "test_497",
@@ -12128,7 +12128,7 @@
         "detector": "regex_ipv4"
       }
     ],
-    "latency_ms": 288.8605
+    "latency_ms": 697.8938
   },
   {
     "prompt_id": "test_498",
@@ -12162,7 +12162,7 @@
         "detector": "regex_date_month_dd_yyyy"
       }
     ],
-    "latency_ms": 293.082
+    "latency_ms": 675.4365
   },
   {
     "prompt_id": "test_499",
@@ -12178,7 +12178,7 @@
         "detector": "presidio_person"
       }
     ],
-    "latency_ms": 280.6854
+    "latency_ms": 779.9906
   },
   {
     "prompt_id": "test_500",
@@ -12203,6 +12203,1507 @@
         "detector": "regex_customer_id"
       }
     ],
-    "latency_ms": 293.3479
+    "latency_ms": 675.8821
+  },
+  {
+    "prompt_id": "test_501",
+    "text": "my name is anand.",
+    "detected_entities": [
+      {
+        "text": "anand",
+        "start": 11,
+        "end": 16,
+        "label": "PERSON",
+        "confidence": 0.5942,
+        "source": "gliner2",
+        "detector": "gliner2_person"
+      }
+    ],
+    "latency_ms": 573.3222
+  },
+  {
+    "prompt_id": "test_502",
+    "text": "i am deepak and I work here.",
+    "detected_entities": [
+      {
+        "text": "deepak",
+        "start": 5,
+        "end": 11,
+        "label": "PERSON",
+        "confidence": 0.6002,
+        "source": "gliner2",
+        "detector": "gliner2_person"
+      }
+    ],
+    "latency_ms": 653.4249
+  },
+  {
+    "prompt_id": "test_503",
+    "text": "call me priya if you have any questions.",
+    "detected_entities": [
+      {
+        "text": "priya",
+        "start": 8,
+        "end": 13,
+        "label": "PERSON",
+        "confidence": 0.6082,
+        "source": "gliner2",
+        "detector": "gliner2_person"
+      }
+    ],
+    "latency_ms": 641.2263
+  },
+  {
+    "prompt_id": "test_504",
+    "text": "this is rohit from engineering.",
+    "detected_entities": [
+      {
+        "text": "rohit",
+        "start": 8,
+        "end": 13,
+        "label": "PERSON",
+        "confidence": 0.6341,
+        "source": "gliner2",
+        "detector": "gliner2_person"
+      }
+    ],
+    "latency_ms": 591.602
+  },
+  {
+    "prompt_id": "test_505",
+    "text": "Hello, sunil here.",
+    "detected_entities": [
+      {
+        "text": "sunil",
+        "start": 7,
+        "end": 12,
+        "label": "PERSON",
+        "confidence": 0.6297,
+        "source": "gliner2",
+        "detector": "gliner2_person"
+      }
+    ],
+    "latency_ms": 644.6205
+  },
+  {
+    "prompt_id": "test_506",
+    "text": "Please send the quarterly file to anand today.",
+    "detected_entities": [
+      {
+        "text": "anand",
+        "start": 34,
+        "end": 39,
+        "label": "PERSON",
+        "confidence": 0.5802,
+        "source": "gliner2",
+        "detector": "gliner2_person"
+      }
+    ],
+    "latency_ms": 704.1172
+  },
+  {
+    "prompt_id": "test_507",
+    "text": "I had an architectural review meeting with deepak yesterday.",
+    "detected_entities": [
+      {
+        "text": "deepak",
+        "start": 43,
+        "end": 49,
+        "label": "PERSON",
+        "confidence": 0.6466,
+        "source": "gliner2",
+        "detector": "gliner2_person"
+      }
+    ],
+    "latency_ms": 706.4218
+  },
+  {
+    "prompt_id": "test_508",
+    "text": "The deployment was approved by priya this morning.",
+    "detected_entities": [
+      {
+        "text": "priya",
+        "start": 31,
+        "end": 36,
+        "label": "PERSON",
+        "confidence": 0.7903,
+        "source": "gliner2",
+        "detector": "gliner2_person"
+      }
+    ],
+    "latency_ms": 603.9421
+  },
+  {
+    "prompt_id": "test_509",
+    "text": "rohit will be presenting the quarterly revenue report.",
+    "detected_entities": [
+      {
+        "text": "rohit",
+        "start": 0,
+        "end": 5,
+        "label": "PERSON",
+        "confidence": 0.624,
+        "source": "gliner2",
+        "detector": "gliner2_person"
+      }
+    ],
+    "latency_ms": 561.6287
+  },
+  {
+    "prompt_id": "test_510",
+    "text": "Check with sunil before pushing the database changes.",
+    "detected_entities": [
+      {
+        "text": "sunil",
+        "start": 11,
+        "end": 16,
+        "label": "PERSON",
+        "confidence": 0.6782,
+        "source": "gliner2",
+        "detector": "gliner2_person"
+      }
+    ],
+    "latency_ms": 619.2714
+  },
+  {
+    "prompt_id": "test_511",
+    "text": "my name is AnAnD.",
+    "detected_entities": [
+      {
+        "text": "AnAnD",
+        "start": 11,
+        "end": 16,
+        "label": "PERSON",
+        "confidence": 0.85,
+        "source": "spacy",
+        "detector": "spacy_org"
+      }
+    ],
+    "latency_ms": 612.5032
+  },
+  {
+    "prompt_id": "test_512",
+    "text": "Please email SuNiL regarding the project roadmap.",
+    "detected_entities": [
+      {
+        "text": "SuNiL",
+        "start": 13,
+        "end": 18,
+        "label": "PERSON",
+        "confidence": 0.651,
+        "source": "gliner2",
+        "detector": "gliner2_person"
+      }
+    ],
+    "latency_ms": 623.2013
+  },
+  {
+    "prompt_id": "test_513",
+    "text": "I discussed the incident with RoHiT earlier.",
+    "detected_entities": [
+      {
+        "text": "RoHiT",
+        "start": 30,
+        "end": 35,
+        "label": "PERSON",
+        "confidence": 0.7428,
+        "source": "gliner2",
+        "detector": "gliner2_person"
+      }
+    ],
+    "latency_ms": 645.1639
+  },
+  {
+    "prompt_id": "test_514",
+    "text": "Call me PrIyA on my extension.",
+    "detected_entities": [
+      {
+        "text": "PrIyA",
+        "start": 8,
+        "end": 13,
+        "label": "PERSON",
+        "confidence": 0.5766,
+        "source": "gliner2",
+        "detector": "gliner2_person"
+      }
+    ],
+    "latency_ms": 580.9888
+  },
+  {
+    "prompt_id": "test_515",
+    "text": "AnAnD confirmed that the server migration is complete.",
+    "detected_entities": [
+      {
+        "text": "AnAnD",
+        "start": 0,
+        "end": 5,
+        "label": "PERSON",
+        "confidence": 0.544,
+        "source": "gliner2",
+        "detector": "gliner2_full_name"
+      }
+    ],
+    "latency_ms": 606.3893
+  },
+  {
+    "prompt_id": "test_516",
+    "text": "my name is ANAND.",
+    "detected_entities": [
+      {
+        "text": "ANAND",
+        "start": 11,
+        "end": 16,
+        "label": "PERSON",
+        "confidence": 0.5942,
+        "source": "gliner2",
+        "detector": "gliner2_person"
+      }
+    ],
+    "latency_ms": 646.6601
+  },
+  {
+    "prompt_id": "test_517",
+    "text": "Tell ROHIT to review the pull request.",
+    "detected_entities": [
+      {
+        "text": "ROHIT",
+        "start": 5,
+        "end": 10,
+        "label": "PERSON",
+        "confidence": 0.7881,
+        "source": "gliner2",
+        "detector": "gliner2_person"
+      }
+    ],
+    "latency_ms": 725.1281
+  },
+  {
+    "prompt_id": "test_518",
+    "text": "The release notes were authored by DEEPAK.",
+    "detected_entities": [
+      {
+        "text": "DEEPAK",
+        "start": 35,
+        "end": 41,
+        "label": "PERSON",
+        "confidence": 0.7234,
+        "source": "gliner2",
+        "detector": "gliner2_person"
+      }
+    ],
+    "latency_ms": 692.3171
+  },
+  {
+    "prompt_id": "test_519",
+    "text": "Forward the legal contract to PRIYA for signing.",
+    "detected_entities": [
+      {
+        "text": "PRIYA",
+        "start": 30,
+        "end": 35,
+        "label": "PERSON",
+        "confidence": 0.6924,
+        "source": "gliner2",
+        "detector": "gliner2_person"
+      }
+    ],
+    "latency_ms": 645.7183
+  },
+  {
+    "prompt_id": "test_520",
+    "text": "SUNIL signed off on the security compliance checklist.",
+    "detected_entities": [
+      {
+        "text": "SUNIL",
+        "start": 0,
+        "end": 5,
+        "label": "PERSON",
+        "confidence": 0.6333,
+        "source": "gliner2",
+        "detector": "gliner2_person"
+      }
+    ],
+    "latency_ms": 679.8264
+  },
+  {
+    "prompt_id": "test_521",
+    "text": "passwrd: AlphaSecret#99",
+    "detected_entities": [
+      {
+        "text": "AlphaSecret#99",
+        "start": 9,
+        "end": 23,
+        "label": "PASSWORD",
+        "confidence": 0.9862,
+        "source": "regex",
+        "detector": "regex_password_assignment"
+      }
+    ],
+    "latency_ms": 700.1414
+  },
+  {
+    "prompt_id": "test_522",
+    "text": "my passwrd is MyTopSecret99!",
+    "detected_entities": [
+      {
+        "text": "MyTopSecret99!",
+        "start": 14,
+        "end": 28,
+        "label": "PASSWORD",
+        "confidence": 0.92,
+        "source": "regex",
+        "detector": "regex_password_natural_lang"
+      }
+    ],
+    "latency_ms": 765.562
+  },
+  {
+    "prompt_id": "test_523",
+    "text": "enter your passwrd: WinterPass#2024 to authenticate.",
+    "detected_entities": [
+      {
+        "text": "WinterPass#2024",
+        "start": 20,
+        "end": 35,
+        "label": "PASSWORD",
+        "confidence": 0.9927,
+        "source": "regex",
+        "detector": "regex_password_assignment"
+      }
+    ],
+    "latency_ms": 677.4188
+  },
+  {
+    "prompt_id": "test_524",
+    "text": "p@ssword: K9#mP2$vL8",
+    "detected_entities": [
+      {
+        "text": "K9#mP2$vL8",
+        "start": 10,
+        "end": 20,
+        "label": "PASSWORD",
+        "confidence": 0.9928,
+        "source": "regex",
+        "detector": "regex_password_assignment"
+      }
+    ],
+    "latency_ms": 647.8076
+  },
+  {
+    "prompt_id": "test_525",
+    "text": "my p@ssword is CloudAdmin#772 for the staging cluster.",
+    "detected_entities": [
+      {
+        "text": "CloudAdmin#772",
+        "start": 15,
+        "end": 29,
+        "label": "PASSWORD",
+        "confidence": 0.92,
+        "source": "regex",
+        "detector": "regex_password_natural_lang"
+      }
+    ],
+    "latency_ms": 664.0468
+  },
+  {
+    "prompt_id": "test_526",
+    "text": "pswd: SuperSecr3t!",
+    "detected_entities": [
+      {
+        "text": "SuperSecr3t!",
+        "start": 6,
+        "end": 18,
+        "label": "PASSWORD",
+        "confidence": 0.92,
+        "source": "regex",
+        "detector": "regex_password_assignment"
+      }
+    ],
+    "latency_ms": 661.8485
+  },
+  {
+    "prompt_id": "test_527",
+    "text": "my pswd is VaultKey#9182 on the portal.",
+    "detected_entities": [
+      {
+        "text": "VaultKey#9182",
+        "start": 11,
+        "end": 24,
+        "label": "PASSWORD",
+        "confidence": 0.9787,
+        "source": "regex",
+        "detector": "regex_password_natural_lang"
+      }
+    ],
+    "latency_ms": 672.5924
+  },
+  {
+    "prompt_id": "test_528",
+    "text": "pwd: TestPass1234#",
+    "detected_entities": [
+      {
+        "text": "TestPass1234#",
+        "start": 5,
+        "end": 18,
+        "label": "PASSWORD",
+        "confidence": 0.9862,
+        "source": "regex",
+        "detector": "regex_password_assignment"
+      }
+    ],
+    "latency_ms": 603.7399
+  },
+  {
+    "prompt_id": "test_529",
+    "text": "my pwd is SecureDev#5544",
+    "detected_entities": [
+      {
+        "text": "SecureDev#5544",
+        "start": 10,
+        "end": 24,
+        "label": "PASSWORD",
+        "confidence": 0.9929,
+        "source": "regex",
+        "detector": "regex_password_natural_lang"
+      }
+    ],
+    "latency_ms": 655.1194
+  },
+  {
+    "prompt_id": "test_530",
+    "text": "temp pwd: TempCode#881",
+    "detected_entities": [
+      {
+        "text": "TempCode#881",
+        "start": 10,
+        "end": 22,
+        "label": "PASSWORD",
+        "confidence": 0.932,
+        "source": "regex",
+        "detector": "regex_password_assignment"
+      }
+    ],
+    "latency_ms": 637.6746
+  },
+  {
+    "prompt_id": "test_531",
+    "text": "PassWord: RiverStone#9472",
+    "detected_entities": [
+      {
+        "text": "RiverStone#9472",
+        "start": 10,
+        "end": 25,
+        "label": "PASSWORD",
+        "confidence": 0.9783,
+        "source": "regex",
+        "detector": "regex_password_assignment"
+      }
+    ],
+    "latency_ms": 678.3093
+  },
+  {
+    "prompt_id": "test_532",
+    "text": "pAsSwOrD: MixedCase#9911",
+    "detected_entities": [
+      {
+        "text": "MixedCase#9911",
+        "start": 10,
+        "end": 24,
+        "label": "PASSWORD",
+        "confidence": 0.9837,
+        "source": "regex",
+        "detector": "regex_password_assignment"
+      }
+    ],
+    "latency_ms": 650.9687
+  },
+  {
+    "prompt_id": "test_533",
+    "text": "PASSWORD: ALLCAPSPASS#12",
+    "detected_entities": [
+      {
+        "text": "ALLCAPSPASS#12",
+        "start": 10,
+        "end": 24,
+        "label": "PASSWORD",
+        "confidence": 0.9893,
+        "source": "regex",
+        "detector": "regex_password_assignment"
+      }
+    ],
+    "latency_ms": 711.0181
+  },
+  {
+    "prompt_id": "test_534",
+    "text": "credentials: admin/SecretRoot#88",
+    "detected_entities": [
+      {
+        "text": "admin/SecretRoot#88",
+        "start": 13,
+        "end": 32,
+        "label": "PASSWORD",
+        "confidence": 0.92,
+        "source": "regex",
+        "detector": "regex_credential_assignment"
+      }
+    ],
+    "latency_ms": 644.5404
+  },
+  {
+    "prompt_id": "test_535",
+    "text": "passcode: 948271 for building access.",
+    "detected_entities": [
+      {
+        "text": "948271",
+        "start": 10,
+        "end": 16,
+        "label": "PASSWORD",
+        "confidence": 0.9796,
+        "source": "regex",
+        "detector": "regex_password_assignment"
+      }
+    ],
+    "latency_ms": 669.2705
+  },
+  {
+    "prompt_id": "test_536",
+    "text": "acc no: 123456789012",
+    "detected_entities": [
+      {
+        "text": "123456789012",
+        "start": 8,
+        "end": 20,
+        "label": "BANK_ACCOUNT",
+        "confidence": 0.9987,
+        "source": "regex",
+        "detector": "regex_account_number"
+      }
+    ],
+    "latency_ms": 627.8765
+  },
+  {
+    "prompt_id": "test_537",
+    "text": "my acc no is 987654321098",
+    "detected_entities": [
+      {
+        "text": "987654321098",
+        "start": 13,
+        "end": 25,
+        "label": "BANK_ACCOUNT",
+        "confidence": 0.9991,
+        "source": "regex",
+        "detector": "regex_account_number"
+      }
+    ],
+    "latency_ms": 680.8616
+  },
+  {
+    "prompt_id": "test_538",
+    "text": "savings acc no: 554433221100",
+    "detected_entities": [
+      {
+        "text": "554433221100",
+        "start": 16,
+        "end": 28,
+        "label": "BANK_ACCOUNT",
+        "confidence": 0.9976,
+        "source": "regex",
+        "detector": "regex_account_number"
+      }
+    ],
+    "latency_ms": 660.2794
+  },
+  {
+    "prompt_id": "test_539",
+    "text": "act no: 987654321012",
+    "detected_entities": [
+      {
+        "text": "987654321012",
+        "start": 8,
+        "end": 20,
+        "label": "BANK_ACCOUNT",
+        "confidence": 0.95,
+        "source": "regex",
+        "detector": "regex_account_number"
+      }
+    ],
+    "latency_ms": 687.2637
+  },
+  {
+    "prompt_id": "test_540",
+    "text": "my act no is 112233445566",
+    "detected_entities": [
+      {
+        "text": "112233445566",
+        "start": 13,
+        "end": 25,
+        "label": "BANK_ACCOUNT",
+        "confidence": 0.95,
+        "source": "regex",
+        "detector": "regex_account_number"
+      }
+    ],
+    "latency_ms": 647.2986
+  },
+  {
+    "prompt_id": "test_541",
+    "text": "bank act: 445566778899",
+    "detected_entities": [
+      {
+        "text": "445566778899",
+        "start": 10,
+        "end": 22,
+        "label": "BANK_ACCOUNT",
+        "confidence": 0.9327,
+        "source": "gliner2",
+        "detector": "gliner2_account_number"
+      }
+    ],
+    "latency_ms": 611.2165
+  },
+  {
+    "prompt_id": "test_542",
+    "text": "a/c no: 998877665544",
+    "detected_entities": [
+      {
+        "text": "998877665544",
+        "start": 8,
+        "end": 20,
+        "label": "BANK_ACCOUNT",
+        "confidence": 0.9948,
+        "source": "regex",
+        "detector": "regex_account_number"
+      }
+    ],
+    "latency_ms": 645.9538
+  },
+  {
+    "prompt_id": "test_543",
+    "text": "my a/c no is 123123123123",
+    "detected_entities": [
+      {
+        "text": "123123123123",
+        "start": 13,
+        "end": 25,
+        "label": "BANK_ACCOUNT",
+        "confidence": 0.9825,
+        "source": "regex",
+        "detector": "regex_account_number"
+      }
+    ],
+    "latency_ms": 622.3216
+  },
+  {
+    "prompt_id": "test_544",
+    "text": "bank a/c: 321321321321",
+    "detected_entities": [
+      {
+        "text": "321321321321",
+        "start": 10,
+        "end": 22,
+        "label": "BANK_ACCOUNT",
+        "confidence": 0.975,
+        "source": "regex",
+        "detector": "regex_account_number"
+      }
+    ],
+    "latency_ms": 629.6103
+  },
+  {
+    "prompt_id": "test_545",
+    "text": "ac no: 665544332211",
+    "detected_entities": [
+      {
+        "text": "665544332211",
+        "start": 7,
+        "end": 19,
+        "label": "BANK_ACCOUNT",
+        "confidence": 0.9984,
+        "source": "regex",
+        "detector": "regex_account_number"
+      }
+    ],
+    "latency_ms": 651.0771
+  },
+  {
+    "prompt_id": "test_546",
+    "text": "accnt no: 778899001122",
+    "detected_entities": [
+      {
+        "text": "778899001122",
+        "start": 10,
+        "end": 22,
+        "label": "BANK_ACCOUNT",
+        "confidence": 0.9988,
+        "source": "regex",
+        "detector": "regex_account_number"
+      }
+    ],
+    "latency_ms": 646.3746
+  },
+  {
+    "prompt_id": "test_547",
+    "text": "customer acc no: 889900112233",
+    "detected_entities": [
+      {
+        "text": "889900112233",
+        "start": 17,
+        "end": 29,
+        "label": "BANK_ACCOUNT",
+        "confidence": 0.9987,
+        "source": "regex",
+        "detector": "regex_account_number"
+      }
+    ],
+    "latency_ms": 608.389
+  },
+  {
+    "prompt_id": "test_548",
+    "text": "transfer funds to acc no 456789012345 immediately.",
+    "detected_entities": [
+      {
+        "text": "456789012345",
+        "start": 25,
+        "end": 37,
+        "label": "BANK_ACCOUNT",
+        "confidence": 0.9976,
+        "source": "regex",
+        "detector": "regex_account_number"
+      }
+    ],
+    "latency_ms": 649.8977
+  },
+  {
+    "prompt_id": "test_549",
+    "text": "Act 1986 of Parliament applies to this legal case.",
+    "detected_entities": [],
+    "latency_ms": 767.4352
+  },
+  {
+    "prompt_id": "test_550",
+    "text": "We need to act 4 times to complete the workflow cycle.",
+    "detected_entities": [],
+    "latency_ms": 664.1146
+  },
+  {
+    "prompt_id": "test_551",
+    "text": "find the sum of digits of a number 9845124523",
+    "detected_entities": [],
+    "latency_ms": 673.2486
+  },
+  {
+    "prompt_id": "test_552",
+    "text": "What is the last 4 digits of 456245627895",
+    "detected_entities": [],
+    "latency_ms": 639.1343
+  },
+  {
+    "prompt_id": "test_553",
+    "text": "Calculate the square root of 9845124523",
+    "detected_entities": [],
+    "latency_ms": 656.2469
+  },
+  {
+    "prompt_id": "test_554",
+    "text": "Find the prime factors of 9876543210",
+    "detected_entities": [],
+    "latency_ms": 659.964
+  },
+  {
+    "prompt_id": "test_555",
+    "text": "Reverse the digits of 9123456780",
+    "detected_entities": [],
+    "latency_ms": 622.1564
+  },
+  {
+    "prompt_id": "test_556",
+    "text": "Count the number of digits in 452345624562",
+    "detected_entities": [],
+    "latency_ms": 649.4499
+  },
+  {
+    "prompt_id": "test_557",
+    "text": "Write a Python regex for matching a 10-digit number like 9876543210",
+    "detected_entities": [],
+    "latency_ms": 671.0783
+  },
+  {
+    "prompt_id": "test_558",
+    "text": "Sort the digits of 9845124523 in ascending order",
+    "detected_entities": [],
+    "latency_ms": 637.7504
+  },
+  {
+    "prompt_id": "test_559",
+    "text": "Compute 9845124523 modulo 97",
+    "detected_entities": [],
+    "latency_ms": 617.1787
+  },
+  {
+    "prompt_id": "test_560",
+    "text": "Show the binary representation of 9876543210",
+    "detected_entities": [],
+    "latency_ms": 885.7802
+  },
+  {
+    "prompt_id": "test_561",
+    "text": "Calculate the sum of the first and last digit of 8765432109",
+    "detected_entities": [],
+    "latency_ms": 667.0425
+  },
+  {
+    "prompt_id": "test_562",
+    "text": "Check whether 9845124523 is divisible by 11",
+    "detected_entities": [],
+    "latency_ms": 629.715
+  },
+  {
+    "prompt_id": "test_563",
+    "text": "my adhr no is 456245627895",
+    "detected_entities": [
+      {
+        "text": "456245627895",
+        "start": 14,
+        "end": 26,
+        "label": "NATIONAL_ID",
+        "confidence": 0.98,
+        "source": "regex",
+        "detector": "regex_aadhaar_contextual"
+      }
+    ],
+    "latency_ms": 593.609
+  },
+  {
+    "prompt_id": "test_564",
+    "text": "my adhar number is 987654321098",
+    "detected_entities": [
+      {
+        "text": "987654321098",
+        "start": 19,
+        "end": 31,
+        "label": "NATIONAL_ID",
+        "confidence": 0.9611,
+        "source": "gliner2",
+        "detector": "gliner2_national_id_number"
+      }
+    ],
+    "latency_ms": 655.4033
+  },
+  {
+    "prompt_id": "test_565",
+    "text": "aadhaar no: 345678901234",
+    "detected_entities": [
+      {
+        "text": "345678901234",
+        "start": 12,
+        "end": 24,
+        "label": "NATIONAL_ID",
+        "confidence": 0.98,
+        "source": "regex",
+        "detector": "regex_aadhaar_contextual"
+      }
+    ],
+    "latency_ms": 671.2015
+  },
+  {
+    "prompt_id": "test_566",
+    "text": "uidai id: 567890123456",
+    "detected_entities": [
+      {
+        "text": "567890123456",
+        "start": 10,
+        "end": 22,
+        "label": "NATIONAL_ID",
+        "confidence": 0.98,
+        "source": "regex",
+        "detector": "regex_aadhaar_contextual"
+      }
+    ],
+    "latency_ms": 658.9999
+  },
+  {
+    "prompt_id": "test_567",
+    "text": "my aadhaar number is 4562 4562 7895, please verify it.",
+    "detected_entities": [
+      {
+        "text": "4562 4562 7895",
+        "start": 21,
+        "end": 35,
+        "label": "NATIONAL_ID",
+        "confidence": 0.98,
+        "source": "regex",
+        "detector": "regex_aadhaar_contextual"
+      }
+    ],
+    "latency_ms": 669.6576
+  },
+  {
+    "prompt_id": "test_568",
+    "text": "identity card number 9876 5432 1098 was submitted for KYC.",
+    "detected_entities": [
+      {
+        "text": "9876 5432 1098",
+        "start": 21,
+        "end": 35,
+        "label": "NATIONAL_ID",
+        "confidence": 0.96,
+        "source": "regex",
+        "detector": "regex_aadhaar_spaced_ownership"
+      }
+    ],
+    "latency_ms": 658.9391
+  },
+  {
+    "prompt_id": "test_569",
+    "text": "my pan no is ABCDE1234F",
+    "detected_entities": [
+      {
+        "text": "ABCDE1234F",
+        "start": 13,
+        "end": 23,
+        "label": "TAX_ID",
+        "confidence": 0.99,
+        "source": "regex",
+        "detector": "regex_pan_contextual"
+      }
+    ],
+    "latency_ms": 723.8577
+  },
+  {
+    "prompt_id": "test_570",
+    "text": "pan card no: BKRPD5432M",
+    "detected_entities": [
+      {
+        "text": "BKRPD5432M",
+        "start": 13,
+        "end": 23,
+        "label": "TAX_ID",
+        "confidence": 0.96,
+        "source": "regex",
+        "detector": "regex_pan_direct"
+      }
+    ],
+    "latency_ms": 690.9798
+  },
+  {
+    "prompt_id": "test_571",
+    "text": "Employee PAN XYZPA9876K was recorded in the payroll database.",
+    "detected_entities": [
+      {
+        "text": "XYZPA9876K",
+        "start": 13,
+        "end": 23,
+        "label": "TAX_ID",
+        "confidence": 0.99,
+        "source": "regex",
+        "detector": "regex_pan_contextual"
+      }
+    ],
+    "latency_ms": 624.1056
+  },
+  {
+    "prompt_id": "test_572",
+    "text": "permanent account number: CRKPS1234L",
+    "detected_entities": [
+      {
+        "text": "CRKPS1234L",
+        "start": 26,
+        "end": 36,
+        "label": "TAX_ID",
+        "confidence": 0.99,
+        "source": "regex",
+        "detector": "regex_pan_contextual"
+      }
+    ],
+    "latency_ms": 668.3896
+  },
+  {
+    "prompt_id": "test_573",
+    "text": "my dl no is DL-1420110012345",
+    "detected_entities": [
+      {
+        "text": "DL-1420110012345",
+        "start": 12,
+        "end": 28,
+        "label": "DRIVER_LICENSE",
+        "confidence": 0.9899,
+        "source": "regex",
+        "detector": "regex_indian_dl_contextual"
+      }
+    ],
+    "latency_ms": 642.8315
+  },
+  {
+    "prompt_id": "test_574",
+    "text": "driving license: MH-0220190054321",
+    "detected_entities": [
+      {
+        "text": "MH-0220190054321",
+        "start": 17,
+        "end": 33,
+        "label": "DRIVER_LICENSE",
+        "confidence": 0.9863,
+        "source": "regex",
+        "detector": "regex_indian_dl_contextual"
+      }
+    ],
+    "latency_ms": 661.0261
+  },
+  {
+    "prompt_id": "test_575",
+    "text": "voter id: WBD1234567",
+    "detected_entities": [
+      {
+        "text": "WBD1234567",
+        "start": 10,
+        "end": 20,
+        "label": "NATIONAL_ID",
+        "confidence": 0.98,
+        "source": "regex",
+        "detector": "regex_voter_id_contextual"
+      }
+    ],
+    "latency_ms": 681.8934
+  },
+  {
+    "prompt_id": "test_576",
+    "text": "epic card no: ABC9876543",
+    "detected_entities": [
+      {
+        "text": "ABC9876543",
+        "start": 14,
+        "end": 24,
+        "label": "NATIONAL_ID",
+        "confidence": 0.98,
+        "source": "regex",
+        "detector": "regex_voter_id_contextual"
+      }
+    ],
+    "latency_ms": 657.2404
+  },
+  {
+    "prompt_id": "test_577",
+    "text": "Write regex to validate PAN like ABCDE1234F",
+    "detected_entities": [],
+    "latency_ms": 669.8883
+  },
+  {
+    "prompt_id": "test_578",
+    "text": "Call me at +1 (202) 555-0199 for the US client briefing.",
+    "detected_entities": [
+      {
+        "text": "+1 (202) 555-0199",
+        "start": 11,
+        "end": 28,
+        "label": "PHONE",
+        "confidence": 1.0,
+        "source": "regex",
+        "detector": "regex_phone_international"
+      }
+    ],
+    "latency_ms": 670.0144
+  },
+  {
+    "prompt_id": "test_579",
+    "text": "Contact Chicago office on 312-555-0143.",
+    "detected_entities": [
+      {
+        "text": "Chicago",
+        "start": 8,
+        "end": 15,
+        "label": "LOCATION",
+        "confidence": 0.9879,
+        "source": "gliner2",
+        "detector": "gliner2_city"
+      },
+      {
+        "text": "312-555-0143",
+        "start": 26,
+        "end": 38,
+        "label": "PHONE",
+        "confidence": 1.0,
+        "source": "regex",
+        "detector": "regex_phone_nanp"
+      }
+    ],
+    "latency_ms": 732.8426
+  },
+  {
+    "prompt_id": "test_580",
+    "text": "Support hotline is 1-800-555-0199.",
+    "detected_entities": [
+      {
+        "text": "1-800-555-0199",
+        "start": 19,
+        "end": 33,
+        "label": "PHONE",
+        "confidence": 1.0,
+        "source": "regex",
+        "detector": "regex_phone_nanp"
+      }
+    ],
+    "latency_ms": 671.9511
+  },
+  {
+    "prompt_id": "test_581",
+    "text": "UK support is 020 7946 0958 if you need assistance.",
+    "detected_entities": [
+      {
+        "text": "UK",
+        "start": 0,
+        "end": 2,
+        "label": "LOCATION",
+        "confidence": 0.9872,
+        "source": "gliner2",
+        "detector": "gliner2_country"
+      },
+      {
+        "text": "020 7946 0958",
+        "start": 14,
+        "end": 27,
+        "label": "PHONE",
+        "confidence": 1.0,
+        "source": "regex",
+        "detector": "regex_phone_uk_national"
+      }
+    ],
+    "latency_ms": 726.8382
+  },
+  {
+    "prompt_id": "test_582",
+    "text": "Reach London dispatch at 01632 960001.",
+    "detected_entities": [
+      {
+        "text": "London",
+        "start": 6,
+        "end": 12,
+        "label": "LOCATION",
+        "confidence": 0.9949,
+        "source": "gliner2",
+        "detector": "gliner2_city"
+      },
+      {
+        "text": "01632 960001",
+        "start": 25,
+        "end": 37,
+        "label": "PHONE",
+        "confidence": 1.0,
+        "source": "regex",
+        "detector": "regex_phone_uk_national"
+      }
+    ],
+    "latency_ms": 698.9042
+  },
+  {
+    "prompt_id": "test_583",
+    "text": "UK mobile number is 07911 123456.",
+    "detected_entities": [
+      {
+        "text": "UK",
+        "start": 0,
+        "end": 2,
+        "label": "LOCATION",
+        "confidence": 0.9864,
+        "source": "gliner2",
+        "detector": "gliner2_country"
+      },
+      {
+        "text": "07911 123456",
+        "start": 20,
+        "end": 32,
+        "label": "PHONE",
+        "confidence": 1.0,
+        "source": "regex",
+        "detector": "regex_phone_uk_national"
+      }
+    ],
+    "latency_ms": 662.1167
+  },
+  {
+    "prompt_id": "test_584",
+    "text": "Contact Tariq on +971 50 123 4567 regarding the Dubai shipment.",
+    "detected_entities": [
+      {
+        "text": "Tariq",
+        "start": 8,
+        "end": 13,
+        "label": "PERSON",
+        "confidence": 0.8006,
+        "source": "gliner2",
+        "detector": "gliner2_full_name"
+      },
+      {
+        "text": "+971 50 123 4567",
+        "start": 17,
+        "end": 33,
+        "label": "PHONE",
+        "confidence": 1.0,
+        "source": "regex",
+        "detector": "regex_phone_international"
+      },
+      {
+        "text": "Dubai",
+        "start": 48,
+        "end": 53,
+        "label": "LOCATION",
+        "confidence": 0.9934,
+        "source": "gliner2",
+        "detector": "gliner2_city"
+      }
+    ],
+    "latency_ms": 710.5163
+  },
+  {
+    "prompt_id": "test_585",
+    "text": "Reach UAE office on 050 123 4567.",
+    "detected_entities": [
+      {
+        "text": "UAE",
+        "start": 6,
+        "end": 9,
+        "label": "LOCATION",
+        "confidence": 0.85,
+        "source": "gliner2",
+        "detector": "gliner2_country"
+      },
+      {
+        "text": "050 123 4567",
+        "start": 20,
+        "end": 32,
+        "label": "PHONE",
+        "confidence": 1.0,
+        "source": "regex",
+        "detector": "regex_phone_middle_east"
+      }
+    ],
+    "latency_ms": 637.9655
+  },
+  {
+    "prompt_id": "test_586",
+    "text": "Call Sydney headquarters on 02 9876 5432.",
+    "detected_entities": [
+      {
+        "text": "Sydney",
+        "start": 5,
+        "end": 11,
+        "label": "LOCATION",
+        "confidence": 0.9792,
+        "source": "gliner2",
+        "detector": "gliner2_city"
+      },
+      {
+        "text": "02 9876 5432",
+        "start": 28,
+        "end": 40,
+        "label": "PHONE",
+        "confidence": 1.0,
+        "source": "regex",
+        "detector": "regex_phone_europe_national"
+      }
+    ],
+    "latency_ms": 695.2207
+  },
+  {
+    "prompt_id": "test_587",
+    "text": "Contact Paris operations at 01 42 68 55 55.",
+    "detected_entities": [
+      {
+        "text": "Paris",
+        "start": 8,
+        "end": 13,
+        "label": "LOCATION",
+        "confidence": 0.9877,
+        "source": "gliner2",
+        "detector": "gliner2_city"
+      },
+      {
+        "text": "01 42 68 55 55",
+        "start": 28,
+        "end": 42,
+        "label": "PHONE",
+        "confidence": 1.0,
+        "source": "regex",
+        "detector": "regex_phone_europe_national"
+      }
+    ],
+    "latency_ms": 860.3268
+  },
+  {
+    "prompt_id": "test_588",
+    "text": "Today is my birthday.",
+    "detected_entities": [
+      {
+        "text": "Today",
+        "start": 0,
+        "end": 5,
+        "label": "DATE",
+        "confidence": 0.6125,
+        "source": "gliner2",
+        "detector": "gliner2_date_of_birth"
+      }
+    ],
+    "latency_ms": 919.3631
+  },
+  {
+    "prompt_id": "test_589",
+    "text": "My birthday is today.",
+    "detected_entities": [
+      {
+        "text": "today",
+        "start": 15,
+        "end": 20,
+        "label": "DATE",
+        "confidence": 0.9503,
+        "source": "gliner2",
+        "detector": "gliner2_date_of_birth"
+      }
+    ],
+    "latency_ms": 752.4554
+  },
+  {
+    "prompt_id": "test_590",
+    "text": "Tomorrow is his birthday.",
+    "detected_entities": [
+      {
+        "text": "Tomorrow",
+        "start": 0,
+        "end": 8,
+        "label": "DATE",
+        "confidence": 0.5057,
+        "source": "gliner2",
+        "detector": "gliner2_date_of_birth"
+      }
+    ],
+    "latency_ms": 679.9046
+  },
+  {
+    "prompt_id": "test_591",
+    "text": "Yesterday was my anniversary.",
+    "detected_entities": [
+      {
+        "text": "Yesterday",
+        "start": 0,
+        "end": 9,
+        "label": "DATE",
+        "confidence": 0.9505,
+        "source": "gliner2",
+        "detector": "gliner2_sensitive_date"
+      }
+    ],
+    "latency_ms": 660.1407
+  },
+  {
+    "prompt_id": "test_592",
+    "text": "What is the weather today in New York?",
+    "detected_entities": [
+      {
+        "text": "New York",
+        "start": 29,
+        "end": 37,
+        "label": "LOCATION",
+        "confidence": 0.9906,
+        "source": "gliner2",
+        "detector": "gliner2_city"
+      }
+    ],
+    "latency_ms": 700.0709
+  },
+  {
+    "prompt_id": "test_593",
+    "text": "Can you summarize today's technology news?",
+    "detected_entities": [],
+    "latency_ms": 687.6728
+  },
+  {
+    "prompt_id": "test_594",
+    "text": "I need to finish this report today before evening.",
+    "detected_entities": [],
+    "latency_ms": 903.4254
+  },
+  {
+    "prompt_id": "test_595",
+    "text": "Tomorrow will be a busy day for our team.",
+    "detected_entities": [],
+    "latency_ms": 817.0774
+  },
+  {
+    "prompt_id": "test_596",
+    "text": "Who is Narendra Modi and what are his major policies?",
+    "detected_entities": [
+      {
+        "text": "Narendra Modi",
+        "start": 7,
+        "end": 20,
+        "label": "PERSON",
+        "confidence": 0.85,
+        "source": "presidio",
+        "detector": "presidio_person"
+      }
+    ],
+    "latency_ms": 691.6423
+  },
+  {
+    "prompt_id": "test_597",
+    "text": "What are the latest AI products announced by Microsoft?",
+    "detected_entities": [
+      {
+        "text": "Microsoft",
+        "start": 45,
+        "end": 54,
+        "label": "ORGANIZATION",
+        "confidence": 0.9,
+        "source": "spacy",
+        "detector": "spacy_org"
+      }
+    ],
+    "latency_ms": 732.255
+  },
+  {
+    "prompt_id": "test_598",
+    "text": "HR coordinator Priya Nair attended the onboarding session.",
+    "detected_entities": [
+      {
+        "text": "Priya Nair",
+        "start": 15,
+        "end": 25,
+        "label": "PERSON",
+        "confidence": 0.85,
+        "source": "presidio",
+        "detector": "presidio_person"
+      }
+    ],
+    "latency_ms": 1061.5535
+  },
+  {
+    "prompt_id": "test_599",
+    "text": "Software developer Rahul Verma submitted the pull request.",
+    "detected_entities": [
+      {
+        "text": "Rahul Verma",
+        "start": 19,
+        "end": 30,
+        "label": "PERSON",
+        "confidence": 0.85,
+        "source": "presidio",
+        "detector": "presidio_person"
+      }
+    ],
+    "latency_ms": 1954.1968
+  },
+  {
+    "prompt_id": "test_600",
+    "text": "Delivery contract was awarded to Acme Corp.",
+    "detected_entities": [
+      {
+        "text": "Acme Corp",
+        "start": 33,
+        "end": 42,
+        "label": "ORGANIZATION",
+        "confidence": 0.85,
+        "source": "spacy",
+        "detector": "spacy_org"
+      }
+    ],
+    "latency_ms": 2338.2311
   }
 ]

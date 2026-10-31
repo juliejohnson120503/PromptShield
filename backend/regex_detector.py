@@ -36,6 +36,7 @@ from typing import List
 from backend.models import EntityType, DetectedEntity
 from backend.normalization import normalize_entity_value
 from backend import config
+from backend import entity_validators as validators
 
 
 # ============================================================
@@ -187,6 +188,22 @@ class RegexDetector:
                 suffix = prompt[match.end():min(len(prompt), match.end() + 30)]
                 if re.search(r"(?i)^\s*(?:is\s+my|is\s+the|is\s+a|as\s+my)?\s*account\s*(?:number|no\.?|id|#)", suffix):
                     continue
+
+                # Mathematical / Abstract Number Exclusion for continuous 10-digit numbers:
+                # E.g. "find the sum of digits of a number 9845124523" vs "call me at 9845124523"
+                if label == "phone_10digit" and raw.isdigit():
+                    prefix_window = prompt[max(0, match.start() - 60):match.start()]
+                    has_math_cue = bool(validators.MATH_CUE_PATTERN.search(prompt)) or bool(re.search(
+                        r"(?i)\b(?:number|integer|value|input|digits)\s*[:=]?\s*$",
+                        prefix_window
+                    ))
+                    has_phone_cue = bool(re.search(
+                        r"(?i)\b(?:call|phone|mobile|mob|cell|contact|reach|tel|telephone|sms|text|whatsapp|ping|fax)\b",
+                        prompt
+                    ))
+                    if has_math_cue and not has_phone_cue:
+                        continue
+
                 entities.append(
                     DetectedEntity(
                         text=raw,
@@ -200,6 +217,7 @@ class RegexDetector:
                     )
                 )
         return entities
+
 
     def _detect_credit_cards(self, prompt: str) -> List[DetectedEntity]:
         entities = []
@@ -543,6 +561,19 @@ class RegexDetector:
                 else:
                     raw = match.group(0)
                     start, end = match.start(), match.end()
+
+                # Direct PAN card validation
+                if label == "pan_direct":
+                    from backend import entity_validators
+                    if not entity_validators.is_valid_pan(raw):
+                        continue
+
+                # Aadhaar digit validation
+                if "aadhaar" in label:
+                    digits = re.sub(r"\D", "", raw)
+                    if len(digits) != 12 or digits[0] in ("0", "1"):
+                        continue
+
                 entities.append(
                     DetectedEntity(
                         text=raw,
@@ -556,6 +587,7 @@ class RegexDetector:
                     )
                 )
         return entities
+
 
     def _detect_usernames(self, prompt: str) -> List[DetectedEntity]:
         entities = []

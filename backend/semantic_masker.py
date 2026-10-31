@@ -227,10 +227,27 @@ class SemanticMasker:
         type_counters: Dict[str, int] = {}
 
         def _get_or_create_placeholder(p: EntityPolicyResult) -> str:
-            nv = p.normalized_value or p.entity_text
-            key = (p.entity_type, nv)
+            raw_nv = (p.normalized_value or p.entity_text).strip()
+            # Case-insensitive deduplication for named entities, email, username
+            is_case_insensitive = p.entity_type in (
+                EntityType.PERSON, EntityType.ORGANIZATION, EntityType.LOCATION,
+                EntityType.EMAIL, EntityType.USERNAME
+            )
+            key = (p.entity_type, raw_nv.lower() if is_case_insensitive else raw_nv)
             if key in placeholder_cache:
                 return placeholder_cache[key]
+
+            # Coreference resolution for PERSON: link first-name alias to existing full-name person
+            if p.entity_type == EntityType.PERSON:
+                norm_words = raw_nv.split()
+                for (seen_type, seen_val_key), seen_ph in placeholder_cache.items():
+                    if seen_type == EntityType.PERSON:
+                        seen_words = seen_val_key.split()
+                        if (len(norm_words) == 1 and len(seen_words) > 1 and norm_words[0].lower() == seen_words[0]) or \
+                           (len(seen_words) == 1 and len(norm_words) > 1 and norm_words[0].lower() == seen_words[0]):
+                            placeholder_cache[key] = seen_ph
+                            return seen_ph
+
             prefix = _placeholder_prefix(p.entity_type)
             idx = type_counters.get(prefix, 0) + 1
             type_counters[prefix] = idx
@@ -346,9 +363,13 @@ class SemanticMasker:
         replacements: List[Tuple[int, int, str]] = []
 
         for p in resolved:
-            nv = p.normalized_value or p.entity_text
+            nv = (p.normalized_value or p.entity_text).strip()
             eid = _entity_id(p.entity_type, nv)
-            key = (p.entity_type, nv)
+            is_case_insensitive = p.entity_type in (
+                EntityType.PERSON, EntityType.ORGANIZATION, EntityType.LOCATION,
+                EntityType.EMAIL, EntityType.USERNAME
+            )
+            key = (p.entity_type, nv.lower() if is_case_insensitive else nv)
 
             user_force_masked = (eid in masked_ids or p.entity_text in masked_ids)
             user_approved = (eid in approved_ids or p.entity_text in approved_ids)
