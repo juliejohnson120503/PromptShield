@@ -25,6 +25,7 @@ from typing import Any, Dict, List, Optional
 from backend.models import DetectedEntity, EntityType
 from backend.normalization import normalize_entity_value
 from backend import config
+from backend import entity_validators as validators
 
 logger = logging.getLogger(__name__)
 
@@ -243,10 +244,7 @@ class GLiNER2PIIDetector:
                 continue
 
             # --- Excluded tokens filter (keywords falsely tagged as entities) ---
-            clean_norm = text.lower().strip()
-            if clean_norm in config.COMMON_EXCLUDED_TOKENS or (
-                clean_norm.startswith("the ") and clean_norm[4:].strip() in config.COMMON_EXCLUDED_TOKENS
-            ):
+            if validators.is_excluded_token(text):
                 logger.debug(
                     "[GLiNER2PIIDetector] Excluded token '%s' in COMMON_EXCLUDED_TOKENS — skipping.",
                     text,
@@ -275,68 +273,76 @@ class GLiNER2PIIDetector:
                 entity_type = EntityType.PII_OTHER
                 is_unsupported = True
 
-            # If classified as EMAIL but lacks '@', skip
-            if entity_type == EntityType.EMAIL and "@" not in text:
-                continue
-
-            # Clean EMAIL trailing sentence text (e.g. .The) or trailing punctuation
+            # If classified as EMAIL: validate and clean
             if entity_type == EntityType.EMAIL:
-                email_sent_match = re.match(r"^([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,})(?:\.([A-Z][a-z]+.*))?$", text)
-                if email_sent_match and email_sent_match.group(2):
-                    text = email_sent_match.group(1)
-                    end = start + len(text)
-                elif text.endswith("."):
-                    text = text.rstrip(".")
+                is_valid, cleaned_email = validators.validate_email(text)
+                if not is_valid:
+                    continue
+                if cleaned_email != text:
+                    text = cleaned_email
                     end = start + len(text)
 
-            # If classified as DATE, filter out vague relative periods and idioms
+            # If classified as DATE: validate against non-specific, relative, or isolated terms
             if entity_type == EntityType.DATE:
-                NON_SPECIFIC_DATE_PHRASES = {
-                    "a good day", "good day", "last quarter", "quarterly", "next quarter",
-                    "this quarter", "next year", "last year", "this year", "fiscal year",
-                    "2024 fiscal year", "every day", "daily", "annually", "q1", "q2", "q3", "q4",
-                }
-                if clean_norm in NON_SPECIFIC_DATE_PHRASES:
-                    continue
-                if clean_norm.startswith("every ") and any(unit in clean_norm for unit in ("day", "month", "year", "days", "months", "years")):
+                if not validators.validate_date(text, prompt, start, end):
                     continue
 
-            # If classified as IP_ADDRESS but lacks '.' or ':', skip
-            if entity_type == EntityType.IP_ADDRESS and ("." not in text and ":" not in text):
+            # If classified as IP_ADDRESS: check syntax
+            if entity_type == EntityType.IP_ADDRESS and not validators.validate_ip_address(text):
                 continue
 
-            # If classified as PERSON:
+            # If classified as PERSON: validate structure, possessives, and corporate suffixes
             if entity_type == EntityType.PERSON:
-                # Strip trailing possessive suffixes (e.g. "Priya Nair's" -> "Priya Nair")
-                if re.search(r"['’]s?$", text):
-                    trimmed = re.sub(r"['’]s?$", "", text).rstrip()
-                    if trimmed:
-                        text = trimmed
-                        end = start + len(text)
+                is_valid, cleaned_person = validators.validate_person(text)
+                if not is_valid:
+                    continue
+                if validators.is_excluded_token(cleaned_person):
+                    continue
+                if cleaned_person != text:
+                    offset_shift = prompt.find(cleaned_person, start)
+                    if offset_shift != -1 and offset_shift < end:
+                        start = offset_shift
+                    text = cleaned_person
+                    end = start + len(text)
 
-                # Reject malformed PERSON spans containing sentence breaks, punctuation sequences, or directive keywords
-                if re.search(r"[.!?;:\n]{1,}\s*[-–—]|\.[a-zA-Z]{2,}|\b(?<![A-Z])\.[A-Z]", text):
+            # Format validation for CREDIT_CARD (clean brand prefix)
+            if entity_type == EntityType.CREDIT_CARD:
+                is_valid, cleaned_cc = validators.validate_credit_card(text)
+                if not is_valid:
                     continue
-                words = [re.sub(r"^\W+|\W+$", "", w).lower() for w in text.split()]
-                disqualifying = {
-                    "api", "key", "token", "password", "secret", "credential", "database",
-                    "server", "ip", "endpoint", "must", "should", "shall", "cannot", "can",
-                    "will", "would", "could", "please", "report", "explain", "recommend",
-                    "incident", "order", "ticket", "customer", "support",
-                }
-                if any(w in disqualifying for w in words):
+                if cleaned_cc != text:
+                    offset_shift = prompt.find(cleaned_cc, start)
+                    if offset_shift != -1 and offset_shift < end:
+                        start = offset_shift
+                    text = cleaned_cc
+                    end = start + len(text)
+
+            # Format validation for API_KEY and ACCESS_TOKEN
+            if entity_type in (EntityType.API_KEY, EntityType.ACCESS_TOKEN):
+                if not validators.validate_api_key(text):
                     continue
 
-                if CORPORATE_SUFFIX_PATTERN.search(text):
+            # Format validation for PASSWORD (passwords do not contain spaces)
+            if entity_type == EntityType.PASSWORD:
+                if " " in text:
                     continue
 
-            # Format validation for BANK_ACCOUNT / IBAN:
-            # Structured account numbers and IBANs must contain digits. Purely alphabetic text cannot be a bank account.
-            # Do NOT silently relabel an incorrect native GLiNER2 label as ORGANIZATION.
-            if entity_type == EntityType.BANK_ACCOUNT:
-                has_digits = any(c.isdigit() for c in text)
-                if not has_digits:
+            # Format validation for BANK_ACCOUNT / IBAN
+            if entity_type == EntityType.BANK_ACCOUNT and not validators.validate_bank_account(text):
+                continue
+
+            # Format validation for CUSTOMER_ID, USER_ID, TICKET_ID, ORDER_ID, USERNAME
+            if entity_type in (EntityType.CUSTOMER_ID, EntityType.USER_ID, EntityType.TICKET_ID, EntityType.ORDER_ID, EntityType.USERNAME):
+                if not validators.validate_structured_id(text, prompt, start):
                     continue
+
+            # Format validation for PHONE
+            if entity_type == EntityType.PHONE and not validators.validate_phone(text):
+                continue
+
+            # Format validation for LOCATION
+            if entity_type == EntityType.LOCATION and not validators.validate_location(text):
+                continue
 
             entities.append(
                 DetectedEntity(
@@ -356,6 +362,49 @@ class GLiNER2PIIDetector:
                     },
                 )
             )
+
+        # Merge adjacent sub-name PERSON entities (e.g. first_name + last_name / middle_name)
+        if len(entities) > 1:
+            merged_entities: List[DetectedEntity] = []
+            sorted_ents = sorted(entities, key=lambda e: (e.start, e.end))
+            idx = 0
+            while idx < len(sorted_ents):
+                curr = sorted_ents[idx]
+                if curr.entity_type == EntityType.PERSON:
+                    next_idx = idx + 1
+                    while next_idx < len(sorted_ents):
+                        nxt = sorted_ents[next_idx]
+                        if nxt.entity_type == EntityType.PERSON and nxt.start >= curr.end:
+                            gap = prompt[curr.end:nxt.start]
+                            if re.fullmatch(r"[\s\-']+", gap) and len(gap) <= 5:
+                                combined_text = prompt[curr.start:nxt.end]
+                                is_valid, _ = validators.validate_person(combined_text)
+                                if is_valid:
+                                    curr = DetectedEntity(
+                                        text=combined_text,
+                                        entity_type=EntityType.PERSON,
+                                        start=curr.start,
+                                        end=nxt.end,
+                                        normalized_value=normalize_entity_value(EntityType.PERSON, combined_text),
+                                        confidence=max(curr.confidence, nxt.confidence),
+                                        source="gliner2",
+                                        detector="gliner2_full_name",
+                                        metadata={
+                                            "gliner2_label": "full_name",
+                                            "canonical_label": "PERSON",
+                                            "is_unsupported": False,
+                                            "raw_score": max(curr.confidence, nxt.confidence),
+                                        },
+                                    )
+                                    next_idx += 1
+                                    continue
+                        break
+                    merged_entities.append(curr)
+                    idx = next_idx
+                else:
+                    merged_entities.append(curr)
+                    idx += 1
+            entities = merged_entities
 
         return entities
 

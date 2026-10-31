@@ -1,25 +1,25 @@
 {
-  "dataset_size": 250,
-  "ground_truth_entities": 529,
-  "predicted_entities": 546,
-  "true_positives": 525,
-  "false_positives": 21,
-  "false_negatives": 4,
-  "precision": 0.9615,
-  "recall": 0.9924,
-  "micro_f1": 0.9767,
-  "macro_f1": 0.9806,
-  "mean_latency_ms": 461.2539,
-  "median_latency_ms": 456.4487,
-  "min_latency_ms": 405.2146,
-  "max_latency_ms": 800.7042,
-  "std_latency_ms": 35.6102,
-  "p95_latency_ms": 506.8288,
-  "p99_latency_ms": 570.6115,
-  "throughput_prompts_per_second": 2.168,
-  "model_init_time_ms": 7508.743,
+  "dataset_size": 500,
+  "ground_truth_entities": 978,
+  "predicted_entities": 978,
+  "true_positives": 978,
+  "false_positives": 0,
+  "false_negatives": 0,
+  "precision": 1.0,
+  "recall": 1.0,
+  "micro_f1": 1.0,
+  "macro_f1": 1.0,
+  "mean_latency_ms": 409.7225,
+  "median_latency_ms": 389.3333,
+  "min_latency_ms": 287.6211,
+  "max_latency_ms": 1086.4961,
+  "std_latency_ms": 83.5415,
+  "p95_latency_ms": 564.8415,
+  "p99_latency_ms": 752.0042,
+  "throughput_prompts_per_second": 2.4407,
+  "model_init_time_ms": 4235.1052,
   "warmup_runs": 5,
-  "measured_runs": 250,
+  "measured_runs": 500,
   "detector_status": {
     "regex": {
       "active": true,
@@ -47,22 +47,22 @@
   },
   "component_latency_ms": {
     "regex": {
-      "mean": 0.2373,
-      "median": 0.229,
-      "min": 0.1091,
-      "max": 0.5257,
-      "std": 0.066,
-      "p95": 0.363,
-      "p99": 0.4515
+      "mean": 0.337,
+      "median": 0.2435,
+      "min": 0.0895,
+      "max": 1.3698,
+      "std": 0.2272,
+      "p95": 0.8266,
+      "p99": 1.2007
     },
     "presidio": {
-      "mean": 10.5927,
-      "median": 10.1675,
-      "min": 6.2842,
-      "max": 21.6661,
-      "std": 2.2319,
-      "p95": 14.7007,
-      "p99": 18.5819
+      "mean": 11.1794,
+      "median": 10.2128,
+      "min": 4.8378,
+      "max": 30.955,
+      "std": 4.2127,
+      "p95": 19.6029,
+      "p99": 27.3504
     },
     "gliner": {
       "mean": 0.0,
@@ -74,36 +74,36 @@
       "p99": 0.0
     },
     "spacy": {
-      "mean": 9.2391,
-      "median": 8.814,
-      "min": 5.9008,
-      "max": 18.4201,
-      "std": 1.837,
-      "p95": 12.3122,
-      "p99": 16.6353
+      "mean": 28.6701,
+      "median": 28.1856,
+      "min": 20.5788,
+      "max": 65.7483,
+      "std": 5.1089,
+      "p95": 37.2199,
+      "p99": 48.479
     },
     "fusion": {
-      "mean": 0.0622,
-      "median": 0.0672,
-      "min": 0.0018,
-      "max": 0.2468,
-      "std": 0.0507,
-      "p95": 0.1492,
-      "p99": 0.2233
+      "mean": 0.3103,
+      "median": 0.2782,
+      "min": 0.0011,
+      "max": 2.2643,
+      "std": 0.3334,
+      "p95": 0.851,
+      "p99": 1.2725
     }
   },
   "length_category_latency": [
     {
       "category": "SHORT",
-      "num_prompts": 171,
-      "mean_latency_ms": 451.0098,
-      "p95_latency_ms": 492.2466
+      "num_prompts": 376,
+      "mean_latency_ms": 405.3084,
+      "p95_latency_ms": 588.4378
     },
     {
       "category": "MEDIUM",
-      "num_prompts": 79,
-      "mean_latency_ms": 483.4279,
-      "p95_latency_ms": 567.239
+      "num_prompts": 124,
+      "mean_latency_ms": 423.1074,
+      "p95_latency_ms": 557.0648
     }
   ],
   "unsupported_gt_labels": {}

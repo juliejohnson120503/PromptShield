@@ -55,6 +55,7 @@ from typing import List, Dict, Tuple, Optional
 
 from backend.models import EntityType, DetectedEntity
 from backend import config
+from backend import entity_validators as validators
 
 logger = logging.getLogger(__name__)
 
@@ -218,18 +219,155 @@ class EntityFusionEngine:
 
             expanded_candidates.append(ent)
 
-        for ent in expanded_candidates:
+        # Step 0b: Compound Address Merging
+        # Merge street address + adjacent (comma/postal-code separated) city/country/postal_code
+        # e.g. "10 Downing Street" + ", London, SW1A 2AA" -> "10 Downing Street, London, SW1A 2AA"
+        # e.g. "12 Rue de la Paix" + ", 75002 Paris, France" -> "12 Rue de la Paix, 75002 Paris, France"
+        sorted_cands = sorted(expanded_candidates, key=lambda e: (e.start, -(e.end - e.start)))
+        absorbed_indices = set()
+        merged_address_cands: List[DetectedEntity] = []
+
+        for i, ent in enumerate(sorted_cands):
+            if i in absorbed_indices:
+                continue
+
+            if ent.entity_type == EntityType.ADDRESS:
+                current_start = ent.start
+                current_end = ent.end
+                current_text = ent.text
+                best_conf = ent.confidence
+
+                j = i + 1
+                while j < len(sorted_cands):
+                    next_ent = sorted_cands[j]
+                    if j in absorbed_indices:
+                        j += 1
+                        continue
+
+                    # If next entity is contained within current address span
+                    if next_ent.start >= current_start and next_ent.end <= current_end:
+                        if next_ent.entity_type in (EntityType.LOCATION, EntityType.ADDRESS):
+                            absorbed_indices.add(j)
+                        j += 1
+                        continue
+
+                    # If next entity is adjacent, separated only by commas, spaces, or postal code
+                    # Only merge compound address into city/country if the prompt section actually contains postal code digits
+                    if next_ent.start >= current_end:
+                        gap_text = prompt[current_end:next_ent.start]
+                        is_valid_gap = bool(re.fullmatch(r"[,\s]*(?:\d{4,6}|[A-Z]{1,2}\d[A-Z\d]?\s*\d[A-Z]{2})?[,\s]*", gap_text))
+                        has_postal_nearby = bool(re.search(r"\b(?:\d{4,6}|[A-Z]{1,2}\d[A-Z\d]?\s*\d[A-Z]{2})\b", prompt[current_start:min(len(prompt), current_start + 120)]))
+                        if is_valid_gap and has_postal_nearby and len(gap_text) <= 25 and next_ent.entity_type in (EntityType.LOCATION, EntityType.ADDRESS):
+                            absorbed_indices.add(j)
+                            current_end = next_ent.end
+                            current_text = prompt[current_start:current_end]
+                            best_conf = max(best_conf, next_ent.confidence)
+                            j += 1
+                            continue
+                        else:
+                            break
+                    else:
+                        break
+
+                if current_end != ent.end:
+                    # Also absorb any trailing postal code digits directly following the address components
+                    post_match = re.match(r"^([,\s]+(?:\d{4,6}|[A-Z]{1,2}\d[A-Z\d]?\s*\d[A-Z]{2}))\b", prompt[current_end:])
+                    if post_match:
+                        current_end += len(post_match.group(1))
+                        current_text = prompt[current_start:current_end]
+
+                    merged_addr = DetectedEntity(
+                        text=current_text,
+                        entity_type=EntityType.ADDRESS,
+                        start=current_start,
+                        end=current_end,
+                        confidence=best_conf,
+                        source=ent.source,
+                        detector="fusion_compound_address",
+                        normalized_value=normalize_entity_value(EntityType.ADDRESS, current_text),
+                        metadata=dict(ent.metadata) if ent.metadata else {},
+                    )
+                    merged_address_cands.append(merged_addr)
+                    continue
+
+            merged_address_cands.append(ent)
+
+        # Step 0c: Compound Person Merging
+        # Merge adjacent PERSON components (e.g. "elon" + "musk" -> "elon musk", "rahul" + "s7" -> "rahul s7")
+        # separated only by whitespace or a single hyphen/apostrophe
+        sorted_person_cands = sorted(merged_address_cands, key=lambda e: (e.start, -(e.end - e.start)))
+        absorbed_person_indices = set()
+        merged_person_cands: List[DetectedEntity] = []
+
+        for i, ent in enumerate(sorted_person_cands):
+            if i in absorbed_person_indices:
+                continue
+
+            if ent.entity_type == EntityType.PERSON:
+                current_start = ent.start
+                current_end = ent.end
+                current_text = ent.text
+                best_conf = ent.confidence
+
+                j = i + 1
+                while j < len(sorted_person_cands):
+                    next_ent = sorted_person_cands[j]
+                    if j in absorbed_person_indices:
+                        j += 1
+                        continue
+
+                    # If next entity is contained within current span
+                    if next_ent.start >= current_start and next_ent.end <= current_end:
+                        if next_ent.entity_type == EntityType.PERSON:
+                            absorbed_person_indices.add(j)
+                        j += 1
+                        continue
+
+                    # If next entity is adjacent PERSON separated only by space or hyphen
+                    if next_ent.start >= current_end:
+                        gap_text = prompt[current_end:next_ent.start]
+                        if re.fullmatch(r"[\s\-']+", gap_text) and len(gap_text) <= 5 and next_ent.entity_type == EntityType.PERSON:
+                            combined = prompt[current_start:next_ent.end]
+                            is_valid, _ = validators.validate_person(combined)
+                            if is_valid:
+                                absorbed_person_indices.add(j)
+                                current_end = next_ent.end
+                                current_text = combined
+                                best_conf = max(best_conf, next_ent.confidence)
+                                j += 1
+                                continue
+                            else:
+                                break
+                        else:
+                            break
+                    else:
+                        break
+
+                if current_end != ent.end:
+                    merged_person = DetectedEntity(
+                        text=current_text,
+                        entity_type=EntityType.PERSON,
+                        start=current_start,
+                        end=current_end,
+                        confidence=best_conf,
+                        source=ent.source,
+                        detector="fusion_compound_person",
+                        normalized_value=normalize_entity_value(EntityType.PERSON, current_text),
+                        metadata=dict(ent.metadata) if ent.metadata else {},
+                    )
+                    merged_person_cands.append(merged_person)
+                    continue
+
+            merged_person_cands.append(ent)
+
+        for ent in merged_person_cands:
             # Skip any detection that overlaps with an existing placeholder token
             if any(not (ent.end <= ps_start or ent.start >= ps_end) for ps_start, ps_end in placeholder_spans):
                 continue
 
             # Discard excluded tokens falsely tagged as named entities (e.g. 'IP', 'email', 'password')
-            if ent.entity_type in (EntityType.ORGANIZATION, EntityType.PERSON, EntityType.LOCATION):
-                clean_norm = ent.text.strip().lower()
-                if clean_norm in config.COMMON_EXCLUDED_TOKENS or (
-                    clean_norm.startswith("the ") and clean_norm[4:].strip() in config.COMMON_EXCLUDED_TOKENS
-                ):
-                    continue
+            if validators.is_excluded_token(ent.text):
+                continue
 
             # Trim trailing generic team words from ORGANIZATION spans (e.g. "Infosys Support Team" -> "Infosys")
             if ent.entity_type == EntityType.ORGANIZATION:
@@ -252,84 +390,67 @@ class EntityFusionEngine:
                 ent.normalized_value = normalize_entity_value(EntityType.ORGANIZATION, ent.text)
 
             # Reclassify or discard invalid EMAIL without '@'
-            if ent.entity_type == EntityType.EMAIL and "@" not in ent.text:
-                if re.search(r"(?i)\b(?:inc\.?|corp\.?|corporation|llc|ltd\.?|limited|co\.?|technologies|solutions|group|holdings|enterprises|systems|studios|labs|foundation|university|institute)\b", ent.text):
-                    ent.entity_type = EntityType.ORGANIZATION
-                    ent.normalized_value = normalize_entity_value(EntityType.ORGANIZATION, ent.text)
-                else:
-                    continue
+            if ent.entity_type == EntityType.EMAIL:
+                is_valid, cleaned_email = validators.validate_email(ent.text)
+                if not is_valid:
+                    if validators.has_corporate_suffix(ent.text):
+                        ent.entity_type = EntityType.ORGANIZATION
+                        ent.normalized_value = normalize_entity_value(EntityType.ORGANIZATION, ent.text)
+                    else:
+                        continue
+                elif cleaned_email != ent.text:
+                    ent.text = cleaned_email
+                    ent.end = ent.start + len(cleaned_email)
+                    ent.normalized_value = normalize_entity_value(EntityType.EMAIL, ent.text)
 
             # Discard invalid IP_ADDRESS without '.' or ':'
-            if ent.entity_type == EntityType.IP_ADDRESS and ("." not in ent.text and ":" not in ent.text):
+            if ent.entity_type == EntityType.IP_ADDRESS and not validators.validate_ip_address(ent.text):
                 continue
 
             # Reclassify PERSON entities with corporate suffixes to ORGANIZATION
             if ent.entity_type == EntityType.PERSON:
-                if re.search(r"(?i)\b(?:inc\.?|corp\.?|corporation|llc|ltd\.?|limited|co\.?|technologies|solutions|group|holdings|enterprises|systems|studios|labs|foundation|university|institute)\b", ent.text):
+                if validators.has_corporate_suffix(ent.text):
                     ent.entity_type = EntityType.ORGANIZATION
                     ent.normalized_value = normalize_entity_value(EntityType.ORGANIZATION, ent.text)
 
-            # Format validation for CREDIT_CARD: must have at least 13 digits (reject 10-digit random numbers)
-            if ent.entity_type == EntityType.CREDIT_CARD:
-                digits_only = re.sub(r"\D", "", ent.text)
-                if len(digits_only) < 13:
-                    continue
+            # Reclassify ticket/authorization prefixes falsely tagged as DRIVER_LICENSE by neural NER
+            if ent.entity_type == EntityType.DRIVER_LICENSE and re.match(r"^(?:TKT|TICKET|SR|INC|CASE|DOCK|LIC)[-_]\d+$", ent.text, re.IGNORECASE):
+                ent.entity_type = EntityType.TICKET_ID
+                ent.normalized_value = normalize_entity_value(EntityType.TICKET_ID, ent.text)
 
-            # Format validation for PHONE: must have at least 7 digits (reject 3-digit amounts like '999')
+            # Format validation for CREDIT_CARD
+            if ent.entity_type == EntityType.CREDIT_CARD and not validators.validate_credit_card(ent.text):
+                continue
+
+            # Format validation for PHONE
             if ent.entity_type == EntityType.PHONE:
-                digits_only = re.sub(r"\D", "", ent.text)
-                if len(digits_only) < 7:
+                before_window = prompt[max(0, ent.start - 25):ent.start].lower()
+                if re.search(r"\brouting\s*(?:number|no\.?|#)?\s*$", before_window):
+                    continue
+                if not validators.validate_phone(ent.text):
                     continue
 
-            # Format validation for LOCATION: pure numbers are postal codes or amounts, not named locations
-            if ent.entity_type == EntityType.LOCATION:
-                if ent.text.strip().isdigit():
-                    continue
+            # Format validation for LOCATION
+            if ent.entity_type == EntityType.LOCATION and not validators.validate_location(ent.text):
+                continue
 
-            # Format validation for BANK_ACCOUNT: must contain digits (do not relabel to ORGANIZATION)
+            # Format validation for BANK_ACCOUNT
             if ent.entity_type == EntityType.BANK_ACCOUNT:
-                has_digits = any(c.isdigit() for c in ent.text)
-                if not has_digits:
+                before_window = prompt[max(0, ent.start - 25):ent.start].lower()
+                if re.search(r"\brouting\s*(?:number|no\.?|#)?\s*$", before_window):
+                    continue
+                if not validators.validate_bank_account(ent.text):
                     continue
 
-            # Format validation for project-specific IDs: must contain digits and not be common words
-            if ent.entity_type in (EntityType.CUSTOMER_ID, EntityType.ORDER_ID, EntityType.TICKET_ID):
-                if not any(c.isdigit() for c in ent.text):
-                    continue
-                if re.search(r"(?i)\b(?:support|service|center|team|help|care|portal|desk|agent|group|staff)\b", ent.text):
+            # Format validation for project-specific IDs and usernames
+            if ent.entity_type in (EntityType.CUSTOMER_ID, EntityType.ORDER_ID, EntityType.TICKET_ID, EntityType.USER_ID, EntityType.USERNAME):
+                if not validators.validate_structured_id(ent.text, prompt, ent.start):
                     continue
 
-            # Format validation for DATE: reject isolated month words without date context or impossible years (>2099 / <1900)
+            # Format validation for DATE
             if ent.entity_type == EntityType.DATE:
-                clean_t = ent.text.strip()
-                if clean_t.isdigit() and len(clean_t) == 4:
-                    val = int(clean_t)
-                    if val < 1900 or val > 2099:
-                        continue
-                MONTH_WORDS = {
-                    "january", "february", "march", "april", "may", "june",
-                    "july", "august", "september", "october", "november", "december",
-                    "jan", "feb", "mar", "apr", "jun", "jul", "aug", "sep", "oct", "nov", "dec",
-                }
-                if ent.text.strip().lower() in MONTH_WORDS:
-                    w_before = prompt[max(0, ent.start - 25):ent.start]
-                    w_after = prompt[ent.end:min(len(prompt), ent.end + 25)]
-                    has_nearby_digits = bool(re.search(r"\b\d{1,4}(?:st|nd|rd|th)?\b", w_before + " " + w_after))
-                    has_date_prep = bool(re.search(r"(?i)\b(?:in|on|during|dated|since|until|by|before|after|of)\s*$", w_before.strip()))
-                    if not (has_nearby_digits or has_date_prep):
-                        continue
-
-            # Format validation for EMAIL: strip trailing sentence words (.The) and trailing punctuation
-            if ent.entity_type == EntityType.EMAIL:
-                email_sent_match = re.match(r"^([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,})\.([A-Z][a-z]+.*)$", ent.text)
-                if email_sent_match:
-                    ent.text = email_sent_match.group(1)
-                    ent.end = ent.start + len(ent.text)
-                    ent.normalized_value = normalize_entity_value(EntityType.EMAIL, ent.text)
-                elif ent.text.endswith("."):
-                    ent.text = ent.text.rstrip(".")
-                    ent.end = ent.start + len(ent.text)
-                    ent.normalized_value = normalize_entity_value(EntityType.EMAIL, ent.text)
+                if not validators.validate_date(ent.text, prompt, ent.start, ent.end):
+                    continue
 
             # Generalized span boundary cleaning for named/structured entities
             if ent.entity_type in (EntityType.PERSON, EntityType.ORGANIZATION, EntityType.LOCATION, EntityType.ORDER_ID, EntityType.CUSTOMER_ID, EntityType.USER_ID, EntityType.TICKET_ID):
@@ -357,11 +478,12 @@ class EntityFusionEngine:
                     ent.text = r_stripped
                     ent.normalized_value = normalize_entity_value(ent.entity_type, ent.text)
 
-                # 4. Leading connector/preposition/salutation words (e.g. "involving Rahul", "for Infosys", "order ORD-78291", "Email Robert Taylor", "Dear Kavya Reddy")
+                # 4. Leading connector/preposition/salutation words
                 CONNECTOR_WORDS = {
                     "involving", "regarding", "concerning", "about", "from", "with", "for", "to", "at", "by",
                     "order", "ticket", "user", "customer", "the", "a", "an",
-                    "dear", "email", "mail", "contact", "call", "reach", "send", "tell", "attn", "attention"
+                    "dear", "email", "mail", "contact", "call", "reach", "send", "tell", "attn", "attention",
+                    "update", "delete", "deploy", "check", "fetch", "prepare", "myself", "im", "i'm",
                 }
                 words = ent.text.split(None, 1)
                 if len(words) > 1 and words[0].lower() in CONNECTOR_WORDS:
@@ -370,16 +492,17 @@ class EntityFusionEngine:
                         first_word = words[0].lower()
                         ent.start += sub_idx
                         ent.text = ent.text[sub_idx:]
-                        # If a salutation like "dear" preceded the entity and it was tagged as ORGANIZATION, it's actually a PERSON
                         if first_word in ("dear", "attn", "attention") and ent.entity_type == EntityType.ORGANIZATION:
                             ent.entity_type = EntityType.PERSON
                         ent.normalized_value = normalize_entity_value(ent.entity_type, ent.text)
 
-                # 5. Trailing action verbs on named entities (e.g. "Sundar Pichai leads", "Rahul Menon contacted")
+                # 5. Trailing action verbs and prepositions on named entities
                 if ent.entity_type in (EntityType.PERSON, EntityType.ORGANIZATION):
                     TRAILING_ACTION_VERBS = {
                         "leads", "lead", "leading", "works", "worked", "working", "said",
-                        "contacted", "called", "emailed", "wrote", "joins", "joined", "resides"
+                        "contacted", "called", "emailed", "wrote", "joins", "joined", "resides",
+                        "likes", "liked", "loves", "loved",
+                        "in", "at", "for", "to", "from", "on", "with", "by", "of",
                     }
                     words_all = ent.text.split()
                     if len(words_all) > 1 and words_all[-1].lower() in TRAILING_ACTION_VERBS:
@@ -389,38 +512,20 @@ class EntityFusionEngine:
                             trimmed_span = ent.text[:sub_idx].rstrip()
                             ent.end = ent.start + len(trimmed_span)
                             ent.text = trimmed_span
-                            if ent.entity_type == EntityType.ORGANIZATION and not re.search(r"(?i)\b(?:inc|corp|llc|ltd|co|technologies|systems|labs|group|solutions)\b", ent.text):
+                            if ent.entity_type == EntityType.ORGANIZATION and not validators.has_corporate_suffix(ent.text) and ent.text.lower() not in org_lookup:
                                 ent.entity_type = EntityType.PERSON
                             ent.normalized_value = normalize_entity_value(ent.entity_type, ent.text)
 
             # Clean PERSON entities
             if ent.entity_type == EntityType.PERSON:
-                # Strip possessives (e.g. "Priya Nair's" -> "Priya Nair")
-                if re.search(r"['’]s?$", ent.text):
-                    trimmed = re.sub(r"['’]s?$", "", ent.text).rstrip()
-                    if trimmed:
-                        ent.text = trimmed
-                        ent.end = ent.start + len(trimmed)
-                        ent.normalized_value = normalize_entity_value(EntityType.PERSON, trimmed)
-
-                # Reject malformed PERSON spans containing sentence breaks, punctuation sequences, or directive keywords
-                if re.search(r"[.!?;:\n]{1,}\s*[-–—]|\.[a-zA-Z]{2,}|\b(?<![A-Z])\.[A-Z]", ent.text):
-                    continue
-                disqualifying = {
-                    "api", "key", "token", "password", "secret", "credential", "database",
-                    "server", "ip", "endpoint", "must", "should", "shall", "cannot", "can",
-                    "will", "would", "could", "please", "report", "explain", "recommend",
-                    "incident", "order", "ticket", "customer", "support",
-                }
-                words_clean = [re.sub(r"^\W+|\W+$", "", w).lower() for w in ent.text.split()]
-                if any(w in disqualifying for w in words_clean):
+                is_valid, cleaned_p = validators.validate_person(ent.text)
+                if not is_valid or validators.is_excluded_token(cleaned_p):
                     continue
 
                 from backend.spacy_detector import PERSON_STOP_WORDS
-                words = ent.text.split()
-                while len(words) > 1 and words[-1].lower() in PERSON_STOP_WORDS:
-                    words.pop()
-                trimmed = " ".join(words)
+                trimmed = validators.trim_person_stop_words(cleaned_p, PERSON_STOP_WORDS)
+                if not trimmed:
+                    continue
                 if trimmed != ent.text and trimmed:
                     ent.text = trimmed
                     ent.end = ent.start + len(trimmed)
@@ -464,6 +569,15 @@ class EntityFusionEngine:
 
         # --- Step 2: resolve overlapping spans ---
         resolved = self._resolve_overlaps(merged)
+
+        # --- Step 2.5: ADDRESS subsumption ---
+        # Suppress any LOCATION whose span is contained inside an accepted ADDRESS containing postal digits
+        address_spans = [(e.start, e.end) for e in resolved if e.entity_type == EntityType.ADDRESS and re.search(r"\d{4,6}|[A-Z]{1,2}\d[A-Z\d]?\s*\d[A-Z]{2}", e.text)]
+        if address_spans:
+            resolved = [
+                e for e in resolved
+                if not (e.entity_type == EntityType.LOCATION and any(a_start <= e.start and e.end <= a_end for a_start, a_end in address_spans))
+            ]
 
         # --- Step 3: sort by start offset ---
         return sorted(resolved, key=lambda e: e.start)

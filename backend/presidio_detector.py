@@ -37,6 +37,7 @@ from typing import List, Optional, Any
 from backend.models import EntityType, DetectedEntity
 from backend.normalization import normalize_entity_value
 from backend import config
+from backend import entity_validators as validators
 
 logger = logging.getLogger(__name__)
 
@@ -171,89 +172,58 @@ class PresidioDetector:
                 )
                 continue
 
-            # Filter false positive dates that actually describe street addresses or roads
+            if validators.is_excluded_token(raw_text):
+                continue
+
+            # Validate DATE
             if entity_type == EntityType.DATE:
-                if re.search(r"(?i)\b(?:road|rd\.?|street|st\.?|avenue|ave\.?|lane|ln\.?|drive|dr\.?|mg|marg|nagar|sector)\b", raw_text):
+                if not validators.validate_date(raw_text, prompt, result.start, result.end):
                     continue
 
-                # Filter conversational idioms, periodic phrases, or vague relative expressions
-                NON_SPECIFIC_DATE_PHRASES = {
-                    "a good day", "good day", "last quarter", "quarterly", "next quarter",
-                    "this quarter", "next year", "last year", "this year", "fiscal year",
-                    "2024 fiscal year", "every day", "daily", "annually", "q1", "q2", "q3", "q4",
-                }
-                if clean_text in NON_SPECIFIC_DATE_PHRASES:
-                    continue
-                if clean_text.startswith("every ") and any(unit in clean_text for unit in ("day", "month", "year", "days", "months", "years")):
-                    continue
-
-                # Reject isolated month words like "MAY", "march" that do not form a date expression
-                MONTH_WORDS = {
-                    "january", "february", "march", "april", "may", "june",
-                    "july", "august", "september", "october", "november", "december",
-                    "jan", "feb", "mar", "apr", "jun", "jul", "aug", "sep", "oct", "nov", "dec",
-                }
-                if clean_text in MONTH_WORDS:
-                    w_before = prompt[max(0, result.start - 25):result.start]
-                    w_after = prompt[result.end:min(len(prompt), result.end + 25)]
-                    has_nearby_digits = bool(re.search(r"\b\d{1,4}(?:st|nd|rd|th)?\b", w_before + " " + w_after))
-                    has_date_prep = bool(re.search(r"(?i)\b(?:in|on|during|dated|since|until|by|before|after|of)\s*$", w_before.strip()))
-                    if not (has_nearby_digits or has_date_prep):
-                        continue
-
-                # Filter false positive numeric dates:
-                # Standalone digits must be valid 4-digit years (e.g. 1900-2099)
-                if clean_text.isdigit():
-                    if len(clean_text) != 4 or not (1900 <= int(clean_text) <= 2099):
-                        continue
-                    w_before = prompt[max(0, result.start - 40):result.start]
-                    if re.search(r"(?i)\b(?:password|passwd|psswrd|pswrd|pswd|pass|pwd|pin|passcode|otp|token|code|key|secret|id|order|ticket|tracking|port|ext|account|acc)\b", w_before):
-                        continue
-
-            # Clean EMAIL trailing sentence text (e.g. .The) or trailing punctuation
+            # Validate and clean EMAIL
             if entity_type == EntityType.EMAIL:
-                email_sent_match = re.match(r"^([A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,})\.([A-Z][a-z]+.*)$", raw_text)
-                if email_sent_match:
-                    raw_text = email_sent_match.group(1)
-                    result.end = result.start + len(raw_text)
-                elif raw_text.endswith("."):
-                    raw_text = raw_text.rstrip(".")
-                    result.end = result.start + len(raw_text)
-
-            # Strip trailing action verbs/stop words for PERSON entities (e.g. "amina write" -> "amina")
-            if entity_type == EntityType.PERSON:
-                # Strip trailing possessive suffixes (e.g. "Priya Nair's" -> "Priya Nair")
-                if re.search(r"['’]s?$", raw_text):
-                    trimmed = re.sub(r"['’]s?$", "", raw_text).rstrip()
-                    if trimmed:
-                        raw_text = trimmed
-                        result.end = result.start + len(trimmed)
-
-                # Reject malformed PERSON spans containing sentence boundaries or punctuation sequences
-                if re.search(r"[.!?;:\n]{1,}\s*[-–—]|\.[a-zA-Z]{2,}|\b(?<![A-Z])\.[A-Z]", raw_text):
+                is_valid, cleaned_email = validators.validate_email(raw_text)
+                if not is_valid:
                     continue
+                if cleaned_email != raw_text:
+                    raw_text = cleaned_email
+                    result.end = result.start + len(raw_text)
 
-                # Reject spans containing technical/directive words (e.g. "API key.- You MUST")
-                disqualifying = {
-                    "api", "key", "token", "password", "secret", "credential", "database",
-                    "server", "ip", "endpoint", "must", "should", "shall", "cannot", "can",
-                    "will", "would", "could", "please", "report", "explain", "recommend",
-                    "incident", "order", "ticket", "customer", "support",
-                }
-                words_clean = [re.sub(r"^\W+|\W+$", "", w).lower() for w in raw_text.split()]
-                if any(w in disqualifying for w in words_clean):
+            # Validate and clean PERSON
+            if entity_type == EntityType.PERSON:
+                is_valid, cleaned_person = validators.validate_person(raw_text)
+                if not is_valid:
+                    continue
+                if validators.is_excluded_token(cleaned_person):
                     continue
 
                 from backend.spacy_detector import PERSON_STOP_WORDS
-                words = raw_text.split()
-                while len(words) > 1 and words[-1].lower() in PERSON_STOP_WORDS:
-                    words.pop()
-                if not words:
+                trimmed = validators.trim_person_stop_words(cleaned_person, PERSON_STOP_WORDS)
+                if not trimmed:
                     continue
-                trimmed = " ".join(words)
                 if trimmed != raw_text:
+                    offset_shift = prompt.find(trimmed, result.start)
+                    if offset_shift != -1 and offset_shift < result.end:
+                        result.start = offset_shift
                     raw_text = trimmed
                     result.end = result.start + len(trimmed)
+
+            # Validate CUSTOMER_ID, USER_ID, TICKET_ID, ORDER_ID
+            if entity_type in (EntityType.CUSTOMER_ID, EntityType.USER_ID, EntityType.TICKET_ID, EntityType.ORDER_ID):
+                if not validators.validate_structured_id(raw_text, prompt, result.start):
+                    continue
+
+            # Validate BANK_ACCOUNT
+            if entity_type == EntityType.BANK_ACCOUNT and not validators.validate_bank_account(raw_text):
+                continue
+
+            # Validate PHONE
+            if entity_type == EntityType.PHONE and not validators.validate_phone(raw_text):
+                continue
+
+            # Validate LOCATION
+            if entity_type == EntityType.LOCATION and not validators.validate_location(raw_text):
+                continue
 
             entities.append(
                 DetectedEntity(

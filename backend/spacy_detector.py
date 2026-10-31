@@ -44,6 +44,8 @@ from typing import List, Optional, Any, Set, Dict
 from backend.models import EntityType, DetectedEntity
 from backend.normalization import normalize_entity_value
 from backend import config
+from backend.known_entities_resolver import get_resolver
+from backend import entity_validators as validators
 
 logger = logging.getLogger(__name__)
 
@@ -87,19 +89,11 @@ def _load_spacy_model() -> Optional[Any]:
 # Heuristic NER Fallback (zero-dependency)
 # ============================================================
 
-# Static gazetteers — references central config gazetteers.
+# Static gazetteers — references central config gazetteers and resolver
 KNOWN_ORGANIZATIONS: Set[str] = config.KNOWN_ORGANIZATIONS
 KNOWN_LOCATIONS: Set[str] = config.KNOWN_LOCATIONS
 
-KNOWN_PUBLIC_PERSONS: Set[str] = {
-    "Elon Musk", "Bill Gates", "Steve Jobs", "Albert Einstein",
-    "Sundar Pichai", "Satya Nadella", "Sam Altman", "Jeff Bezos",
-    "Mark Zuckerberg", "Barack Obama", "Narendra Modi", "Alan Turing",
-    "Marie Curie", "Isaac Newton", "Charles Babbage", "Ada Lovelace",
-    "Geoffrey Hinton", "Yann LeCun", "Yoshua Bengio", "Andrew Ng",
-    "Warren Buffett", "Tim Cook", "Jensen Huang", "Linus Torvalds",
-    "Mahatma Gandhi", "Nelson Mandela", "Abraham Lincoln",
-}
+KNOWN_PUBLIC_PERSONS: Set[str] = {p.title() for p in get_resolver().get_public_figures_set()}
 
 DAYS_AND_MONTHS: Set[str] = {
     "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday",
@@ -115,7 +109,7 @@ PERSON_STOP_WORDS: Set[str] = {
     "looking", "trying", "interested", "reaching", "contacting", "hoping",
     "asking", "working", "living", "studying", "excited", "pleased", "glad",
     "meet", "have", "write", "create", "generate", "compose", "draft",
-    "need", "want", "would", "like", "make", "do", "does", "did", "get", "let", "show",
+    "need", "want", "would", "like", "likes", "liked", "love", "loves", "loved", "prefer", "prefers", "hate", "hates", "make", "do", "does", "did", "get", "let", "show",
     "give", "take", "help", "build", "use", "run", "go", "come", "check",
     "find", "open", "read", "list", "explain", "describe", "summarize",
     "translate", "summarise", "analyze", "analyse", "fix", "debug", "solve",
@@ -162,11 +156,27 @@ def _extract_name_from_intro(
 ) -> Optional[str]:
     """
     Walk tokens after an intro-prefix match and collect name words,
-    stopping at PERSON_STOP_WORDS, known locations, or known organizations.
+    stopping at sentence boundaries, PERSON_STOP_WORDS, known locations, or known organizations.
     Returns the extracted name string or None.
     """
     tail = prompt[match_end:]
-    tokens = re.findall(r"[A-Za-z]+(?:\.[A-Za-z]+)?", tail[:80])
+    # Never cross sentence-ending punctuation or newlines (excluding honorific abbreviations like Dr., Mr.)
+    break_idx = 0
+    clause_end = len(tail)
+    while True:
+        m = re.search(r"[.?!;\n]", tail[break_idx:])
+        if not m:
+            break
+        pos = break_idx + m.start()
+        prefix = tail[:pos]
+        if m.group(0) == '.' and re.search(r"\b(?:Dr|Mr|Mrs|Ms|Prof|Sr|Jr)$", prefix, re.IGNORECASE):
+            break_idx = pos + 1
+            continue
+        clause_end = pos
+        break
+    first_clause = tail[:clause_end]
+
+    tokens = re.findall(r"[A-Za-z]+(?:\.[A-Za-z]+)?", first_clause[:80])
     words = []
     for t in tokens:
         t_lower = t.lower()
@@ -190,7 +200,7 @@ def _extract_name_from_intro(
     ):
         return None
     parts_pattern = r"[.\s]*".join(re.escape(w) for w in words)
-    nm = re.search(parts_pattern, tail)
+    nm = re.search(parts_pattern, first_clause)
     if nm and nm.start() < 3:
         return prompt[match_end + nm.start(): match_end + nm.end()]
     return None
@@ -437,10 +447,8 @@ class SpacyNERDetector:
 
             clean_text = text.strip()
             clean_norm = clean_text.lower()
-            # Filter out common excluded tokens (e.g., 'ip', 'email', 'password', 'team', etc.)
-            if clean_norm in config.COMMON_EXCLUDED_TOKENS:
-                continue
-            if clean_norm.startswith("the ") and clean_norm[4:].strip() in config.COMMON_EXCLUDED_TOKENS:
+            # Filter out common excluded tokens
+            if validators.is_excluded_token(clean_text):
                 continue
 
             # Reject structured alphanumeric codes (e.g., TKT-99182, ORD-78291) tagged as ORG or PERSON
@@ -448,33 +456,14 @@ class SpacyNERDetector:
             if re.match(r"^[A-Za-z]{2,8}[-_]\d+$", clean_text):
                 continue
 
-            # Reject isolated 5-6 digit PIN/postal codes, road names, or isolated month words tagged as DATE
+            # Reject currency amounts tagged as ORG or PERSON (e.g. EUR 8,200)
+            if re.match(r"^(?:EUR|USD|INR|GBP|JPY|AUD|CAD|\$|€|£|₹)\s*[\d,.]+$", clean_text):
+                continue
+
+            # Validate DATE
             if entity_type == EntityType.DATE:
-                if re.match(r"^\d{5,6}$", clean_text):
+                if not validators.validate_date(clean_text, prompt, start, end):
                     continue
-                if re.search(r"(?i)\b(?:road|rd\.?|street|st\.?|avenue|ave\.?|lane|ln\.?|drive|dr\.?|mg|marg|nagar)\b", text):
-                    continue
-                NON_SPECIFIC_DATE_PHRASES = {
-                    "a good day", "good day", "last quarter", "quarterly", "next quarter",
-                    "this quarter", "next year", "last year", "this year", "fiscal year",
-                    "2024 fiscal year", "every day", "daily", "annually", "q1", "q2", "q3", "q4",
-                }
-                if clean_norm in NON_SPECIFIC_DATE_PHRASES:
-                    continue
-                if clean_norm.startswith("every ") and any(unit in clean_norm for unit in ("day", "month", "year", "days", "months", "years")):
-                    continue
-                MONTH_WORDS = {
-                    "january", "february", "march", "april", "may", "june",
-                    "july", "august", "september", "october", "november", "december",
-                    "jan", "feb", "mar", "apr", "jun", "jul", "aug", "sep", "oct", "nov", "dec",
-                }
-                if clean_norm in MONTH_WORDS:
-                    w_before = prompt[max(0, start - 25):start]
-                    w_after = prompt[end:min(len(prompt), end + 25)]
-                    has_nearby_digits = bool(re.search(r"\b\d{1,4}(?:st|nd|rd|th)?\b", w_before + " " + w_after))
-                    has_date_prep = bool(re.search(r"(?i)\b(?:in|on|during|dated|since|until|by|before|after|of)\s*$", w_before.strip()))
-                    if not (has_nearby_digits or has_date_prep):
-                        continue
 
             # Gazetteer checks: prevent ORG misclassification of known locations (e.g., "Kochi")
             if clean_text in KNOWN_LOCATIONS or clean_text.title() in KNOWN_LOCATIONS:
@@ -482,43 +471,41 @@ class SpacyNERDetector:
             elif clean_text in KNOWN_ORGANIZATIONS or clean_text.title() in KNOWN_ORGANIZATIONS:
                 entity_type = EntityType.ORGANIZATION
             elif entity_type == EntityType.ORGANIZATION:
-                prefix = prompt[:start].strip()
-                if re.search(r"(?i)\b(?:my\s+name\s+is|i\s*['’`]?\s*m|i\s+am|iam|this\s+is|call\s+me|myself|my\s+names|name\s+is)\b", prefix[-30:]):
-                    entity_type = EntityType.PERSON
+                lower_text = text.lower()
+                has_title = False
+                for prefix in validators.TITLE_PREFIXES:
+                    if lower_text.startswith(prefix):
+                        entity_type = EntityType.PERSON
+                        stripped = validators.strip_person_title_prefix(text)
+                        offset_shift = prompt.find(stripped, start)
+                        if offset_shift != -1 and offset_shift < end:
+                            start = offset_shift
+                        text = stripped
+                        end = start + len(text)
+                        has_title = True
+                        break
+                if not has_title:
+                    prefix = prompt[:start].strip()
+                    if re.search(r"(?i)\b(?:my\s+name\s+is|i\s*['’`]?\s*m|i\s+am|iam|this\s+is|call\s+me|myself|my\s+names|name\s+is)\b", prefix[-30:]):
+                        entity_type = EntityType.PERSON
 
             if entity_type == EntityType.PERSON:
                 if len(clean_text) <= 1 or clean_norm in {"i", "me", "my", "we", "us", "he", "him", "she", "her", "they", "them", "it"}:
                     continue
-                # Strip possessives (e.g. "Priya Nair's" -> "Priya Nair")
-                if re.search(r"['’]s?$", text):
-                    trimmed = re.sub(r"['’]s?$", "", text).rstrip()
-                    if trimmed:
-                        text = trimmed
-                        end = start + len(trimmed)
-
-                # Reject malformed PERSON spans
-                if re.search(r"[.!?;:\n]{1,}\s*[-–—]|\.[a-zA-Z]{2,}|\b(?<![A-Z])\.[A-Z]", text):
+                is_valid, cleaned_person = validators.validate_person(text)
+                if not is_valid:
                     continue
-                disqualifying = {
-                    "api", "key", "token", "password", "secret", "credential", "database",
-                    "server", "ip", "endpoint", "must", "should", "shall", "cannot", "can",
-                    "will", "would", "could", "please", "report", "explain", "recommend",
-                    "incident", "order", "ticket", "customer", "support",
-                }
-                words_clean = [re.sub(r"^\W+|\W+$", "", w).lower() for w in text.split()]
-                if any(w in disqualifying for w in words_clean):
-                    continue
-                if len(words_clean) == 1 and (words_clean[0] in PERSON_STOP_WORDS or words_clean[0] in config.COMMON_EXCLUDED_TOKENS):
+                if validators.is_excluded_token(cleaned_person):
                     continue
 
-                words = text.split()
-                while len(words) > 1 and words[-1].lower() in PERSON_STOP_WORDS:
-                    words.pop()
-                if not words:
+                trimmed = validators.trim_person_stop_words(cleaned_person, PERSON_STOP_WORDS)
+                if not trimmed:
                     continue
-                trimmed_text = " ".join(words)
-                if trimmed_text != text:
-                    text = trimmed_text
+                if trimmed != text:
+                    offset_shift = prompt.find(trimmed, start)
+                    if offset_shift != -1 and offset_shift < end:
+                        start = offset_shift
+                    text = trimmed
                     end = start + len(text)
 
             entities.append(
@@ -555,9 +542,13 @@ class SpacyNERDetector:
         }
 
         for cand in fallback_candidates:
-            # Skip if an existing spaCy entity already overlaps with this candidate
-            if any(max(cand.start, e.start) < min(cand.end, e.end) for e in entities):
-                continue
+            overlapping = [e for e in entities if max(cand.start, e.start) < min(cand.end, e.end)]
+            if overlapping:
+                # If fallback gazetteer candidate is longer or has exact span, let it replace the statistical prediction
+                if any(len(cand.text) > len(e.text) or (cand.start == e.start and cand.end == e.end) for e in overlapping):
+                    entities = [e for e in entities if e not in overlapping]
+                else:
+                    continue
             cand.source = "spacy"
             lbl = spacy_label_map.get(cand.entity_type, cand.entity_type.value)
             cand.detector = f"spacy_{lbl.lower()}"

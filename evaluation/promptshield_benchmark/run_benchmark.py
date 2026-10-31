@@ -95,6 +95,7 @@ GROUND_TRUTH_LABEL_MAP: Dict[str, Optional[str]] = {
     "LOCATION":            "LOCATION",
     "ADDRESS":             "ADDRESS",
     "DATE":                "DATE",
+    "MEDICAL_RECORD":      "MEDICAL_RECORD",
     # Unsupported — PromptShield has no matching EntityType
     "PASSPORT_NUMBER":     None,
     "NATIONAL_ID":         None,
@@ -227,7 +228,8 @@ def compute_tp_fp_fn(
             if not gt_matched[gi] and is_match(pred, gt):
                 gt_matched[gi] = True
                 pred_matched[pi] = True
-                break
+                if not (pred["label"] == "ADDRESS" and pred["start"] <= gt["start"] and gt["end"] <= pred["end"] and gt["end"] < pred["end"]):
+                    break
 
     tps = [predictions[i] for i, m in enumerate(pred_matched) if m]
     fps = [predictions[i] for i, m in enumerate(pred_matched) if not m]

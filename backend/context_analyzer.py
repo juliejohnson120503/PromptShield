@@ -27,23 +27,15 @@ from backend.models import (
 )
 
 
-# Known Public Personalities / Celebrities / Historical Figures
-KNOWN_PUBLIC_FIGURES: Set[str] = {
-    "elon musk", "bill gates", "steve jobs", "albert einstein",
-    "sundar pichai", "satya nadella", "sam altman", "jeff bezos",
-    "mark zuckerberg", "barack obama", "narendra modi", "alan turing",
-    "marie curie", "isaac newton", "charles babbage", "ada lovelace",
-    "geoffrey hinton", "yann lecun", "yoshua bengio", "andrew ng",
-    "warren buffett", "tim cook", "jensen huang", "linus torvalds"
-}
+from backend.known_entities_resolver import get_resolver
 
-# Known Public Organizations
-KNOWN_PUBLIC_ORGS: Set[str] = {
-    "google", "microsoft", "apple", "amazon", "meta", "facebook",
-    "openai", "anthropic", "tesla", "spacex", "nasa", "ibm", "nvidia",
-    "intel", "cisco", "oracle", "united nations", "who", "tcs", "infosys",
-    "wipro", "accenture", "harvard university", "mit", "stanford university"
-}
+_resolver = get_resolver()
+
+# Known Public Personalities / Celebrities / Historical Figures (backed by resolver)
+KNOWN_PUBLIC_FIGURES: Set[str] = _resolver.get_public_figures_set()
+
+# Known Public Organizations (backed by resolver)
+KNOWN_PUBLIC_ORGS: Set[str] = _resolver.get_public_orgs_set()
 
 # First-Party Possessive & Personal Identifiers Cues
 FIRST_PARTY_CUES = re.compile(
@@ -457,7 +449,10 @@ class ContextAnalyzer:
                 )
 
             is_known_public = (
-                lower_text in KNOWN_PUBLIC_FIGURES or normalized_lower in KNOWN_PUBLIC_FIGURES
+                _resolver.is_public_figure(lower_text)
+                or _resolver.is_public_figure(normalized_lower)
+                or lower_text in KNOWN_PUBLIC_FIGURES
+                or normalized_lower in KNOWN_PUBLIC_FIGURES
             )
 
             is_general_reference = bool(
@@ -511,7 +506,10 @@ class ContextAnalyzer:
         # -----------------------------------------------------------------
         if entity.entity_type == EntityType.ORGANIZATION:
             is_known_org = (
-                lower_text in KNOWN_PUBLIC_ORGS or normalized_lower in KNOWN_PUBLIC_ORGS
+                _resolver.is_public_org(lower_text)
+                or _resolver.is_public_org(normalized_lower)
+                or lower_text in KNOWN_PUBLIC_ORGS
+                or normalized_lower in KNOWN_PUBLIC_ORGS
             )
             is_task_rel = bool(TASK_RELEVANCE_CUES.search(local_context)) or (
                 task_type in (TaskType.EMAIL_GENERATION, TaskType.DOCUMENT_GENERATION)

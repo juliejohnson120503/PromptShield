@@ -1,14 +1,14 @@
 prompt_id,entity_text,entity_type,source,detector,confidence,is_tp
-test_001,Rahul Menon,PERSON,gliner2,gliner2_full_name,0.9987,True
-test_001,Infosys,ORGANIZATION,spacy,spacy_org,0.85,True
+test_001,Rahul Menon,PERSON,presidio,presidio_person,0.85,True
+test_001,Infosys,ORGANIZATION,spacy,spacy_org,0.9,True
 test_001,Kochi,LOCATION,gliner2,gliner2_city,0.9998,True
 test_002,priya.sharma@gmail.com,EMAIL,regex,regex_email,1.0,True
-test_003,Amit,PERSON,gliner2,gliner2_first_name,0.9253,True
+test_003,Amit,PERSON,gliner2,gliner2_person,0.5168,True
 test_003,+91 9876543210,PHONE,regex,regex_phone_international,1.0,True
 test_004,192.168.1.100,IP_ADDRESS,regex,regex_ipv4,1.0,True
-test_005,John Mathew,PERSON,gliner2,gliner2_full_name,0.9992,True
+test_005,John Mathew,PERSON,presidio,presidio_person,0.85,True
 test_005,4111 1111 1111 1111,CREDIT_CARD,regex,luhn_credit_card,1.0,True
-test_006,OpenAI,ORGANIZATION,presidio,presidio_person,0.85,True
+test_006,OpenAI,ORGANIZATION,presidio,presidio_person,0.9,True
 test_006,sk-proj-AbCdEfGhIjKlMnOpQrStUvWxYz1234567890abcdef,API_KEY,regex,regex_openai_api_key,0.9992,True
 test_007,MySecurePass@99,PASSWORD,regex,regex_password_assignment,0.9646,True
 test_008,912345678901,BANK_ACCOUNT,regex,regex_account_number,0.9985,True
@@ -17,75 +17,71 @@ test_009,ORD-78291,ORDER_ID,regex,regex_order_id,0.95,True
 test_009,CUST-10458,CUSTOMER_ID,regex,regex_customer_id,0.95,True
 test_009,2024-03-15,DATE,regex,regex_date_iso,0.9995,True
 test_010,TKT-94812,TICKET_ID,regex,regex_ticket_id,0.95,True
-test_010,Vikram,PERSON,gliner2,gliner2_full_name,0.9287,True
+test_010,Vikram,PERSON,gliner2,gliner2_person,0.7671,True
 test_010,Bangalore,LOCATION,gliner2,gliner2_city,0.9981,True
 test_011,eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c,ACCESS_TOKEN,regex,regex_jwt_token,0.97,True
-test_012,Neha Thomas,PERSON,gliner2,gliner2_full_name,0.9995,True
+test_012,Neha Thomas,PERSON,presidio,presidio_person,0.85,True
 test_012,"24 MG Road, Kochi, Kerala 682016",ADDRESS,regex,regex_address_with_postal_code,0.96,True
-test_015,Apple,ORGANIZATION,spacy,spacy_org,0.85,True
-test_016,yesterday,DATE,gliner2,gliner2_transaction_date,0.9113,False
-test_018,Anjali Nair,PERSON,gliner2,gliner2_full_name,0.9995,True
+test_015,Apple,ORGANIZATION,spacy,spacy_org,0.9,True
+test_018,Anjali Nair,PERSON,gliner2,gliner2_person,0.9435,True
 test_018,Microsoft,ORGANIZATION,spacy,spacy_org,0.85,True
-test_018,Arjun Kumar,PERSON,gliner2,gliner2_full_name,0.9994,True
+test_018,Arjun Kumar,PERSON,gliner2,gliner2_person,0.9724,True
 test_018,Google,ORGANIZATION,spacy,spacy_org,0.85,True
 test_018,Mumbai,LOCATION,gliner2,gliner2_city,0.9998,True
 test_019,10.0.0.1,IP_ADDRESS,regex,regex_ipv4,0.9999,True
 test_019,10.0.0.2,IP_ADDRESS,regex,regex_ipv4,0.9999,True
-test_020,Sanjay Mehta,PERSON,gliner2,gliner2_full_name,0.9997,True
+test_020,Sanjay Mehta,PERSON,presidio,presidio_person,0.85,True
 test_020,sanjay.mehta@corp.com,EMAIL,regex,regex_email,1.0,True
 test_020,022-2345-6789,PHONE,gliner2,gliner2_phone_number,1.0,True
-test_021,AWS,ORGANIZATION,spacy,spacy_org,0.85,True
+test_021,AWS,ORGANIZATION,spacy,spacy_org,0.9,True
 test_021,AKIAIOSFODNN7EXAMPLE,API_KEY,regex,regex_aws_access_key,0.9987,True
 test_022,GB82 WEST 1234 5698 7654 32,BANK_ACCOUNT,regex,regex_iban,1.0,True
-test_023,admin_root,CUSTOMER_ID,gliner2,gliner2_username,0.9999,False
 test_023,203.0.113.45,IP_ADDRESS,regex,regex_ipv4,1.0,True
 test_023,"January 15, 2024",DATE,regex,regex_date_month_dd_yyyy,0.9885,True
-test_024,Neha Joseph,PERSON,gliner2,gliner2_full_name,0.9993,True
-test_024,Priya Sharma,PERSON,gliner2,gliner2_full_name,0.999,True
-test_024,Wipro,ORGANIZATION,spacy,spacy_org,0.85,True
+test_024,Neha Joseph,PERSON,presidio,presidio_person,0.85,True
+test_024,Priya Sharma,PERSON,presidio,presidio_person,0.85,True
+test_024,Wipro,ORGANIZATION,spacy,spacy_org,0.9,True
 test_025,SuperSecret123!,PASSWORD,regex,regex_password_natural_lang,0.92,True
 test_025,9087,PASSWORD,regex,regex_pin_natural_lang,0.92,True
 test_026,2001:0db8:85a3:0000:0000:8a2e:0370:7334,IP_ADDRESS,regex,regex_ipv6,0.97,True
-test_027,Rohan Verma,PERSON,gliner2,gliner2_full_name,0.9999,True
+test_027,Rohan Verma,PERSON,presidio,presidio_person,0.85,True
 test_027,CUST-99201,CUSTOMER_ID,regex,regex_customer_id,0.95,True
 test_027,ORD-55123,ORDER_ID,regex,regex_order_id,0.95,True
 test_027,15/08/2023,DATE,regex,regex_date_dmy,0.9993,True
 test_028,ghp_abc123DefGhi456JklMno789PqrStu000Vwx,API_KEY,regex,regex_github_pat,0.99,True
-test_029,Lakshmi Nair,PERSON,gliner2,gliner2_full_name,0.9995,True
+test_029,Lakshmi Nair,PERSON,presidio,presidio_person,0.85,True
 test_029,Chennai,LOCATION,gliner2,gliner2_city,0.9999,True
-test_030,221B Baker Street,ADDRESS,regex,regex_street_address,0.9992,True
-test_030,London,LOCATION,gliner2,gliner2_city,0.9989,True
+test_030,"221B Baker Street, London",ADDRESS,gliner2,gliner2_address,0.7126,True
 test_031,EMP-7712,CUSTOMER_ID,gliner2,gliner2_account_id,0.9558,True
 test_032,22/11/1990,DATE,gliner2,gliner2_date_of_birth,1.0,True
 test_033,billing@acme.io,EMAIL,regex,regex_email,1.0,True
 test_033,accounts@acme.io,EMAIL,regex,regex_email,1.0,True
-test_034,Maria Fernandes,PERSON,gliner2,gliner2_full_name,0.9999,True
+test_034,Maria Fernandes,PERSON,presidio,presidio_person,0.85,True
 test_034,New York,LOCATION,gliner2,gliner2_city,0.9998,True
 test_034,+1 (212) 555-1234,PHONE,regex,regex_phone_international,1.0,True
 test_036,aBcD1234EfGhIjKlMnOpQrSt56789uvWxYz,API_KEY,regex,regex_generic_key_assignment,0.9993,True
 test_037,INC-8821,TICKET_ID,regex,regex_ticket_id,0.95,True
-test_037,Sara Evans,PERSON,gliner2,gliner2_full_name,0.9982,True
+test_037,Sara Evans,PERSON,presidio,presidio_person,0.85,True
 test_037,CUST-30041,CUSTOMER_ID,regex,regex_customer_id,0.95,True
 test_038,T3mpPassw0rd!,PASSWORD,regex,regex_password_assignment,0.997,True
 test_039,172.16.0.5,IP_ADDRESS,regex,regex_ipv4,1.0,True
 test_039,172.16.0.6,IP_ADDRESS,regex,regex_ipv4,1.0,True
 test_040,Mastercard,ORGANIZATION,spacy,spacy_org,0.9,True
 test_040,5500 0000 0000 0004,CREDIT_CARD,regex,luhn_credit_card,1.0,True
-test_042,Aditya Kapoor,PERSON,gliner2,gliner2_full_name,0.9999,True
+test_042,Aditya Kapoor,PERSON,gliner2,gliner2_person,0.7607,True
 test_042,Pune,LOCATION,gliner2,gliner2_city,1.0,True
 test_043,Google,ORGANIZATION,spacy,spacy_org,0.9,True
 test_043,AIzaSyExampleKey1234567890abcdefghij,API_KEY,regex,regex_google_api_key,0.999,True
-test_044,Robert Taylor,PERSON,gliner2,gliner2_full_name,0.9998,True
+test_044,Robert Taylor,PERSON,presidio,presidio_person,0.85,True
 test_044,robert.taylor@example.com,EMAIL,regex,regex_email,1.0,True
 test_044,+44 20 7946 0958,PHONE,regex,regex_phone_international,1.0,True
 test_045,ORD-11029,ORDER_ID,regex,regex_order_id,0.95,True
 test_045,"120 Nehru Marg, Pune, Maharashtra 411001",ADDRESS,regex,regex_address_with_postal_code,0.96,True
 test_047,abc123def456ghi789jkl012mno345pq,API_KEY,regex,regex_bearer_token,0.93,True
 test_048,SR-9912,TICKET_ID,regex,regex_ticket_id,0.95,True
-test_048,Priya Nair,PERSON,gliner2,gliner2_full_name,0.999,True
-test_049,2022,DATE,presidio,presidio_date_time,0.85,False
-test_050,Lukas Weber,PERSON,gliner2,gliner2_full_name,0.9998,True
-test_050,"15 Hauptstrasse, Berlin, Germany",ADDRESS,gliner2,gliner2_address,0.8973,False
+test_048,Priya Nair,PERSON,presidio,presidio_person,0.85,True
+test_050,Lukas Weber,PERSON,presidio,presidio_person,0.85,True
+test_050,"15 Hauptstrasse, Berlin, Germany",ADDRESS,gliner2,gliner2_address,0.8973,True
 test_051,eyJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJ1c2VyIn0.SigValue123456ABC,ACCESS_TOKEN,regex,regex_jwt_token,0.9947,True
 test_052,4532015112830366,CREDIT_CARD,regex,luhn_credit_card,1.0,True
 test_053,ORDER-55123,ORDER_ID,regex,regex_order_id,0.95,True
@@ -94,99 +90,94 @@ test_053,123456789012,BANK_ACCOUNT,regex,regex_account_number,0.95,True
 test_054,"December 31, 2024",DATE,regex,regex_date_month_dd_yyyy,0.9187,True
 test_055,"742 Evergreen Terrace, Springfield",ADDRESS,gliner2,gliner2_address,0.6849,True
 test_056,EMP-5501,CUSTOMER_ID,gliner2,gliner2_account_id,0.9688,True
-test_056,David Miller,PERSON,gliner2,gliner2_full_name,0.9986,True
+test_056,David Miller,PERSON,presidio,presidio_person,0.85,True
 test_056,Cognizant,ORGANIZATION,spacy,spacy_org,0.85,True
 test_056,Hyderabad,LOCATION,gliner2,gliner2_city,0.9115,True
-test_058,Ravi Kumar,PERSON,gliner2,gliner2_full_name,0.9986,True
-test_058,TCS,ORGANIZATION,spacy,spacy_org,0.85,True
+test_058,Ravi Kumar,PERSON,presidio,presidio_person,0.85,True
+test_058,TCS,ORGANIZATION,spacy,spacy_org,0.9,True
 test_058,ravi.kumar@tcs.com,EMAIL,regex,regex_email,1.0,True
 test_058,2023-11-20,DATE,regex,regex_date_iso,0.9485,True
 test_059,10.10.10.10,IP_ADDRESS,regex,regex_ipv4,1.0,True
 test_059,10.10.10.11,IP_ADDRESS,regex,regex_ipv4,1.0,True
-test_060,Elon Musk,PERSON,gliner2,gliner2_full_name,0.9978,True
-test_060,Tesla,ORGANIZATION,spacy,spacy_org,0.85,True
+test_060,Elon Musk,PERSON,presidio,presidio_person,0.85,True
+test_060,Tesla,ORGANIZATION,spacy,spacy_org,0.9,True
 test_060,Austin,LOCATION,gliner2,gliner2_city,0.9997,True
 test_061,deepak.r@outlook.com,EMAIL,regex,regex_email,1.0,True
 test_061,Pass#2024!,PASSWORD,gliner2,gliner2_password,0.9818,True
 test_063,TKT-00192,TICKET_ID,regex,regex_ticket_id,0.95,True
 test_063,INC-0091,TICKET_ID,regex,regex_ticket_id,0.95,True
-test_064,Visa,ORGANIZATION,spacy,spacy_org,0.85,True
+test_064,Visa,ORGANIZATION,spacy,spacy_org,0.9,True
 test_064,4012888888881881,CREDIT_CARD,regex,luhn_credit_card,1.0,True
-test_065,Meera Pillai,PERSON,gliner2,gliner2_full_name,0.9994,True
-test_065,Accenture,ORGANIZATION,spacy,spacy_org,0.9,True
+test_065,Meera Pillai,PERSON,presidio,presidio_person,0.85,True
+test_065,Accenture,ORGANIZATION,spacy,spacy_org,0.85,True
 test_065,CUST-88712,CUSTOMER_ID,regex,regex_customer_id,0.95,True
 test_065,ORD-99100,ORDER_ID,regex,regex_order_id,0.95,True
-test_066,1234567890,PHONE,gliner2,gliner2_phone_number,0.9773,False
-test_068,Sundar Pichai,PERSON,gliner2,gliner2_full_name,0.9991,True
-test_068,Google,ORGANIZATION,spacy,spacy_org,0.85,True
+test_068,Sundar Pichai,PERSON,gliner2,gliner2_person,0.85,True
+test_068,Google,ORGANIZATION,spacy,spacy_org,0.9,True
 test_068,Mountain View,LOCATION,gliner2,gliner2_city,0.9998,True
 test_068,California,LOCATION,gliner2,gliner2_state_or_region,0.9963,True
-test_069,Pankaj Shah,PERSON,gliner2,gliner2_full_name,0.9982,True
+test_069,Pankaj Shah,PERSON,presidio,presidio_person,0.85,True
 test_069,HDFC Bank,ORGANIZATION,spacy,spacy_org,0.85,True
 test_069,Delhi,LOCATION,gliner2,gliner2_city,0.9998,True
 test_070,username/P@ssw0rd99,PASSWORD,regex,regex_credential_assignment,0.92,True
-test_071,456789,CUSTOMER_ID,presidio,presidio_us_driver_license,0.4,False
-test_071,James Clark,PERSON,gliner2,gliner2_full_name,0.9995,True
-test_073,Asha Menon,PERSON,gliner2,gliner2_full_name,0.9999,True
+test_071,James Clark,PERSON,presidio,presidio_person,0.85,True
+test_073,Asha Menon,PERSON,presidio,presidio_person,0.85,True
 test_073,asha.menon@hcl.com,EMAIL,regex,regex_email,1.0,True
-test_073,HCL Technologies,ORGANIZATION,spacy,spacy_org,0.85,True
+test_073,HCL Technologies,ORGANIZATION,spacy,spacy_org,0.9,True
 test_073,Noida,LOCATION,gliner2,gliner2_city,0.9998,True
 test_073,ORD-12309,ORDER_ID,regex,regex_order_id,0.95,True
 test_074,xyz_super_secret_key_12345abc,API_KEY,regex,regex_generic_key_assignment,0.95,True
-test_075,Today,DATE,presidio,presidio_date_time,0.85,False
-test_076,Suresh Babu,PERSON,gliner2,gliner2_full_name,0.9997,True
+test_076,Suresh Babu,PERSON,presidio,presidio_person,0.85,True
 test_076,12 January 1978,DATE,gliner2,gliner2_date_of_birth,1.0,True
-test_077,admin,CUSTOMER_ID,gliner2,gliner2_username,0.9806,False
 test_077,198.51.100.42,IP_ADDRESS,regex,regex_ipv4,0.97,True
-test_078,Rohan Sharma,PERSON,gliner2,gliner2_full_name,0.9996,True
-test_078,Deepika Nair,PERSON,gliner2,gliner2_full_name,0.9995,True
-test_078,TCS,ORGANIZATION,spacy,spacy_org,0.85,True
+test_078,Rohan Sharma,PERSON,presidio,presidio_person,0.85,True
+test_078,Deepika Nair,PERSON,presidio,presidio_person,0.85,True
+test_078,TCS,ORGANIZATION,spacy,spacy_org,0.9,True
 test_079,Db@Pass2024Secret!,PASSWORD,gliner2,gliner2_password,0.9754,True
 test_080,Singapore,LOCATION,gliner2,gliner2_city,0.9234,True
 test_081,30569309025904,CREDIT_CARD,regex,luhn_credit_card,1.0,True
 test_082,TKT-12001,TICKET_ID,regex,regex_ticket_id,0.95,True
-test_082,Vikram Nair,PERSON,gliner2,gliner2_full_name,0.9973,True
+test_082,Vikram Nair,PERSON,gliner2,gliner2_person,0.8206,True
 test_083,ORD-71008,ORDER_ID,regex,regex_order_id,0.95,True
 test_083,2024-06-01,DATE,regex,regex_date_iso,0.9998,True
-test_085,Devika Pillai,PERSON,gliner2,gliner2_full_name,0.9993,True
+test_085,Devika Pillai,PERSON,presidio,presidio_person,0.85,True
 test_085,Infosys,ORGANIZATION,presidio,presidio_person,0.85,True
 test_085,Bangalore,LOCATION,gliner2,gliner2_city,0.9006,True
 test_085,01 March 2023,DATE,regex,regex_date_dd_month_yyyy,0.9,True
-test_087,priya,PERSON,gliner2,gliner2_first_name,0.9996,False
-test_087,delhi,LOCATION,gliner2,gliner2_city,1.0,False
+test_087,priya,PERSON,gliner2,gliner2_person,0.5407,True
+test_087,delhi,LOCATION,gliner2,gliner2_city,1.0,True
 test_087,priya1990@hotmail.com,EMAIL,regex,regex_email,1.0,True
 test_088,K8mP3xQzR7wL2jN9vT4ySbE6uHcDfGi1oA5,API_KEY,regex,regex_generic_key_assignment,0.95,True
 test_089,"45 Park Avenue, New York, NY 10022",ADDRESS,regex,regex_address_with_postal_code,0.96,True
-test_090,May,DATE,presidio,presidio_date_time,0.85,False
-test_091,Satya Nadella,PERSON,gliner2,gliner2_full_name,0.9991,True
-test_091,Microsoft,ORGANIZATION,spacy,spacy_org,0.85,True
+test_091,Satya Nadella,PERSON,presidio,presidio_person,0.85,True
+test_091,Microsoft,ORGANIZATION,spacy,spacy_org,0.9,True
 test_091,Seattle,LOCATION,gliner2,gliner2_city,0.9993,True
 test_091,15 Sep 2024,DATE,regex,regex_date_dd_month_yyyy,0.9,True
 test_092,9876543210,PHONE,regex,regex_phone_10digit,1.0,True
 test_092,user@domain.org,EMAIL,regex,regex_email,1.0,True
-test_093,AWS,ORGANIZATION,spacy,spacy_org,0.85,True
+test_093,AWS,ORGANIZATION,spacy,spacy_org,0.9,True
 test_093,AKIA4example1234567890ABCDEF,API_KEY,regex,regex_generic_key_assignment,0.95,True
-test_094,Rajesh Verma,PERSON,gliner2,gliner2_full_name,0.9998,True
+test_094,Rajesh Verma,PERSON,presidio,presidio_person,0.85,True
 test_094,CUST-50909,CUSTOMER_ID,regex,regex_customer_id,0.95,True
 test_094,ORD-21001,ORDER_ID,regex,regex_order_id,0.95,True
 test_094,Hyderabad,LOCATION,gliner2,gliner2_city,0.9999,True
 test_096,GB29 NWBK 6016 1331 9268 19,BANK_ACCOUNT,regex,regex_iban,1.0,True
-test_096,David Brown,PERSON,gliner2,gliner2_full_name,0.9945,True
+test_096,David Brown,PERSON,presidio,presidio_person,0.85,True
 test_098,OldPass@123,PASSWORD,regex,regex_password_natural_lang,0.9933,True
 test_098,NewPass#456,PASSWORD,gliner2,gliner2_password,0.9935,True
-test_099,Amazon,ORGANIZATION,spacy,spacy_org,0.85,True
-test_099,Google,ORGANIZATION,spacy,spacy_org,0.85,True
-test_099,Microsoft,ORGANIZATION,spacy,spacy_org,0.85,True
-test_100,Ritika Verma,PERSON,gliner2,gliner2_full_name,0.9999,True
+test_099,Amazon,ORGANIZATION,spacy,spacy_org,0.9,True
+test_099,Google,ORGANIZATION,spacy,spacy_org,0.9,True
+test_099,Microsoft,ORGANIZATION,spacy,spacy_org,0.9,True
+test_100,Ritika Verma,PERSON,gliner2,gliner2_person,0.8142,True
 test_100,05/09/1985,DATE,gliner2,gliner2_date_of_birth,1.0,True
 test_100,ritika.verma@rediffmail.com,EMAIL,regex,regex_email,1.0,True
 test_100,+91 8877665544,PHONE,regex,regex_phone_international,1.0,True
-test_102,Sarah Johnson,PERSON,gliner2,gliner2_full_name,0.9991,True
+test_102,Sarah Johnson,PERSON,presidio,presidio_person,0.85,True
 test_102,Barclays,ORGANIZATION,spacy,spacy_org,0.85,True
 test_102,London,LOCATION,gliner2,gliner2_city,0.85,True
 test_102,"October 3, 2024",DATE,regex,regex_date_month_dd_yyyy,0.999,True
 test_103,458921,PASSWORD,regex,regex_password_natural_lang,0.9704,True
-test_103,Amit Joshi,PERSON,gliner2,gliner2_full_name,0.9993,True
+test_103,Amit Joshi,PERSON,presidio,presidio_person,0.85,True
 test_103,Kolkata,LOCATION,gliner2,gliner2_city,0.9999,True
 test_105,Kavya Reddy,PERSON,gliner2,gliner2_full_name,0.9987,True
 test_105,SR-1091,TICKET_ID,regex,regex_ticket_id,0.95,True
@@ -197,7 +188,7 @@ test_105,Infosys,ORGANIZATION,spacy,spacy_org,0.85,True
 test_105,Hyderabad,LOCATION,gliner2,gliner2_city,0.9962,True
 test_106,OpenAI,ORGANIZATION,spacy,spacy_org,0.9,True
 test_106,sk-live-9928374610293847561029384756,API_KEY,regex,regex_openai_api_key,0.9995,True
-test_106,AWS,ORGANIZATION,spacy,spacy_org,0.85,True
+test_106,AWS,ORGANIZATION,spacy,spacy_org,0.9,True
 test_106,AKIAIOSFODNN7EXAMPLE,API_KEY,regex,regex_aws_access_key,0.992,True
 test_106,Frankfurt,LOCATION,gliner2,gliner2_city,0.9985,True
 test_107,Google,ORGANIZATION,spacy,spacy_org,0.9,True
@@ -205,36 +196,36 @@ test_107,AIzaSyD-9xK2Lm3No4Pq5Rs6Tu7Vw8Xy9Za0Bc,API_KEY,regex,regex_google_api_k
 test_107,Siemens,ORGANIZATION,spacy,spacy_org,0.85,True
 test_108,eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.dozG42iP_k8xT,ACCESS_TOKEN,regex,regex_jwt_token,0.97,True
 test_109,ghp_9876543210abcdefghijklmnopqrstuvwx,ACCESS_TOKEN,gliner2,gliner2_access_token,0.9952,True
-test_109,Marcus Vance,PERSON,gliner2,gliner2_full_name,0.9981,True
+test_109,Marcus Vance,PERSON,presidio,presidio_person,0.85,True
 test_110,postgresql://dbadmin:P@ssw0rd2024!@10.0.12.44:5432/finance,PASSWORD,regex,regex_connection_string,1.0,True
-test_111,admin,CUSTOMER_ID,gliner2,gliner2_username,0.6115,False
 test_111,Sapphire#9834@Secure,PASSWORD,regex,regex_password_natural_lang,0.92,True
 test_111,192.168.100.25,IP_ADDRESS,regex,regex_ipv4,1.0,True
 test_112,9482,PASSWORD,regex,regex_pin_natural_lang,0.92,True
-test_112,David Chen,PERSON,gliner2,gliner2_full_name,0.9945,True
+test_112,David Chen,PERSON,presidio,presidio_person,0.85,True
+test_113,Redis,ORGANIZATION,spacy,spacy_org,0.9,True
 test_113,RedisAuthPass991#,PASSWORD,regex,regex_password_space_separated,0.9963,True
 test_114,DE89370400440532013000,BANK_ACCOUNT,regex,regex_iban,1.0,True
-test_114,Deutsche Bank,ORGANIZATION,spacy,spacy_org,0.85,True
+test_114,Deutsche Bank,ORGANIZATION,spacy,spacy_org,0.9,True
 test_114,Munich,LOCATION,gliner2,gliner2_city,0.9997,True
 test_115,987123456789,BANK_ACCOUNT,regex,regex_account_number,0.9983,True
 test_115,24/10/2024,DATE,regex,regex_date_dmy,0.9996,True
-test_116,Visa,ORGANIZATION,spacy,spacy_org,0.85,True
+test_116,Visa,ORGANIZATION,spacy,spacy_org,0.9,True
 test_116,4532015112830366,CREDIT_CARD,regex,luhn_credit_card,1.0,True
 test_116,ORD-88210,ORDER_ID,regex,regex_order_id,0.95,True
 test_117,Mastercard,ORGANIZATION,spacy,spacy_org,0.9,True
 test_117,5425233430109903,CREDIT_CARD,regex,luhn_credit_card,1.0,True
 test_117,ORD-44910,ORDER_ID,regex,regex_order_id,0.95,True
-test_118,American Express,ORGANIZATION,spacy,spacy_org,0.85,True
+test_118,American Express,ORGANIZATION,spacy,spacy_org,0.9,True
 test_118,378282246310005,CREDIT_CARD,regex,luhn_credit_card,1.0,True
 test_118,ORD-11029,ORDER_ID,regex,regex_order_id,0.95,True
 test_119,112233445566,BANK_ACCOUNT,regex,regex_account_number,0.9987,True
-test_119,Elena Rostova,PERSON,gliner2,gliner2_full_name,0.9969,True
+test_119,Elena Rostova,PERSON,presidio,presidio_person,0.85,True
 test_120,GB29NWBK60161331926819,BANK_ACCOUNT,regex,regex_iban,1.0,True
 test_120,NatWest Markets,ORGANIZATION,spacy,spacy_org,0.85,True
 test_121,TKT-44912,TICKET_ID,regex,regex_ticket_id,0.95,True
-test_121,Siddharth Rao,PERSON,gliner2,gliner2_full_name,0.9975,True
+test_121,Siddharth Rao,PERSON,presidio,presidio_person,0.85,True
 test_121,Wipro,ORGANIZATION,spacy,spacy_org,0.9,True
-test_122,Amina Al-Mansoor,PERSON,gliner2,gliner2_full_name,0.9996,True
+test_122,Amina Al-Mansoor,PERSON,presidio,presidio_person,0.85,True
 test_122,CUST-99412,CUSTOMER_ID,regex,regex_customer_id,0.95,True
 test_122,ORD-77194,ORDER_ID,regex,regex_order_id,0.95,True
 test_122,Dubai,LOCATION,gliner2,gliner2_city,0.9994,True
@@ -247,32 +238,32 @@ test_124,"742 Evergreen Terrace, Springfield, OR 97477",ADDRESS,gliner2,gliner2_
 test_125,TKT-10928,TICKET_ID,regex,regex_ticket_id,0.95,True
 test_125,CUST-55102,CUSTOMER_ID,regex,regex_customer_id,0.95,True
 test_125,03/11/2024,DATE,regex,regex_date_dmy,0.9939,True
-test_126,Carlos Mendez,PERSON,gliner2,gliner2_full_name,0.9978,True
+test_126,Carlos Mendez,PERSON,presidio,presidio_person,0.85,True
 test_126,ORD-66291,ORDER_ID,regex,regex_order_id,0.95,True
 test_126,Madrid,LOCATION,gliner2,gliner2_city,0.9996,True
-test_127,Fatima Zahra,PERSON,gliner2,gliner2_full_name,0.9997,True
+test_127,Fatima Zahra,PERSON,presidio,presidio_person,0.85,True
 test_127,fatima.zahra@casablanca.ma,EMAIL,regex,regex_email,1.0,True
 test_127,CUST-88321,CUSTOMER_ID,regex,regex_customer_id,0.95,True
-test_128,Sunita Deshmukh,PERSON,gliner2,gliner2_full_name,0.9997,True
+test_128,Sunita Deshmukh,PERSON,presidio,presidio_person,0.85,True
 test_128,s.deshmukh@aiims.edu.in,EMAIL,regex,regex_email,1.0,True
 test_128,+91 9988776655,PHONE,regex,regex_phone_international,1.0,True
-test_129,Jean-Pierre Dubois,PERSON,gliner2,gliner2_full_name,0.9998,True
+test_129,Jean-Pierre Dubois,PERSON,presidio,presidio_person,0.85,True
 test_129,Lyon,LOCATION,gliner2,gliner2_city,1.0,True
 test_129,+33 4 72 00 00 00,PHONE,gliner2,gliner2_phone_number,0.9998,True
-test_130,Kenji Takahashi,PERSON,gliner2,gliner2_full_name,0.9991,True
+test_130,Kenji Takahashi,PERSON,presidio,presidio_person,0.85,True
 test_130,Sony,ORGANIZATION,spacy,spacy_org,0.85,True
 test_130,14 October 2024,DATE,regex,regex_date_dd_month_yyyy,0.9,True
-test_131,Hannah Schmidt,PERSON,gliner2,gliner2_full_name,0.9996,True
+test_131,Hannah Schmidt,PERSON,presidio,presidio_person,0.85,True
 test_131,hannah.schmidt@berlin-tech.de,EMAIL,regex,regex_email,1.0,True
-test_132,Vikramaditya Singhania,PERSON,gliner2,gliner2_full_name,0.9989,True
+test_132,Vikramaditya Singhania,PERSON,gliner2,gliner2_person,0.6582,True
 test_132,Delhi,LOCATION,gliner2,gliner2_city,0.9976,True
-test_132,Singapore,LOCATION,gliner2,gliner2_city,0.8525,True
+test_132,Singapore,LOCATION,gliner2,gliner2_city,0.9,True
 test_132,Temasek,ORGANIZATION,spacy,spacy_org,0.9,True
-test_133,Maria Santos,PERSON,gliner2,gliner2_full_name,0.9999,True
+test_133,Maria Santos,PERSON,presidio,presidio_person,0.85,True
 test_133,+55 11 98765-4321,PHONE,regex,regex_phone_international,1.0,True
-test_134,Li Wei,PERSON,gliner2,gliner2_full_name,0.99,True
+test_134,Li Wei,PERSON,presidio,presidio_person,0.85,True
 test_134,28 August 2024,DATE,regex,regex_date_dd_month_yyyy,0.9,True
-test_135,Tariq Mahmood,PERSON,gliner2,gliner2_full_name,0.9993,True
+test_135,Tariq Mahmood,PERSON,presidio,presidio_person,0.85,True
 test_135,tariq.m@dubaicorp.ae,EMAIL,regex,regex_email,1.0,True
 test_135,Abu Dhabi,LOCATION,gliner2,gliner2_city,0.9997,True
 test_136,198.51.100.14,IP_ADDRESS,regex,regex_ipv4,1.0,True
@@ -284,264 +275,705 @@ test_138,Stockholm,LOCATION,gliner2,gliner2_city,0.9996,True
 test_139,172.16.45.100,IP_ADDRESS,regex,regex_ipv4,1.0,True
 test_139,Nordea Bank,ORGANIZATION,spacy,spacy_org,0.85,True
 test_140,192.168.220.1,IP_ADDRESS,regex,regex_ipv4,1.0,True
-test_140,Alexei Volkov,PERSON,gliner2,gliner2_full_name,0.9987,True
-test_141,10 Downing Street,ADDRESS,regex,regex_street_address,1.0,True
-test_141,London,LOCATION,gliner2,gliner2_city,1.0,False
-test_141,SW1A 2AA,LOCATION,gliner2,gliner2_postal_code,0.9987,False
-test_141,Oliver Smith,PERSON,gliner2,gliner2_full_name,0.9993,True
-test_142,221B Baker Street,ADDRESS,regex,regex_street_address,0.9995,True
-test_142,Marylebone,LOCATION,gliner2,gliner2_city,0.9978,False
-test_142,London,LOCATION,gliner2,gliner2_city,0.9623,False
-test_142,NW1 6XE,LOCATION,gliner2,gliner2_postal_code,0.9965,False
+test_140,Alexei Volkov,PERSON,gliner2,gliner2_person,0.7855,True
+test_141,"10 Downing Street, London, SW1A 2AA",ADDRESS,regex,fusion_compound_address,0.9987,True
+test_141,Oliver Smith,PERSON,presidio,presidio_person,0.85,True
+test_142,"221B Baker Street, Marylebone, London NW1 6XE",ADDRESS,gliner2,fusion_compound_address,0.9965,True
 test_143,"350 5th Avenue, New York, NY 10118",ADDRESS,regex,regex_address_with_postal_code,0.96,True
-test_143,Rachel Green,PERSON,gliner2,gliner2_full_name,0.9998,True
-test_144,12 Rue de la Paix,ADDRESS,gliner2,gliner2_street_address,0.9997,True
-test_144,Paris,LOCATION,gliner2,gliner2_city,1.0,False
-test_144,France,LOCATION,gliner2,gliner2_country,0.9995,False
+test_143,Rachel Green,PERSON,presidio,presidio_person,0.85,True
+test_144,"12 Rue de la Paix, 75002 Paris, France",ADDRESS,gliner2,fusion_compound_address,0.9997,True
 test_144,CUST-44109,CUSTOMER_ID,regex,regex_customer_id,0.95,True
 test_145,"50 Raffles Place, Singapore 048623",ADDRESS,regex,regex_address_with_postal_code,0.96,True
 test_145,Singapore,LOCATION,gliner2,gliner2_country,0.9977,True
 test_146,15 November 2024,DATE,regex,regex_date_dd_month_yyyy,0.9,True
-test_146,Rajesh Pillai,PERSON,gliner2,gliner2_full_name,0.9996,True
+test_146,Rajesh Pillai,PERSON,presidio,presidio_person,0.85,True
 test_146,TCS,ORGANIZATION,spacy,spacy_org,0.85,True
-test_146,Ingrid Bergman,PERSON,gliner2,gliner2_full_name,0.9997,True
+test_146,Ingrid Bergman,PERSON,presidio,presidio_person,0.85,True
 test_146,Ericsson,ORGANIZATION,presidio,presidio_location,0.85,True
 test_146,Stockholm,LOCATION,gliner2,gliner2_city,0.9997,True
 test_146,ORD-99012,ORDER_ID,regex,regex_order_id,0.95,True
-test_147,Kwame Mensah,PERSON,gliner2,gliner2_full_name,0.9995,True
+test_147,Kwame Mensah,PERSON,presidio,presidio_person,0.85,True
 test_147,ORD-12840,ORDER_ID,regex,regex_order_id,0.95,True
 test_147,05/10/2024,DATE,regex,regex_date_dmy,0.9836,True
 test_147,Accra,LOCATION,gliner2,gliner2_city,0.9996,True
 test_147,k.mensah@ghana-tech.com,EMAIL,regex,regex_email,1.0,True
-test_148,Hiroshi Tanaka,PERSON,gliner2,gliner2_full_name,0.9998,True
+test_148,Hiroshi Tanaka,PERSON,presidio,presidio_person,0.85,True
 test_148,+81 3 1234 5678,PHONE,gliner2,gliner2_phone_number,1.0,True
 test_148,4012888888881881,CREDIT_CARD,regex,luhn_credit_card,1.0,True
 test_148,TKT-77201,TICKET_ID,regex,regex_ticket_id,0.95,True
-test_149,Nadia Petrova,PERSON,gliner2,gliner2_full_name,0.9997,True
+test_149,Nadia Petrova,PERSON,gliner2,gliner2_person,0.8505,True
 test_149,Nadia#Pass8812,PASSWORD,regex,regex_password_space_separated,0.9695,True
 test_149,10.50.2.19,IP_ADDRESS,regex,regex_ipv4,1.0,True
 test_149,30 November 2024,DATE,regex,regex_date_dd_month_yyyy,0.9996,True
-test_150,Ananya Sen,PERSON,gliner2,gliner2_full_name,0.999,True
+test_150,Ananya Sen,PERSON,presidio,presidio_person,0.85,True
 test_150,Cognizant,ORGANIZATION,spacy,spacy_org,0.9,True
 test_150,TKT-33910,TICKET_ID,regex,regex_ticket_id,0.95,True
 test_150,CUST-19402,CUSTOMER_ID,regex,regex_customer_id,0.95,True
 test_150,18/07/2024,DATE,regex,regex_date_dmy,0.9976,True
 test_151,998877661122,BANK_ACCOUNT,regex,regex_account_number,0.9943,True
 test_151,4222222222222,CREDIT_CARD,regex,luhn_credit_card,1.0,True
-test_151,Lucas Silva,PERSON,gliner2,gliner2_full_name,0.9993,True
+test_151,Lucas Silva,PERSON,presidio,presidio_person,0.85,True
 test_151,Sao Paulo,LOCATION,gliner2,gliner2_city,0.9999,True
-test_152,Claire Dupont,PERSON,gliner2,gliner2_full_name,0.9998,True
-test_152,45 Boulevard Saint-Germain,ADDRESS,gliner2,gliner2_street_address,0.9999,True
-test_152,Paris,LOCATION,gliner2,gliner2_city,0.9999,False
+test_152,Claire Dupont,PERSON,presidio,presidio_person,0.85,True
+test_152,"45 Boulevard Saint-Germain, 75005 Paris",ADDRESS,gliner2,fusion_compound_address,0.9999,True
 test_152,claire.dupont@avocat.fr,EMAIL,regex,regex_email,1.0,True
 test_152,+33 1 42 68 00 00,PHONE,gliner2,gliner2_phone_number,1.0,True
-test_153,Elon Musk,PERSON,gliner2,gliner2_full_name,0.9964,True
-test_153,Tesla,ORGANIZATION,spacy,spacy_org,0.85,True
-test_153,SpaceX,ORGANIZATION,presidio,presidio_person,0.85,True
+test_153,Elon Musk,PERSON,presidio,presidio_person,0.85,True
+test_153,Tesla,ORGANIZATION,spacy,spacy_org,0.9,True
+test_153,SpaceX,ORGANIZATION,presidio,presidio_person,0.9,True
 test_153,Austin,LOCATION,gliner2,gliner2_city,0.9999,True
-test_154,Tim Cook,PERSON,gliner2,gliner2_full_name,0.9983,True
-test_154,Steve Jobs,PERSON,gliner2,gliner2_full_name,0.9992,True
-test_154,Apple,ORGANIZATION,spacy,spacy_org,0.85,True
+test_154,Tim Cook,PERSON,presidio,presidio_person,0.85,True
+test_154,Steve Jobs,PERSON,presidio,presidio_person,0.85,True
+test_154,Apple,ORGANIZATION,spacy,spacy_org,0.9,True
 test_154,Cupertino,LOCATION,gliner2,gliner2_city,0.9999,True
-test_155,Jensen Huang,PERSON,gliner2,gliner2_full_name,0.998,True
-test_155,Nvidia,ORGANIZATION,presidio,presidio_location,0.85,True
+test_155,Jensen Huang,PERSON,presidio,presidio_person,0.85,True
+test_155,Nvidia,ORGANIZATION,presidio,presidio_location,0.9,True
 test_155,Santa Clara,LOCATION,gliner2,gliner2_city,0.9991,True
-test_156,Satya Nadella,PERSON,gliner2,gliner2_full_name,0.9985,True
-test_156,Microsoft,ORGANIZATION,spacy,spacy_org,0.85,True
+test_156,Satya Nadella,PERSON,presidio,presidio_person,0.85,True
+test_156,Microsoft,ORGANIZATION,spacy,spacy_org,0.9,True
 test_156,Redmond,LOCATION,gliner2,gliner2_city,0.9994,True
-test_157,Sam Altman,PERSON,gliner2,gliner2_full_name,0.9983,True
-test_157,OpenAI,ORGANIZATION,spacy,spacy_org,0.85,True
-test_158,Linus Torvalds,PERSON,gliner2,gliner2_full_name,0.9978,True
+test_157,Sam Altman,PERSON,presidio,presidio_person,0.85,True
+test_157,OpenAI,ORGANIZATION,spacy,spacy_org,0.9,True
+test_158,Linus Torvalds,PERSON,gliner2,gliner2_person,0.5806,True
 test_158,Helsinki,LOCATION,gliner2,gliner2_city,1.0,True
-test_160,fox,PERSON,gliner2,gliner2_last_name,0.6661,False
 test_174,TKT-50174,TICKET_ID,regex,regex_ticket_id,0.95,True
 test_174,p.sundaram@chennaitech.co.in,EMAIL,regex,regex_email,1.0,True
-test_174,Priya Sundaram,PERSON,gliner2,gliner2_full_name,0.9991,True
+test_174,Priya Sundaram,PERSON,presidio,presidio_person,0.85,True
 test_174,Chennai,LOCATION,gliner2,gliner2_city,1.0,True
 test_175,900000002275,BANK_ACCOUNT,regex,regex_account_number,0.996,True
-test_175,Alexander Wright,PERSON,gliner2,gliner2_full_name,0.9971,True
+test_175,Alexander Wright,PERSON,presidio,presidio_person,0.85,True
 test_175,Barclays,ORGANIZATION,spacy,spacy_org,0.9,True
-test_178,Ibrahim Hassan,PERSON,gliner2,gliner2_full_name,0.9983,True
+test_178,Ibrahim Hassan,PERSON,presidio,presidio_person,0.85,True
 test_178,Vodafone,ORGANIZATION,spacy,spacy_org,0.85,True
 test_178,ibrahim.h@cairo-data.eg,EMAIL,regex,regex_email,1.0,True
 test_178,Cairo,LOCATION,gliner2,gliner2_city,0.9998,True
-test_179,Zoe Tremblay,PERSON,gliner2,gliner2_full_name,0.9997,True
+test_179,Zoe Tremblay,PERSON,gliner2,gliner2_person,0.6557,True
 test_179,+1 514 555 0188,PHONE,regex,regex_phone_international,1.0,True
 test_179,ORD-70179,ORDER_ID,regex,regex_order_id,0.95,True
-test_180,Johan Lindqvist,PERSON,gliner2,gliner2_full_name,0.999,True
+test_180,Johan Lindqvist,PERSON,presidio,presidio_person,0.85,True
 test_180,10.30.4.180,IP_ADDRESS,regex,regex_ipv4,1.0,True
 test_180,13/11/2024,DATE,regex,regex_date_dmy,0.9175,True
-test_181,Mei-Ling Chen,PERSON,gliner2,gliner2_full_name,0.9993,True
+test_181,Mei-Ling Chen,PERSON,presidio,presidio_person,0.85,True
 test_181,CUST-80181,CUSTOMER_ID,regex,regex_customer_id,0.95,True
 test_181,PassKey#3077!,PASSWORD,regex,regex_password_natural_lang,0.9877,True
 test_182,TKT-50182,TICKET_ID,regex,regex_ticket_id,0.95,True
 test_182,dmitri.ivanov@moscow-sec.ru,EMAIL,regex,regex_email,1.0,True
-test_182,Dmitri Ivanov,PERSON,gliner2,gliner2_full_name,0.9973,True
+test_182,Dmitri Ivanov,PERSON,presidio,presidio_person,0.85,True
 test_182,Moscow,LOCATION,gliner2,gliner2_city,0.9069,True
 test_183,900000002379,BANK_ACCOUNT,regex,regex_account_number,0.9959,True
-test_183,Chioma Okonjo,PERSON,gliner2,gliner2_full_name,0.9962,True
+test_183,Chioma Okonjo,PERSON,presidio,presidio_person,0.85,True
 test_183,Flutterwave,ORGANIZATION,spacy,spacy_org,0.9,True
-test_186,Sora Yamamoto,PERSON,gliner2,gliner2_full_name,0.9987,True
+test_186,Sora Yamamoto,PERSON,presidio,presidio_person,0.85,True
 test_186,Sony,ORGANIZATION,spacy,spacy_org,0.85,True
 test_186,sora.y@tokyo-robotics.jp,EMAIL,regex,regex_email,1.0,True
 test_186,Tokyo,LOCATION,gliner2,gliner2_city,0.9999,True
-test_187,Beatriz Morales,PERSON,gliner2,gliner2_full_name,0.9997,True
+test_187,Beatriz Morales,PERSON,gliner2,gliner2_person,0.642,True
 test_187,+34 91 123 4567,PHONE,regex,regex_phone_international,1.0,True
 test_187,ORD-70187,ORDER_ID,regex,regex_order_id,0.95,True
-test_188,Ibrahim Hassan,PERSON,gliner2,gliner2_full_name,0.9988,True
+test_188,Ibrahim Hassan,PERSON,presidio,presidio_person,0.85,True
 test_188,10.38.4.188,IP_ADDRESS,regex,regex_ipv4,1.0,True
 test_188,21/11/2024,DATE,regex,regex_date_dmy,0.9149,True
-test_189,Zoe Tremblay,PERSON,gliner2,gliner2_full_name,0.9995,True
+test_189,Zoe Tremblay,PERSON,presidio,presidio_person,0.85,True
 test_189,CUST-80189,CUSTOMER_ID,regex,regex_customer_id,0.95,True
 test_189,PassKey#3213!,PASSWORD,regex,regex_password_natural_lang,0.9873,True
 test_190,TKT-50190,TICKET_ID,regex,regex_ticket_id,0.95,True
 test_190,j.lindqvist@stockholm-fin.se,EMAIL,regex,regex_email,1.0,True
-test_190,Johan Lindqvist,PERSON,gliner2,gliner2_full_name,0.9983,True
+test_190,Johan Lindqvist,PERSON,presidio,presidio_person,0.85,True
 test_190,Stockholm,LOCATION,gliner2,gliner2_city,1.0,True
 test_191,900000002483,BANK_ACCOUNT,regex,regex_account_number,0.9957,True
-test_191,Mei-Ling Chen,PERSON,gliner2,gliner2_full_name,0.9922,True
-test_191,TSMC,ORGANIZATION,spacy,spacy_org,0.85,True
-test_194,Priya Sundaram,PERSON,gliner2,gliner2_full_name,0.9992,True
+test_191,Mei-Ling Chen,PERSON,presidio,presidio_person,0.85,True
+test_191,TSMC,ORGANIZATION,spacy,spacy_org,0.9,True
+test_194,Priya Sundaram,PERSON,presidio,presidio_person,0.85,True
 test_194,Infosys,ORGANIZATION,spacy,spacy_org,0.85,True
 test_194,p.sundaram@chennaitech.co.in,EMAIL,regex,regex_email,1.0,True
 test_194,Chennai,LOCATION,gliner2,gliner2_city,0.9998,True
-test_195,Alexander Wright,PERSON,gliner2,gliner2_full_name,0.9996,True
+test_195,Alexander Wright,PERSON,presidio,presidio_person,0.85,True
 test_195,+44 161 275 0000,PHONE,regex,regex_phone_international,1.0,True
 test_195,ORD-70195,ORDER_ID,regex,regex_order_id,0.95,True
-test_196,Sora Yamamoto,PERSON,gliner2,gliner2_full_name,0.9988,True
+test_196,Sora Yamamoto,PERSON,presidio,presidio_person,0.85,True
 test_196,10.46.4.196,IP_ADDRESS,regex,regex_ipv4,1.0,True
 test_196,01/11/2024,DATE,regex,regex_date_dmy,0.9205,True
-test_197,Beatriz Morales,PERSON,gliner2,gliner2_full_name,0.9998,True
+test_197,Beatriz Morales,PERSON,gliner2,gliner2_person,0.6864,True
 test_197,CUST-80197,CUSTOMER_ID,regex,regex_customer_id,0.95,True
 test_197,PassKey#3349!,PASSWORD,regex,regex_password_natural_lang,0.9876,True
 test_198,TKT-50198,TICKET_ID,regex,regex_ticket_id,0.95,True
 test_198,ibrahim.h@cairo-data.eg,EMAIL,regex,regex_email,1.0,True
-test_198,Ibrahim Hassan,PERSON,gliner2,gliner2_full_name,0.9985,True
+test_198,Ibrahim Hassan,PERSON,presidio,presidio_person,0.85,True
 test_198,Cairo,LOCATION,gliner2,gliner2_city,1.0,True
 test_199,900000002587,BANK_ACCOUNT,regex,regex_account_number,0.9973,True
-test_199,Zoe Tremblay,PERSON,gliner2,gliner2_full_name,0.9965,True
+test_199,Zoe Tremblay,PERSON,gliner2,gliner2_person,0.6143,True
 test_199,Element AI,ORGANIZATION,spacy,spacy_org,0.9,True
-test_202,Dmitri Ivanov,PERSON,gliner2,gliner2_full_name,0.9982,True
+test_202,Dmitri Ivanov,PERSON,presidio,presidio_person,0.85,True
 test_202,Kaspersky,ORGANIZATION,spacy,spacy_org,0.85,True
 test_202,dmitri.ivanov@moscow-sec.ru,EMAIL,regex,regex_email,1.0,True
-test_202,Moscow,LOCATION,gliner2,gliner2_city,0.853,True
-test_203,Chioma Okonjo,PERSON,gliner2,gliner2_full_name,0.9995,True
+test_202,Moscow,LOCATION,gliner2,gliner2_city,0.9,True
+test_203,Chioma Okonjo,PERSON,presidio,presidio_person,0.85,True
 test_203,+234 1 234 5678,PHONE,gliner2,gliner2_phone_number,1.0,True
 test_203,ORD-70203,ORDER_ID,regex,regex_order_id,0.95,True
-test_204,Priya Sundaram,PERSON,gliner2,gliner2_full_name,0.9991,True
+test_204,Priya Sundaram,PERSON,presidio,presidio_person,0.85,True
 test_204,10.4.4.204,IP_ADDRESS,regex,regex_ipv4,1.0,True
 test_204,09/11/2024,DATE,regex,regex_date_dmy,0.9063,True
-test_205,Alexander Wright,PERSON,gliner2,gliner2_full_name,0.9997,True
+test_205,Alexander Wright,PERSON,presidio,presidio_person,0.85,True
 test_205,CUST-80205,CUSTOMER_ID,regex,regex_customer_id,0.95,True
 test_205,PassKey#3485!,PASSWORD,regex,regex_password_natural_lang,0.9823,True
 test_206,TKT-50206,TICKET_ID,regex,regex_ticket_id,0.95,True
 test_206,sora.y@tokyo-robotics.jp,EMAIL,regex,regex_email,1.0,True
-test_206,Sora Yamamoto,PERSON,gliner2,gliner2_full_name,0.9991,True
+test_206,Sora Yamamoto,PERSON,presidio,presidio_person,0.85,True
 test_206,Tokyo,LOCATION,gliner2,gliner2_city,1.0,True
 test_207,900000002691,BANK_ACCOUNT,regex,regex_account_number,0.9944,True
-test_207,Beatriz Morales,PERSON,gliner2,gliner2_full_name,0.9977,True
+test_207,Beatriz Morales,PERSON,gliner2,gliner2_person,0.6805,True
 test_207,Telefonica,ORGANIZATION,spacy,spacy_org,0.9,True
-test_210,Johan Lindqvist,PERSON,gliner2,gliner2_full_name,0.9993,True
+test_210,Johan Lindqvist,PERSON,presidio,presidio_person,0.85,True
 test_210,Klarna,ORGANIZATION,gliner2,gliner2_city,0.9966,True
 test_210,j.lindqvist@stockholm-fin.se,EMAIL,regex,regex_email,1.0,True
 test_210,Stockholm,LOCATION,gliner2,gliner2_city,0.9996,True
-test_211,Mei-Ling Chen,PERSON,gliner2,gliner2_full_name,0.9991,True
+test_211,Mei-Ling Chen,PERSON,presidio,presidio_person,0.85,True
 test_211,+886 2 2345 6789,PHONE,gliner2,gliner2_phone_number,1.0,True
 test_211,ORD-70211,ORDER_ID,regex,regex_order_id,0.95,True
-test_212,Dmitri Ivanov,PERSON,gliner2,gliner2_full_name,0.9987,True
+test_212,Dmitri Ivanov,PERSON,presidio,presidio_person,0.85,True
 test_212,10.12.4.212,IP_ADDRESS,regex,regex_ipv4,1.0,True
 test_212,17/11/2024,DATE,regex,regex_date_dmy,0.9158,True
-test_213,Chioma Okonjo,PERSON,gliner2,gliner2_full_name,0.9994,True
+test_213,Chioma Okonjo,PERSON,presidio,presidio_person,0.85,True
 test_213,CUST-80213,CUSTOMER_ID,regex,regex_customer_id,0.95,True
 test_213,PassKey#3621!,PASSWORD,regex,regex_password_natural_lang,0.9731,True
 test_214,TKT-50214,TICKET_ID,regex,regex_ticket_id,0.95,True
 test_214,p.sundaram@chennaitech.co.in,EMAIL,regex,regex_email,1.0,True
-test_214,Priya Sundaram,PERSON,gliner2,gliner2_full_name,0.9991,True
+test_214,Priya Sundaram,PERSON,presidio,presidio_person,0.85,True
 test_214,Chennai,LOCATION,gliner2,gliner2_city,1.0,True
 test_215,900000002795,BANK_ACCOUNT,regex,regex_account_number,0.9957,True
-test_215,Alexander Wright,PERSON,gliner2,gliner2_full_name,0.997,True
+test_215,Alexander Wright,PERSON,presidio,presidio_person,0.85,True
 test_215,Barclays,ORGANIZATION,spacy,spacy_org,0.9,True
-test_218,Ibrahim Hassan,PERSON,gliner2,gliner2_full_name,0.9983,True
+test_218,Ibrahim Hassan,PERSON,presidio,presidio_person,0.85,True
 test_218,Vodafone,ORGANIZATION,spacy,spacy_org,0.85,True
 test_218,ibrahim.h@cairo-data.eg,EMAIL,regex,regex_email,1.0,True
 test_218,Cairo,LOCATION,gliner2,gliner2_city,0.9998,True
-test_219,Zoe Tremblay,PERSON,gliner2,gliner2_full_name,0.9997,True
+test_219,Zoe Tremblay,PERSON,gliner2,gliner2_person,0.6537,True
 test_219,+1 514 555 0188,PHONE,regex,regex_phone_international,1.0,True
 test_219,ORD-70219,ORDER_ID,regex,regex_order_id,0.95,True
-test_220,Johan Lindqvist,PERSON,gliner2,gliner2_full_name,0.999,True
+test_220,Johan Lindqvist,PERSON,presidio,presidio_person,0.85,True
 test_220,10.20.4.220,IP_ADDRESS,regex,regex_ipv4,1.0,True
 test_220,25/11/2024,DATE,regex,regex_date_dmy,0.9477,True
-test_221,Mei-Ling Chen,PERSON,gliner2,gliner2_full_name,0.9992,True
+test_221,Mei-Ling Chen,PERSON,presidio,presidio_person,0.85,True
 test_221,CUST-80221,CUSTOMER_ID,regex,regex_customer_id,0.95,True
 test_221,PassKey#3757!,PASSWORD,regex,regex_password_natural_lang,0.9788,True
 test_222,TKT-50222,TICKET_ID,regex,regex_ticket_id,0.95,True
 test_222,dmitri.ivanov@moscow-sec.ru,EMAIL,regex,regex_email,1.0,True
-test_222,Dmitri Ivanov,PERSON,gliner2,gliner2_full_name,0.9972,True
+test_222,Dmitri Ivanov,PERSON,presidio,presidio_person,0.85,True
 test_222,Moscow,LOCATION,gliner2,gliner2_city,0.9008,True
 test_223,900000002899,BANK_ACCOUNT,regex,regex_account_number,0.9965,True
-test_223,Chioma Okonjo,PERSON,gliner2,gliner2_full_name,0.9961,True
+test_223,Chioma Okonjo,PERSON,presidio,presidio_person,0.85,True
 test_223,Flutterwave,ORGANIZATION,spacy,spacy_org,0.9,True
-test_226,Sora Yamamoto,PERSON,gliner2,gliner2_full_name,0.9987,True
+test_226,Sora Yamamoto,PERSON,presidio,presidio_person,0.85,True
 test_226,Sony,ORGANIZATION,spacy,spacy_org,0.85,True
 test_226,sora.y@tokyo-robotics.jp,EMAIL,regex,regex_email,1.0,True
 test_226,Tokyo,LOCATION,gliner2,gliner2_city,0.9999,True
-test_227,Beatriz Morales,PERSON,gliner2,gliner2_full_name,0.9997,True
+test_227,Beatriz Morales,PERSON,gliner2,gliner2_person,0.6406,True
 test_227,+34 91 123 4567,PHONE,regex,regex_phone_international,1.0,True
 test_227,ORD-70227,ORDER_ID,regex,regex_order_id,0.95,True
-test_228,Ibrahim Hassan,PERSON,gliner2,gliner2_full_name,0.9988,True
+test_228,Ibrahim Hassan,PERSON,presidio,presidio_person,0.85,True
 test_228,10.28.4.228,IP_ADDRESS,regex,regex_ipv4,1.0,True
 test_228,05/11/2024,DATE,regex,regex_date_dmy,0.9333,True
-test_229,Zoe Tremblay,PERSON,gliner2,gliner2_full_name,0.9996,True
+test_229,Zoe Tremblay,PERSON,presidio,presidio_person,0.85,True
 test_229,CUST-80229,CUSTOMER_ID,regex,regex_customer_id,0.95,True
 test_229,PassKey#3893!,PASSWORD,regex,regex_password_natural_lang,0.9864,True
 test_230,TKT-50230,TICKET_ID,regex,regex_ticket_id,0.95,True
 test_230,j.lindqvist@stockholm-fin.se,EMAIL,regex,regex_email,1.0,True
-test_230,Johan Lindqvist,PERSON,gliner2,gliner2_full_name,0.9983,True
+test_230,Johan Lindqvist,PERSON,presidio,presidio_person,0.85,True
 test_230,Stockholm,LOCATION,gliner2,gliner2_city,1.0,True
 test_231,900000003003,BANK_ACCOUNT,regex,regex_account_number,0.9978,True
-test_231,Mei-Ling Chen,PERSON,gliner2,gliner2_full_name,0.9928,True
-test_231,TSMC,ORGANIZATION,spacy,spacy_org,0.85,True
-test_234,Priya Sundaram,PERSON,gliner2,gliner2_full_name,0.9992,True
+test_231,Mei-Ling Chen,PERSON,gliner2,gliner2_person,0.6637,True
+test_231,TSMC,ORGANIZATION,spacy,spacy_org,0.9,True
+test_234,Priya Sundaram,PERSON,presidio,presidio_person,0.85,True
 test_234,Infosys,ORGANIZATION,spacy,spacy_org,0.85,True
 test_234,p.sundaram@chennaitech.co.in,EMAIL,regex,regex_email,1.0,True
 test_234,Chennai,LOCATION,gliner2,gliner2_city,0.9998,True
-test_235,Alexander Wright,PERSON,gliner2,gliner2_full_name,0.9996,True
+test_235,Alexander Wright,PERSON,presidio,presidio_person,0.85,True
 test_235,+44 161 275 0000,PHONE,regex,regex_phone_international,1.0,True
 test_235,ORD-70235,ORDER_ID,regex,regex_order_id,0.95,True
-test_236,Sora Yamamoto,PERSON,gliner2,gliner2_full_name,0.9988,True
+test_236,Sora Yamamoto,PERSON,presidio,presidio_person,0.85,True
 test_236,10.36.4.236,IP_ADDRESS,regex,regex_ipv4,1.0,True
 test_236,13/11/2024,DATE,regex,regex_date_dmy,0.9024,True
-test_237,Beatriz Morales,PERSON,gliner2,gliner2_full_name,0.9997,True
+test_237,Beatriz Morales,PERSON,gliner2,gliner2_person,0.6827,True
 test_237,CUST-80237,CUSTOMER_ID,regex,regex_customer_id,0.95,True
 test_237,PassKey#4029!,PASSWORD,regex,regex_password_natural_lang,0.9837,True
 test_238,TKT-50238,TICKET_ID,regex,regex_ticket_id,0.95,True
 test_238,ibrahim.h@cairo-data.eg,EMAIL,regex,regex_email,1.0,True
-test_238,Ibrahim Hassan,PERSON,gliner2,gliner2_full_name,0.9985,True
+test_238,Ibrahim Hassan,PERSON,presidio,presidio_person,0.85,True
 test_238,Cairo,LOCATION,gliner2,gliner2_city,1.0,True
 test_239,900000003107,BANK_ACCOUNT,regex,regex_account_number,0.997,True
-test_239,Zoe Tremblay,PERSON,gliner2,gliner2_full_name,0.9968,True
+test_239,Zoe Tremblay,PERSON,gliner2,gliner2_person,0.6147,True
 test_239,Element AI,ORGANIZATION,spacy,spacy_org,0.9,True
-test_242,Dmitri Ivanov,PERSON,gliner2,gliner2_full_name,0.9982,True
+test_242,Dmitri Ivanov,PERSON,presidio,presidio_person,0.85,True
 test_242,Kaspersky,ORGANIZATION,spacy,spacy_org,0.85,True
 test_242,dmitri.ivanov@moscow-sec.ru,EMAIL,regex,regex_email,1.0,True
-test_242,Moscow,LOCATION,gliner2,gliner2_city,0.853,True
-test_243,Chioma Okonjo,PERSON,gliner2,gliner2_full_name,0.9995,True
+test_242,Moscow,LOCATION,gliner2,gliner2_city,0.9,True
+test_243,Chioma Okonjo,PERSON,presidio,presidio_person,0.85,True
 test_243,+234 1 234 5678,PHONE,gliner2,gliner2_phone_number,1.0,True
 test_243,ORD-70243,ORDER_ID,regex,regex_order_id,0.95,True
-test_244,Priya Sundaram,PERSON,gliner2,gliner2_full_name,0.9991,True
+test_244,Priya Sundaram,PERSON,presidio,presidio_person,0.85,True
 test_244,10.44.4.244,IP_ADDRESS,regex,regex_ipv4,1.0,True
 test_244,21/11/2024,DATE,regex,regex_date_dmy,0.9113,True
-test_245,Alexander Wright,PERSON,gliner2,gliner2_full_name,0.9997,True
+test_245,Alexander Wright,PERSON,presidio,presidio_person,0.85,True
 test_245,CUST-80245,CUSTOMER_ID,regex,regex_customer_id,0.95,True
 test_245,PassKey#4165!,PASSWORD,regex,regex_password_natural_lang,0.9852,True
 test_246,TKT-50246,TICKET_ID,regex,regex_ticket_id,0.95,True
 test_246,sora.y@tokyo-robotics.jp,EMAIL,regex,regex_email,1.0,True
-test_246,Sora Yamamoto,PERSON,gliner2,gliner2_full_name,0.9992,True
+test_246,Sora Yamamoto,PERSON,presidio,presidio_person,0.85,True
 test_246,Tokyo,LOCATION,gliner2,gliner2_city,1.0,True
 test_247,900000003211,BANK_ACCOUNT,regex,regex_account_number,0.9959,True
-test_247,Beatriz Morales,PERSON,gliner2,gliner2_full_name,0.9977,True
+test_247,Beatriz Morales,PERSON,gliner2,gliner2_person,0.6761,True
 test_247,Telefonica,ORGANIZATION,spacy,spacy_org,0.9,True
-test_250,Johan Lindqvist,PERSON,gliner2,gliner2_full_name,0.9993,True
+test_250,Johan Lindqvist,PERSON,presidio,presidio_person,0.85,True
 test_250,Klarna,ORGANIZATION,gliner2,gliner2_city,0.9966,True
 test_250,j.lindqvist@stockholm-fin.se,EMAIL,regex,regex_email,1.0,True
 test_250,Stockholm,LOCATION,gliner2,gliner2_city,0.9996,True
+test_251,Elena Rostova,PERSON,presidio,presidio_person,0.85,True
+test_251,ORD-992014,ORDER_ID,regex,regex_order_id,0.95,True
+test_251,"42 Nevsky Prospekt, St. Petersburg, 191186",ADDRESS,gliner2,fusion_compound_address,0.9998,True
+test_252,TICKET-44810,TICKET_ID,regex,regex_ticket_id,0.95,True
+test_252,tariq.mansoor@dubaimail.ae,EMAIL,regex,regex_email,1.0,True
+test_252,"April 18, 2024",DATE,regex,regex_date_month_dd_yyyy,0.9871,True
+test_253,Carlos Mendoza,PERSON,presidio,presidio_person,0.85,True
+test_253,ORDER-772190,ORDER_ID,regex,regex_order_id,0.95,True
+test_254,CUST-88310,CUSTOMER_ID,regex,regex_customer_id,0.95,True
+test_254,+34 912 345 678,PHONE,regex,regex_phone_international,1.0,True
+test_255,Ananya Deshmukh,PERSON,gliner2,gliner2_person,0.5931,True
+test_255,"15 MG Road, Bangalore, 560001",ADDRESS,regex,regex_address_with_postal_code,0.96,True
+test_256,INC-551092,TICKET_ID,regex,regex_ticket_id,0.95,True
+test_256,"May 22, 2024",DATE,regex,regex_date_month_dd_yyyy,0.9,True
+test_257,hannah.schmidt@berlin-tech.de,EMAIL,regex,regex_email,1.0,True
+test_257,ORD-110294,ORDER_ID,regex,regex_order_id,0.95,True
+test_258,Liam Gallagher,PERSON,presidio,presidio_person,0.85,True
+test_258,CUST-33491,CUSTOMER_ID,regex,regex_customer_id,0.95,True
+test_259,"88 Queen Street, Melbourne, VIC 3000",ADDRESS,regex,fusion_compound_address,0.9997,True
+test_259,+61 3 9876 5432,PHONE,gliner2,gliner2_phone_number,1.0,True
+test_260,TICKET-66201,TICKET_ID,regex,regex_ticket_id,0.95,True
+test_260,Fiona Gallagher,PERSON,presidio,presidio_person,0.85,True
+test_260,"June 30, 2024",DATE,regex,regex_date_month_dd_yyyy,0.9295,True
+test_261,CID-44918,CUSTOMER_ID,regex,regex_customer_id,0.95,True
+test_261,ORD-662914,ORDER_ID,regex,regex_order_id,0.95,True
+test_262,Kenji Takahashi,PERSON,presidio,presidio_person,0.85,True
+test_262,kenji.takahashi@osaka-net.jp,EMAIL,regex,regex_email,1.0,True
+test_262,Osaka,LOCATION,gliner2,gliner2_city,1.0,True
+test_263,ORDER-99104,ORDER_ID,regex,regex_order_id,0.95,True
+test_263,olivia.martinez@sbcglobal.net,EMAIL,regex,regex_email,1.0,True
+test_264,Zainab Al-Fassi,PERSON,presidio,presidio_person,0.85,True
+test_264,"74 Corniche Road, Abu Dhabi, 24395",ADDRESS,regex,regex_address_with_postal_code,0.96,True
+test_265,TICKET-10492,TICKET_ID,regex,regex_ticket_id,0.95,True
+test_265,USER-5582,CUSTOMER_ID,regex,regex_user_id,0.95,True
+test_266,Lucas Silva,PERSON,presidio,presidio_person,0.85,True
+test_266,+55 11 98765-4321,PHONE,regex,regex_phone_international,1.0,True
+test_267,ORD-332910,ORDER_ID,regex,regex_order_id,0.95,True
+test_267,Siddharth Rao,PERSON,presidio,presidio_person,0.85,True
+test_268,INC-994812,TICKET_ID,regex,regex_ticket_id,0.95,True
+test_268,dmitri.ivanov@moscow-trade.ru,EMAIL,regex,regex_email,1.0,True
+test_269,CUST-77412,CUSTOMER_ID,regex,regex_customer_id,0.95,True
+test_269,sophie.dubois@paris-mail.fr,EMAIL,regex,regex_email,1.0,True
+test_270,"12 Wenceslas Square, Prague, 110 00",ADDRESS,gliner2,gliner2_address,0.6459,True
+test_270,Viktor Novak,PERSON,presidio,presidio_person,0.85,True
+test_271,TICKET-88210,TICKET_ID,regex,regex_ticket_id,0.95,True
+test_271,+44 20 7946 0912,PHONE,regex,regex_phone_international,1.0,True
+test_272,ORD-554219,ORDER_ID,regex,regex_order_id,0.95,True
+test_272,Fatima Al-Mansoor,PERSON,presidio,presidio_person,0.85,True
+test_272,"July 14, 2024",DATE,regex,regex_date_month_dd_yyyy,0.9941,True
+test_273,CUST-22941,CUSTOMER_ID,regex,regex_customer_id,0.95,True
+test_273,+1-555-839-2041,PHONE,regex,regex_phone_international,1.0,True
+test_274,ORDER-228190,ORDER_ID,regex,regex_order_id,0.95,True
+test_274,Rachel Adams,PERSON,presidio,presidio_person,0.85,True
+test_275,TICKET-33109,TICKET_ID,regex,regex_ticket_id,0.95,True
+test_275,matteo.rossi@milan-design.it,EMAIL,regex,regex_email,1.0,True
+test_276,ORD-771029,ORDER_ID,regex,regex_order_id,0.95,True
+test_276,Sunil Gavaskar,PERSON,presidio,presidio_person,0.85,True
+test_276,Mumbai,LOCATION,gliner2,gliner2_city,0.9998,True
+test_277,CUST-66104,CUSTOMER_ID,regex,regex_customer_id,0.95,True
+test_277,yuki.tanaka@tokyo-cloud.jp,EMAIL,regex,regex_email,1.0,True
+test_278,INC-332910,TICKET_ID,regex,regex_ticket_id,0.95,True
+test_279,Chloe Dupont,PERSON,presidio,presidio_person,0.85,True
+test_279,+33 1 42 68 55 00,PHONE,gliner2,gliner2_phone_number,1.0,True
+test_280,ORD-449182,ORDER_ID,regex,regex_order_id,0.95,True
+test_280,"10 Downing Street, London, SW1A 2AA",ADDRESS,regex,fusion_compound_address,0.9971,True
+test_281,400918273645,BANK_ACCOUNT,regex,regex_account_number,0.9898,True
+test_281,Alistair Finch,PERSON,gliner2,gliner2_person,0.547,True
+test_281,Barclays,ORGANIZATION,spacy,spacy_org,0.9,True
+test_282,DE89 3704 0044 0532 0130 00,BANK_ACCOUNT,regex,regex_iban,1.0,True
+test_283,Beatrice Vane,PERSON,gliner2,gliner2_person,0.5565,True
+test_283,FR76 3000 6000 0112 3456 7890 189,BANK_ACCOUNT,regex,regex_iban,1.0,True
+test_284,Visa,ORGANIZATION,spacy,spacy_org,0.9,True
+test_284,4532 9812 3456 7890,CREDIT_CARD,gliner2,gliner2_card_number,0.9974,True
+test_284,12/28,DATE,gliner2,gliner2_card_expiry,0.998,True
+test_285,5412 7534 8901 2345,CREDIT_CARD,gliner2,gliner2_card_number,0.9991,True
+test_285,Julian Mercer,PERSON,presidio,presidio_person,0.85,True
+test_285,Lisbon,LOCATION,gliner2,gliner2_city,0.9997,True
+test_286,Deepak Chopra,PERSON,presidio,presidio_person,0.85,True
+test_286,987654321098,BANK_ACCOUNT,regex,regex_account_number,0.9972,True
+test_286,HDFC Bank,ORGANIZATION,spacy,spacy_org,0.85,True
+test_287,ES91 2100 0418 4502 0005 1332,BANK_ACCOUNT,regex,regex_iban,1.0,True
+test_287,Santander,ORGANIZATION,gliner2,gliner2_city,0.9433,True
+test_288,4000 1234 5678 9010,CREDIT_CARD,gliner2,gliner2_card_number,0.9995,True
+test_288,billing@enterprise-saas.com,EMAIL,regex,regex_email,1.0,True
+test_289,Nigel Hawthorne,PERSON,presidio,presidio_person,0.85,True
+test_289,654321098765,BANK_ACCOUNT,regex,regex_account_number,0.9908,True
+test_290,American Express,ORGANIZATION,spacy,spacy_org,0.9,True
+test_290,3782 822468 00005,CREDIT_CARD,regex,luhn_credit_card,1.0,True
+test_291,IT60 X054 2811 1010 0000 0123 456,BANK_ACCOUNT,regex,regex_iban,1.0,True
+test_291,Eni,ORGANIZATION,spacy,spacy_org,0.9,True
+test_292,5105 1051 0510 5100,CREDIT_CARD,regex,luhn_credit_card,1.0,True
+test_292,Svetlana Kuznetsova,PERSON,presidio,presidio_person,0.85,True
+test_293,112233445566,BANK_ACCOUNT,regex,regex_account_number,0.9764,True
+test_293,Robert Langdon,PERSON,presidio,presidio_person,0.85,True
+test_294,NL91 ABNA 0417 1643 00,BANK_ACCOUNT,regex,regex_iban,1.0,True
+test_294,"August 1, 2024",DATE,regex,regex_date_month_dd_yyyy,0.9988,True
+test_295,4111 1111 1111 4321,CREDIT_CARD,regex,luhn_credit_card,1.0,True
+test_295,Visa,ORGANIZATION,spacy,spacy_org,0.9,True
+test_296,998877665544,BANK_ACCOUNT,regex,regex_account_number,0.9974,True
+test_297,CH93 0076 2011 6238 5295 7,BANK_ACCOUNT,regex,regex_iban,1.0,True
+test_297,Christian Meier,PERSON,presidio,presidio_person,0.85,True
+test_298,6011 0009 9013 9424,CREDIT_CARD,regex,luhn_credit_card,1.0,True
+test_299,334455667788,BANK_ACCOUNT,regex,regex_account_number,0.9995,True
+test_299,Hiroshi Sato,PERSON,presidio,presidio_person,0.85,True
+test_299,"September 15, 2024",DATE,regex,regex_date_month_dd_yyyy,0.9997,True
+test_300,4916 9912 3456 7890,CREDIT_CARD,gliner2,gliner2_card_number,0.9988,True
+test_300,dev-lead@fintech-pay.io,EMAIL,regex,regex_email,1.0,True
+test_301,CH56 0483 5012 3456 7800 9,BANK_ACCOUNT,regex,regex_iban,1.0,True
+test_301,Novartis,ORGANIZATION,spacy,spacy_org,0.85,True
+test_302,5500 0000 0000 0004,CREDIT_CARD,regex,luhn_credit_card,1.0,True
+test_302,Amira El-Sayed,PERSON,presidio,presidio_person,0.85,True
+test_303,887766554433,BANK_ACCOUNT,regex,regex_account_number,0.95,True
+test_303,Vodafone,ORGANIZATION,spacy,spacy_org,0.85,True
+test_304,BE68 5390 0754 7034,BANK_ACCOUNT,regex,regex_iban,0.9895,True
+test_305,4485 1234 5678 9012,CREDIT_CARD,gliner2,gliner2_card_number,0.998,True
+test_305,Gabriel Vasquez,PERSON,presidio,presidio_person,0.85,True
+test_306,Kubernetes,ORGANIZATION,spacy,spacy_org,0.85,True
+test_306,192.168.10.45,IP_ADDRESS,regex,regex_ipv4,1.0,True
+test_306,eyJhbGciOiJIUzI1NiJ9.eyJpZCI6MTIzfQ.k7J9X2a,API_KEY,regex,regex_bearer_token,0.93,True
+test_307,Redis,ORGANIZATION,presidio,presidio_person,0.9,True
+test_307,10.0.4.15,IP_ADDRESS,regex,regex_ipv4,1.0,True
+test_307,Red!sStr0ngP@ss2024,PASSWORD,regex,regex_password_space_separated,0.92,True
+test_308,AWS,ORGANIZATION,spacy,spacy_org,0.85,True
+test_308,AKIAIOSFODNN7DEV2024,API_KEY,regex,regex_aws_access_key,0.9978,True
+test_308,Stripe,ORGANIZATION,spacy,spacy_org,0.9,True
+test_309,203.0.113.195,IP_ADDRESS,regex,regex_ipv4,1.0,True
+test_309,"October 5, 2024",DATE,regex,regex_date_month_dd_yyyy,0.9895,True
+test_310,ghp_AbCdEfGhIjKlMnOpQrStUvWxYz0123456789,API_KEY,regex,regex_github_pat,0.99,True
+test_310,alex.turner@cloud-dev.org,EMAIL,regex,regex_email,1.0,True
+test_311,OpenAI,ORGANIZATION,spacy,spacy_org,0.9,True
+test_311,sk-proj-99887766554433221100aabbccddeeffgg,API_KEY,regex,regex_openai_api_key,0.998,True
+test_312,198.51.100.88,IP_ADDRESS,regex,regex_ipv4,1.0,True
+test_312,IpSec#Secr3t!2024,API_KEY,gliner2,gliner2_secret,0.7902,True
+test_313,Derrick Vance,PERSON,presidio,presidio_person,0.85,True
+test_313,Adm!nP@ss#9920,PASSWORD,regex,regex_password_natural_lang,0.9863,True
+test_313,172.16.8.22,IP_ADDRESS,regex,regex_ipv4,1.0,True
+test_314,Slack,ORGANIZATION,spacy,spacy_org,0.9,True
+test_314,xoxb-9988776655-4433221100-abcdef123456,API_KEY,regex,regex_slack_token,0.9991,True
+test_315,192.0.2.144,IP_ADDRESS,regex,regex_ipv4,1.0,True
+test_316,Google,ORGANIZATION,spacy,spacy_org,0.9,True
+test_316,AIzaSyB3kLmNoPqRsTuVwXyZaBcDeFgHiJkLmNo,API_KEY,regex,regex_google_api_key,0.9995,True
+test_316,Uber,ORGANIZATION,spacy,spacy_org,0.9,True
+test_317,10.200.1.18,IP_ADDRESS,regex,regex_ipv4,1.0,True
+test_317,MySql_Root$ecure2024,PASSWORD,regex,regex_password_space_separated,0.973,True
+test_318,eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.xyz987token,API_KEY,regex,regex_bearer_token,0.93,True
+test_319,198.51.100.210,IP_ADDRESS,regex,regex_ipv4,1.0,True
+test_319,Shenzhen,LOCATION,gliner2,gliner2_city,0.9959,True
+test_320,Lars Sorensen,PERSON,presidio,presidio_person,0.85,True
+test_320,Datadog,ORGANIZATION,spacy,spacy_org,0.9,True
+test_320,dd_api_key_8899aabbccddeeff00112233,API_KEY,gliner2,gliner2_api_key,0.9995,True
+test_321,10.50.100.2,IP_ADDRESS,regex,regex_ipv4,1.0,True
+test_321,B@st!onTemp2024,PASSWORD,regex,regex_password_space_separated,0.9964,True
+test_322,devops-oncall@fintech-core.io,EMAIL,regex,regex_email,1.0,True
+test_322,172.20.14.9,IP_ADDRESS,regex,regex_ipv4,1.0,True
+test_323,SendGrid,ORGANIZATION,spacy,spacy_org,0.9,True
+test_323,SG.99887766554433221100aa.bbccddeeffgghhiijjkkllmmnnooppqq,API_KEY,regex,regex_sendgrid_api_key,0.99,True
+test_323,Kavita Raman,PERSON,gliner2,gliner2_person,0.8184,True
+test_324,8.8.8.8,IP_ADDRESS,regex,regex_ipv4,0.9999,True
+test_324,Singapore,LOCATION,presidio,presidio_location,0.9,True
+test_325,new_hire@enterprise-corp.com,EMAIL,regex,regex_email,1.0,True
+test_325,WelcomeToCorp2024!,PASSWORD,regex,regex_password_space_separated,0.9988,True
+test_326,eyJhbGciOiJIUzI1NiJ9.dockerRegistryToken2024,API_KEY,regex,regex_bearer_token,0.93,True
+test_326,"November 10, 2024",DATE,regex,regex_date_month_dd_yyyy,0.9962,True
+test_327,203.0.113.84,IP_ADDRESS,regex,regex_ipv4,1.0,True
+test_328,Stripe,ORGANIZATION,spacy,spacy_org,0.9,True
+test_328,pk_live_51AbCdEfGhIjKlMnOpQrStUvWxYz,API_KEY,gliner2,gliner2_api_key,0.9981,True
+test_329,10.10.30.55,IP_ADDRESS,regex,regex_ipv4,1.0,True
+test_329,Artur Wisniewski,PERSON,presidio,presidio_person,0.85,True
+test_330,192.168.1.254,IP_ADDRESS,regex,regex_ipv4,1.0,True
+test_330,Zurich,LOCATION,gliner2,gliner2_city,0.9989,True
+test_331,Jenkins,ORGANIZATION,presidio,presidio_person,0.9,True
+test_331,Jenk!nsBld#7719,PASSWORD,regex,regex_password_natural_lang,0.92,True
+test_331,10.0.15.80,IP_ADDRESS,regex,regex_ipv4,1.0,True
+test_332,Anthropic,ORGANIZATION,spacy,spacy_org,0.9,True
+test_332,sk-ant-api03-99887766554433221100aabbccdd-xyz,API_KEY,regex,regex_openai_api_key,0.99,True
+test_333,Gemma Davies,PERSON,gliner2,gliner2_person,0.7546,True
+test_333,172.16.254.1,IP_ADDRESS,regex,regex_ipv4,1.0,True
+test_334,eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.sessionExpiredVal,API_KEY,regex,regex_bearer_token,0.93,True
+test_335,B@ckupEncr!pt#2024,PASSWORD,regex,regex_password_space_separated,0.9941,True
+test_336,Mei-Ling Zhou,PERSON,presidio,presidio_person,0.85,True
+test_336,Tsinghua University,ORGANIZATION,spacy,spacy_org,0.85,True
+test_336,Beijing,LOCATION,gliner2,gliner2_city,0.9998,True
+test_337,Benoit Blanc,PERSON,gliner2,gliner2_person,0.6221,True
+test_337,recruiting-lead@biotech-global.com,EMAIL,regex,regex_email,1.0,True
+test_338,Haruto Watanabe,PERSON,gliner2,gliner2_person,0.7898,True
+test_338,+81 3 5555 0143,PHONE,gliner2,gliner2_phone_number,1.0,True
+test_338,"December 2, 2024",DATE,regex,regex_date_month_dd_yyyy,0.9,True
+test_339,Ingrid Lindholm,PERSON,presidio,presidio_person,0.85,True
+test_339,Ericsson,ORGANIZATION,presidio,presidio_location,0.9,True
+test_339,Stockholm,LOCATION,gliner2,gliner2_city,0.9999,True
+test_340,samir.kassir@beirut-dev.org,EMAIL,regex,regex_email,1.0,True
+test_341,Patricia O'Connor,PERSON,presidio,presidio_person,0.85,True
+test_341,EMP-99210,CUSTOMER_ID,gliner2,gliner2_account_id,0.939,True
+test_342,Karthik Sundaram,PERSON,presidio,presidio_person,0.85,True
+test_342,+91 94440 12345,PHONE,regex,regex_phone_international,1.0,True
+test_343,Eleanor Vance,PERSON,presidio,presidio_person,0.85,True
+test_343,Accenture,ORGANIZATION,spacy,spacy_org,0.9,True
+test_344,Thiago Santos,PERSON,presidio,presidio_person,0.85,True
+test_344,Sao Paulo,LOCATION,gliner2,gliner2_city,0.9986,True
+test_345,Nadia Chernova,PERSON,gliner2,gliner2_person,0.6213,True
+test_345,"28 Tverskaya Street, Moscow, 125009",ADDRESS,regex,regex_address_with_postal_code,0.96,True
+test_346,andreas.meyer@vienna-tech.at,EMAIL,regex,regex_email,1.0,True
+test_346,"December 15, 2024",DATE,regex,regex_date_month_dd_yyyy,0.9054,True
+test_347,Thabo Mbeki,PERSON,gliner2,gliner2_person,0.702,True
+test_347,Standard Bank,ORGANIZATION,spacy,spacy_org,0.85,True
+test_348,Charlotte Bronte,PERSON,presidio,presidio_person,0.85,True
+test_348,London,LOCATION,gliner2,gliner2_city,0.9998,True
+test_349,Alejandro Gomez,PERSON,gliner2,gliner2_person,0.667,True
+test_349,+52 55 1234 5678,PHONE,regex,regex_phone_international,1.0,True
+test_350,camilla.nielsen@copenhagen-art.dk,EMAIL,regex,regex_email,1.0,True
+test_351,Vijay Raghavan,PERSON,presidio,presidio_person,0.85,True
+test_351,Tata Consultancy Services,ORGANIZATION,spacy,spacy_org,0.85,True
+test_352,Stefan Horvat,PERSON,presidio,presidio_person,0.85,True
+test_352,University of Zagreb,ORGANIZATION,spacy,spacy_org,0.85,True
+test_352,Zagreb,LOCATION,gliner2,gliner2_city,0.9999,True
+test_353,monica.geller@manhattan-legal.com,EMAIL,regex,regex_email,1.0,True
+test_353,EMP-44819,CUSTOMER_ID,gliner2,gliner2_sensitive_account_id,0.9631,True
+test_354,Goran Ivanisevic,PERSON,presidio,presidio_person,0.85,True
+test_354,Oracle,ORGANIZATION,spacy,spacy_org,0.85,True
+test_355,Helena Berg,PERSON,presidio,presidio_person,0.85,True
+test_356,Francois Girard,PERSON,gliner2,gliner2_person,0.7893,True
+test_356,+33 4 72 00 11 22,PHONE,gliner2,gliner2_phone_number,1.0,True
+test_357,Sanjay Singhal,PERSON,presidio,presidio_person,0.85,True
+test_357,Hyderabad,LOCATION,gliner2,gliner2_city,0.9942,True
+test_358,leila.hadid@cairo-eng.eg,EMAIL,regex,regex_email,1.0,True
+test_358,Orascom,ORGANIZATION,spacy,spacy_org,0.85,True
+test_359,Brian Molko,PERSON,presidio,presidio_person,0.85,True
+test_359,"January 6, 2025",DATE,regex,regex_date_month_dd_yyyy,0.9,True
+test_360,Sunita Williams,PERSON,presidio,presidio_person,0.85,True
+test_360,Houston,LOCATION,gliner2,gliner2_city,0.9998,True
+test_361,Arthur Pendelton,PERSON,presidio,presidio_person,0.85,True
+test_361,Cleveland Clinic,ORGANIZATION,spacy,spacy_org,0.85,True
+test_361,"January 12, 2025",DATE,regex,regex_date_month_dd_yyyy,0.9813,True
+test_362,MRN-882910,MEDICAL_RECORD,regex,regex_mrn_prefix,0.98,True
+test_362,Margaret Higgins,PERSON,presidio,presidio_person,0.85,True
+test_362,Dr. Thorne,PERSON,gliner2,gliner2_person,0.8715,True
+test_363,Walter Bishop,PERSON,presidio,presidio_person,0.85,True
+test_363,"450 Massachusetts Ave, Cambridge, MA 02139",ADDRESS,regex,regex_address_with_postal_code,0.96,True
+test_364,SUBJ-4410,CUSTOMER_ID,gliner2,gliner2_sensitive_account_id,0.8634,True
+test_364,Aris Thorne,PERSON,presidio,presidio_person,0.85,True
+test_365,Mikhail Voronin,PERSON,presidio,presidio_person,0.85,True
+test_365,+7 495 123-45-67,PHONE,regex,regex_phone_international,1.0,True
+test_365,Moscow,LOCATION,gliner2,gliner2_city,0.9571,True
+test_366,Clara Oswald,PERSON,presidio,presidio_person,0.85,True
+test_366,Johns Hopkins Hospital,ORGANIZATION,spacy,spacy_org,0.85,True
+test_367,Alistair Sterling,PERSON,gliner2,gliner2_person,0.72,True
+test_367,"February 14, 2025",DATE,regex,regex_date_month_dd_yyyy,0.9,True
+test_368,george.costanza@queens-med.org,EMAIL,regex,regex_email,1.0,True
+test_369,Zahra Hosseini,PERSON,presidio,presidio_person,0.85,True
+test_369,Tehran,LOCATION,gliner2,gliner2_city,0.9997,True
+test_370,MED-33019,CUSTOMER_ID,gliner2,gliner2_sensitive_account_id,0.7594,True
+test_370,Fiona Gallagher,PERSON,presidio,presidio_person,0.85,True
+test_371,Donald Cragen,PERSON,presidio,presidio_person,0.85,True
+test_371,Mayo Clinic,ORGANIZATION,spacy,spacy_org,0.85,True
+test_371,"March 3, 2025",DATE,regex,regex_date_month_dd_yyyy,0.9128,True
+test_372,+1-617-555-0199,PHONE,regex,regex_phone_international,1.0,True
+test_373,Sunil Narang,PERSON,presidio,presidio_person,0.85,True
+test_374,eleanor.vance@boston-health.net,EMAIL,regex,regex_email,1.0,True
+test_375,Leticia Ortiz,PERSON,presidio,presidio_person,0.85,True
+test_375,"March 20, 2025",DATE,regex,regex_date_month_dd_yyyy,0.9254,True
+test_376,POL-992014,CUSTOMER_ID,gliner2,gliner2_account_id,0.5545,True
+test_376,Aetna,ORGANIZATION,spacy,spacy_org,0.85,True
+test_377,Jean-Luc Picard,PERSON,presidio,presidio_person,0.85,True
+test_377,Lyon,LOCATION,gliner2,gliner2_city,0.9991,True
+test_378,Hanna Marin,PERSON,gliner2,gliner2_person,0.6214,True
+test_378,MRN-109283,MEDICAL_RECORD,regex,regex_mrn_prefix,0.98,True
+test_379,Toby Flenderson,PERSON,gliner2,gliner2_person,0.7179,True
+test_379,+1-570-555-0144,PHONE,regex,regex_phone_international,1.0,True
+test_380,Charité,ORGANIZATION,presidio,presidio_location,0.9,True
+test_380,Berlin,LOCATION,gliner2,gliner2_city,0.998,True
+test_381,Rashid Al-Hassan,PERSON,presidio,presidio_person,0.85,True
+test_381,"10 Sheikh Zayed Road, Dubai, 11432",ADDRESS,regex,regex_address_with_postal_code,0.96,True
+test_382,Silvia Rossi,PERSON,presidio,presidio_person,0.85,True
+test_383,PAT-55819,CUSTOMER_ID,gliner2,gliner2_sensitive_account_id,0.8546,True
+test_383,"April 5, 2025",DATE,regex,regex_date_month_dd_yyyy,0.9,True
+test_384,Dmitri Shostakovich,PERSON,presidio,presidio_person,0.85,True
+test_384,dmitri.shost@genomics-lab.ru,EMAIL,regex,regex_email,1.0,True
+test_385,Eleni Papandreou,PERSON,presidio,presidio_person,0.85,True
+test_385,Athens,LOCATION,gliner2,gliner2_city,0.9993,True
+test_386,Palantir,ORGANIZATION,presidio,presidio_person,0.9,True
+test_386,Reginald Sterling,PERSON,presidio,presidio_person,0.85,True
+test_386,"April 15, 2025",DATE,regex,regex_date_month_dd_yyyy,0.962,True
+test_387,"350 Fifth Avenue, New York, NY 10118",ADDRESS,regex,regex_address_with_postal_code,0.96,True
+test_387,Solomon Kane,PERSON,presidio,presidio_person,0.85,True
+test_388,legal-dept@startup-domain.co,EMAIL,regex,regex_email,1.0,True
+test_388,Victoria Winters,PERSON,presidio,presidio_person,0.85,True
+test_389,Latham & Watkins,ORGANIZATION,spacy,spacy_org,0.85,True
+test_389,Chicago,LOCATION,gliner2,gliner2_city,0.9989,True
+test_390,"May 1, 2025",DATE,regex,regex_date_month_dd_yyyy,0.9,True
+test_391,Garrick Ollivander,PERSON,presidio,presidio_person,0.85,True
+test_391,DOCK-99214,TICKET_ID,regex,regex_ticket_id,0.95,True
+test_392,Dante Alighieri,PERSON,presidio,presidio_person,0.85,True
+test_392,Siemens,ORGANIZATION,spacy,spacy_org,0.85,True
+test_392,Geneva,LOCATION,gliner2,gliner2_city,0.999,True
+test_393,"221B Baker Street, London, NW1 6XE",ADDRESS,gliner2,gliner2_address,0.5268,True
+test_394,Julianne Moore,PERSON,presidio,presidio_person,0.85,True
+test_394,j.moore@corporation-holdings.com,EMAIL,regex,regex_email,1.0,True
+test_395,Bram Stoker,PERSON,presidio,presidio_person,0.85,True
+test_395,"June 10, 2025",DATE,regex,regex_date_month_dd_yyyy,0.9,True
+test_396,Nikola Tesla,PERSON,presidio,presidio_person,0.85,True
+test_396,Westinghouse,ORGANIZATION,spacy,spacy_org,0.85,True
+test_397,Roderick Usher,PERSON,presidio,presidio_person,0.85,True
+test_397,"742 Evergreen Terrace, Springfield, OR 97477",ADDRESS,gliner2,gliner2_address,0.5686,True
+test_398,Arm Holdings,ORGANIZATION,spacy,spacy_org,0.9,True
+test_398,Siddhartha Mukherjee,PERSON,presidio,presidio_person,0.85,True
+test_398,Cambridge,LOCATION,gliner2,gliner2_city,0.9993,True
+test_399,counsel-mna@baker-mckenzie.com,EMAIL,regex,regex_email,1.0,True
+test_400,Agatha Christie,PERSON,presidio,presidio_person,0.85,True
+test_400,Torquay,LOCATION,gliner2,gliner2_city,0.9993,True
+test_400,"July 4, 2025",DATE,regex,regex_date_month_dd_yyyy,0.9623,True
+test_401,ORD-882019,ORDER_ID,regex,regex_order_id,0.95,True
+test_402,Cornelius Fudge,PERSON,gliner2,gliner2_person,0.7711,True
+test_402,Aramco,ORGANIZATION,spacy,spacy_org,0.9,True
+test_403,Skadden,ORGANIZATION,spacy,spacy_org,0.85,True
+test_403,New York,LOCATION,gliner2,gliner2_city,0.9964,True
+test_404,Ignatius Reilly,PERSON,presidio,presidio_person,0.85,True
+test_404,+1-504-555-0182,PHONE,regex,regex_phone_international,1.0,True
+test_405,Vivian Ward,PERSON,presidio,presidio_person,0.85,True
+test_405,"August 20, 2025",DATE,regex,regex_date_month_dd_yyyy,0.9,True
+test_406,Cosette Fauchelevent,PERSON,presidio,presidio_person,0.85,True
+test_406,"16 Rue Saint-Denis, Paris, 75001",ADDRESS,gliner2,fusion_compound_address,0.9999,True
+test_407,Sterling Archer,PERSON,presidio,presidio_person,0.85,True
+test_407,Lockheed Martin,ORGANIZATION,spacy,spacy_org,0.9,True
+test_408,CASE-44019,TICKET_ID,regex,regex_ticket_id,0.95,True
+test_408,Humbert Humbert,PERSON,presidio,presidio_person,0.85,True
+test_409,"September 30, 2025",DATE,regex,regex_date_month_dd_yyyy,0.9954,True
+test_409,Perry Mason,PERSON,presidio,presidio_person,0.85,True
+test_410,Linus Larrabee,PERSON,presidio,presidio_person,0.85,True
+test_410,First American Title,ORGANIZATION,spacy,spacy_org,0.85,True
+test_411,Elon Musk,PERSON,presidio,presidio_person,0.85,True
+test_411,Tesla,ORGANIZATION,spacy,spacy_org,0.9,True
+test_411,Austin,LOCATION,gliner2,gliner2_city,0.9991,True
+test_412,Sundar Pichai,PERSON,gliner2,gliner2_person,0.7595,True
+test_412,Google,ORGANIZATION,spacy,spacy_org,0.9,True
+test_412,Mountain View,LOCATION,gliner2,gliner2_city,0.9061,True
+test_413,Satya Nadella,PERSON,presidio,presidio_person,0.85,True
+test_413,Microsoft,ORGANIZATION,spacy,spacy_org,0.9,True
+test_413,Frankfurt,LOCATION,gliner2,gliner2_city,0.9991,True
+test_413,Dublin,LOCATION,gliner2,gliner2_city,0.9998,True
+test_414,Jensen Huang,PERSON,presidio,presidio_person,0.85,True
+test_414,NVIDIA,ORGANIZATION,spacy,spacy_org,0.9,True
+test_414,San Jose,LOCATION,gliner2,gliner2_city,0.9982,True
+test_415,Sam Altman,PERSON,presidio,presidio_person,0.85,True
+test_415,OpenAI,ORGANIZATION,presidio,presidio_person,0.9,True
+test_415,San Francisco,LOCATION,gliner2,gliner2_city,0.9988,True
+test_416,Tim Cook,PERSON,presidio,presidio_person,0.85,True
+test_416,Apple,ORGANIZATION,spacy,spacy_org,0.9,True
+test_416,Cupertino,LOCATION,gliner2,gliner2_city,0.9996,True
+test_417,Jeff Bezos,PERSON,presidio,presidio_person,0.85,True
+test_417,Amazon,ORGANIZATION,spacy,spacy_org,0.9,True
+test_417,Blue Origin,ORGANIZATION,spacy,spacy_org,0.9,True
+test_417,Seattle,LOCATION,gliner2,gliner2_city,0.9997,True
+test_418,Mark Zuckerberg,PERSON,presidio,presidio_person,0.85,True
+test_418,Meta,ORGANIZATION,spacy,spacy_org,0.9,True
+test_418,Menlo Park,LOCATION,gliner2,gliner2_city,0.987,True
+test_419,Bill Gates,PERSON,presidio,presidio_person,0.85,True
+test_419,World Health Organization,ORGANIZATION,spacy,spacy_org,0.9,True
+test_419,Geneva,LOCATION,gliner2,gliner2_city,0.9986,True
+test_420,Warren Buffett,PERSON,presidio,presidio_person,0.85,True
+test_420,Berkshire Hathaway,ORGANIZATION,presidio,presidio_person,0.9,True
+test_420,Omaha,LOCATION,gliner2,gliner2_city,0.9995,True
+test_421,Claire Dupont,PERSON,presidio,presidio_person,0.85,True
+test_421,c.dupont@executive-office.com,EMAIL,regex,regex_email,1.0,True
+test_421,Elon Musk,PERSON,presidio,presidio_person,0.85,True
+test_422,Satya Nadella,PERSON,presidio,presidio_person,0.85,True
+test_422,David Brooks,PERSON,presidio,presidio_person,0.85,True
+test_422,+1-202-555-0176,PHONE,regex,regex_phone_international,1.0,True
+test_423,NVIDIA,ORGANIZATION,spacy,spacy_org,0.9,True
+test_423,Jensen Huang,PERSON,presidio,presidio_person,0.85,True
+test_423,Taiwan Semiconductor Manufacturing Company,ORGANIZATION,spacy,spacy_org,0.9,True
+test_423,Hsinchu,LOCATION,gliner2,gliner2_city,0.9995,True
+test_424,United Nations General Assembly,ORGANIZATION,spacy,spacy_org,0.85,True
+test_424,New York,LOCATION,gliner2,gliner2_city,0.9729,True
+test_424,France,LOCATION,gliner2,gliner2_country,0.9996,True
+test_424,Japan,LOCATION,gliner2,gliner2_country,0.9986,True
+test_425,European Central Bank,ORGANIZATION,spacy,spacy_org,0.9,True
+test_425,Christine Lagarde,PERSON,presidio,presidio_person,0.85,True
+test_425,Frankfurt,LOCATION,gliner2,gliner2_city,0.9996,True
+test_426,Pooja Varma,PERSON,gliner2,gliner2_person,0.9458,True
+test_426,Sam Altman,PERSON,presidio,presidio_person,0.85,True
+test_427,World Bank,ORGANIZATION,spacy,spacy_org,0.9,True
+test_427,Ajay Banga,PERSON,presidio,presidio_person,0.85,True
+test_427,India,LOCATION,gliner2,gliner2_country,0.9992,True
+test_428,Apple,ORGANIZATION,spacy,spacy_org,0.9,True
+test_428,Tim Cook,PERSON,presidio,presidio_person,0.85,True
+test_428,Mumbai,LOCATION,gliner2,gliner2_city,0.9979,True
+test_428,New Delhi,LOCATION,gliner2,gliner2_city,0.9987,True
+test_429,SpaceX,ORGANIZATION,presidio,presidio_person,0.9,True
+test_429,Starlink,ORGANIZATION,spacy,spacy_org,0.85,True
+test_429,Cape Canaveral,LOCATION,gliner2,gliner2_city,0.9452,True
+test_429,LIC-99120,TICKET_ID,regex,regex_ticket_id,0.9744,True
+test_430,Amazon Web Services,ORGANIZATION,spacy,spacy_org,0.85,True
+test_430,Zurich,LOCATION,gliner2,gliner2_city,0.9979,True
+test_431,Federal Reserve,ORGANIZATION,spacy,spacy_org,0.85,True
+test_431,Washington DC,LOCATION,gliner2,gliner2_city,0.9869,True
+test_432,International Monetary Fund,ORGANIZATION,spacy,spacy_org,0.9,True
+test_432,Gita Gopinath,PERSON,presidio,presidio_person,0.85,True
+test_432,London,LOCATION,gliner2,gliner2_city,0.9996,True
+test_433,Thierry Henry,PERSON,presidio,presidio_person,0.85,True
+test_433,Bill Gates,PERSON,presidio,presidio_person,0.85,True
+test_434,Emmanuel Macron,PERSON,presidio,presidio_person,0.85,True
+test_434,Paris,LOCATION,gliner2,gliner2_city,0.9993,True
+test_435,Narendra Modi,PERSON,presidio,presidio_person,0.85,True
+test_435,Bengaluru,LOCATION,gliner2,gliner2_city,0.9989,True
+test_436,Olaf Scholz,PERSON,gliner2,gliner2_person,0.7481,True
+test_436,Munich,LOCATION,gliner2,gliner2_city,0.9998,True
+test_437,Keir Starmer,PERSON,presidio,presidio_person,0.85,True
+test_437,European Union,ORGANIZATION,spacy,spacy_org,0.9,True
+test_437,Brussels,LOCATION,gliner2,gliner2_city,0.9989,True
+test_438,UNESCO,ORGANIZATION,spacy,spacy_org,0.9,True
+test_438,Italy,LOCATION,gliner2,gliner2_country,0.9992,True
+test_438,Greece,LOCATION,gliner2,gliner2_country,0.9984,True
+test_439,Vanessa Ives,PERSON,presidio,presidio_person,0.85,True
+test_439,Mark Zuckerberg,PERSON,presidio,presidio_person,0.85,True
+test_439,pr-press@meta-comms.net,EMAIL,regex,regex_email,1.0,True
+test_440,Shigeru Ishiba,PERSON,presidio,presidio_person,0.85,True
+test_440,Tokyo,LOCATION,gliner2,gliner2_city,0.9996,True
+test_441,Demis Hassabis,PERSON,gliner2,gliner2_person,0.7599,True
+test_441,London,LOCATION,gliner2,gliner2_city,0.9995,True
+test_442,Lufthansa,ORGANIZATION,spacy,spacy_org,0.9,True
+test_442,Berlin,LOCATION,gliner2,gliner2_city,0.9984,True
+test_442,Vienna,LOCATION,gliner2,gliner2_city,0.9994,True
+test_443,Gautam Adani,PERSON,presidio,presidio_person,0.85,True
+test_443,Sundar Pichai,PERSON,presidio,presidio_person,0.85,True
+test_444,Stanford University,ORGANIZATION,spacy,spacy_org,0.9,True
+test_444,California,LOCATION,gliner2,gliner2_state_or_region,0.99,True
+test_445,Harvard University,ORGANIZATION,spacy,spacy_org,0.9,True
+test_445,Boston,LOCATION,gliner2,gliner2_city,0.9954,True
+test_481,Rose Henderson,PERSON,presidio,presidio_person,0.85,True
+test_481,Autodesk,ORGANIZATION,spacy,spacy_org,0.9,True
+test_482,Bill Crawford,PERSON,presidio,presidio_person,0.85,True
+test_484,Victor Cruz,PERSON,presidio,presidio_person,0.85,True
+test_485,Waterloo,LOCATION,presidio,presidio_person,0.9,True
+test_486,Grace Hopper,PERSON,presidio,presidio_person,0.85,True
+test_486,grace.hopper@navy-tech.mil,EMAIL,regex,regex_email,1.0,True
+test_488,May Zhou,PERSON,presidio,presidio_person,0.85,True
+test_488,+86 10 8820 1928,PHONE,regex,regex_phone_international,1.0,True
+test_489,May,DATE,presidio,presidio_date_time,0.85,True
+test_490,Christian Bale,PERSON,presidio,presidio_person,0.85,True
+test_491,Europe,LOCATION,presidio,presidio_location,0.85,True
+test_492,Frank Castle,PERSON,presidio,presidio_person,0.85,True
+test_494,Dawn Summers,PERSON,presidio,presidio_person,0.85,True
+test_494,ORD-120491,ORDER_ID,regex,regex_order_id,0.95,True
+test_497,127.0.0.1,IP_ADDRESS,regex,regex_ipv4,1.0,True
+test_498,Faith Hill,PERSON,presidio,presidio_person,0.85,True
+test_498,f.hill@country-arts.org,EMAIL,regex,regex_email,1.0,True
+test_498,"October 31, 2024",DATE,regex,regex_date_month_dd_yyyy,0.9011,True
+test_499,Joy Mukherjee,PERSON,presidio,presidio_person,0.85,True
+test_500,Hunter Thompson,PERSON,presidio,presidio_person,0.85,True
+test_500,CUST-99201,CUSTOMER_ID,regex,regex_customer_id,0.95,True

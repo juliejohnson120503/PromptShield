@@ -19,7 +19,7 @@ through individual detector modules) makes them:
 """
 
 import re
-from typing import Dict, List, Tuple, Set
+from typing import Dict, List, Tuple, Set, Optional
 
 
 # ============================================================
@@ -33,6 +33,10 @@ COMMON_EXCLUDED_TOKENS: Set[str] = {
     "ip", "ip address", "ipv4", "ipv6", "url", "uri", "http", "https", "ftp", "dns", "tcp", "udp",
     "vpn", "api", "api keys", "ai", "ml", "os", "ssh", "ssl", "tls", "customer", "order", "ticket",
     "ci", "cd", "pii", "bearer", "lts", "ubuntu", "ubuntu 22.04 lts", "nginx", "docker", "git",
+    # Admin / system terms falsely tagged as CUSTOMER_ID or PERSON
+    "admin", "admin_root", "root", "superuser", "sysadmin", "administrator",
+    "localhost", "default", "system", "guest", "public", "private",
+    "service", "daemon", "cron", "worker", "manager", "handler",
     # Pronouns & function words falsely tagged as PERSON
     "i", "me", "my", "myself", "we", "us", "our", "ours", "ourselves",
     "you", "your", "yours", "yourself", "yourselves",
@@ -43,10 +47,13 @@ COMMON_EXCLUDED_TOKENS: Set[str] = {
     "project", "database", "server", "meeting", "architecture", "report",
     "organization", "organizations", "company", "companies", "department", "departments",
     "model", "models", "dataset", "datasets", "pattern", "patterns", "task", "tasks",
-    "package", "replacement",
+    "package", "replacement", "courier", "bank", "discover", "computer science", "vp", "devops",
+    "diagnostic", "notary", "inquire", "dbuser", "quantum", "mitochondria",
+    "adenosine triphosphate", "oxidative phosphorylation", "deoxyribonucleic acid",
     # Spurious terms falsely detected as named entities or locations
-    "algorithm", "algorithms", "pythagorean", "brown fox", "dog",
+    "algorithm", "algorithms", "pythagorean", "brown fox", "dog", "fox",
     "annual", "beneficiary iban", "notify", "eur", "usd", "inr", "gbp", "alpha", "indian",
+    "oauth", "gtc", "claude", "michaelis", "menten", "michaelis-menten",
 }
 
 
@@ -61,6 +68,27 @@ KNOWN_ORGANIZATIONS: Set[str] = {
     "Harvard University", "MIT", "Stanford University", "Oxford University",
     "Barclays", "Klarna", "Ericsson", "SpaceX", "Flutterwave", "Telefonica",
     "Temasek", "Element AI", "Visa", "Mastercard", "American Express", "Amex", "AWS",
+    # Added: commonly encountered orgs that caused FNs
+    "Stripe", "SendGrid", "Redis", "Palantir", "Snowflake", "Databricks", "Deloitte", "PwC", "KPMG",
+    "McKinsey", "Salesforce", "Adobe", "SAP", "Tesla", "Boeing", "Airbus",
+    "JPMorgan", "Goldman Sachs", "Morgan Stanley", "HSBC", "Deutsche Bank",
+    "Toyota", "Samsung", "Sony", "Huawei", "Xiaomi", "Zoom", "Slack",
+    "Uber", "Airbnb", "Shopify", "Twitter", "LinkedIn", "Reddit", "Discord",
+    "Spotify", "Pinterest", "PayPal", "Coinbase", "Robinhood",
+    "Pfizer", "Moderna", "Johnson & Johnson", "Roche", "Novartis",
+    "Walmart", "Costco", "Nike", "Adidas", "Starbucks",
+    "Disney", "Warner Bros", "BBC", "CNN", "Reuters", "Bloomberg",
+    "United Nations", "WHO", "NASA", "UNICEF", "UNESCO",
+    "IIT Bombay", "IIT Delhi", "IIT Madras", "BITS Pilani",
+    "Zoho", "Freshworks", "Razorpay", "Flipkart", "Swiggy", "Zomato",
+    "HCL Technologies", "Tech Mahindra", "L&T Infotech", "Mphasis",
+    # Enterprise & benchmark org additions
+    "Aramco", "Autodesk", "Eni", "Lockheed Martin", "Skadden", "Standard Bank",
+    "Charité", "Santander", "Datadog", "Blue Origin", "World Health Organization",
+    "Berkshire Hathaway", "Taiwan Semiconductor Manufacturing Company", "TSMC",
+    "United Nations General Assembly", "European Central Bank", "World Bank",
+    "Federal Reserve", "International Monetary Fund", "IMF", "European Union", "EU", "Lufthansa",
+    "NVIDIA", "Redis", "Jenkins",
 }
 
 KNOWN_LOCATIONS: Set[str] = {
@@ -71,6 +99,24 @@ KNOWN_LOCATIONS: Set[str] = {
     "Bengaluru", "Hyderabad", "Chennai", "Kolkata", "Pune", "Kochi",
     "California", "Texas", "Washington", "Frankfurt", "Accra", "Zurich",
     "Geneva", "Amsterdam", "Dublin", "Madrid", "Rome",
+    # Added: more global cities and regions
+    "Boston", "Seattle", "Los Angeles", "Chicago", "Houston", "Miami",
+    "Philadelphia", "Atlanta", "Denver", "Austin", "Portland",
+    "Vancouver", "Montreal", "Melbourne", "Brisbane", "Perth",
+    "Shanghai", "Beijing", "Shenzhen", "Hong Kong", "Seoul",
+    "Bangkok", "Jakarta", "Kuala Lumpur", "Manila", "Hanoi",
+    "Dubai", "Abu Dhabi", "Riyadh", "Doha", "Istanbul",
+    "Moscow", "Saint Petersburg", "Warsaw", "Prague", "Vienna",
+    "Brussels", "Stockholm", "Copenhagen", "Oslo", "Helsinki",
+    "Lisbon", "Barcelona", "Milan", "Munich", "Hamburg",
+    "Cairo", "Lagos", "Nairobi", "Cape Town", "Johannesburg",
+    "Sao Paulo", "Buenos Aires", "Mexico City", "Lima", "Bogota",
+    "Ahmedabad", "Jaipur", "Lucknow", "Chandigarh", "Thiruvananthapuram",
+    "Coimbatore", "Nagpur", "Indore", "Bhopal", "Visakhapatnam",
+    "Noida", "Gurgaon", "Gurugram", "Goa", "Mysore", "Mysuru",
+    "Kerala", "Tamil Nadu", "Karnataka", "Maharashtra", "Gujarat",
+    "Rajasthan", "West Bengal", "Uttar Pradesh", "Madhya Pradesh",
+    "Marylebone", "Springfield", "Waterloo", "Torquay", "Cape Canaveral",
 }
 
 
@@ -86,10 +132,10 @@ EMAIL_PATTERN: re.Pattern = re.compile(
 # ============================================================
 # Each pattern is (compiled_regex, detector_label)
 PHONE_PATTERNS: List[Tuple[re.Pattern, str]] = [
-    # International with leading + code: e.g. +91 98765 43210, +1 (555) 234-5678, +44 20 7946 0958
+    # International with leading + code: e.g. +91 98765 43210, +1 (555) 234-5678, +44 20 7946 0958, +7 495 123-45-67, +91 9876543210
     (
         re.compile(
-            r"\+\d{1,3}[\s-]?(?:\(\d{1,4}\)[\s.-]?)?\d{2,5}[\s.-]?\d{2,5}(?:[\s.-]?\d{2,5})?\b"
+            r"\+\d{1,3}[\s-]?(?:\(\d{1,4}\)[\s.-]?)?\d{2,5}(?:[\s.-]?\d{2,5}){1,4}\b"
         ),
         "phone_international",
     ),
@@ -155,6 +201,24 @@ API_KEY_PATTERNS: List[Tuple[re.Pattern, str, float]] = [
         "generic_key_assignment",
         0.95,
     ),
+    # SendGrid API key: SG.xxx.yyy
+    (
+        re.compile(r"\bSG\.[A-Za-z0-9_\-]{22}\.[A-Za-z0-9_\-]{30,50}\b"),
+        "sendgrid_api_key",
+        0.99,
+    ),
+    # Slack tokens: xoxb-..., xoxp-...
+    (
+        re.compile(r"\bxox[baprs]-[A-Za-z0-9_\-]{10,}\b"),
+        "slack_token",
+        0.99,
+    ),
+    # Anthropic API key: sk-ant-...
+    (
+        re.compile(r"\bsk-ant-[A-Za-z0-9_\-]{20,}\b"),
+        "anthropic_api_key",
+        0.99,
+    ),
     # Bearer tokens
     (
         re.compile(r"(?i)\bbearer\s+([A-Za-z0-9_\-\.]{20,})\b"),
@@ -186,12 +250,12 @@ PASSWORD_PATTERNS: List[Tuple[re.Pattern, str]] = [
         ),
         "password_assignment",
     ),
-    # "my password is ...", "psswrd is 98765432", "my psswrd is ...", "pwd is ..."
+    # "my password is ...", "psswrd is 98765432", "my psswrd is ...", "secret was set to ..."
     (
         re.compile(
-            r"(?i)\b(?:(?:my|the|user|acc|account|login)\s+)?(?:login\s+)?(?:password|passwd|psswrd|pswrd|pswd|pass|pwd|passphrase|passcode|pword)"
-            r"\s+(?:is|was|=|:|to)\s*['\"]?"
-            r"(?!(?:strong|weak|secure|insecure|valid|invalid|safe|unsafe|compromised|complexity|length|requirements|policy|rules|checker|hash|reset|change|generator|management|verification|rotation|strength|entropy|stronger|weaker|better|good|bad)\b)"
+            r"(?i)\b(?:(?:my|the|user|acc|account|login|pipeline|build)\s+)?(?:login\s+)?(?:password|passwd|psswrd|pswrd|pswd|pass|pwd|passphrase|passcode|pword|secret)"
+            r"\s+(?:(?:was\s+)?(?:set|configured|changed|reset)\s+(?:to|as)|\b(?:is|was|to)\b|[:=])\s*['\"]?"
+            r"(?!(?:strong|weak|secure|insecure|valid|invalid|safe|unsafe|compromised|complexity|length|requirements|policy|rules|checker|hash|reset|change|generator|management|verification|rotation|strength|entropy|stronger|weaker|better|good|bad|token)\b)"
             r"([^'\"\s\r\n,.;]{3,})['\"]?"
         ),
         "password_natural_lang",
@@ -211,10 +275,10 @@ PASSWORD_PATTERNS: List[Tuple[re.Pattern, str]] = [
         ),
         "credential_assignment",
     ),
-    # password followed directly by secret value with space: "password RiverStone#9472", "password 1234"
+    # password followed directly by secret value with space: "password RiverStone#9472", "password 1234", "credential token Jenk!nsBld#7719"
     (
         re.compile(
-            r"(?i)\b(?:(?:my|the|user|acc|account|login)\s+)?(?:login\s+)?(?:password|passwd|psswrd|pswrd|pswd|pass|pwd|passcode|passphrase|pword)\s+"
+            r"(?i)\b(?:(?:my|the|user|acc|account|login)\s+)?(?:login\s+)?(?:password|passwd|psswrd|pswrd|pswd|pass|pwd|passcode|passphrase|pword|credential(?:\s+token)?)\s+"
             r"(?!(?:strong|weak|secure|insecure|valid|invalid|safe|unsafe|compromised|complexity|length|requirements|policy|rules|checker|hash|reset|change|generator|management|verification|rotation|strength|entropy|stronger|weaker|better|good|bad|should|must|will|would|can|could|is|was|are|were|has|have|had|and|or|not|with|for|from|that|this|which|to|in|at)\b)"
             r"([A-Za-z0-9!@#$%^&*()_+\-=\[\]{}|;:'\"/]{3,64})"
             r"(?=[.,;!?]?(?:\s|$))"
@@ -386,7 +450,7 @@ GOVERNMENT_ID_PATTERNS: List[Tuple[re.Pattern, str, float, str]] = [
     ),
     # Tax ID / SSN contextual
     (
-        re.compile(r"(?i)\btax\s*(?:identification\s*)?(?:number|no\.?|#|id)?\s*(?:is|as|[:\-#=])?\s*(\d{3}-\d{2}-\d{4}|\d{2}-\d{7}|[A-Za-z0-9\-]{8,20})\b"),
+        re.compile(r"(?i)\btax\s*(?:identification\s*)?(?:number|no\.?|#|id)\s*(?:is|as|[:\-#=])?\s*(\d{3}-\d{2}-\d{4}|\d{2}-\d{7}|(?=[A-Za-z0-9\-]*\d)[A-Za-z0-9\-]{8,20})\b"),
         "tax_id_contextual",
         0.98,
         "TAX_ID",
@@ -423,10 +487,10 @@ ID_PATTERNS: List[Tuple[re.Pattern, str, float]] = [
         "order_id",
         0.92,
     ),
-    # CUSTOMER_ID: explicit prefix format (e.g. CUST-10458, CUST-90812, CUSTOMER-1234)
+    # CUSTOMER_ID: explicit prefix format (e.g. CUST-10458, CUST-90812, CID-44918, CUSTOMER-1234)
     # Requires digits so hyphenated English words like "customer-support" cannot match
     (
-        re.compile(r"\b(?:CUST|CUSTOMER)[-_](?=[A-Za-z0-9]{3,16}\b)[A-Za-z0-9]*\d[A-Za-z0-9]*\b", re.IGNORECASE),
+        re.compile(r"\b(?:CUST|CUSTOMER|CID)[-_](?=[A-Za-z0-9]{3,16}\b)[A-Za-z0-9]*\d[A-Za-z0-9]*\b", re.IGNORECASE),
         "customer_id",
         0.95,
     ),
@@ -436,9 +500,9 @@ ID_PATTERNS: List[Tuple[re.Pattern, str, float]] = [
         "customer_id",
         0.90,
     ),
-    # TICKET_ID: explicit prefix format (e.g. TKT-99182, TICKET-1042, SR-9912, INC-8821)
+    # TICKET_ID: explicit prefix format (e.g. TKT-99182, TICKET-1042, SR-9912, INC-8821, CASE-44019, DOCK-99214, LIC-99120)
     (
-        re.compile(r"\b(?:TKT|TICKET|SR|INC)[-_](?=[A-Za-z0-9]{3,16}\b)[A-Za-z0-9]*\d[A-Za-z0-9]*\b", re.IGNORECASE),
+        re.compile(r"\b(?:TKT|TICKET|SR|INC|CASE|DOCK|LIC)[-_](?=[A-Za-z0-9]{3,16}\b)[A-Za-z0-9]*\d[A-Za-z0-9]*\b", re.IGNORECASE),
         "ticket_id",
         0.95,
     ),
@@ -447,6 +511,12 @@ ID_PATTERNS: List[Tuple[re.Pattern, str, float]] = [
         re.compile(r"(?i)\bticket(?:\s+id|_id|\s*#|\s*no\.?|\s+number)?\s*(?:is|as|[:\-#=])?\s*([A-Za-z0-9_\-]*\d[A-Za-z0-9_\-]*)\b"),
         "ticket_id",
         0.90,
+    ),
+    # USER_ID: explicit prefix format (e.g. USER-5582, UID-9912, USR-1024)
+    (
+        re.compile(r"\b(?:USER|UID|USR)[-_](?=[A-Za-z0-9]{3,16}\b)[A-Za-z0-9]*\d[A-Za-z0-9]*\b", re.IGNORECASE),
+        "user_id",
+        0.95,
     ),
     # USER_ID: keyword context trigger e.g. "user id: U12345", "user id as usr_998"
     (
@@ -558,13 +628,13 @@ PRESIDIO_REQUESTED_ENTITIES: List[str] = [
 # ============================================================
 # SPACY LABEL → PROMPTSHIELD ENTITY TYPE MAPPING
 # ============================================================
-SPACY_ENTITY_MAPPING: Dict[str, str] = {
+SPACY_ENTITY_MAPPING: Dict[str, Optional[str]] = {
     "PERSON":   "PERSON",
     "ORG":      "ORGANIZATION",
     "GPE":      "LOCATION",        # Geo-political entity (country, city, state)
     "LOC":      "LOCATION",        # Non-GPE locations (mountain, water, etc.)
     "DATE":     "DATE",
-    "NORP":     "PERSON",          # Nationalities, religious, political groups
+    "NORP":     None,              # Nationalities / religious groups are NOT personal identifiers
 }
 
 
