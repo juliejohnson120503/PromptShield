@@ -80,7 +80,7 @@ def generate_145_new_prompts(start_id: int = 106) -> List[Dict]:
         ),
         (
             "Use the Google Cloud API key {k1} to authenticate the maps service for our {org} client.",
-            [("k1", "AIzaSyD-9xK2Lm3No4Pq5Rs6Tu7Vw8Xy9Za0Bc", "API_KEY"),
+            [("k1", "AIzaSyExampleSiemensMapsKey1234567890a", "API_KEY"),
              ("org", "Siemens", "ORGANIZATION")]
         ),
         (

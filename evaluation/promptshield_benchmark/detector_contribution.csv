@@ -192,7 +192,7 @@ test_106,AWS,ORGANIZATION,spacy,spacy_org,0.9,True
 test_106,AKIAIOSFODNN7EXAMPLE,API_KEY,regex,regex_aws_access_key,0.992,True
 test_106,Frankfurt,LOCATION,gliner2,gliner2_city,0.9985,True
 test_107,Google,ORGANIZATION,spacy,spacy_org,0.9,True
-test_107,AIzaSyD-9xK2Lm3No4Pq5Rs6Tu7Vw8Xy9Za0Bc,API_KEY,regex,regex_google_api_key,0.9995,True
+test_107,AIzaSyExampleSiemensMapsKey1234567890a,API_KEY,regex,regex_google_api_key,0.9955,True
 test_107,Siemens,ORGANIZATION,spacy,spacy_org,0.85,True
 test_108,eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIn0.dozG42iP_k8xT,ACCESS_TOKEN,regex,regex_jwt_token,0.97,True
 test_109,ghp_9876543210abcdefghijklmnopqrstuvwx,ACCESS_TOKEN,gliner2,gliner2_access_token,0.9952,True
@@ -667,7 +667,7 @@ test_314,Slack,ORGANIZATION,spacy,spacy_org,0.9,True
 test_314,xoxb-9988776655-4433221100-abcdef123456,API_KEY,regex,regex_slack_token,0.9991,True
 test_315,192.0.2.144,IP_ADDRESS,regex,regex_ipv4,1.0,True
 test_316,Google,ORGANIZATION,spacy,spacy_org,0.9,True
-test_316,AIzaSyB3kLmNoPqRsTuVwXyZaBcDeFgHiJkLmNo,API_KEY,regex,regex_google_api_key,0.9995,True
+test_316,AIzaSyExampleUberMapsKey1234567890abcde,API_KEY,regex,regex_google_api_key,0.99,True
 test_316,Uber,ORGANIZATION,spacy,spacy_org,0.9,True
 test_317,10.200.1.18,IP_ADDRESS,regex,regex_ipv4,1.0,True
 test_317,MySql_Root$ecure2024,PASSWORD,regex,regex_password_space_separated,0.973,True

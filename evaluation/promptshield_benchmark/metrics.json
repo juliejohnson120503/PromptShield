@@ -9,15 +9,15 @@
   "recall": 1.0,
   "micro_f1": 1.0,
   "macro_f1": 1.0,
-  "mean_latency_ms": 409.7225,
-  "median_latency_ms": 389.3333,
-  "min_latency_ms": 287.6211,
-  "max_latency_ms": 1086.4961,
-  "std_latency_ms": 83.5415,
-  "p95_latency_ms": 564.8415,
-  "p99_latency_ms": 752.0042,
-  "throughput_prompts_per_second": 2.4407,
-  "model_init_time_ms": 4235.1052,
+  "mean_latency_ms": 313.6527,
+  "median_latency_ms": 302.7523,
+  "min_latency_ms": 261.0099,
+  "max_latency_ms": 619.0619,
+  "std_latency_ms": 40.94,
+  "p95_latency_ms": 406.4872,
+  "p99_latency_ms": 452.8752,
+  "throughput_prompts_per_second": 3.1882,
+  "model_init_time_ms": 4588.4366,
   "warmup_runs": 5,
   "measured_runs": 500,
   "detector_status": {
@@ -47,22 +47,22 @@
   },
   "component_latency_ms": {
     "regex": {
-      "mean": 0.337,
-      "median": 0.2435,
-      "min": 0.0895,
-      "max": 1.3698,
-      "std": 0.2272,
-      "p95": 0.8266,
-      "p99": 1.2007
+      "mean": 0.2835,
+      "median": 0.2075,
+      "min": 0.0939,
+      "max": 1.2275,
+      "std": 0.1873,
+      "p95": 0.6553,
+      "p99": 0.9387
     },
     "presidio": {
-      "mean": 11.1794,
-      "median": 10.2128,
-      "min": 4.8378,
-      "max": 30.955,
-      "std": 4.2127,
-      "p95": 19.6029,
-      "p99": 27.3504
+      "mean": 9.3724,
+      "median": 8.6348,
+      "min": 5.2678,
+      "max": 28.5019,
+      "std": 3.439,
+      "p95": 16.0495,
+      "p99": 22.0645
     },
     "gliner": {
       "mean": 0.0,
@@ -74,36 +74,36 @@
       "p99": 0.0
     },
     "spacy": {
-      "mean": 28.6701,
-      "median": 28.1856,
-      "min": 20.5788,
-      "max": 65.7483,
-      "std": 5.1089,
-      "p95": 37.2199,
-      "p99": 48.479
+      "mean": 24.0477,
+      "median": 23.1271,
+      "min": 19.7932,
+      "max": 43.1279,
+      "std": 2.8817,
+      "p95": 29.309,
+      "p99": 33.8577
     },
     "fusion": {
-      "mean": 0.3103,
-      "median": 0.2782,
-      "min": 0.0011,
-      "max": 2.2643,
-      "std": 0.3334,
-      "p95": 0.851,
-      "p99": 1.2725
+      "mean": 0.2579,
+      "median": 0.2238,
+      "min": 0.001,
+      "max": 1.3213,
+      "std": 0.2678,
+      "p95": 0.763,
+      "p99": 1.1197
     }
   },
   "length_category_latency": [
     {
       "category": "SHORT",
       "num_prompts": 376,
-      "mean_latency_ms": 405.3084,
-      "p95_latency_ms": 588.4378
+      "mean_latency_ms": 307.6954,
+      "p95_latency_ms": 376.2759
     },
     {
       "category": "MEDIUM",
       "num_prompts": 124,
-      "mean_latency_ms": 423.1074,
-      "p95_latency_ms": 557.0648
+      "mean_latency_ms": 331.7167,
+      "p95_latency_ms": 432.8569
     }
   ],
   "unsupported_gt_labels": {}

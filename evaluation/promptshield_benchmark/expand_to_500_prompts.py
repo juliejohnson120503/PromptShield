@@ -360,7 +360,7 @@ def get_250_new_prompt_specs() -> List[Tuple[str, List[Tuple[str, str, str]]]]:
         ),
         (
             "The {org1} Maps API key {k1} has exceeded its daily quota for client {org2}.",
-            [("org1", "Google", "ORGANIZATION"), ("k1", "AIzaSyB3kLmNoPqRsTuVwXyZaBcDeFgHiJkLmNo", "API_KEY"), ("org2", "Uber", "ORGANIZATION")]
+            [("org1", "Google", "ORGANIZATION"), ("k1", "AIzaSyExampleUberMapsKey1234567890abcde", "API_KEY"), ("org2", "Uber", "ORGANIZATION")]
         ),
         (
             "Connect to MySQL instance {ip} using username dbuser and password {pwd}.",

@@ -1767,7 +1767,7 @@
     "id": "test_106"
   },
   {
-    "text": "Use the Google Cloud API key AIzaSyD-9xK2Lm3No4Pq5Rs6Tu7Vw8Xy9Za0Bc to authenticate the maps service for our Siemens client.",
+    "text": "Use the Google Cloud API key AIzaSyExampleSiemensMapsKey1234567890a to authenticate the maps service for our Siemens client.",
     "entities": [
       {
         "text": "Google",
@@ -1776,7 +1776,7 @@
         "label": "ORGANIZATION"
       },
       {
-        "text": "AIzaSyD-9xK2Lm3No4Pq5Rs6Tu7Vw8Xy9Za0Bc",
+        "text": "AIzaSyExampleSiemensMapsKey1234567890a",
         "start": 29,
         "end": 67,
         "label": "API_KEY"
@@ -5837,7 +5837,7 @@
   },
   {
     "id": "test_316",
-    "text": "The Google Maps API key AIzaSyB3kLmNoPqRsTuVwXyZaBcDeFgHiJkLmNo has exceeded its daily quota for client Uber.",
+    "text": "The Google Maps API key AIzaSyExampleUberMapsKey1234567890abcde has exceeded its daily quota for client Uber.",
     "entities": [
       {
         "text": "Google",
@@ -5846,7 +5846,7 @@
         "label": "ORGANIZATION"
       },
       {
-        "text": "AIzaSyB3kLmNoPqRsTuVwXyZaBcDeFgHiJkLmNo",
+        "text": "AIzaSyExampleUberMapsKey1234567890abcde",
         "start": 24,
         "end": 63,
         "label": "API_KEY"
