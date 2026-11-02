@@ -35,8 +35,17 @@ from backend.mapping_store import MappingStore
 
 logger = logging.getLogger(__name__)
 
-# Pattern to capture PromptShield placeholder formats, e.g.: {{PERSON_1}}, <PERSON_1>, [PERSON_1], {PERSON_1}
-PLACEHOLDER_REGEX = re.compile(r"(?:\{\{|\{|\<|\[)([A-Z_]+)_(\d+)(?:\}\}|\}|\>|\])")
+# Pattern to capture PromptShield placeholder formats, e.g.: {{PERSON_1}}, <PERSON_1>, [PERSON_1], {PERSON_1}, &lt;PERSON_1&gt;
+PLACEHOLDER_REGEX = re.compile(
+    r"(?:\{\{|\{|\<|\[|&lt;)\s*([A-Za-z_]+)_(\d+)\s*(?:\}\}|\}|\>|\]|&gt;)",
+    re.IGNORECASE,
+)
+
+# Common LLM email template slot aliases (e.g. [Your Name], [Name], [Your Full Name])
+NAME_SLOT_REGEX = re.compile(
+    r"\[\s*(?:Your\s+Name|Your\s+Full\s+Name|Full\s+Name|Candidate\s+Name|Applicant\s+Name|Sender\s+Name|Name)\s*\]",
+    re.IGNORECASE,
+)
 
 
 class ResponseRestorer:
@@ -114,7 +123,9 @@ class ResponseRestorer:
 
         # Find all placeholders in LLM response
         matches = list(PLACEHOLDER_REGEX.finditer(llm_response))
-        if not matches:
+        name_slot_matches = list(NAME_SLOT_REGEX.finditer(llm_response))
+
+        if not matches and not name_slot_matches:
             return RestorationResult(
                 restored_text=llm_response,
                 raw_llm_response=llm_response,
@@ -134,29 +145,55 @@ class ResponseRestorer:
             local_mapping = self.mapping_store.get_mappings(session_id)
             mapping_details = self.mapping_store.get_mapping_details(session_id)
         else:
-            local_mapping = self.mapping_store.get_mappings("default")
-            mapping_details = self.mapping_store.get_mapping_details("default")
+            fallback_sid = self.mapping_store.get_most_recent_session_id() or "default"
+            local_mapping = self.mapping_store.get_mappings(fallback_sid)
+            mapping_details = self.mapping_store.get_mapping_details(fallback_sid)
 
-        # Build bracket-agnostic normalized lookups (e.g. "LOCATION_1" -> "London")
+        # Build bracket-agnostic and case-agnostic normalized lookups
         def _clean_token(t: str) -> str:
-            return re.sub(r"[\{\}\<\>\[\]]", "", t).strip()
+            return re.sub(r"[\{\}\<\>\[\]]|&lt;|&gt;", "", t).strip().upper()
 
         norm_mapping: Dict[str, str] = {}
         norm_details: Dict[str, Dict[str, Any]] = {}
         for k, v in local_mapping.items():
             norm_k = _clean_token(k)
             norm_mapping[norm_k] = v
+            norm_mapping[norm_k.lower()] = v
             norm_mapping[f"{{{{{norm_k}}}}}"] = v
+            norm_mapping[f"{{{{{norm_k.lower()}}}}}"] = v
             norm_mapping[f"<{norm_k}>"] = v
+            norm_mapping[f"<{norm_k.lower()}>"] = v
             norm_mapping[f"[{norm_k}]"] = v
+            norm_mapping[f"[{norm_k.lower()}]"] = v
+            norm_mapping[f"&lt;{norm_k}&gt;"] = v
+            norm_mapping[f"&lt;{norm_k.lower()}&gt;"] = v
             norm_mapping[k] = v
+            norm_mapping[k.lower()] = v
+
         for k, v in mapping_details.items():
             norm_k = _clean_token(k)
             norm_details[norm_k] = v
+            norm_details[norm_k.lower()] = v
             norm_details[f"{{{{{norm_k}}}}}"] = v
+            norm_details[f"{{{{{norm_k.lower()}}}}}"] = v
             norm_details[f"<{norm_k}>"] = v
+            norm_details[f"<{norm_k.lower()}>"] = v
             norm_details[f"[{norm_k}]"] = v
+            norm_details[f"[{norm_k.lower()}]"] = v
+            norm_details[f"&lt;{norm_k}&gt;"] = v
+            norm_details[f"&lt;{norm_k.lower()}&gt;"] = v
             norm_details[k] = v
+            norm_details[k.lower()] = v
+
+        # Identify primary persona for email template slot aliases (e.g. [Your Name] -> "Jerin")
+        primary_person_secret: Optional[str] = None
+        for ph, val in local_mapping.items():
+            ph_upper = ph.upper()
+            det = mapping_details.get(ph, {})
+            et = det.get("entity_type")
+            if (et == EntityType.PERSON or "PERSON" in ph_upper) and det.get("disclosure_allowed", True):
+                primary_person_secret = val
+                break
 
         # Track unique placeholders and plan substitutions
         unique_placeholders: Set[str] = set()
@@ -172,7 +209,7 @@ class ResponseRestorer:
                 continue
             unique_placeholders.add(ph)
 
-            type_name = m.group(1)
+            type_name = m.group(1).upper()
             clean_ph = _clean_token(ph)
 
             # Map placeholder type name to EntityType enum
@@ -188,9 +225,17 @@ class ResponseRestorer:
                 else:
                     entity_type = None
 
-            # 1. Check if placeholder exists in local mapping (bracket-agnostic)
-            raw_secret = norm_mapping.get(clean_ph) or local_mapping.get(ph)
-            details = norm_details.get(clean_ph) or mapping_details.get(ph, {})
+            # 1. Check if placeholder exists in local mapping (bracket-agnostic and case-agnostic)
+            raw_secret = (
+                norm_mapping.get(clean_ph)
+                or norm_mapping.get(clean_ph.lower())
+                or local_mapping.get(ph)
+            )
+            details = (
+                norm_details.get(clean_ph)
+                or norm_details.get(clean_ph.lower())
+                or mapping_details.get(ph, {})
+            )
 
             if raw_secret is None:
                 unrestored_list.append(ph)
@@ -235,7 +280,8 @@ class ResponseRestorer:
                 continue
 
             # 4. Budget limit check
-            if len(approved_substitutions) >= total_restoration_budget:
+            restored_count_so_far = len([r for r in restoration_records if r.restored])
+            if restored_count_so_far >= total_restoration_budget:
                 unrestored_list.append(ph)
                 restoration_records.append(
                     RestoredPlaceholder(
@@ -250,6 +296,9 @@ class ResponseRestorer:
 
             # Authorized for restoration
             approved_substitutions[ph] = raw_secret
+            approved_substitutions[ph.lower()] = raw_secret
+            approved_substitutions[clean_ph] = raw_secret
+            approved_substitutions[clean_ph.lower()] = raw_secret
             restoration_records.append(
                 RestoredPlaceholder(
                     placeholder=ph,
@@ -260,23 +309,73 @@ class ResponseRestorer:
                 )
             )
 
-        # Invariant R-2: Single-pass atomic substitution prevents recursive injection
-        def _replace_callback(match):
-            placeholder = match.group(0)
-            return approved_substitutions.get(placeholder, placeholder)
+        # Name slot alias restoration for email templates (e.g. [Your Name] -> "Jerin")
+        if primary_person_secret and name_slot_matches:
+            for sm in name_slot_matches:
+                slot_ph = sm.group(0)
+                if slot_ph in unique_placeholders:
+                    continue
+                unique_placeholders.add(slot_ph)
 
-        restored_text = PLACEHOLDER_REGEX.sub(_replace_callback, llm_response)
+                restored_count_so_far = len([r for r in restoration_records if r.restored])
+                if restored_count_so_far >= total_restoration_budget:
+                    unrestored_list.append(slot_ph)
+                    restoration_records.append(
+                        RestoredPlaceholder(
+                            placeholder=slot_ph,
+                            original_value=primary_person_secret,
+                            entity_type=EntityType.PERSON,
+                            restored=False,
+                            reason="Exceeded maximum restoration budget",
+                        )
+                    )
+                    continue
+
+                approved_substitutions[slot_ph] = primary_person_secret
+                approved_substitutions[slot_ph.lower()] = primary_person_secret
+                restoration_records.append(
+                    RestoredPlaceholder(
+                        placeholder=slot_ph,
+                        original_value=primary_person_secret,
+                        entity_type=EntityType.PERSON,
+                        restored=True,
+                        reason="Restored LLM email template slot alias to authorized persona name",
+                    )
+                )
+
+        # Invariant R-2: Single-pass atomic substitution prevents recursive injection
+        sub_pattern = re.compile(
+            rf"{PLACEHOLDER_REGEX.pattern}|{NAME_SLOT_REGEX.pattern}",
+            re.IGNORECASE,
+        )
+
+        def _replace_callback(match):
+            token = match.group(0)
+            if token in approved_substitutions:
+                return approved_substitutions[token]
+            clean = _clean_token(token)
+            if clean in approved_substitutions:
+                return approved_substitutions[clean]
+            for k, val in approved_substitutions.items():
+                if k.lower() == token.lower() or _clean_token(k) == clean:
+                    return val
+            if primary_person_secret and NAME_SLOT_REGEX.fullmatch(token):
+                return primary_person_secret
+            return token
+
+        restored_text = sub_pattern.sub(_replace_callback, llm_response)
 
         # Determine overall status
-        if len(approved_substitutions) == len(unique_placeholders):
+        total_restored = len([r for r in restoration_records if r.restored])
+        if unrestored_list:
+            status = RestorationStatus.PARTIAL if total_restored > 0 else RestorationStatus.DENIED
+        elif total_restored > 0:
             status = RestorationStatus.SUCCESS
-        elif approved_substitutions:
-            status = RestorationStatus.PARTIAL
         else:
-            status = RestorationStatus.DENIED if unrestored_list else RestorationStatus.UNMODIFIED
+            status = RestorationStatus.UNMODIFIED
 
         audit_trail = {
-            "total_placeholders_found": len(matches),
+            "total_placeholders_found": len(matches) + len(name_slot_matches),
             "unique_placeholders": len(unique_placeholders),
             "restored_count": len(approved_substitutions),
             "unrestored_count": len(unrestored_list),

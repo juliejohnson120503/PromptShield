@@ -9,8 +9,152 @@ Also adds a type-normalization helper used by the entity fusion engine.
 """
 
 import re
-from typing import Optional
-from backend.models import EntityType
+import unicodedata
+from typing import Optional, Tuple, List, Dict, Set
+from backend.models import EntityType, DetectedEntity
+
+
+# ---------------------------------------------------------------------------
+# Unicode & Homoglyph Evasion Defense Tables
+# ---------------------------------------------------------------------------
+
+INVISIBLE_CHARACTERS: Set[str] = {
+    "\u200b",  # Zero-width space
+    "\u200c",  # Zero-width non-joiner
+    "\u200d",  # Zero-width joiner
+    "\ufeff",  # Zero-width no-break space / BOM
+    "\u00ad",  # Soft hyphen
+    "\u200e",  # Left-to-right mark
+    "\u200f",  # Right-to-left mark
+    "\u202a",  # Left-to-right embedding
+    "\u202b",  # Right-to-left embedding
+    "\u202c",  # Pop directional formatting
+    "\u202d",  # Left-to-right override
+    "\u202e",  # Right-to-left override
+    "\u2060",  # Word joiner
+    "\u2061",  # Function application (invisible math operator)
+    "\u2062",  # Invisible times
+    "\u2063",  # Invisible separator
+    "\u2064",  # Invisible plus
+    "\u2066",  # Left-to-right isolate
+    "\u2067",  # Right-to-left isolate
+    "\u2068",  # First strong isolate
+    "\u2069",  # Pop directional isolate
+    "\u034f",  # Combining grapheme joiner
+    "\u180e",  # Mongolian vowel separator
+}
+
+HOMOGLYPH_MAP: Dict[str, str] = {
+    # Cyrillic lowercase to Latin
+    "\u0430": "a", "\u0441": "c", "\u0435": "e", "\u043e": "o", "\u0440": "p",
+    "\u0445": "x", "\u0443": "y", "\u0456": "i", "\u0458": "j", "\u0455": "s",
+    "\u0432": "b", "\u0433": "r", "\u0451": "e",
+    # Cyrillic uppercase to Latin
+    "\u0410": "A", "\u0412": "B", "\u0421": "C", "\u0415": "E", "\u041d": "H",
+    "\u0406": "I", "\u0408": "J", "\u041a": "K", "\u041c": "M", "\u041e": "O",
+    "\u0420": "P", "\u0405": "S", "\u0422": "T", "\u0425": "X", "\u04ae": "Y",
+    # Greek uppercase to Latin
+    "\u0391": "A", "\u0392": "B", "\u0395": "E", "\u0396": "Z", "\u0397": "H",
+    "\u0399": "I", "\u039a": "K", "\u039c": "M", "\u039d": "N", "\u039f": "O",
+    "\u03a1": "P", "\u03a4": "T", "\u03a5": "Y", "\u03a7": "X",
+    # Greek lowercase to Latin
+    "\u03bf": "o", "\u03bd": "v", "\u03ba": "k", "\u03b9": "i", "\u03c1": "p",
+    "\u03c4": "t", "\u03c5": "u", "\u03c7": "x",
+}
+
+
+def canonicalize_adversarial_text(
+    prompt: str,
+) -> Tuple[str, Optional[Tuple[List[int], List[int]]]]:
+    """
+    Canonicalize user prompt against Unicode evasion, zero-width steganography,
+    and homoglyph / confusable spoofing attacks.
+
+    Returns:
+    --------
+    (clean_prompt, offset_map)
+      - If prompt required no changes (e.g. pure ASCII or clean international text),
+        returns (prompt, None) for O(1) zero-overhead fast path.
+      - If modifications were made, returns (clean_prompt, (orig_starts, orig_ends)),
+        where for each character index i in clean_prompt:
+          orig_starts[i] is the starting character index in the original prompt.
+          orig_ends[i] is the exclusive ending character index in the original prompt.
+    """
+    if not prompt or prompt.isascii():
+        return prompt, None
+
+    clean_chars: List[str] = []
+    orig_starts: List[int] = []
+    orig_ends: List[int] = []
+
+    for i, ch in enumerate(prompt):
+        if ch in INVISIBLE_CHARACTERS:
+            continue
+
+        if ch in HOMOGLYPH_MAP:
+            sub = HOMOGLYPH_MAP[ch]
+        else:
+            sub = unicodedata.normalize("NFKC", ch)
+
+        for c in sub:
+            clean_chars.append(c)
+            orig_starts.append(i)
+            orig_ends.append(i + 1)
+
+    clean_prompt = "".join(clean_chars)
+    if clean_prompt == prompt:
+        return prompt, None
+
+    return clean_prompt, (orig_starts, orig_ends)
+
+
+def remap_entity_offsets(
+    entities: List[DetectedEntity],
+    orig_prompt: str,
+    offset_map: Tuple[List[int], List[int]],
+) -> List[DetectedEntity]:
+    """
+    Remap detected entity spans from canonicalized text coordinates back to
+    exact original prompt coordinates.
+
+    Guarantees strict character-level integrity:
+        orig_prompt[ent.start:ent.end] == ent.text
+    """
+    if not entities or not offset_map:
+        return entities
+
+    orig_starts, orig_ends = offset_map
+    remapped: List[DetectedEntity] = []
+
+    for ent in entities:
+        if ent.start < ent.end and ent.end <= len(orig_ends):
+            s_orig = orig_starts[ent.start]
+            e_orig = orig_ends[ent.end - 1]
+            raw_text = orig_prompt[s_orig:e_orig]
+
+            ent_meta = dict(ent.metadata) if ent.metadata else {}
+            if raw_text != ent.text:
+                ent_meta["evasion_normalized"] = True
+                ent_meta["canonical_text"] = ent.text
+
+            remapped.append(
+                DetectedEntity(
+                    entity_type=ent.entity_type,
+                    text=raw_text,
+                    start=s_orig,
+                    end=e_orig,
+                    confidence=ent.confidence,
+                    source=ent.source,
+                    detector=ent.detector,
+                    normalized_value=ent.normalized_value or normalize_entity_value(ent.entity_type, raw_text),
+                    metadata=ent_meta,
+                )
+            )
+        else:
+            remapped.append(ent)
+
+    return remapped
+
 
 
 # ---------------------------------------------------------------------------

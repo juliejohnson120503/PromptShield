@@ -150,6 +150,63 @@ class TestResponseRestorer(unittest.TestCase):
         self.assertEqual(result.status, RestorationStatus.PARTIAL)
         self.assertEqual(len([r for r in result.restorations if r.restored]), 1)
 
+    def test_case_insensitive_restoration(self):
+        """Placeholders in lowercase (<person_1>, [org_1]) must be restored."""
+        llm_response = "Hello <person_1>, welcome to [org_1]."
+        result = self.restorer.restore(llm_response, session_id=self.session_id)
+
+        self.assertEqual(result.status, RestorationStatus.SUCCESS)
+        self.assertEqual(result.restored_text, "Hello Alice Johnson, welcome to Acme Corp.")
+
+    def test_html_escaped_entity_restoration(self):
+        """Web LLM output with HTML escaped entities (&lt;PERSON_1&gt;) must be restored."""
+        llm_response = "Dear &lt;PERSON_1&gt;, email: &lt;email_1&gt;."
+        result = self.restorer.restore(llm_response, session_id=self.session_id)
+
+        self.assertEqual(result.status, RestorationStatus.SUCCESS)
+        self.assertEqual(result.restored_text, "Dear Alice Johnson, email: alice@example.com.")
+
+    def test_email_template_name_slot_aliasing(self):
+        """LLM email templates replacing persona placeholders with [Your Name] must restore to persona."""
+        llm_response = (
+            "Subject: Application\n\nDear HR,\n\n"
+            "My name is [Your Name], and I am applying for the role.\n\n"
+            "Sincerely,\n[Your Name]"
+        )
+        result = self.restorer.restore(llm_response, session_id=self.session_id)
+
+        self.assertEqual(result.status, RestorationStatus.SUCCESS)
+        self.assertIn("My name is Alice Johnson", result.restored_text)
+        self.assertIn("Sincerely,\nAlice Johnson", result.restored_text)
+        self.assertNotIn("[Your Name]", result.restored_text)
+
+    def test_user_prompt_scenario_restoration(self):
+        """Verify user's exact scenario: Jerin (PERSON), abc123* (PASSWORD), HR (RETAIN)."""
+        sess = "jerin-session"
+        self.mapping_store.register_mapping(sess, "<PERSON_1>", "Jerin", entity_type=EntityType.PERSON)
+        self.mapping_store.register_mapping(sess, "<PASSWORD_1>", "abc123*", entity_type=EntityType.PASSWORD)
+
+        # ChatGPT output case 1: [Your Name]
+        resp1 = "Dear HR Team,\n\nI am reaching out regarding IT opportunities.\n\nBest regards,\n[Your Name]"
+        res1 = self.restorer.restore(resp1, session_id=sess)
+        self.assertEqual(res1.status, RestorationStatus.SUCCESS)
+        self.assertIn("Best regards,\nJerin", res1.restored_text)
+
+        # ChatGPT output case 2: <person_1>
+        resp2 = "Dear HR Team,\n\nMy name is <person_1>.\n\nBest regards,\n<person_1>"
+        res2 = self.restorer.restore(resp2, session_id=sess)
+        self.assertEqual(res2.status, RestorationStatus.SUCCESS)
+        self.assertIn("My name is Jerin", res2.restored_text)
+
+        # ChatGPT output case 3: Password remains quarantined
+        resp3 = "Dear HR,\n\nMy name is <PERSON_1> and my password is <PASSWORD_1>."
+        res3 = self.restorer.restore(resp3, session_id=sess)
+        self.assertEqual(res3.status, RestorationStatus.PARTIAL)
+        self.assertIn("My name is Jerin", res3.restored_text)
+        self.assertIn("<PASSWORD_1>", res3.restored_text)
+        self.assertNotIn("abc123*", res3.restored_text)
+
+
 
 class TestMockLLMProvider(unittest.TestCase):
 

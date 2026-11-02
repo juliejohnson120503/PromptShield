@@ -13,6 +13,7 @@ const DEFAULT_CONFIG = {
     promptsMasked: 0,
     entitiesProtected: 0,
     risksAverted: 0,
+    fastPassedPrompts: 0,
   },
 };
 
@@ -73,6 +74,15 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
           } catch (err) {
             sendResponse({ success: false, error: err.message || "Failed to connect to PromptShield backend" });
           }
+          break;
+        }
+
+        case "RECORD_FAST_PASS": {
+          const stats = config.stats || DEFAULT_CONFIG.stats;
+          stats.promptsScanned = (stats.promptsScanned || 0) + 1;
+          stats.fastPassedPrompts = (stats.fastPassedPrompts || 0) + 1;
+          await chrome.storage.local.set({ stats });
+          sendResponse({ success: true });
           break;
         }
 

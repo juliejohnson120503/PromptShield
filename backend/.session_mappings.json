@@ -1,0 +1,4307 @@
+{
+  "d957a83d-ac93-409a-983b-150a40e39aad": {
+    "<PERSON_1>": {
+      "placeholder": "<PERSON_1>",
+      "raw_value": "John Mathew",
+      "entity_type": "PERSON",
+      "normalized_value": "John Mathew",
+      "entity_id": "PERSON:John Mathew",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "test-session-001": {
+    "<PERSON_1>": {
+      "placeholder": "<PERSON_1>",
+      "raw_value": "Alice Johnson",
+      "entity_type": "PII_OTHER",
+      "normalized_value": "Alice Johnson",
+      "entity_id": "PII_OTHER:Alice Johnson",
+      "native_label": "pii_other",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<EMAIL_1>": {
+      "placeholder": "<EMAIL_1>",
+      "raw_value": "alice@example.com",
+      "entity_type": "PII_OTHER",
+      "normalized_value": "alice@example.com",
+      "entity_id": "PII_OTHER:alice@example.com",
+      "native_label": "pii_other",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<ORG_1>": {
+      "placeholder": "<ORG_1>",
+      "raw_value": "Acme Corp",
+      "entity_type": "PII_OTHER",
+      "normalized_value": "Acme Corp",
+      "entity_id": "PII_OTHER:Acme Corp",
+      "native_label": "pii_other",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PASSWORD_1>": {
+      "placeholder": "<PASSWORD_1>",
+      "raw_value": "SuperSecretPass!",
+      "entity_type": "PII_OTHER",
+      "normalized_value": "SuperSecretPass!",
+      "entity_id": "PII_OTHER:SuperSecretPass!",
+      "native_label": "pii_other",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<API_KEY_1>": {
+      "placeholder": "<API_KEY_1>",
+      "raw_value": "sk-1234567890abcdef",
+      "entity_type": "PII_OTHER",
+      "normalized_value": "sk-1234567890abcdef",
+      "entity_id": "PII_OTHER:sk-1234567890abcdef",
+      "native_label": "pii_other",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "inject-session": {
+    "<PERSON_1>": {
+      "placeholder": "<PERSON_1>",
+      "raw_value": "<EMAIL_1>",
+      "entity_type": "PII_OTHER",
+      "normalized_value": "<EMAIL_1>",
+      "entity_id": "PII_OTHER:<EMAIL_1>",
+      "native_label": "pii_other",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<EMAIL_1>": {
+      "placeholder": "<EMAIL_1>",
+      "raw_value": "pwned@evil.com",
+      "entity_type": "PII_OTHER",
+      "normalized_value": "pwned@evil.com",
+      "entity_id": "PII_OTHER:pwned@evil.com",
+      "native_label": "pii_other",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "session-a": {
+    "<PERSON_1>": {
+      "placeholder": "<PERSON_1>",
+      "raw_value": "Dr. Smith",
+      "entity_type": "PII_OTHER",
+      "normalized_value": "Dr. Smith",
+      "entity_id": "PII_OTHER:Dr. Smith",
+      "native_label": "pii_other",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "session-b": {
+    "<PERSON_1>": {
+      "placeholder": "<PERSON_1>",
+      "raw_value": "Prof. Davis",
+      "entity_type": "PII_OTHER",
+      "normalized_value": "Prof. Davis",
+      "entity_id": "PII_OTHER:Prof. Davis",
+      "native_label": "pii_other",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "21860e38-b449-4cda-9fee-a72399ac3785": {
+    "<PERSON_1>": {
+      "placeholder": "<PERSON_1>",
+      "raw_value": "John Mathew",
+      "entity_type": "PERSON",
+      "normalized_value": "John Mathew",
+      "entity_id": "PERSON:John Mathew",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "0fa319ed-52ef-4985-b21c-f19aa2064079": {
+    "<PERSON_1>": {
+      "placeholder": "<PERSON_1>",
+      "raw_value": "John Mathew",
+      "entity_type": "PERSON",
+      "normalized_value": "John Mathew",
+      "entity_id": "PERSON:John Mathew",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "jerin-session": {
+    "<PERSON_1>": {
+      "placeholder": "<PERSON_1>",
+      "raw_value": "Jerin",
+      "entity_type": "PERSON",
+      "normalized_value": "Jerin",
+      "entity_id": "PERSON:Jerin",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PASSWORD_1>": {
+      "placeholder": "<PASSWORD_1>",
+      "raw_value": "abc123*",
+      "entity_type": "PASSWORD",
+      "normalized_value": "abc123*",
+      "entity_id": "PASSWORD:abc123*",
+      "native_label": "password",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "8406b150-e596-4843-ae9c-179920ad26ed": {
+    "<PERSON_1>": {
+      "placeholder": "<PERSON_1>",
+      "raw_value": "Jerin",
+      "entity_type": "PERSON",
+      "normalized_value": "Jerin",
+      "entity_id": "PERSON:Jerin",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PASSWORD_1>": {
+      "placeholder": "<PASSWORD_1>",
+      "raw_value": "abc123*",
+      "entity_type": "PASSWORD",
+      "normalized_value": "abc123*",
+      "entity_id": "PASSWORD:abc123*",
+      "native_label": "password",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    }
+  },
+  "85a4e45f-1459-4215-9508-1885bec190f4": {
+    "<PERSON_1>": {
+      "placeholder": "<PERSON_1>",
+      "raw_value": "Jerin",
+      "entity_type": "PERSON",
+      "normalized_value": "Jerin",
+      "entity_id": "PERSON:Jerin",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PASSWORD_1>": {
+      "placeholder": "<PASSWORD_1>",
+      "raw_value": "abc123*",
+      "entity_type": "PASSWORD",
+      "normalized_value": "abc123*",
+      "entity_id": "PASSWORD:abc123*",
+      "native_label": "password",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    }
+  },
+  "b79d0e7a-7a63-4437-af9b-1e1b1a5f5b82": {
+    "<PERSON_1>": {
+      "placeholder": "<PERSON_1>",
+      "raw_value": "John Mathew",
+      "entity_type": "PERSON",
+      "normalized_value": "John Mathew",
+      "entity_id": "PERSON:John Mathew",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "da1b0acd-1c74-4d1a-8f87-0bc0f152b48e": {
+    "<EMAIL_1>": {
+      "placeholder": "<EMAIL_1>",
+      "raw_value": "j\u0435rin@\u0435xampl\u0435.com",
+      "entity_type": "EMAIL",
+      "normalized_value": "jerin@example.com",
+      "entity_id": "EMAIL:jerin@example.com",
+      "native_label": "email",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "5288cf7c-ab30-4ad5-9413-4b3e8bbcdcf4": {
+    "<PERSON_1>": {
+      "placeholder": "<PERSON_1>",
+      "raw_value": "J\u043ehn D\u043ee",
+      "entity_type": "PERSON",
+      "normalized_value": "John Doe",
+      "entity_id": "PERSON:John Doe",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "c8ecaca2-d4e9-4483-b308-74f68b33e51c": {
+    "<EMAIL_1>": {
+      "placeholder": "<EMAIL_1>",
+      "raw_value": "\ud835\udcb6\ud835\udcb9\ud835\udcc2\ud835\udcbe\ud835\udcc3@example.com",
+      "entity_type": "EMAIL",
+      "normalized_value": "admin@example.com",
+      "entity_id": "EMAIL:admin@example.com",
+      "native_label": "email",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "d819e2a2-f251-44c5-a0e8-30e7879010d0": {
+    "<PERSON_1>": {
+      "placeholder": "<PERSON_1>",
+      "raw_value": "J\u043ehn D\u043ee",
+      "entity_type": "PERSON",
+      "normalized_value": "John Doe",
+      "entity_id": "PERSON:John Doe",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<EMAIL_1>": {
+      "placeholder": "<EMAIL_1>",
+      "raw_value": "j\u200be\u200br\u200bi\u200bn@example.com",
+      "entity_type": "EMAIL",
+      "normalized_value": "jerin@example.com",
+      "entity_id": "EMAIL:jerin@example.com",
+      "native_label": "email",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<CREDIT_CARD_1>": {
+      "placeholder": "<CREDIT_CARD_1>",
+      "raw_value": "4532-7564-8901-2345",
+      "entity_type": "CREDIT_CARD",
+      "normalized_value": "4532756489012345",
+      "entity_id": "CREDIT_CARD:4532756489012345",
+      "native_label": "credit_card",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "7bb9f26d-33b5-463f-827d-6f9559d3913b": {
+    "<EMAIL_1>": {
+      "placeholder": "<EMAIL_1>",
+      "raw_value": "j\u200be\u200br\u200bi\u200bn@example.com",
+      "entity_type": "EMAIL",
+      "normalized_value": "jerin@example.com",
+      "entity_id": "EMAIL:jerin@example.com",
+      "native_label": "email",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "afdf839e-0741-4195-9e4b-7c1d95b5f32c": {
+    "<PHONE_1>": {
+      "placeholder": "<PHONE_1>",
+      "raw_value": "9\u200b8\u200b7-6\u200b5\u200b4-3\u200b2\u200b1\u200b0",
+      "entity_type": "PHONE",
+      "normalized_value": "9876543210",
+      "entity_id": "PHONE:9876543210",
+      "native_label": "phone",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "22b25821-fef8-499d-88d8-be64be001ee8": {
+    "<PERSON_1>": {
+      "placeholder": "<PERSON_1>",
+      "raw_value": "Jerin",
+      "entity_type": "PERSON",
+      "normalized_value": "Jerin",
+      "entity_id": "PERSON:Jerin",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<LOCATION_1>": {
+      "placeholder": "<LOCATION_1>",
+      "raw_value": "Kerala",
+      "entity_type": "LOCATION",
+      "normalized_value": "Kerala",
+      "entity_id": "LOCATION:Kerala",
+      "native_label": "location",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "a8496d29-5cb9-4f7c-8464-90c52b5c5e0a": {
+    "<TICKET_ID_1>": {
+      "placeholder": "<TICKET_ID_1>",
+      "raw_value": "INC-94821",
+      "entity_type": "TICKET_ID",
+      "normalized_value": "INC-94821",
+      "entity_id": "TICKET_ID:INC-94821",
+      "native_label": "ticket_id",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PERSON_1>": {
+      "placeholder": "<PERSON_1>",
+      "raw_value": "Western European",
+      "entity_type": "PERSON",
+      "normalized_value": "Western European",
+      "entity_id": "PERSON:Western European",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PERSON_2>": {
+      "placeholder": "<PERSON_2>",
+      "raw_value": "Marcus",
+      "entity_type": "PERSON",
+      "normalized_value": "Marcus",
+      "entity_id": "PERSON:Marcus",
+      "native_label": "person",
+      "policy_decision": "USER_APPROVAL",
+      "disclosure_allowed": true
+    },
+    "<USER_ID_1>": {
+      "placeholder": "<USER_ID_1>",
+      "raw_value": "EMP-49201",
+      "entity_type": "USER_ID",
+      "normalized_value": "EMP-49201",
+      "entity_id": "USER_ID:EMP-49201",
+      "native_label": "user_id",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<EMAIL_1>": {
+      "placeholder": "<EMAIL_1>",
+      "raw_value": "marcus.vance@apexcloud-internal.net",
+      "entity_type": "EMAIL",
+      "normalized_value": "marcus.vance@apexcloud-internal.net",
+      "entity_id": "EMAIL:marcus.vance@apexcloud-internal.net",
+      "native_label": "email",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PHONE_1>": {
+      "placeholder": "<PHONE_1>",
+      "raw_value": "+353-1-496-0199",
+      "entity_type": "PHONE",
+      "normalized_value": "+35314960199",
+      "entity_id": "PHONE:+35314960199",
+      "native_label": "phone",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<IP_ADDRESS_1>": {
+      "placeholder": "<IP_ADDRESS_1>",
+      "raw_value": "10.240.18.42",
+      "entity_type": "IP_ADDRESS",
+      "normalized_value": "10.240.18.42",
+      "entity_id": "IP_ADDRESS:10.240.18.42",
+      "native_label": "ip_address",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<IP_ADDRESS_2>": {
+      "placeholder": "<IP_ADDRESS_2>",
+      "raw_value": "192.168.104.15",
+      "entity_type": "IP_ADDRESS",
+      "normalized_value": "192.168.104.15",
+      "entity_id": "IP_ADDRESS:192.168.104.15",
+      "native_label": "ip_address",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<MAC_ADDRESS_1>": {
+      "placeholder": "<MAC_ADDRESS_1>",
+      "raw_value": "00:1A:2B:3C:4D:5E",
+      "entity_type": "MAC_ADDRESS",
+      "normalized_value": "00:1A:2B:3C:4D:5E",
+      "entity_id": "MAC_ADDRESS:00:1A:2B:3C:4D:5E",
+      "native_label": "mac_address",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PERSON_3>": {
+      "placeholder": "<PERSON_3>",
+      "raw_value": "Chloe Bennett",
+      "entity_type": "PERSON",
+      "normalized_value": "Chloe Bennett",
+      "entity_id": "PERSON:Chloe Bennett",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<EMAIL_2>": {
+      "placeholder": "<EMAIL_2>",
+      "raw_value": "c.bennett@apexcloud-internal.net",
+      "entity_type": "EMAIL",
+      "normalized_value": "c.bennett@apexcloud-internal.net",
+      "entity_id": "EMAIL:c.bennett@apexcloud-internal.net",
+      "native_label": "email",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<USER_ID_2>": {
+      "placeholder": "<USER_ID_2>",
+      "raw_value": "usr_cbennett_88",
+      "entity_type": "USER_ID",
+      "normalized_value": "usr_cbennett_88",
+      "entity_id": "USER_ID:usr_cbennett_88",
+      "native_label": "user_id",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<CONNECTION_STRING_1>": {
+      "placeholder": "<CONNECTION_STRING_1>",
+      "raw_value": "postgresql://apex_admin:VanceDB%23Secure2026!@db-primary.eu-west-1.rds.amazonaws.com:5432/production_ledger",
+      "entity_type": "CONNECTION_STRING",
+      "normalized_value": "postgresql://apex_admin:VanceDB%23Secure2026!@db-primary.eu-west-1.rds.amazonaws.com:5432/production_ledger",
+      "entity_id": "CONNECTION_STRING:postgresql://apex_admin:VanceDB%23Secure2026!@db-primary.eu-west-1.rds.amazonaws.com:5432/production_ledger",
+      "native_label": "connection_string",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    },
+    "<API_KEY_1>": {
+      "placeholder": "<API_KEY_1>",
+      "raw_value": "AKIAIOSFODNN7EXAMPLE",
+      "entity_type": "API_KEY",
+      "normalized_value": "AKIAIOSFODNN7EXAMPLE",
+      "entity_id": "API_KEY:AKIAIOSFODNN7EXAMPLE",
+      "native_label": "api_key",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    },
+    "<API_KEY_2>": {
+      "placeholder": "<API_KEY_2>",
+      "raw_value": "ghp_99xKlmZ018aBcDeFgHiJkLmNoPqRsTuVwXyZ",
+      "entity_type": "API_KEY",
+      "normalized_value": "ghp_99xKlmZ018aBcDeFgHiJkLmNoPqRsTuVwXyZ",
+      "entity_id": "API_KEY:ghp_99xKlmZ018aBcDeFgHiJkLmNoPqRsTuVwXyZ",
+      "native_label": "api_key",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    },
+    "<PASSWORD_1>": {
+      "placeholder": "<PASSWORD_1>",
+      "raw_value": "'RedisMasterPass992!'",
+      "entity_type": "PASSWORD",
+      "normalized_value": "RedisMasterPass992!",
+      "entity_id": "PASSWORD:RedisMasterPass992!",
+      "native_label": "password",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    },
+    "<PERSON_4>": {
+      "placeholder": "<PERSON_4>",
+      "raw_value": "Adyen",
+      "entity_type": "PERSON",
+      "normalized_value": "Adyen",
+      "entity_id": "PERSON:Adyen",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<IP_ADDRESS_3>": {
+      "placeholder": "<IP_ADDRESS_3>",
+      "raw_value": "2001:0db8:85a3:0000:0000:8a2e:0370:7334",
+      "entity_type": "IP_ADDRESS",
+      "normalized_value": "2001:0db8:85a3:0000:0000:8a2e:0370:7334",
+      "entity_id": "IP_ADDRESS:2001:0db8:85a3:0000:0000:8a2e:0370:7334",
+      "native_label": "ip_address",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<IP_ADDRESS_4>": {
+      "placeholder": "<IP_ADDRESS_4>",
+      "raw_value": "198.51.100.77",
+      "entity_type": "IP_ADDRESS",
+      "normalized_value": "198.51.100.77",
+      "entity_id": "IP_ADDRESS:198.51.100.77",
+      "native_label": "ip_address",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PERSON_5>": {
+      "placeholder": "<PERSON_5>",
+      "raw_value": "Aris Thorne",
+      "entity_type": "PERSON",
+      "normalized_value": "Aris Thorne",
+      "entity_id": "PERSON:Aris Thorne",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<EMAIL_3>": {
+      "placeholder": "<EMAIL_3>",
+      "raw_value": "aris.thorne@apexcloud.com",
+      "entity_type": "EMAIL",
+      "normalized_value": "aris.thorne@apexcloud.com",
+      "entity_id": "EMAIL:aris.thorne@apexcloud.com",
+      "native_label": "email",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PASSWORD_2>": {
+      "placeholder": "<PASSWORD_2>",
+      "raw_value": "leakage",
+      "entity_type": "PASSWORD",
+      "normalized_value": "leakage",
+      "entity_id": "PASSWORD:leakage",
+      "native_label": "password",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    }
+  },
+  "a0219123-2232-460b-933e-436d99c8d446": {
+    "<DOB_1>": {
+      "placeholder": "<DOB_1>",
+      "raw_value": "March 24, 1962",
+      "entity_type": "DOB",
+      "normalized_value": "March 24, 1962",
+      "entity_id": "DOB:March 24, 1962",
+      "native_label": "dob",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<DOB_2>": {
+      "placeholder": "<DOB_2>",
+      "raw_value": "24/03/1962",
+      "entity_type": "DOB",
+      "normalized_value": "24/03/1962",
+      "entity_id": "DOB:24/03/1962",
+      "native_label": "dob",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<NATIONAL_ID_1>": {
+      "placeholder": "<NATIONAL_ID_1>",
+      "raw_value": "318-49-2041",
+      "entity_type": "NATIONAL_ID",
+      "normalized_value": "318-49-2041",
+      "entity_id": "NATIONAL_ID:318-49-2041",
+      "native_label": "national_id",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<ADDRESS_1>": {
+      "placeholder": "<ADDRESS_1>",
+      "raw_value": "742 Evergreen Terrace, Apartment 4B, Chicago, IL 60614",
+      "entity_type": "ADDRESS",
+      "normalized_value": "742 Evergreen Terrace, Apartment 4B, Chicago, IL 60614",
+      "entity_id": "ADDRESS:742 Evergreen Terrace, Apartment 4B, Chicago, IL 60614",
+      "native_label": "address",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PHONE_1>": {
+      "placeholder": "<PHONE_1>",
+      "raw_value": "+1-312-555-0842",
+      "entity_type": "PHONE",
+      "normalized_value": "+13125550842",
+      "entity_id": "PHONE:+13125550842",
+      "native_label": "phone",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<EMAIL_1>": {
+      "placeholder": "<EMAIL_1>",
+      "raw_value": "j.kensington@northwestern-alumni.org",
+      "entity_type": "EMAIL",
+      "normalized_value": "j.kensington@northwestern-alumni.org",
+      "entity_id": "EMAIL:j.kensington@northwestern-alumni.org",
+      "native_label": "email",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<MEDICAL_RECORD_1>": {
+      "placeholder": "<MEDICAL_RECORD_1>",
+      "raw_value": "MRN-88419203",
+      "entity_type": "MEDICAL_RECORD",
+      "normalized_value": "MRN-88419203",
+      "entity_id": "MEDICAL_RECORD:MRN-88419203",
+      "native_label": "medical_record",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<HEALTH_INSURANCE_ID_1>": {
+      "placeholder": "<HEALTH_INSURANCE_ID_1>",
+      "raw_value": "HIN-49201859",
+      "entity_type": "HEALTH_INSURANCE_ID",
+      "normalized_value": "HIN-49201859",
+      "entity_id": "HEALTH_INSURANCE_ID:HIN-49201859",
+      "native_label": "health_insurance_id",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<DRIVER_LICENSE_1>": {
+      "placeholder": "<DRIVER_LICENSE_1>",
+      "raw_value": "GRP-992104",
+      "entity_type": "DRIVER_LICENSE",
+      "normalized_value": "GRP-992104",
+      "entity_id": "DRIVER_LICENSE:GRP-992104",
+      "native_label": "driver_license",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<EMAIL_2>": {
+      "placeholder": "<EMAIL_2>",
+      "raw_value": "rsterling@stjudememorial.org",
+      "entity_type": "EMAIL",
+      "normalized_value": "rsterling@stjudememorial.org",
+      "entity_id": "EMAIL:rsterling@stjudememorial.org",
+      "native_label": "email",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<DOB_3>": {
+      "placeholder": "<DOB_3>",
+      "raw_value": "October 12, 2026",
+      "entity_type": "DOB",
+      "normalized_value": "October 12, 2026",
+      "entity_id": "DOB:October 12, 2026",
+      "native_label": "dob",
+      "policy_decision": "USER_APPROVAL",
+      "disclosure_allowed": true
+    }
+  },
+  "7dfb2f01-9243-4d90-b4bc-e9c2be4108ce": {
+    "<PERSON_1>": {
+      "placeholder": "<PERSON_1>",
+      "raw_value": "Marcus",
+      "entity_type": "PERSON",
+      "normalized_value": "Marcus",
+      "entity_id": "PERSON:Marcus",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<DOB_1>": {
+      "placeholder": "<DOB_1>",
+      "raw_value": "14 August 1981",
+      "entity_type": "DOB",
+      "normalized_value": "14 August 1981",
+      "entity_id": "DOB:14 August 1981",
+      "native_label": "dob",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PERSON_2>": {
+      "placeholder": "<PERSON_2>",
+      "raw_value": "Mother",
+      "entity_type": "PERSON",
+      "normalized_value": "Mother",
+      "entity_id": "PERSON:Mother",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    },
+    "<PERSON_3>": {
+      "placeholder": "<PERSON_3>",
+      "raw_value": "Maiden Name",
+      "entity_type": "PERSON",
+      "normalized_value": "Maiden Name",
+      "entity_id": "PERSON:Maiden Name",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    },
+    "<PERSON_4>": {
+      "placeholder": "<PERSON_4>",
+      "raw_value": "Gallagher",
+      "entity_type": "PERSON",
+      "normalized_value": "Gallagher",
+      "entity_id": "PERSON:Gallagher",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    },
+    "<ADDRESS_1>": {
+      "placeholder": "<ADDRESS_1>",
+      "raw_value": "42 Berkeley Square, Mayfair, London W1J 5AW, United Kingdom",
+      "entity_type": "ADDRESS",
+      "normalized_value": "42 Berkeley Square, Mayfair, London W1J 5AW, United Kingdom",
+      "entity_id": "ADDRESS:42 Berkeley Square, Mayfair, London W1J 5AW, United Kingdom",
+      "native_label": "address",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PHONE_1>": {
+      "placeholder": "<PHONE_1>",
+      "raw_value": "+44-20-7946-0852",
+      "entity_type": "PHONE",
+      "normalized_value": "+442079460852",
+      "entity_id": "PHONE:+442079460852",
+      "native_label": "phone",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<EMAIL_1>": {
+      "placeholder": "<EMAIL_1>",
+      "raw_value": "marcus.vance.private@oxford-fellows.net",
+      "entity_type": "EMAIL",
+      "normalized_value": "marcus.vance.private@oxford-fellows.net",
+      "entity_id": "EMAIL:marcus.vance.private@oxford-fellows.net",
+      "native_label": "email",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<NATIONAL_ID_1>": {
+      "placeholder": "<NATIONAL_ID_1>",
+      "raw_value": "Insurance",
+      "entity_type": "NATIONAL_ID",
+      "normalized_value": "Insurance",
+      "entity_id": "NATIONAL_ID:Insurance",
+      "native_label": "national_id",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<NATIONAL_ID_2>": {
+      "placeholder": "<NATIONAL_ID_2>",
+      "raw_value": "QQ 12 34 56 C",
+      "entity_type": "NATIONAL_ID",
+      "normalized_value": "QQ123456C",
+      "entity_id": "NATIONAL_ID:QQ123456C",
+      "native_label": "national_id",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PASSPORT_1>": {
+      "placeholder": "<PASSPORT_1>",
+      "raw_value": "984210452",
+      "entity_type": "PASSPORT",
+      "normalized_value": "984210452",
+      "entity_id": "PASSPORT:984210452",
+      "native_label": "passport",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PERSON_5>": {
+      "placeholder": "<PERSON_5>",
+      "raw_value": "Driver",
+      "entity_type": "PERSON",
+      "normalized_value": "Driver",
+      "entity_id": "PERSON:Driver",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<DRIVER_LICENSE_1>": {
+      "placeholder": "<DRIVER_LICENSE_1>",
+      "raw_value": "reference",
+      "entity_type": "DRIVER_LICENSE",
+      "normalized_value": "reference",
+      "entity_id": "DRIVER_LICENSE:reference",
+      "native_label": "driver_license",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<DRIVER_LICENSE_2>": {
+      "placeholder": "<DRIVER_LICENSE_2>",
+      "raw_value": "VANCE708149MA9IJ",
+      "entity_type": "DRIVER_LICENSE",
+      "normalized_value": "VANCE708149MA9IJ",
+      "entity_id": "DRIVER_LICENSE:VANCE708149MA9IJ",
+      "native_label": "driver_license",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<NATIONAL_ID_3>": {
+      "placeholder": "<NATIONAL_ID_3>",
+      "raw_value": "078-05-1120",
+      "entity_type": "NATIONAL_ID",
+      "normalized_value": "078-05-1120",
+      "entity_id": "NATIONAL_ID:078-05-1120",
+      "native_label": "national_id",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<TAX_ID_1>": {
+      "placeholder": "<TAX_ID_1>",
+      "raw_value": "EIN-84-9201482",
+      "entity_type": "TAX_ID",
+      "normalized_value": "EIN-84-9201482",
+      "entity_id": "TAX_ID:EIN-84-9201482",
+      "native_label": "tax_id",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<ADDRESS_2>": {
+      "placeholder": "<ADDRESS_2>",
+      "raw_value": "1 Churchill Place, London E14 5HP",
+      "entity_type": "ADDRESS",
+      "normalized_value": "1 Churchill Place, London E14 5HP",
+      "entity_id": "ADDRESS:1 Churchill Place, London E14 5HP",
+      "native_label": "address",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PERSON_6>": {
+      "placeholder": "<PERSON_6>",
+      "raw_value": "Holder Name",
+      "entity_type": "PERSON",
+      "normalized_value": "Holder Name",
+      "entity_id": "PERSON:Holder Name",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<BANK_ACCOUNT_1>": {
+      "placeholder": "<BANK_ACCOUNT_1>",
+      "raw_value": "88492014",
+      "entity_type": "BANK_ACCOUNT",
+      "normalized_value": "88492014",
+      "entity_id": "BANK_ACCOUNT:88492014",
+      "native_label": "bank_account",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<BANK_ACCOUNT_2>": {
+      "placeholder": "<BANK_ACCOUNT_2>",
+      "raw_value": "20-00-87",
+      "entity_type": "BANK_ACCOUNT",
+      "normalized_value": "200087",
+      "entity_id": "BANK_ACCOUNT:200087",
+      "native_label": "bank_account",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<BANK_ACCOUNT_3>": {
+      "placeholder": "<BANK_ACCOUNT_3>",
+      "raw_value": "GB29BARC20008788492014",
+      "entity_type": "BANK_ACCOUNT",
+      "normalized_value": "GB29BARC20008788492014",
+      "entity_id": "BANK_ACCOUNT:GB29BARC20008788492014",
+      "native_label": "bank_account",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<BANK_ACCOUNT_4>": {
+      "placeholder": "<BANK_ACCOUNT_4>",
+      "raw_value": "BARCGB22",
+      "entity_type": "BANK_ACCOUNT",
+      "normalized_value": "BARCGB22",
+      "entity_id": "BANK_ACCOUNT:BARCGB22",
+      "native_label": "bank_account",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<ADDRESS_3>": {
+      "placeholder": "<ADDRESS_3>",
+      "raw_value": "Bahnhofstrasse 45, Zurich, Switzerland",
+      "entity_type": "ADDRESS",
+      "normalized_value": "Bahnhofstrasse 45, Zurich, Switzerland",
+      "entity_id": "ADDRESS:Bahnhofstrasse 45, Zurich, Switzerland",
+      "native_label": "address",
+      "policy_decision": "USER_APPROVAL",
+      "disclosure_allowed": true
+    },
+    "<BANK_ACCOUNT_5>": {
+      "placeholder": "<BANK_ACCOUNT_5>",
+      "raw_value": "CH9300240240123456789",
+      "entity_type": "BANK_ACCOUNT",
+      "normalized_value": "CH9300240240123456789",
+      "entity_id": "BANK_ACCOUNT:CH9300240240123456789",
+      "native_label": "bank_account",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<BANK_ACCOUNT_6>": {
+      "placeholder": "<BANK_ACCOUNT_6>",
+      "raw_value": "UBSWCHZH80A",
+      "entity_type": "BANK_ACCOUNT",
+      "normalized_value": "UBSWCHZH80A",
+      "entity_id": "BANK_ACCOUNT:UBSWCHZH80A",
+      "native_label": "bank_account",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PHONE_2>": {
+      "placeholder": "<PHONE_2>",
+      "raw_value": "2026-99410",
+      "entity_type": "PHONE",
+      "normalized_value": "202699410",
+      "entity_id": "PHONE:202699410",
+      "native_label": "phone",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PERSON_7>": {
+      "placeholder": "<PERSON_7>",
+      "raw_value": "Dame Patricia Hall",
+      "entity_type": "PERSON",
+      "normalized_value": "Dame Patricia Hall",
+      "entity_id": "PERSON:Dame Patricia Hall",
+      "native_label": "person",
+      "policy_decision": "USER_APPROVAL",
+      "disclosure_allowed": true
+    },
+    "<NATIONAL_ID_4>": {
+      "placeholder": "<NATIONAL_ID_4>",
+      "raw_value": "insurance",
+      "entity_type": "NATIONAL_ID",
+      "normalized_value": "insurance",
+      "entity_id": "NATIONAL_ID:insurance",
+      "native_label": "national_id",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "e685c0fa-2c82-4429-87c1-9eb5e0883a61": {
+    "<PERSON_1>": {
+      "placeholder": "<PERSON_1>",
+      "raw_value": "Sarah Netburn",
+      "entity_type": "PERSON",
+      "normalized_value": "Sarah Netburn",
+      "entity_id": "PERSON:Sarah Netburn",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PERSON_2>": {
+      "placeholder": "<PERSON_2>",
+      "raw_value": "Jonathan Vance",
+      "entity_type": "PERSON",
+      "normalized_value": "Jonathan Vance",
+      "entity_id": "PERSON:Jonathan Vance",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<EMAIL_1>": {
+      "placeholder": "<EMAIL_1>",
+      "raw_value": "jvance@vance-hastings-law.com",
+      "entity_type": "EMAIL",
+      "normalized_value": "jvance@vance-hastings-law.com",
+      "entity_id": "EMAIL:jvance@vance-hastings-law.com",
+      "native_label": "email",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PHONE_1>": {
+      "placeholder": "<PHONE_1>",
+      "raw_value": "+1-212-555-0178",
+      "entity_type": "PHONE",
+      "normalized_value": "+12125550178",
+      "entity_id": "PHONE:+12125550178",
+      "native_label": "phone",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<ADDRESS_1>": {
+      "placeholder": "<ADDRESS_1>",
+      "raw_value": "350 Fifth Avenue, 58th Floor, New York, NY 10118",
+      "entity_type": "ADDRESS",
+      "normalized_value": "350 Fifth Avenue, 58th Floor, New York, NY 10118",
+      "entity_id": "ADDRESS:350 Fifth Avenue, 58th Floor, New York, NY 10118",
+      "native_label": "address",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PERSON_3>": {
+      "placeholder": "<PERSON_3>",
+      "raw_value": "Douglas R. Sterling",
+      "entity_type": "PERSON",
+      "normalized_value": "Douglas R. Sterling",
+      "entity_id": "PERSON:Douglas R. Sterling",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PERSON_4>": {
+      "placeholder": "<PERSON_4>",
+      "raw_value": "Factual Background",
+      "entity_type": "PERSON",
+      "normalized_value": "Factual Background",
+      "entity_id": "PERSON:Factual Background",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PERSON_5>": {
+      "placeholder": "<PERSON_5>",
+      "raw_value": "Julian Drake",
+      "entity_type": "PERSON",
+      "normalized_value": "Julian Drake",
+      "entity_id": "PERSON:Julian Drake",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<EMAIL_2>": {
+      "placeholder": "<EMAIL_2>",
+      "raw_value": "j.drake.consulting@protonmail.com",
+      "entity_type": "EMAIL",
+      "normalized_value": "j.drake.consulting@protonmail.com",
+      "entity_id": "EMAIL:j.drake.consulting@protonmail.com",
+      "native_label": "email",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PHONE_2>": {
+      "placeholder": "<PHONE_2>",
+      "raw_value": "+1-415-555-0193",
+      "entity_type": "PHONE",
+      "normalized_value": "+14155550193",
+      "entity_id": "PHONE:+14155550193",
+      "native_label": "phone",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PERSON_6>": {
+      "placeholder": "<PERSON_6>",
+      "raw_value": "Katherine Belmont",
+      "entity_type": "PERSON",
+      "normalized_value": "Katherine Belmont",
+      "entity_id": "PERSON:Katherine Belmont",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PHONE_3>": {
+      "placeholder": "<PHONE_3>",
+      "raw_value": "+1-212-555-0144",
+      "entity_type": "PHONE",
+      "normalized_value": "+12125550144",
+      "entity_id": "PHONE:+12125550144",
+      "native_label": "phone",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<EMAIL_3>": {
+      "placeholder": "<EMAIL_3>",
+      "raw_value": "katherine.belmont@horizon-holdings.com",
+      "entity_type": "EMAIL",
+      "normalized_value": "katherine.belmont@horizon-holdings.com",
+      "entity_id": "EMAIL:katherine.belmont@horizon-holdings.com",
+      "native_label": "email",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<BANK_ACCOUNT_1>": {
+      "placeholder": "<BANK_ACCOUNT_1>",
+      "raw_value": "948201948201",
+      "entity_type": "BANK_ACCOUNT",
+      "normalized_value": "948201948201",
+      "entity_id": "BANK_ACCOUNT:948201948201",
+      "native_label": "bank_account",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PHONE_4>": {
+      "placeholder": "<PHONE_4>",
+      "raw_value": "021000021",
+      "entity_type": "PHONE",
+      "normalized_value": "021000021",
+      "entity_id": "PHONE:021000021",
+      "native_label": "phone",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<API_KEY_1>": {
+      "placeholder": "<API_KEY_1>",
+      "raw_value": "HORIZON-CYBER-SETTLE-2026",
+      "entity_type": "API_KEY",
+      "normalized_value": "HORIZON-CYBER-SETTLE-2026",
+      "entity_id": "API_KEY:HORIZON-CYBER-SETTLE-2026",
+      "native_label": "api_key",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    },
+    "<CREDIT_CARD_1>": {
+      "placeholder": "<CREDIT_CARD_1>",
+      "raw_value": "5412751234123456",
+      "entity_type": "CREDIT_CARD",
+      "normalized_value": "5412751234123456",
+      "entity_id": "CREDIT_CARD:5412751234123456",
+      "native_label": "credit_card",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PASSWORD_1>": {
+      "placeholder": "<PASSWORD_1>",
+      "raw_value": "842",
+      "entity_type": "PASSWORD",
+      "normalized_value": "842",
+      "entity_id": "PASSWORD:842",
+      "native_label": "password",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    },
+    "<ADDRESS_2>": {
+      "placeholder": "<ADDRESS_2>",
+      "raw_value": "100 Wall Street, 12th Floor, New York, NY 10005",
+      "entity_type": "ADDRESS",
+      "normalized_value": "100 Wall Street, 12th Floor, New York, NY 10005",
+      "entity_id": "ADDRESS:100 Wall Street, 12th Floor, New York, NY 10005",
+      "native_label": "address",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PERSON_7>": {
+      "placeholder": "<PERSON_7>",
+      "raw_value": "Douglas Sterling",
+      "entity_type": "PERSON",
+      "normalized_value": "Douglas Sterling",
+      "entity_id": "PERSON:Douglas Sterling",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "048c5922-9dab-4522-a05d-b240600b702d": {
+    "<PASSWORD_1>": {
+      "placeholder": "<PASSWORD_1>",
+      "raw_value": "stuffing",
+      "entity_type": "PASSWORD",
+      "normalized_value": "stuffing",
+      "entity_id": "PASSWORD:stuffing",
+      "native_label": "password",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    },
+    "<IP_ADDRESS_1>": {
+      "placeholder": "<IP_ADDRESS_1>",
+      "raw_value": "185.220.101.45",
+      "entity_type": "IP_ADDRESS",
+      "normalized_value": "185.220.101.45",
+      "entity_id": "IP_ADDRESS:185.220.101.45",
+      "native_label": "ip_address",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<IP_ADDRESS_2>": {
+      "placeholder": "<IP_ADDRESS_2>",
+      "raw_value": "194.26.29.112",
+      "entity_type": "IP_ADDRESS",
+      "normalized_value": "194.26.29.112",
+      "entity_id": "IP_ADDRESS:194.26.29.112",
+      "native_label": "ip_address",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<IP_ADDRESS_3>": {
+      "placeholder": "<IP_ADDRESS_3>",
+      "raw_value": "2a02:4780:bad:c0de::1",
+      "entity_type": "IP_ADDRESS",
+      "normalized_value": "2a02:4780:bad:c0de::1",
+      "entity_id": "IP_ADDRESS:2a02:4780:bad:c0de::1",
+      "native_label": "ip_address",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PERSON_1>": {
+      "placeholder": "<PERSON_1>",
+      "raw_value": "Alexander Christian Moore",
+      "entity_type": "PERSON",
+      "normalized_value": "Alexander Christian Moore",
+      "entity_id": "PERSON:Alexander Christian Moore",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PERSON_2>": {
+      "placeholder": "<PERSON_2>",
+      "raw_value": "Identifier",
+      "entity_type": "PERSON",
+      "normalized_value": "Identifier",
+      "entity_id": "PERSON:Identifier",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<CUSTOMER_ID_1>": {
+      "placeholder": "<CUSTOMER_ID_1>",
+      "raw_value": "CUST-904218",
+      "entity_type": "CUSTOMER_ID",
+      "normalized_value": "CUST-904218",
+      "entity_id": "CUSTOMER_ID:CUST-904218",
+      "native_label": "customer_id",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<EMAIL_1>": {
+      "placeholder": "<EMAIL_1>",
+      "raw_value": "alex.moore.creative@gmail.com",
+      "entity_type": "EMAIL",
+      "normalized_value": "alex.moore.creative@gmail.com",
+      "entity_id": "EMAIL:alex.moore.creative@gmail.com",
+      "native_label": "email",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PERSON_3>": {
+      "placeholder": "<PERSON_3>",
+      "raw_value": "Direct",
+      "entity_type": "PERSON",
+      "normalized_value": "Direct",
+      "entity_id": "PERSON:Direct",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PHONE_1>": {
+      "placeholder": "<PHONE_1>",
+      "raw_value": "+1-415-555-0187",
+      "entity_type": "PHONE",
+      "normalized_value": "+14155550187",
+      "entity_id": "PHONE:+14155550187",
+      "native_label": "phone",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<ADDRESS_1>": {
+      "placeholder": "<ADDRESS_1>",
+      "raw_value": "1420 Sunset Boulevard, Suite 500, Los Angeles, CA 90028",
+      "entity_type": "ADDRESS",
+      "normalized_value": "1420 Sunset Boulevard, Suite 500, Los Angeles, CA 90028",
+      "entity_id": "ADDRESS:1420 Sunset Boulevard, Suite 500, Los Angeles, CA 90028",
+      "native_label": "address",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PASSWORD_2>": {
+      "placeholder": "<PASSWORD_2>",
+      "raw_value": "Leaked",
+      "entity_type": "PASSWORD",
+      "normalized_value": "Leaked",
+      "entity_id": "PASSWORD:Leaked",
+      "native_label": "password",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    },
+    "<PASSWORD_3>": {
+      "placeholder": "<PASSWORD_3>",
+      "raw_value": "Dump",
+      "entity_type": "PASSWORD",
+      "normalized_value": "Dump",
+      "entity_id": "PASSWORD:Dump",
+      "native_label": "password",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    },
+    "<PASSWORD_4>": {
+      "placeholder": "<PASSWORD_4>",
+      "raw_value": "AlexM00re!P@ss2024",
+      "entity_type": "PASSWORD",
+      "normalized_value": "AlexM00re!P@ss2024",
+      "entity_id": "PASSWORD:AlexM00re!P@ss2024",
+      "native_label": "password",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    },
+    "<PHONE_2>": {
+      "placeholder": "<PHONE_2>",
+      "raw_value": "2026-889104",
+      "entity_type": "PHONE",
+      "normalized_value": "2026889104",
+      "entity_id": "PHONE:2026889104",
+      "native_label": "phone",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<USER_ID_1>": {
+      "placeholder": "<USER_ID_1>",
+      "raw_value": "USR-492104",
+      "entity_type": "USER_ID",
+      "normalized_value": "USR-492104",
+      "entity_id": "USER_ID:USR-492104",
+      "native_label": "user_id",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<TICKET_ID_1>": {
+      "placeholder": "<TICKET_ID_1>",
+      "raw_value": "TICK-99421",
+      "entity_type": "TICKET_ID",
+      "normalized_value": "TICK-99421",
+      "entity_id": "TICKET_ID:TICK-99421",
+      "native_label": "ticket_id",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PERSON_4>": {
+      "placeholder": "<PERSON_4>",
+      "raw_value": "Visa Card",
+      "entity_type": "PERSON",
+      "normalized_value": "Visa Card",
+      "entity_id": "PERSON:Visa Card",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<CREDIT_CARD_1>": {
+      "placeholder": "<CREDIT_CARD_1>",
+      "raw_value": "4532015982348912",
+      "entity_type": "CREDIT_CARD",
+      "normalized_value": "4532015982348912",
+      "entity_id": "CREDIT_CARD:4532015982348912",
+      "native_label": "credit_card",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PASSWORD_5>": {
+      "placeholder": "<PASSWORD_5>",
+      "raw_value": "491",
+      "entity_type": "PASSWORD",
+      "normalized_value": "491",
+      "entity_id": "PASSWORD:491",
+      "native_label": "password",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    },
+    "<PERSON_5>": {
+      "placeholder": "<PERSON_5>",
+      "raw_value": "Billing Name",
+      "entity_type": "PERSON",
+      "normalized_value": "Billing Name",
+      "entity_id": "PERSON:Billing Name",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PERSON_6>": {
+      "placeholder": "<PERSON_6>",
+      "raw_value": "Alexander C Moore",
+      "entity_type": "PERSON",
+      "normalized_value": "Alexander C Moore",
+      "entity_id": "PERSON:Alexander C Moore",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PERSON_7>": {
+      "placeholder": "<PERSON_7>",
+      "raw_value": "Beatrice Evelyn Dubois",
+      "entity_type": "PERSON",
+      "normalized_value": "Beatrice Evelyn Dubois",
+      "entity_id": "PERSON:Beatrice Evelyn Dubois",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<CUSTOMER_ID_2>": {
+      "placeholder": "<CUSTOMER_ID_2>",
+      "raw_value": "CUST-883192",
+      "entity_type": "CUSTOMER_ID",
+      "normalized_value": "CUST-883192",
+      "entity_id": "CUSTOMER_ID:CUST-883192",
+      "native_label": "customer_id",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<EMAIL_2>": {
+      "placeholder": "<EMAIL_2>",
+      "raw_value": "beatrice.dubois@chicago-arts.org",
+      "entity_type": "EMAIL",
+      "normalized_value": "beatrice.dubois@chicago-arts.org",
+      "entity_id": "EMAIL:beatrice.dubois@chicago-arts.org",
+      "native_label": "email",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PHONE_3>": {
+      "placeholder": "<PHONE_3>",
+      "raw_value": "+1-312-555-0164",
+      "entity_type": "PHONE",
+      "normalized_value": "+13125550164",
+      "entity_id": "PHONE:+13125550164",
+      "native_label": "phone",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<ADDRESS_2>": {
+      "placeholder": "<ADDRESS_2>",
+      "raw_value": "850 North Michigan Avenue, Chicago, IL 60611",
+      "entity_type": "ADDRESS",
+      "normalized_value": "850 North Michigan Avenue, Chicago, IL 60611",
+      "entity_id": "ADDRESS:850 North Michigan Avenue, Chicago, IL 60611",
+      "native_label": "address",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PASSWORD_6>": {
+      "placeholder": "<PASSWORD_6>",
+      "raw_value": "SummerBreeze#8492",
+      "entity_type": "PASSWORD",
+      "normalized_value": "SummerBreeze#8492",
+      "entity_id": "PASSWORD:SummerBreeze#8492",
+      "native_label": "password",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    },
+    "<PHONE_4>": {
+      "placeholder": "<PHONE_4>",
+      "raw_value": "2026-904128",
+      "entity_type": "PHONE",
+      "normalized_value": "2026904128",
+      "entity_id": "PHONE:2026904128",
+      "native_label": "phone",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<USER_ID_2>": {
+      "placeholder": "<USER_ID_2>",
+      "raw_value": "USR-338291",
+      "entity_type": "USER_ID",
+      "normalized_value": "USR-338291",
+      "entity_id": "USER_ID:USR-338291",
+      "native_label": "user_id",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<TICKET_ID_2>": {
+      "placeholder": "<TICKET_ID_2>",
+      "raw_value": "TICK-88204",
+      "entity_type": "TICKET_ID",
+      "normalized_value": "TICK-88204",
+      "entity_id": "TICKET_ID:TICK-88204",
+      "native_label": "ticket_id",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<CREDIT_CARD_2>": {
+      "placeholder": "<CREDIT_CARD_2>",
+      "raw_value": "5500001234567895",
+      "entity_type": "CREDIT_CARD",
+      "normalized_value": "5500001234567895",
+      "entity_id": "CREDIT_CARD:5500001234567895",
+      "native_label": "credit_card",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PASSWORD_7>": {
+      "placeholder": "<PASSWORD_7>",
+      "raw_value": "723",
+      "entity_type": "PASSWORD",
+      "normalized_value": "723",
+      "entity_id": "PASSWORD:723",
+      "native_label": "password",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    },
+    "<PERSON_8>": {
+      "placeholder": "<PERSON_8>",
+      "raw_value": "Adyen",
+      "entity_type": "PERSON",
+      "normalized_value": "Adyen",
+      "entity_id": "PERSON:Adyen",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PERSON_9>": {
+      "placeholder": "<PERSON_9>",
+      "raw_value": "Visa Fraud Monitoring Program - VFMP",
+      "entity_type": "PERSON",
+      "normalized_value": "Visa Fraud Monitoring Program - VFMP",
+      "entity_id": "PERSON:Visa Fraud Monitoring Program - VFMP",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PERSON_10>": {
+      "placeholder": "<PERSON_10>",
+      "raw_value": "Stripe Radar",
+      "entity_type": "PERSON",
+      "normalized_value": "Stripe Radar",
+      "entity_id": "PERSON:Stripe Radar",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PERSON_11>": {
+      "placeholder": "<PERSON_11>",
+      "raw_value": "Alexander Moore",
+      "entity_type": "PERSON",
+      "normalized_value": "Alexander Moore",
+      "entity_id": "PERSON:Alexander Moore",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PERSON_12>": {
+      "placeholder": "<PERSON_12>",
+      "raw_value": "Beatrice Dubois",
+      "entity_type": "PERSON",
+      "normalized_value": "Beatrice Dubois",
+      "entity_id": "PERSON:Beatrice Dubois",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "f21e4bc0-a387-4c42-9bf0-2ff0f2c8b087": {
+    "<PERSON_1>": {
+      "placeholder": "<PERSON_1>",
+      "raw_value": "Jerin",
+      "entity_type": "PERSON",
+      "normalized_value": "Jerin",
+      "entity_id": "PERSON:Jerin",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "0c44b277-c814-4061-bcc6-95f6ec5d2713": {
+    "<PASSWORD_1>": {
+      "placeholder": "<PASSWORD_1>",
+      "raw_value": "abc123*",
+      "entity_type": "PASSWORD",
+      "normalized_value": "abc123*",
+      "entity_id": "PASSWORD:abc123*",
+      "native_label": "password",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    },
+    "<PHONE_1>": {
+      "placeholder": "<PHONE_1>",
+      "raw_value": "7894166565",
+      "entity_type": "PHONE",
+      "normalized_value": "7894166565",
+      "entity_id": "PHONE:7894166565",
+      "native_label": "phone",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "7fe9988c-dd17-434a-9fea-e270d9eed641": {
+    "<NATIONAL_ID_1>": {
+      "placeholder": "<NATIONAL_ID_1>",
+      "raw_value": "4856 5698 1236",
+      "entity_type": "NATIONAL_ID",
+      "normalized_value": "485656981236",
+      "entity_id": "NATIONAL_ID:485656981236",
+      "native_label": "national_id",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "310a46bf-ed2a-43f0-9314-2fe255633ac2": {
+    "<EMAIL_1>": {
+      "placeholder": "<EMAIL_1>",
+      "raw_value": "j\u0435rin@\u0435xampl\u0435.com",
+      "entity_type": "EMAIL",
+      "normalized_value": "jerin@example.com",
+      "entity_id": "EMAIL:jerin@example.com",
+      "native_label": "email",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "4ce66fa7-2a3e-46d9-9661-07f2ecf5bef3": {
+    "<PERSON_1>": {
+      "placeholder": "<PERSON_1>",
+      "raw_value": "J\u043ehn D\u043ee",
+      "entity_type": "PERSON",
+      "normalized_value": "John Doe",
+      "entity_id": "PERSON:John Doe",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "71d66909-20fd-4fe3-aa46-a003b9396aa5": {
+    "<EMAIL_1>": {
+      "placeholder": "<EMAIL_1>",
+      "raw_value": "\ud835\udcb6\ud835\udcb9\ud835\udcc2\ud835\udcbe\ud835\udcc3@example.com",
+      "entity_type": "EMAIL",
+      "normalized_value": "admin@example.com",
+      "entity_id": "EMAIL:admin@example.com",
+      "native_label": "email",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "8fc4b7e2-6072-4633-9c2c-4d212ea7e8dd": {
+    "<PERSON_1>": {
+      "placeholder": "<PERSON_1>",
+      "raw_value": "J\u043ehn D\u043ee",
+      "entity_type": "PERSON",
+      "normalized_value": "John Doe",
+      "entity_id": "PERSON:John Doe",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<EMAIL_1>": {
+      "placeholder": "<EMAIL_1>",
+      "raw_value": "j\u200be\u200br\u200bi\u200bn@example.com",
+      "entity_type": "EMAIL",
+      "normalized_value": "jerin@example.com",
+      "entity_id": "EMAIL:jerin@example.com",
+      "native_label": "email",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<CREDIT_CARD_1>": {
+      "placeholder": "<CREDIT_CARD_1>",
+      "raw_value": "4532-7564-8901-2345",
+      "entity_type": "CREDIT_CARD",
+      "normalized_value": "4532756489012345",
+      "entity_id": "CREDIT_CARD:4532756489012345",
+      "native_label": "credit_card",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "72213674-598e-4672-9685-e722b5617289": {
+    "<EMAIL_1>": {
+      "placeholder": "<EMAIL_1>",
+      "raw_value": "j\u200be\u200br\u200bi\u200bn@example.com",
+      "entity_type": "EMAIL",
+      "normalized_value": "jerin@example.com",
+      "entity_id": "EMAIL:jerin@example.com",
+      "native_label": "email",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "aa992c73-f403-4265-a9b5-e586fa2bd5d0": {
+    "<PHONE_1>": {
+      "placeholder": "<PHONE_1>",
+      "raw_value": "9\u200b8\u200b7-6\u200b5\u200b4-3\u200b2\u200b1\u200b0",
+      "entity_type": "PHONE",
+      "normalized_value": "9876543210",
+      "entity_id": "PHONE:9876543210",
+      "native_label": "phone",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "07e8c190-d6b4-41e9-b643-c340dd536ac2": {
+    "<EMAIL_1>": {
+      "placeholder": "<EMAIL_1>",
+      "raw_value": "john.doe@example.com",
+      "entity_type": "EMAIL",
+      "normalized_value": "john.doe@example.com",
+      "entity_id": "EMAIL:john.doe@example.com",
+      "native_label": "email",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<API_KEY_1>": {
+      "placeholder": "<API_KEY_1>",
+      "raw_value": "sk-test-SECRET123456",
+      "entity_type": "API_KEY",
+      "normalized_value": "sk-test-SECRET123456",
+      "entity_id": "API_KEY:sk-test-SECRET123456",
+      "native_label": "api_key",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    }
+  },
+  "custom-test-session-123": {
+    "<EMAIL_1>": {
+      "placeholder": "<EMAIL_1>",
+      "raw_value": "test@example.com",
+      "entity_type": "EMAIL",
+      "normalized_value": "test@example.com",
+      "entity_id": "EMAIL:test@example.com",
+      "native_label": "email",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "8f6a71ca-e914-4cd1-a3f8-875e71708627": {
+    "<EMAIL_1>": {
+      "placeholder": "<EMAIL_1>",
+      "raw_value": "agent.smith@matrix.com",
+      "entity_type": "EMAIL",
+      "normalized_value": "agent.smith@matrix.com",
+      "entity_id": "EMAIL:agent.smith@matrix.com",
+      "native_label": "email",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<API_KEY_1>": {
+      "placeholder": "<API_KEY_1>",
+      "raw_value": "sk-live-SECRET99",
+      "entity_type": "API_KEY",
+      "normalized_value": "sk-live-SECRET99",
+      "entity_id": "API_KEY:sk-live-SECRET99",
+      "native_label": "api_key",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    }
+  },
+  "4406fd02-27b3-40eb-b1a9-436123260f44": {
+    "<PERSON_1>": {
+      "placeholder": "<PERSON_1>",
+      "raw_value": "Priya Nair",
+      "entity_type": "PERSON",
+      "normalized_value": "Priya Nair",
+      "entity_id": "PERSON:Priya Nair",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<EMAIL_1>": {
+      "placeholder": "<EMAIL_1>",
+      "raw_value": "priya@example.com",
+      "entity_type": "EMAIL",
+      "normalized_value": "priya@example.com",
+      "entity_id": "EMAIL:priya@example.com",
+      "native_label": "email",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "96cdad13-ee82-4a0c-96b1-7bdd63b552fc": {
+    "<PERSON_1>": {
+      "placeholder": "<PERSON_1>",
+      "raw_value": "John Mathew",
+      "entity_type": "PERSON",
+      "normalized_value": "John Mathew",
+      "entity_id": "PERSON:John Mathew",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<ADDRESS_1>": {
+      "placeholder": "<ADDRESS_1>",
+      "raw_value": "24 MG Road, Kochi, Kerala 682016",
+      "entity_type": "ADDRESS",
+      "normalized_value": "24 MG Road, Kochi, Kerala 682016",
+      "entity_id": "ADDRESS:24 MG Road, Kochi, Kerala 682016",
+      "native_label": "address",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "b3f9cd73-d0bc-4b34-8507-869d1ccd690c": {},
+  "cf12391b-25d8-4269-a2eb-1f9bdf4ecaa4": {},
+  "0561e732-827a-4888-bad6-90861805e684": {
+    "<ORG_1>": {
+      "placeholder": "<ORG_1>",
+      "raw_value": "Apple Inc.",
+      "entity_type": "ORGANIZATION",
+      "normalized_value": "Apple Inc",
+      "entity_id": "ORGANIZATION:Apple Inc",
+      "native_label": "organization",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<LOCATION_1>": {
+      "placeholder": "<LOCATION_1>",
+      "raw_value": "California",
+      "entity_type": "LOCATION",
+      "normalized_value": "California",
+      "entity_id": "LOCATION:California",
+      "native_label": "location",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "1077cdae-4c4f-4f05-b782-3479aa2e8bd9": {
+    "<CUSTOMER_ID_1>": {
+      "placeholder": "<CUSTOMER_ID_1>",
+      "raw_value": "CUST-90812",
+      "entity_type": "CUSTOMER_ID",
+      "normalized_value": "CUST-90812",
+      "entity_id": "CUSTOMER_ID:CUST-90812",
+      "native_label": "customer_id",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<ORDER_ID_1>": {
+      "placeholder": "<ORDER_ID_1>",
+      "raw_value": "ORD-55123",
+      "entity_type": "ORDER_ID",
+      "normalized_value": "ORD-55123",
+      "entity_id": "ORDER_ID:ORD-55123",
+      "native_label": "order_id",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<TICKET_ID_1>": {
+      "placeholder": "<TICKET_ID_1>",
+      "raw_value": "TKT-99182",
+      "entity_type": "TICKET_ID",
+      "normalized_value": "TKT-99182",
+      "entity_id": "TICKET_ID:TKT-99182",
+      "native_label": "ticket_id",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "532033dc-5389-47b7-b193-90476387aa8d": {
+    "<PERSON_1>": {
+      "placeholder": "<PERSON_1>",
+      "raw_value": "John Mathew",
+      "entity_type": "PERSON",
+      "normalized_value": "John Mathew",
+      "entity_id": "PERSON:John Mathew",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<ORDER_ID_1>": {
+      "placeholder": "<ORDER_ID_1>",
+      "raw_value": "ORD-12345",
+      "entity_type": "ORDER_ID",
+      "normalized_value": "ORD-12345",
+      "entity_id": "ORDER_ID:ORD-12345",
+      "native_label": "order_id",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "9d22ab9c-35c8-42cc-823e-54f48e3c74c5": {},
+  "9ffd94fb-6b69-4e6b-91a7-40923c3ac7d3": {
+    "<DATE_1>": {
+      "placeholder": "<DATE_1>",
+      "raw_value": "Yesterday",
+      "entity_type": "DATE",
+      "normalized_value": "Yesterday",
+      "entity_id": "DATE:Yesterday",
+      "native_label": "date",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PERSON_1>": {
+      "placeholder": "<PERSON_1>",
+      "raw_value": "Rahul Menon",
+      "entity_type": "PERSON",
+      "normalized_value": "Rahul Menon",
+      "entity_id": "PERSON:Rahul Menon",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<ORG_1>": {
+      "placeholder": "<ORG_1>",
+      "raw_value": "Infosys",
+      "entity_type": "ORGANIZATION",
+      "normalized_value": "Infosys",
+      "entity_id": "ORGANIZATION:Infosys",
+      "native_label": "organization",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PERSON_2>": {
+      "placeholder": "<PERSON_2>",
+      "raw_value": "Anjali Nair",
+      "entity_type": "PERSON",
+      "normalized_value": "Anjali Nair",
+      "entity_id": "PERSON:Anjali Nair",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<ORDER_ID_1>": {
+      "placeholder": "<ORDER_ID_1>",
+      "raw_value": "ORD-78291",
+      "entity_type": "ORDER_ID",
+      "normalized_value": "ORD-78291",
+      "entity_id": "ORDER_ID:ORD-78291",
+      "native_label": "order_id",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<EMAIL_1>": {
+      "placeholder": "<EMAIL_1>",
+      "raw_value": "anjali.nair@gmail.com",
+      "entity_type": "EMAIL",
+      "normalized_value": "anjali.nair@gmail.com",
+      "entity_id": "EMAIL:anjali.nair@gmail.com",
+      "native_label": "email",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PHONE_1>": {
+      "placeholder": "<PHONE_1>",
+      "raw_value": "+91 9876543210",
+      "entity_type": "PHONE",
+      "normalized_value": "+919876543210",
+      "entity_id": "PHONE:+919876543210",
+      "native_label": "phone",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<CUSTOMER_ID_1>": {
+      "placeholder": "<CUSTOMER_ID_1>",
+      "raw_value": "CUST-10458",
+      "entity_type": "CUSTOMER_ID",
+      "normalized_value": "CUST-10458",
+      "entity_id": "CUSTOMER_ID:CUST-10458",
+      "native_label": "customer_id",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<ADDRESS_1>": {
+      "placeholder": "<ADDRESS_1>",
+      "raw_value": "24 MG Road, Kochi, Kerala 682016",
+      "entity_type": "ADDRESS",
+      "normalized_value": "24 MG Road, Kochi, Kerala 682016",
+      "entity_id": "ADDRESS:24 MG Road, Kochi, Kerala 682016",
+      "native_label": "address",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<IP_1>": {
+      "placeholder": "<IP_1>",
+      "raw_value": "192.168.1.45",
+      "entity_type": "IP_ADDRESS",
+      "normalized_value": "192.168.1.45",
+      "entity_id": "IP_ADDRESS:192.168.1.45",
+      "native_label": "ip_address",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "9fa7cb9a-1ef6-44f9-95a6-59592b5e245f": {
+    "<PERSON_1>": {
+      "placeholder": "<PERSON_1>",
+      "raw_value": "Priya Sharma",
+      "entity_type": "PERSON",
+      "normalized_value": "Priya Sharma",
+      "entity_id": "PERSON:Priya Sharma",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<ORG_1>": {
+      "placeholder": "<ORG_1>",
+      "raw_value": "TechCorp",
+      "entity_type": "ORGANIZATION",
+      "normalized_value": "TechCorp",
+      "entity_id": "ORGANIZATION:TechCorp",
+      "native_label": "organization",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<TICKET_ID_1>": {
+      "placeholder": "<TICKET_ID_1>",
+      "raw_value": "TKT-11234",
+      "entity_type": "TICKET_ID",
+      "normalized_value": "TKT-11234",
+      "entity_id": "TICKET_ID:TKT-11234",
+      "native_label": "ticket_id",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<CUSTOMER_ID_1>": {
+      "placeholder": "<CUSTOMER_ID_1>",
+      "raw_value": "CUST-44129",
+      "entity_type": "CUSTOMER_ID",
+      "normalized_value": "CUST-44129",
+      "entity_id": "CUSTOMER_ID:CUST-44129",
+      "native_label": "customer_id",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<ORDER_ID_1>": {
+      "placeholder": "<ORDER_ID_1>",
+      "raw_value": "ORD-99014",
+      "entity_type": "ORDER_ID",
+      "normalized_value": "ORD-99014",
+      "entity_id": "ORDER_ID:ORD-99014",
+      "native_label": "order_id",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<ADDRESS_1>": {
+      "placeholder": "<ADDRESS_1>",
+      "raw_value": "120 Nehru Marg, Pune, Maharashtra 411001",
+      "entity_type": "ADDRESS",
+      "normalized_value": "120 Nehru Marg, Pune, Maharashtra 411001",
+      "entity_id": "ADDRESS:120 Nehru Marg, Pune, Maharashtra 411001",
+      "native_label": "address",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "test-session-2": {
+    "<PERSON_1>": {
+      "placeholder": "<PERSON_1>",
+      "raw_value": "John Mathew",
+      "entity_type": "PERSON",
+      "normalized_value": "John Mathew",
+      "entity_id": "PERSON:John Mathew",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<EMAIL_1>": {
+      "placeholder": "<EMAIL_1>",
+      "raw_value": "john@example.com",
+      "entity_type": "EMAIL",
+      "normalized_value": "john@example.com",
+      "entity_id": "EMAIL:john@example.com",
+      "native_label": "email",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PHONE_1>": {
+      "placeholder": "<PHONE_1>",
+      "raw_value": "9876543210",
+      "entity_type": "PHONE",
+      "normalized_value": "9876543210",
+      "entity_id": "PHONE:9876543210",
+      "native_label": "phone",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "test-session-3": {
+    "<EMAIL_1>": {
+      "placeholder": "<EMAIL_1>",
+      "raw_value": "john@example.com",
+      "entity_type": "EMAIL",
+      "normalized_value": "john@example.com",
+      "entity_id": "EMAIL:john@example.com",
+      "native_label": "email",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "test-session-1": {
+    "<EMAIL_1>": {
+      "placeholder": "<EMAIL_1>",
+      "raw_value": "john@example.com",
+      "entity_type": "EMAIL",
+      "normalized_value": "john@example.com",
+      "entity_id": "EMAIL:john@example.com",
+      "native_label": "email",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "0d419bc1-51be-450b-bd80-3d4bac8815fd": {
+    "<PERSON_1>": {
+      "placeholder": "<PERSON_1>",
+      "raw_value": "anand",
+      "entity_type": "PERSON",
+      "normalized_value": "anand",
+      "entity_id": "PERSON:anand",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "e73a669c-2075-4997-89f0-327c56defdc5": {
+    "<PERSON_1>": {
+      "placeholder": "<PERSON_1>",
+      "raw_value": "AnAnD",
+      "entity_type": "PERSON",
+      "normalized_value": "AnAnD",
+      "entity_id": "PERSON:AnAnD",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "8655b1e7-bace-4dfc-8f5e-f96722f7998d": {
+    "<PERSON_1>": {
+      "placeholder": "<PERSON_1>",
+      "raw_value": "ANAND",
+      "entity_type": "PERSON",
+      "normalized_value": "ANAND",
+      "entity_id": "PERSON:ANAND",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "494f6d69-9d93-41c0-984e-3ab5d374b669": {
+    "<PERSON_1>": {
+      "placeholder": "<PERSON_1>",
+      "raw_value": "anand",
+      "entity_type": "PERSON",
+      "normalized_value": "anand",
+      "entity_id": "PERSON:anand",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "4b54e83a-9630-4575-bd2d-0738d0341cdf": {
+    "<PERSON_1>": {
+      "placeholder": "<PERSON_1>",
+      "raw_value": "AnAnD",
+      "entity_type": "PERSON",
+      "normalized_value": "AnAnD",
+      "entity_id": "PERSON:AnAnD",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "110cd15e-470b-4eba-b9b7-79aef4a65ab0": {
+    "<PERSON_1>": {
+      "placeholder": "<PERSON_1>",
+      "raw_value": "anand",
+      "entity_type": "PERSON",
+      "normalized_value": "anand",
+      "entity_id": "PERSON:anand",
+      "native_label": "person",
+      "policy_decision": "USER_APPROVAL",
+      "disclosure_allowed": true
+    }
+  },
+  "ecf9b52b-d585-4f4b-85a5-936df8a31ac6": {
+    "<PERSON_1>": {
+      "placeholder": "<PERSON_1>",
+      "raw_value": "anand",
+      "entity_type": "PERSON",
+      "normalized_value": "anand",
+      "entity_id": "PERSON:anand",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "0843e8d5-48e9-476b-894c-5376e088a121": {
+    "<PERSON_1>": {
+      "placeholder": "<PERSON_1>",
+      "raw_value": "anand",
+      "entity_type": "PERSON",
+      "normalized_value": "anand",
+      "entity_id": "PERSON:anand",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "5f034bfc-7a7b-4213-9979-9dea2a88fceb": {
+    "<PERSON_1>": {
+      "placeholder": "<PERSON_1>",
+      "raw_value": "AnAnD",
+      "entity_type": "PERSON",
+      "normalized_value": "AnAnD",
+      "entity_id": "PERSON:AnAnD",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "2885de59-ee2a-4699-88ca-87b42f3ecbd1": {
+    "<PERSON_1>": {
+      "placeholder": "<PERSON_1>",
+      "raw_value": "ANAND",
+      "entity_type": "PERSON",
+      "normalized_value": "ANAND",
+      "entity_id": "PERSON:ANAND",
+      "native_label": "person",
+      "policy_decision": "USER_APPROVAL",
+      "disclosure_allowed": true
+    }
+  },
+  "2d1cb94f-c7f7-4b8f-8b34-8431383365d5": {
+    "<PASSWORD_1>": {
+      "placeholder": "<PASSWORD_1>",
+      "raw_value": "Secret123#",
+      "entity_type": "PASSWORD",
+      "normalized_value": "Secret123#",
+      "entity_id": "PASSWORD:Secret123#",
+      "native_label": "password",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    }
+  },
+  "996f5964-da4d-4c2d-957d-6d80ef460944": {
+    "<PASSWORD_1>": {
+      "placeholder": "<PASSWORD_1>",
+      "raw_value": "Secret123#",
+      "entity_type": "PASSWORD",
+      "normalized_value": "Secret123#",
+      "entity_id": "PASSWORD:Secret123#",
+      "native_label": "password",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    }
+  },
+  "503bf498-1e96-42a5-a665-bd9da6e96707": {
+    "<PASSWORD_1>": {
+      "placeholder": "<PASSWORD_1>",
+      "raw_value": "Secret123#",
+      "entity_type": "PASSWORD",
+      "normalized_value": "Secret123#",
+      "entity_id": "PASSWORD:Secret123#",
+      "native_label": "password",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    }
+  },
+  "d10206c0-ca35-490c-9f31-237fc3d1957d": {
+    "<PASSWORD_1>": {
+      "placeholder": "<PASSWORD_1>",
+      "raw_value": "Secret123#",
+      "entity_type": "PASSWORD",
+      "normalized_value": "Secret123#",
+      "entity_id": "PASSWORD:Secret123#",
+      "native_label": "password",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    }
+  },
+  "97843f26-57e2-4668-8035-fe580ad7eae5": {
+    "<PASSWORD_1>": {
+      "placeholder": "<PASSWORD_1>",
+      "raw_value": "Secret999",
+      "entity_type": "PASSWORD",
+      "normalized_value": "Secret999",
+      "entity_id": "PASSWORD:Secret999",
+      "native_label": "password",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    }
+  },
+  "25d61f6b-4c76-4a08-aad4-354154cee30e": {
+    "<PASSWORD_1>": {
+      "placeholder": "<PASSWORD_1>",
+      "raw_value": "secret999",
+      "entity_type": "PASSWORD",
+      "normalized_value": "secret999",
+      "entity_id": "PASSWORD:secret999",
+      "native_label": "password",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    }
+  },
+  "f1ea7439-a2da-4b9c-a047-672d2863c60f": {
+    "<PASSWORD_1>": {
+      "placeholder": "<PASSWORD_1>",
+      "raw_value": "secret999",
+      "entity_type": "PASSWORD",
+      "normalized_value": "secret999",
+      "entity_id": "PASSWORD:secret999",
+      "native_label": "password",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    }
+  },
+  "875f9f84-91ea-423a-8d13-cc39c5a0de3d": {
+    "<PASSWORD_1>": {
+      "placeholder": "<PASSWORD_1>",
+      "raw_value": "supersecret",
+      "entity_type": "PASSWORD",
+      "normalized_value": "supersecret",
+      "entity_id": "PASSWORD:supersecret",
+      "native_label": "password",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    }
+  },
+  "6e39821a-40cc-42ce-9878-6aa37eb64636": {
+    "<PASSWORD_1>": {
+      "placeholder": "<PASSWORD_1>",
+      "raw_value": "testpass123",
+      "entity_type": "PASSWORD",
+      "normalized_value": "testpass123",
+      "entity_id": "PASSWORD:testpass123",
+      "native_label": "password",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    }
+  },
+  "59d47809-6ce9-4ca9-a647-1a180a0b2c24": {
+    "<BANK_ACCOUNT_1>": {
+      "placeholder": "<BANK_ACCOUNT_1>",
+      "raw_value": "123456789012",
+      "entity_type": "BANK_ACCOUNT",
+      "normalized_value": "123456789012",
+      "entity_id": "BANK_ACCOUNT:123456789012",
+      "native_label": "bank_account",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "ab296815-1b77-40f5-aa0a-9bc77c0f23d5": {
+    "<BANK_ACCOUNT_1>": {
+      "placeholder": "<BANK_ACCOUNT_1>",
+      "raw_value": "987654321098",
+      "entity_type": "BANK_ACCOUNT",
+      "normalized_value": "987654321098",
+      "entity_id": "BANK_ACCOUNT:987654321098",
+      "native_label": "bank_account",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "e829de74-4bb9-4e0d-8082-7d8e3f9d8828": {
+    "<BANK_ACCOUNT_1>": {
+      "placeholder": "<BANK_ACCOUNT_1>",
+      "raw_value": "112233445566",
+      "entity_type": "BANK_ACCOUNT",
+      "normalized_value": "112233445566",
+      "entity_id": "BANK_ACCOUNT:112233445566",
+      "native_label": "bank_account",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "b7c4dac7-7ed8-461d-be30-d3b9afa555ee": {
+    "<BANK_ACCOUNT_1>": {
+      "placeholder": "<BANK_ACCOUNT_1>",
+      "raw_value": "123456789012",
+      "entity_type": "BANK_ACCOUNT",
+      "normalized_value": "123456789012",
+      "entity_id": "BANK_ACCOUNT:123456789012",
+      "native_label": "bank_account",
+      "policy_decision": "USER_APPROVAL",
+      "disclosure_allowed": true
+    }
+  },
+  "ad024556-145b-408a-aa68-9c6bb0986153": {
+    "<BANK_ACCOUNT_1>": {
+      "placeholder": "<BANK_ACCOUNT_1>",
+      "raw_value": "987654321098",
+      "entity_type": "BANK_ACCOUNT",
+      "normalized_value": "987654321098",
+      "entity_id": "BANK_ACCOUNT:987654321098",
+      "native_label": "bank_account",
+      "policy_decision": "USER_APPROVAL",
+      "disclosure_allowed": true
+    }
+  },
+  "2c6422b3-0eb2-48b5-81d6-3d4c6f54c3c4": {
+    "<BANK_ACCOUNT_1>": {
+      "placeholder": "<BANK_ACCOUNT_1>",
+      "raw_value": "112233445566",
+      "entity_type": "BANK_ACCOUNT",
+      "normalized_value": "112233445566",
+      "entity_id": "BANK_ACCOUNT:112233445566",
+      "native_label": "bank_account",
+      "policy_decision": "USER_APPROVAL",
+      "disclosure_allowed": true
+    }
+  },
+  "e94349e6-0f6e-4530-86dc-3f2822df4308": {
+    "<BANK_ACCOUNT_1>": {
+      "placeholder": "<BANK_ACCOUNT_1>",
+      "raw_value": "123456789012",
+      "entity_type": "BANK_ACCOUNT",
+      "normalized_value": "123456789012",
+      "entity_id": "BANK_ACCOUNT:123456789012",
+      "native_label": "bank_account",
+      "policy_decision": "USER_APPROVAL",
+      "disclosure_allowed": true
+    }
+  },
+  "3622d718-ebbb-4d4f-b02f-0dd8fd32b31c": {
+    "<BANK_ACCOUNT_1>": {
+      "placeholder": "<BANK_ACCOUNT_1>",
+      "raw_value": "123456789012",
+      "entity_type": "BANK_ACCOUNT",
+      "normalized_value": "123456789012",
+      "entity_id": "BANK_ACCOUNT:123456789012",
+      "native_label": "bank_account",
+      "policy_decision": "USER_APPROVAL",
+      "disclosure_allowed": true
+    }
+  },
+  "c87f7f2a-de49-4278-9a43-debb51cd4ec3": {
+    "<NATIONAL_ID_1>": {
+      "placeholder": "<NATIONAL_ID_1>",
+      "raw_value": "456245627895",
+      "entity_type": "NATIONAL_ID",
+      "normalized_value": "456245627895",
+      "entity_id": "NATIONAL_ID:456245627895",
+      "native_label": "national_id",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "f3557e73-d80d-461c-9c8e-abd8e1e262b3": {
+    "<TAX_ID_1>": {
+      "placeholder": "<TAX_ID_1>",
+      "raw_value": "ABCDE1234F",
+      "entity_type": "TAX_ID",
+      "normalized_value": "ABCDE1234F",
+      "entity_id": "TAX_ID:ABCDE1234F",
+      "native_label": "tax_id",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "b45944c3-6508-40d9-8b5c-6a2e30ea0c78": {
+    "<PHONE_1>": {
+      "placeholder": "<PHONE_1>",
+      "raw_value": "9876543210",
+      "entity_type": "PHONE",
+      "normalized_value": "9876543210",
+      "entity_id": "PHONE:9876543210",
+      "native_label": "phone",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "749baedd-9b38-4c36-870c-44a2f71fee2f": {
+    "<PHONE_1>": {
+      "placeholder": "<PHONE_1>",
+      "raw_value": "9876543210",
+      "entity_type": "PHONE",
+      "normalized_value": "9876543210",
+      "entity_id": "PHONE:9876543210",
+      "native_label": "phone",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "e5580cce-37aa-41ee-aa98-00a573d6fc00": {
+    "<PERSON_1>": {
+      "placeholder": "<PERSON_1>",
+      "raw_value": "Anand",
+      "entity_type": "PERSON",
+      "normalized_value": "Anand",
+      "entity_id": "PERSON:Anand",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<DOB_1>": {
+      "placeholder": "<DOB_1>",
+      "raw_value": "Today",
+      "entity_type": "DOB",
+      "normalized_value": "Today",
+      "entity_id": "DOB:Today",
+      "native_label": "dob",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PASSWORD_1>": {
+      "placeholder": "<PASSWORD_1>",
+      "raw_value": "abcsghs",
+      "entity_type": "PASSWORD",
+      "normalized_value": "abcsghs",
+      "entity_id": "PASSWORD:abcsghs",
+      "native_label": "password",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    }
+  },
+  "cb8315fe-bb71-4048-bf0b-c236d858abd9": {
+    "<PERSON_1>": {
+      "placeholder": "<PERSON_1>",
+      "raw_value": "Julie Johnson",
+      "entity_type": "PERSON",
+      "normalized_value": "Julie Johnson",
+      "entity_id": "PERSON:Julie Johnson",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<EMAIL_1>": {
+      "placeholder": "<EMAIL_1>",
+      "raw_value": "julie@example.com",
+      "entity_type": "EMAIL",
+      "normalized_value": "julie@example.com",
+      "entity_id": "EMAIL:julie@example.com",
+      "native_label": "email",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "1aadc0c7-5632-4919-bb90-0143d4989351": {
+    "<PERSON_1>": {
+      "placeholder": "<PERSON_1>",
+      "raw_value": "julie johnson",
+      "entity_type": "PERSON",
+      "normalized_value": "julie johnson",
+      "entity_id": "PERSON:julie johnson",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PHONE_1>": {
+      "placeholder": "<PHONE_1>",
+      "raw_value": "9876543210",
+      "entity_type": "PHONE",
+      "normalized_value": "9876543210",
+      "entity_id": "PHONE:9876543210",
+      "native_label": "phone",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "c7f8c61c-c7ae-4206-8558-a0f0c2a12532": {
+    "<PERSON_1>": {
+      "placeholder": "<PERSON_1>",
+      "raw_value": "Dr. Julie Ann Johnson",
+      "entity_type": "PERSON",
+      "normalized_value": "Dr. Julie Ann Johnson",
+      "entity_id": "PERSON:Dr. Julie Ann Johnson",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<LOCATION_1>": {
+      "placeholder": "<LOCATION_1>",
+      "raw_value": "London",
+      "entity_type": "LOCATION",
+      "normalized_value": "London",
+      "entity_id": "LOCATION:London",
+      "native_label": "location",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "test-e2e-session": {
+    "<PERSON_1>": {
+      "placeholder": "<PERSON_1>",
+      "raw_value": "John Mathew",
+      "entity_type": "PERSON",
+      "normalized_value": "John Mathew",
+      "entity_id": "PERSON:John Mathew",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<EMAIL_1>": {
+      "placeholder": "<EMAIL_1>",
+      "raw_value": "john@gmail.com",
+      "entity_type": "EMAIL",
+      "normalized_value": "john@gmail.com",
+      "entity_id": "EMAIL:john@gmail.com",
+      "native_label": "email",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<ORG_1>": {
+      "placeholder": "<ORG_1>",
+      "raw_value": "ABC Technologies",
+      "entity_type": "ORGANIZATION",
+      "normalized_value": "ABC Technologies",
+      "entity_id": "ORGANIZATION:ABC Technologies",
+      "native_label": "organization",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<LOCATION_1>": {
+      "placeholder": "<LOCATION_1>",
+      "raw_value": "London",
+      "entity_type": "LOCATION",
+      "normalized_value": "London",
+      "entity_id": "LOCATION:London",
+      "native_label": "location",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "secret-session": {
+    "<PASSWORD_1>": {
+      "placeholder": "<PASSWORD_1>",
+      "raw_value": "SuperSecretDbPass!2025",
+      "entity_type": "PASSWORD",
+      "normalized_value": "SuperSecretDbPass!2025",
+      "entity_id": "PASSWORD:SuperSecretDbPass!2025",
+      "native_label": "password",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<API_KEY_1>": {
+      "placeholder": "<API_KEY_1>",
+      "raw_value": "sk-live-111122223333444455556666",
+      "entity_type": "API_KEY",
+      "normalized_value": "sk-live-111122223333444455556666",
+      "entity_id": "API_KEY:sk-live-111122223333444455556666",
+      "native_label": "api_key",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "2a7ccc78-7b93-4d66-8a42-ef584a720492": {
+    "<DATE_1>": {
+      "placeholder": "<DATE_1>",
+      "raw_value": "Yesterday",
+      "entity_type": "DATE",
+      "normalized_value": "Yesterday",
+      "entity_id": "DATE:Yesterday",
+      "native_label": "date",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PERSON_1>": {
+      "placeholder": "<PERSON_1>",
+      "raw_value": "Rahul Menon",
+      "entity_type": "PERSON",
+      "normalized_value": "Rahul Menon",
+      "entity_id": "PERSON:Rahul Menon",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<ORG_1>": {
+      "placeholder": "<ORG_1>",
+      "raw_value": "Infosys",
+      "entity_type": "ORGANIZATION",
+      "normalized_value": "Infosys",
+      "entity_id": "ORGANIZATION:Infosys",
+      "native_label": "organization",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PERSON_2>": {
+      "placeholder": "<PERSON_2>",
+      "raw_value": "Anjali Nair",
+      "entity_type": "PERSON",
+      "normalized_value": "Anjali Nair",
+      "entity_id": "PERSON:Anjali Nair",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<ORDER_ID_1>": {
+      "placeholder": "<ORDER_ID_1>",
+      "raw_value": "ORD-78291",
+      "entity_type": "ORDER_ID",
+      "normalized_value": "ORD-78291",
+      "entity_id": "ORDER_ID:ORD-78291",
+      "native_label": "order_id",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<LOCATION_1>": {
+      "placeholder": "<LOCATION_1>",
+      "raw_value": "Kochi",
+      "entity_type": "LOCATION",
+      "normalized_value": "Kochi",
+      "entity_id": "LOCATION:Kochi",
+      "native_label": "location",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<EMAIL_1>": {
+      "placeholder": "<EMAIL_1>",
+      "raw_value": "anjali.nair@gmail.com",
+      "entity_type": "EMAIL",
+      "normalized_value": "anjali.nair@gmail.com",
+      "entity_id": "EMAIL:anjali.nair@gmail.com",
+      "native_label": "email",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PHONE_1>": {
+      "placeholder": "<PHONE_1>",
+      "raw_value": "+91 9876543210",
+      "entity_type": "PHONE",
+      "normalized_value": "+919876543210",
+      "entity_id": "PHONE:+919876543210",
+      "native_label": "phone",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<CUSTOMER_ID_1>": {
+      "placeholder": "<CUSTOMER_ID_1>",
+      "raw_value": "CUST-10458",
+      "entity_type": "CUSTOMER_ID",
+      "normalized_value": "CUST-10458",
+      "entity_id": "CUSTOMER_ID:CUST-10458",
+      "native_label": "customer_id",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<IP_1>": {
+      "placeholder": "<IP_1>",
+      "raw_value": "192.168.1.45",
+      "entity_type": "IP_ADDRESS",
+      "normalized_value": "192.168.1.45",
+      "entity_id": "IP_ADDRESS:192.168.1.45",
+      "native_label": "ip_address",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "0ce354fa-ee92-4144-bf04-0df3a37036ae": {
+    "<PERSON_1>": {
+      "placeholder": "<PERSON_1>",
+      "raw_value": "Anand",
+      "entity_type": "PERSON",
+      "normalized_value": "Anand",
+      "entity_id": "PERSON:Anand",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "b321af0b-cddd-4d4c-854a-30859987f10c": {
+    "<PERSON_1>": {
+      "placeholder": "<PERSON_1>",
+      "raw_value": "Anand",
+      "entity_type": "PERSON",
+      "normalized_value": "Anand",
+      "entity_id": "PERSON:Anand",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PASSWORD_1>": {
+      "placeholder": "<PASSWORD_1>",
+      "raw_value": "abc123*",
+      "entity_type": "PASSWORD",
+      "normalized_value": "abc123*",
+      "entity_id": "PASSWORD:abc123*",
+      "native_label": "password",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<EMAIL_1>": {
+      "placeholder": "<EMAIL_1>",
+      "raw_value": "anand@gmail.com",
+      "entity_type": "EMAIL",
+      "normalized_value": "anand@gmail.com",
+      "entity_id": "EMAIL:anand@gmail.com",
+      "native_label": "email",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "421adfa7-c93a-4104-9ac0-f20c2069a8d6": {
+    "<EMAIL_1>": {
+      "placeholder": "<EMAIL_1>",
+      "raw_value": "rahul.menon@example.com",
+      "entity_type": "EMAIL",
+      "normalized_value": "rahul.menon@example.com",
+      "entity_id": "EMAIL:rahul.menon@example.com",
+      "native_label": "email",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    },
+    "<PHONE_1>": {
+      "placeholder": "<PHONE_1>",
+      "raw_value": "+91 9876543210",
+      "entity_type": "PHONE",
+      "normalized_value": "+919876543210",
+      "entity_id": "PHONE:+919876543210",
+      "native_label": "phone",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    },
+    "<BANK_ACCOUNT_1>": {
+      "placeholder": "<BANK_ACCOUNT_1>",
+      "raw_value": "7845129630",
+      "entity_type": "BANK_ACCOUNT",
+      "normalized_value": "7845129630",
+      "entity_id": "BANK_ACCOUNT:7845129630",
+      "native_label": "bank_account",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    },
+    "<IP_ADDRESS_1>": {
+      "placeholder": "<IP_ADDRESS_1>",
+      "raw_value": "192.168.10.45",
+      "entity_type": "IP_ADDRESS",
+      "normalized_value": "192.168.10.45",
+      "entity_id": "IP_ADDRESS:192.168.10.45",
+      "native_label": "ip_address",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<API_KEY_1>": {
+      "placeholder": "<API_KEY_1>",
+      "raw_value": "sk-test-ABCD123456",
+      "entity_type": "API_KEY",
+      "normalized_value": "sk-test-ABCD123456",
+      "entity_id": "API_KEY:sk-test-ABCD123456",
+      "native_label": "api_key",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    }
+  },
+  "e63fcad2-f121-4546-878d-7e0f0e88366e": {
+    "<EMAIL_1>": {
+      "placeholder": "<EMAIL_1>",
+      "raw_value": "rahul.menon@example.com",
+      "entity_type": "EMAIL",
+      "normalized_value": "rahul.menon@example.com",
+      "entity_id": "EMAIL:rahul.menon@example.com",
+      "native_label": "email",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    },
+    "<PHONE_1>": {
+      "placeholder": "<PHONE_1>",
+      "raw_value": "+91 9876543210",
+      "entity_type": "PHONE",
+      "normalized_value": "+919876543210",
+      "entity_id": "PHONE:+919876543210",
+      "native_label": "phone",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    },
+    "<BANK_ACCOUNT_1>": {
+      "placeholder": "<BANK_ACCOUNT_1>",
+      "raw_value": "7845129630",
+      "entity_type": "BANK_ACCOUNT",
+      "normalized_value": "7845129630",
+      "entity_id": "BANK_ACCOUNT:7845129630",
+      "native_label": "bank_account",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    },
+    "<IP_ADDRESS_1>": {
+      "placeholder": "<IP_ADDRESS_1>",
+      "raw_value": "192.168.10.45",
+      "entity_type": "IP_ADDRESS",
+      "normalized_value": "192.168.10.45",
+      "entity_id": "IP_ADDRESS:192.168.10.45",
+      "native_label": "ip_address",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<API_KEY_1>": {
+      "placeholder": "<API_KEY_1>",
+      "raw_value": "sk-test-ABCD123456",
+      "entity_type": "API_KEY",
+      "normalized_value": "sk-test-ABCD123456",
+      "entity_id": "API_KEY:sk-test-ABCD123456",
+      "native_label": "api_key",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    }
+  },
+  "34bb7593-ebe3-4332-bdc6-3c32df39c565": {
+    "<PHONE_1>": {
+      "placeholder": "<PHONE_1>",
+      "raw_value": "+1-555-019-2831",
+      "entity_type": "PHONE",
+      "normalized_value": "+15550192831",
+      "entity_id": "PHONE:+15550192831",
+      "native_label": "phone",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    }
+  },
+  "0ff2cffb-c917-4247-a9c8-6b38e7e97b71": {
+    "<PHONE_1>": {
+      "placeholder": "<PHONE_1>",
+      "raw_value": "+1-555-019-2831",
+      "entity_type": "PHONE",
+      "normalized_value": "+15550192831",
+      "entity_id": "PHONE:+15550192831",
+      "native_label": "phone",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    }
+  },
+  "34de33c5-9fbd-41d2-b73c-f3b7320571c2": {
+    "<EMAIL_1>": {
+      "placeholder": "<EMAIL_1>",
+      "raw_value": "sarah.j@enterprise.org",
+      "entity_type": "EMAIL",
+      "normalized_value": "sarah.j@enterprise.org",
+      "entity_id": "EMAIL:sarah.j@enterprise.org",
+      "native_label": "email",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    }
+  },
+  "7fd4e140-1891-40d5-84f2-9f574de09b76": {
+    "<EMAIL_1>": {
+      "placeholder": "<EMAIL_1>",
+      "raw_value": "sarah.j@enterprise.org",
+      "entity_type": "EMAIL",
+      "normalized_value": "sarah.j@enterprise.org",
+      "entity_id": "EMAIL:sarah.j@enterprise.org",
+      "native_label": "email",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    }
+  },
+  "f4d12658-c340-4643-ad58-e6472c3537f9": {
+    "<BANK_ACCOUNT_1>": {
+      "placeholder": "<BANK_ACCOUNT_1>",
+      "raw_value": "9948210345",
+      "entity_type": "BANK_ACCOUNT",
+      "normalized_value": "9948210345",
+      "entity_id": "BANK_ACCOUNT:9948210345",
+      "native_label": "bank_account",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    }
+  },
+  "ce5f626c-a5e0-4d96-8789-9310f1af0ef1": {
+    "<BANK_ACCOUNT_1>": {
+      "placeholder": "<BANK_ACCOUNT_1>",
+      "raw_value": "9948210345",
+      "entity_type": "BANK_ACCOUNT",
+      "normalized_value": "9948210345",
+      "entity_id": "BANK_ACCOUNT:9948210345",
+      "native_label": "bank_account",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    }
+  },
+  "d0818b8a-1cb5-4a97-a51a-f94d62176677": {
+    "<PERSON_1>": {
+      "placeholder": "<PERSON_1>",
+      "raw_value": "Marcus Vance",
+      "entity_type": "PERSON",
+      "normalized_value": "Marcus Vance",
+      "entity_id": "PERSON:Marcus Vance",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PASSWORD_1>": {
+      "placeholder": "<PASSWORD_1>",
+      "raw_value": "P@ssw0rd9982!",
+      "entity_type": "PASSWORD",
+      "normalized_value": "P@ssw0rd9982!",
+      "entity_id": "PASSWORD:P@ssw0rd9982!",
+      "native_label": "password",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    },
+    "<API_KEY_1>": {
+      "placeholder": "<API_KEY_1>",
+      "raw_value": "sk-test-SEC998822",
+      "entity_type": "API_KEY",
+      "normalized_value": "sk-test-SEC998822",
+      "entity_id": "API_KEY:sk-test-SEC998822",
+      "native_label": "api_key",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    }
+  },
+  "bea3944f-6625-40c0-ac3f-7859f4ec6bd2": {
+    "<PERSON_1>": {
+      "placeholder": "<PERSON_1>",
+      "raw_value": "Marcus Vance",
+      "entity_type": "PERSON",
+      "normalized_value": "Marcus Vance",
+      "entity_id": "PERSON:Marcus Vance",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PASSWORD_1>": {
+      "placeholder": "<PASSWORD_1>",
+      "raw_value": "P@ssw0rd9982!",
+      "entity_type": "PASSWORD",
+      "normalized_value": "P@ssw0rd9982!",
+      "entity_id": "PASSWORD:P@ssw0rd9982!",
+      "native_label": "password",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    },
+    "<API_KEY_1>": {
+      "placeholder": "<API_KEY_1>",
+      "raw_value": "sk-test-SEC998822",
+      "entity_type": "API_KEY",
+      "normalized_value": "sk-test-SEC998822",
+      "entity_id": "API_KEY:sk-test-SEC998822",
+      "native_label": "api_key",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    }
+  },
+  "78371fb1-d5a8-439c-8a6e-250d6fed831c": {
+    "<EMAIL_1>": {
+      "placeholder": "<EMAIL_1>",
+      "raw_value": "david.m@domain.com",
+      "entity_type": "EMAIL",
+      "normalized_value": "david.m@domain.com",
+      "entity_id": "EMAIL:david.m@domain.com",
+      "native_label": "email",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    },
+    "<PHONE_1>": {
+      "placeholder": "<PHONE_1>",
+      "raw_value": "+91 9123456780",
+      "entity_type": "PHONE",
+      "normalized_value": "+919123456780",
+      "entity_id": "PHONE:+919123456780",
+      "native_label": "phone",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    },
+    "<BANK_ACCOUNT_1>": {
+      "placeholder": "<BANK_ACCOUNT_1>",
+      "raw_value": "4410293847",
+      "entity_type": "BANK_ACCOUNT",
+      "normalized_value": "4410293847",
+      "entity_id": "BANK_ACCOUNT:4410293847",
+      "native_label": "bank_account",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    }
+  },
+  "750c3138-7ce5-4dc6-acc6-1404854729ec": {
+    "<EMAIL_1>": {
+      "placeholder": "<EMAIL_1>",
+      "raw_value": "david.m@domain.com",
+      "entity_type": "EMAIL",
+      "normalized_value": "david.m@domain.com",
+      "entity_id": "EMAIL:david.m@domain.com",
+      "native_label": "email",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    },
+    "<PHONE_1>": {
+      "placeholder": "<PHONE_1>",
+      "raw_value": "+91 9123456780",
+      "entity_type": "PHONE",
+      "normalized_value": "+919123456780",
+      "entity_id": "PHONE:+919123456780",
+      "native_label": "phone",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    },
+    "<BANK_ACCOUNT_1>": {
+      "placeholder": "<BANK_ACCOUNT_1>",
+      "raw_value": "4410293847",
+      "entity_type": "BANK_ACCOUNT",
+      "normalized_value": "4410293847",
+      "entity_id": "BANK_ACCOUNT:4410293847",
+      "native_label": "bank_account",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    }
+  },
+  "d09e93dc-f21d-430d-a991-1b19bc6a87b3": {
+    "<EMAIL_1>": {
+      "placeholder": "<EMAIL_1>",
+      "raw_value": "priya.nair@example.com",
+      "entity_type": "EMAIL",
+      "normalized_value": "priya.nair@example.com",
+      "entity_id": "EMAIL:priya.nair@example.com",
+      "native_label": "email",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PHONE_1>": {
+      "placeholder": "<PHONE_1>",
+      "raw_value": "+91 9876543210",
+      "entity_type": "PHONE",
+      "normalized_value": "+919876543210",
+      "entity_id": "PHONE:+919876543210",
+      "native_label": "phone",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    },
+    "<CUSTOMER_ID_1>": {
+      "placeholder": "<CUSTOMER_ID_1>",
+      "raw_value": "CUST-84621",
+      "entity_type": "CUSTOMER_ID",
+      "normalized_value": "CUST-84621",
+      "entity_id": "CUSTOMER_ID:CUST-84621",
+      "native_label": "customer_id",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    },
+    "<EMAIL_2>": {
+      "placeholder": "<EMAIL_2>",
+      "raw_value": "arjun.menon@technova.example",
+      "entity_type": "EMAIL",
+      "normalized_value": "arjun.menon@technova.example",
+      "entity_id": "EMAIL:arjun.menon@technova.example",
+      "native_label": "email",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<IP_ADDRESS_1>": {
+      "placeholder": "<IP_ADDRESS_1>",
+      "raw_value": "192.168.1.100",
+      "entity_type": "IP_ADDRESS",
+      "normalized_value": "192.168.1.100",
+      "entity_id": "IP_ADDRESS:192.168.1.100",
+      "native_label": "ip_address",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    },
+    "<API_KEY_1>": {
+      "placeholder": "<API_KEY_1>",
+      "raw_value": "sk-test-TN998811",
+      "entity_type": "API_KEY",
+      "normalized_value": "sk-test-TN998811",
+      "entity_id": "API_KEY:sk-test-TN998811",
+      "native_label": "api_key",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    }
+  },
+  "5344e5f6-e5df-4098-9560-aabb2aa65052": {
+    "<PERSON_1>": {
+      "placeholder": "<PERSON_1>",
+      "raw_value": "manasa",
+      "entity_type": "PERSON",
+      "normalized_value": "manasa",
+      "entity_id": "PERSON:manasa",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<EMAIL_1>": {
+      "placeholder": "<EMAIL_1>",
+      "raw_value": "mani@gmail.com",
+      "entity_type": "EMAIL",
+      "normalized_value": "mani@gmail.com",
+      "entity_id": "EMAIL:mani@gmail.com",
+      "native_label": "email",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PASSWORD_1>": {
+      "placeholder": "<PASSWORD_1>",
+      "raw_value": "1234",
+      "entity_type": "PASSWORD",
+      "normalized_value": "1234",
+      "entity_id": "PASSWORD:1234",
+      "native_label": "password",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    }
+  },
+  "115eddcc-b76b-468d-b4c8-1b628cb3d3bd": {},
+  "1ab2a889-bc11-40a6-967e-bb473590f8ee": {
+    "<PERSON_1>": {
+      "placeholder": "<PERSON_1>",
+      "raw_value": "Johnathan Miller",
+      "entity_type": "PERSON",
+      "normalized_value": "Johnathan Miller",
+      "entity_id": "PERSON:Johnathan Miller",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "3b9516b7-1ea3-4a72-8e9a-62b04a4ca0d1": {
+    "<PERSON_1>": {
+      "placeholder": "<PERSON_1>",
+      "raw_value": "Anand",
+      "entity_type": "PERSON",
+      "normalized_value": "Anand",
+      "entity_id": "PERSON:Anand",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "01bcb4da-8d6e-4e42-9f8d-b27b01282bbb": {
+    "<PERSON_1>": {
+      "placeholder": "<PERSON_1>",
+      "raw_value": "Priya Nair",
+      "entity_type": "PERSON",
+      "normalized_value": "Priya Nair",
+      "entity_id": "PERSON:Priya Nair",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "91c4baff-ed9b-4307-b2e1-546781922d81": {},
+  "ed1ec310-e94e-4dd9-8e8d-c35c622e2967": {},
+  "025974ad-b514-40a5-a222-0edc473017f3": {
+    "<NATIONAL_ID_1>": {
+      "placeholder": "<NATIONAL_ID_1>",
+      "raw_value": "456245627895",
+      "entity_type": "NATIONAL_ID",
+      "normalized_value": "456245627895",
+      "entity_id": "NATIONAL_ID:456245627895",
+      "native_label": "national_id",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "c6bafdd0-f83b-4ea1-99b4-5292c6776308": {
+    "<NATIONAL_ID_1>": {
+      "placeholder": "<NATIONAL_ID_1>",
+      "raw_value": "4562 4562 7895",
+      "entity_type": "NATIONAL_ID",
+      "normalized_value": "456245627895",
+      "entity_id": "NATIONAL_ID:456245627895",
+      "native_label": "national_id",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "6e800d1a-1571-4cea-a052-17136b486d29": {
+    "<TAX_ID_1>": {
+      "placeholder": "<TAX_ID_1>",
+      "raw_value": "ABCDE1234F",
+      "entity_type": "TAX_ID",
+      "normalized_value": "ABCDE1234F",
+      "entity_id": "TAX_ID:ABCDE1234F",
+      "native_label": "tax_id",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "153cc36d-6ce8-43f2-a65a-2970d9eae6b1": {},
+  "7417b125-2a26-40eb-9ca6-54811612635b": {
+    "<PHONE_1>": {
+      "placeholder": "<PHONE_1>",
+      "raw_value": "9845124523",
+      "entity_type": "PHONE",
+      "normalized_value": "9845124523",
+      "entity_id": "PHONE:9845124523",
+      "native_label": "phone",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "76151e8e-f080-4608-9709-6d6325cf129e": {
+    "<PHONE_1>": {
+      "placeholder": "<PHONE_1>",
+      "raw_value": "+1 (202) 555-0199",
+      "entity_type": "PHONE",
+      "normalized_value": "+12025550199",
+      "entity_id": "PHONE:+12025550199",
+      "native_label": "phone",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "260d4816-8f65-453f-a96b-c42aa3376fcb": {
+    "<PHONE_1>": {
+      "placeholder": "<PHONE_1>",
+      "raw_value": "020 7946 0958",
+      "entity_type": "PHONE",
+      "normalized_value": "02079460958",
+      "entity_id": "PHONE:02079460958",
+      "native_label": "phone",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "ffc8cfbb-1ebd-48a6-a801-6033fa6263fb": {
+    "<PERSON_1>": {
+      "placeholder": "<PERSON_1>",
+      "raw_value": "Tariq",
+      "entity_type": "PERSON",
+      "normalized_value": "Tariq",
+      "entity_id": "PERSON:Tariq",
+      "native_label": "person",
+      "policy_decision": "USER_APPROVAL",
+      "disclosure_allowed": true
+    },
+    "<PHONE_1>": {
+      "placeholder": "<PHONE_1>",
+      "raw_value": "+971 50 123 4567",
+      "entity_type": "PHONE",
+      "normalized_value": "+971501234567",
+      "entity_id": "PHONE:+971501234567",
+      "native_label": "phone",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "26f50ba5-3cdc-401e-815f-438c269c53f2": {
+    "<DRIVER_LICENSE_1>": {
+      "placeholder": "<DRIVER_LICENSE_1>",
+      "raw_value": "DL-1420110012345",
+      "entity_type": "DRIVER_LICENSE",
+      "normalized_value": "DL-1420110012345",
+      "entity_id": "DRIVER_LICENSE:DL-1420110012345",
+      "native_label": "driver_license",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "07efb2e8-e64b-462c-9f82-08a7e1a7a69b": {
+    "<PERSON_1>": {
+      "placeholder": "<PERSON_1>",
+      "raw_value": "rahul s7",
+      "entity_type": "PERSON",
+      "normalized_value": "rahul s7",
+      "entity_id": "PERSON:rahul s7",
+      "native_label": "person",
+      "policy_decision": "USER_APPROVAL",
+      "disclosure_allowed": true
+    }
+  },
+  "5c1ece27-2c84-4ac9-bffd-2a40f96d26fd": {
+    "<PERSON_1>": {
+      "placeholder": "<PERSON_1>",
+      "raw_value": "John Mathew",
+      "entity_type": "PERSON",
+      "normalized_value": "John Mathew",
+      "entity_id": "PERSON:John Mathew",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "b76d6981-795d-4a22-9d17-bbbc1ea3571e": {
+    "<PASSWORD_1>": {
+      "placeholder": "<PASSWORD_1>",
+      "raw_value": "Apple#123",
+      "entity_type": "PASSWORD",
+      "normalized_value": "Apple#123",
+      "entity_id": "PASSWORD:Apple#123",
+      "native_label": "password",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "6af07d87-7cc1-4173-b32d-f89d1235aa45": {
+    "<PASSWORD_1>": {
+      "placeholder": "<PASSWORD_1>",
+      "raw_value": "Apple#123",
+      "entity_type": "PASSWORD",
+      "normalized_value": "Apple#123",
+      "entity_id": "PASSWORD:Apple#123",
+      "native_label": "password",
+      "policy_decision": "USER_APPROVAL",
+      "disclosure_allowed": true
+    }
+  },
+  "d17aea16-20ba-4d30-b44f-e109b79c7497": {
+    "<PERSON_1>": {
+      "placeholder": "<PERSON_1>",
+      "raw_value": "Elena Rodriguez",
+      "entity_type": "PERSON",
+      "normalized_value": "Elena Rodriguez",
+      "entity_id": "PERSON:Elena Rodriguez",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PASSWORD_1>": {
+      "placeholder": "<PASSWORD_1>",
+      "raw_value": "Apple#123",
+      "entity_type": "PASSWORD",
+      "normalized_value": "Apple#123",
+      "entity_id": "PASSWORD:Apple#123",
+      "native_label": "password",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "6c9fa7a0-5959-44c1-8248-b9c53585eab4": {
+    "<EMAIL_1>": {
+      "placeholder": "<EMAIL_1>",
+      "raw_value": "john@example.com",
+      "entity_type": "EMAIL",
+      "normalized_value": "john@example.com",
+      "entity_id": "EMAIL:john@example.com",
+      "native_label": "email",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "141c2373-dc57-4d0b-beb8-066962c6b748": {
+    "<EMAIL_1>": {
+      "placeholder": "<EMAIL_1>",
+      "raw_value": "john@example.com",
+      "entity_type": "EMAIL",
+      "normalized_value": "john@example.com",
+      "entity_id": "EMAIL:john@example.com",
+      "native_label": "email",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<EMAIL_2>": {
+      "placeholder": "<EMAIL_2>",
+      "raw_value": "alice@example.com",
+      "entity_type": "EMAIL",
+      "normalized_value": "alice@example.com",
+      "entity_id": "EMAIL:alice@example.com",
+      "native_label": "email",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "804c4922-63e6-4151-a778-6fb154c0208b": {
+    "<CONNECTION_STRING_1>": {
+      "placeholder": "<CONNECTION_STRING_1>",
+      "raw_value": "postgresql://erodriguez:Secret123@db.example.com:5432/payroll",
+      "entity_type": "CONNECTION_STRING",
+      "normalized_value": "postgresql://erodriguez:Secret123@db.example.com:5432/payroll",
+      "entity_id": "CONNECTION_STRING:postgresql://erodriguez:Secret123@db.example.com:5432/payroll",
+      "native_label": "connection_string",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "3a370122-f6b4-488d-b3d2-9243b490d20f": {
+    "<DOB_1>": {
+      "placeholder": "<DOB_1>",
+      "raw_value": "17 September 1994",
+      "entity_type": "DOB",
+      "normalized_value": "17 September 1994",
+      "entity_id": "DOB:17 September 1994",
+      "native_label": "dob",
+      "policy_decision": "USER_APPROVAL",
+      "disclosure_allowed": true
+    }
+  },
+  "15487fb9-b375-4437-82fd-0f2afcdd4a9a": {
+    "<IP_ADDRESS_1>": {
+      "placeholder": "<IP_ADDRESS_1>",
+      "raw_value": "10.0.0.1",
+      "entity_type": "IP_ADDRESS",
+      "normalized_value": "10.0.0.1",
+      "entity_id": "IP_ADDRESS:10.0.0.1",
+      "native_label": "ip_address",
+      "policy_decision": "REVIEW",
+      "disclosure_allowed": true
+    }
+  },
+  "36c540f6-f764-40d8-bc41-4d3465453519": {
+    "<API_KEY_1>": {
+      "placeholder": "<API_KEY_1>",
+      "raw_value": "sk-live-abc1234567890def12345678",
+      "entity_type": "API_KEY",
+      "normalized_value": "sk-live-abc1234567890def12345678",
+      "entity_id": "API_KEY:sk-live-abc1234567890def12345678",
+      "native_label": "api_key",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "6abebe27-6388-4207-abf1-5864499fb591": {
+    "<DOB_1>": {
+      "placeholder": "<DOB_1>",
+      "raw_value": "15 August 1990",
+      "entity_type": "DOB",
+      "normalized_value": "15 August 1990",
+      "entity_id": "DOB:15 August 1990",
+      "native_label": "dob",
+      "policy_decision": "USER_APPROVAL",
+      "disclosure_allowed": true
+    }
+  },
+  "ff798f56-bb5d-4fdf-b49a-c72299e2cabf": {
+    "<IP_ADDRESS_1>": {
+      "placeholder": "<IP_ADDRESS_1>",
+      "raw_value": "192.168.1.100",
+      "entity_type": "IP_ADDRESS",
+      "normalized_value": "192.168.1.100",
+      "entity_id": "IP_ADDRESS:192.168.1.100",
+      "native_label": "ip_address",
+      "policy_decision": "REVIEW",
+      "disclosure_allowed": true
+    }
+  },
+  "5136209d-1adb-4ec4-9042-35e836880dc8": {
+    "<CREDIT_CARD_1>": {
+      "placeholder": "<CREDIT_CARD_1>",
+      "raw_value": "4111111111111111",
+      "entity_type": "CREDIT_CARD",
+      "normalized_value": "4111111111111111",
+      "entity_id": "CREDIT_CARD:4111111111111111",
+      "native_label": "credit_card",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "6f066046-6e8c-46a9-92bc-45aa8ffc8817": {
+    "<EMAIL_1>": {
+      "placeholder": "<EMAIL_1>",
+      "raw_value": "john@a.com",
+      "entity_type": "EMAIL",
+      "normalized_value": "john@a.com",
+      "entity_id": "EMAIL:john@a.com",
+      "native_label": "email",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "87dcc2fb-4606-4cfd-802b-1d5fd5e4c343": {
+    "<PERSON_1>": {
+      "placeholder": "<PERSON_1>",
+      "raw_value": "John",
+      "entity_type": "PERSON",
+      "normalized_value": "John",
+      "entity_id": "PERSON:John",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "ee1b0ff7-c5fe-4e1e-8a5f-05c7f983a4ed": {
+    "<CONNECTION_STRING_1>": {
+      "placeholder": "<CONNECTION_STRING_1>",
+      "raw_value": "postgresql://admin:P@ssw0rd@db.host:5432/prod",
+      "entity_type": "CONNECTION_STRING",
+      "normalized_value": "postgresql://admin:P@ssw0rd@db.host:5432/prod",
+      "entity_id": "CONNECTION_STRING:postgresql://admin:P@ssw0rd@db.host:5432/prod",
+      "native_label": "connection_string",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "d92fc2a5-19f0-462b-a33e-21250e36a2f7": {
+    "<PASSWORD_1>": {
+      "placeholder": "<PASSWORD_1>",
+      "raw_value": "Apple#123",
+      "entity_type": "PASSWORD",
+      "normalized_value": "Apple#123",
+      "entity_id": "PASSWORD:Apple#123",
+      "native_label": "password",
+      "policy_decision": "USER_APPROVAL",
+      "disclosure_allowed": false
+    }
+  },
+  "e92db7a1-d553-47df-b2fc-e06722294033": {},
+  "b48debd5-4c7f-4834-8b1d-1c1253883e18": {
+    "<PASSWORD_1>": {
+      "placeholder": "<PASSWORD_1>",
+      "raw_value": "Apple#123",
+      "entity_type": "PASSWORD",
+      "normalized_value": "Apple#123",
+      "entity_id": "PASSWORD:Apple#123",
+      "native_label": "password",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    }
+  },
+  "81ca23c4-2695-4713-9c66-f2e27200fd79": {},
+  "60f57aec-edb4-4761-b06f-45d96187ad69": {
+    "<API_KEY_1>": {
+      "placeholder": "<API_KEY_1>",
+      "raw_value": "sk-live-abc1234567890def12345678",
+      "entity_type": "API_KEY",
+      "normalized_value": "sk-live-abc1234567890def12345678",
+      "entity_id": "API_KEY:sk-live-abc1234567890def12345678",
+      "native_label": "api_key",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    }
+  },
+  "6eca073a-6f54-4bf4-8e70-b8ddddeb2da7": {
+    "<DOB_1>": {
+      "placeholder": "<DOB_1>",
+      "raw_value": "17 September 1994",
+      "entity_type": "DOB",
+      "normalized_value": "17 September 1994",
+      "entity_id": "DOB:17 September 1994",
+      "native_label": "dob",
+      "policy_decision": "USER_APPROVAL",
+      "disclosure_allowed": false
+    }
+  },
+  "f2b7b63e-0778-4fb0-861e-2cdecc60ddbb": {
+    "<EMAIL_1>": {
+      "placeholder": "<EMAIL_1>",
+      "raw_value": "john.doe@example.com",
+      "entity_type": "EMAIL",
+      "normalized_value": "john.doe@example.com",
+      "entity_id": "EMAIL:john.doe@example.com",
+      "native_label": "email",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<API_KEY_1>": {
+      "placeholder": "<API_KEY_1>",
+      "raw_value": "sk-test-SECRET123456",
+      "entity_type": "API_KEY",
+      "normalized_value": "sk-test-SECRET123456",
+      "entity_id": "API_KEY:sk-test-SECRET123456",
+      "native_label": "api_key",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    }
+  },
+  "0db15f21-b399-45e0-8331-110449b28249": {
+    "<EMAIL_1>": {
+      "placeholder": "<EMAIL_1>",
+      "raw_value": "agent.smith@matrix.com",
+      "entity_type": "EMAIL",
+      "normalized_value": "agent.smith@matrix.com",
+      "entity_id": "EMAIL:agent.smith@matrix.com",
+      "native_label": "email",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<API_KEY_1>": {
+      "placeholder": "<API_KEY_1>",
+      "raw_value": "sk-live-SECRET99",
+      "entity_type": "API_KEY",
+      "normalized_value": "sk-live-SECRET99",
+      "entity_id": "API_KEY:sk-live-SECRET99",
+      "native_label": "api_key",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    }
+  },
+  "33880b85-da8a-4f1c-8050-a11ea25965b7": {
+    "<PERSON_1>": {
+      "placeholder": "<PERSON_1>",
+      "raw_value": "Priya Nair",
+      "entity_type": "PERSON",
+      "normalized_value": "Priya Nair",
+      "entity_id": "PERSON:Priya Nair",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<EMAIL_1>": {
+      "placeholder": "<EMAIL_1>",
+      "raw_value": "priya@example.com",
+      "entity_type": "EMAIL",
+      "normalized_value": "priya@example.com",
+      "entity_id": "EMAIL:priya@example.com",
+      "native_label": "email",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "6936882a-b868-48c0-bcdb-698ca0a9ee89": {
+    "<EMAIL_1>": {
+      "placeholder": "<EMAIL_1>",
+      "raw_value": "john.doe@example.com",
+      "entity_type": "EMAIL",
+      "normalized_value": "john.doe@example.com",
+      "entity_id": "EMAIL:john.doe@example.com",
+      "native_label": "email",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<API_KEY_1>": {
+      "placeholder": "<API_KEY_1>",
+      "raw_value": "sk-test-SECRET123456",
+      "entity_type": "API_KEY",
+      "normalized_value": "sk-test-SECRET123456",
+      "entity_id": "API_KEY:sk-test-SECRET123456",
+      "native_label": "api_key",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    }
+  },
+  "f45f5fe0-c3ec-453f-8532-f301eba80bee": {
+    "<EMAIL_1>": {
+      "placeholder": "<EMAIL_1>",
+      "raw_value": "agent.smith@matrix.com",
+      "entity_type": "EMAIL",
+      "normalized_value": "agent.smith@matrix.com",
+      "entity_id": "EMAIL:agent.smith@matrix.com",
+      "native_label": "email",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<API_KEY_1>": {
+      "placeholder": "<API_KEY_1>",
+      "raw_value": "sk-live-SECRET99",
+      "entity_type": "API_KEY",
+      "normalized_value": "sk-live-SECRET99",
+      "entity_id": "API_KEY:sk-live-SECRET99",
+      "native_label": "api_key",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    }
+  },
+  "afdee8e8-a9ac-4064-a06d-9515f96c8212": {
+    "<PERSON_1>": {
+      "placeholder": "<PERSON_1>",
+      "raw_value": "Priya Nair",
+      "entity_type": "PERSON",
+      "normalized_value": "Priya Nair",
+      "entity_id": "PERSON:Priya Nair",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<EMAIL_1>": {
+      "placeholder": "<EMAIL_1>",
+      "raw_value": "priya@example.com",
+      "entity_type": "EMAIL",
+      "normalized_value": "priya@example.com",
+      "entity_id": "EMAIL:priya@example.com",
+      "native_label": "email",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "502ea1c5-6a99-435b-befa-9554dc0f0000": {
+    "<PERSON_1>": {
+      "placeholder": "<PERSON_1>",
+      "raw_value": "jerin",
+      "entity_type": "PERSON",
+      "normalized_value": "jerin",
+      "entity_id": "PERSON:jerin",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PASSWORD_1>": {
+      "placeholder": "<PASSWORD_1>",
+      "raw_value": "123456",
+      "entity_type": "PASSWORD",
+      "normalized_value": "123456",
+      "entity_id": "PASSWORD:123456",
+      "native_label": "password",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    }
+  },
+  "99573e39-a89b-41ea-b751-07420294333f": {
+    "<TICKET_ID_1>": {
+      "placeholder": "<TICKET_ID_1>",
+      "raw_value": "INC-94821",
+      "entity_type": "TICKET_ID",
+      "normalized_value": "INC-94821",
+      "entity_id": "TICKET_ID:INC-94821",
+      "native_label": "ticket_id",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PERSON_1>": {
+      "placeholder": "<PERSON_1>",
+      "raw_value": "Western European",
+      "entity_type": "PERSON",
+      "normalized_value": "Western European",
+      "entity_id": "PERSON:Western European",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PERSON_2>": {
+      "placeholder": "<PERSON_2>",
+      "raw_value": "Marcus",
+      "entity_type": "PERSON",
+      "normalized_value": "Marcus",
+      "entity_id": "PERSON:Marcus",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<USER_ID_1>": {
+      "placeholder": "<USER_ID_1>",
+      "raw_value": "EMP-49201",
+      "entity_type": "USER_ID",
+      "normalized_value": "EMP-49201",
+      "entity_id": "USER_ID:EMP-49201",
+      "native_label": "user_id",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<EMAIL_1>": {
+      "placeholder": "<EMAIL_1>",
+      "raw_value": "marcus.vance@apexcloud-internal.net",
+      "entity_type": "EMAIL",
+      "normalized_value": "marcus.vance@apexcloud-internal.net",
+      "entity_id": "EMAIL:marcus.vance@apexcloud-internal.net",
+      "native_label": "email",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PHONE_1>": {
+      "placeholder": "<PHONE_1>",
+      "raw_value": "+353-1-496-0199",
+      "entity_type": "PHONE",
+      "normalized_value": "+35314960199",
+      "entity_id": "PHONE:+35314960199",
+      "native_label": "phone",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<IP_ADDRESS_1>": {
+      "placeholder": "<IP_ADDRESS_1>",
+      "raw_value": "10.240.18.42",
+      "entity_type": "IP_ADDRESS",
+      "normalized_value": "10.240.18.42",
+      "entity_id": "IP_ADDRESS:10.240.18.42",
+      "native_label": "ip_address",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<IP_ADDRESS_2>": {
+      "placeholder": "<IP_ADDRESS_2>",
+      "raw_value": "192.168.104.15",
+      "entity_type": "IP_ADDRESS",
+      "normalized_value": "192.168.104.15",
+      "entity_id": "IP_ADDRESS:192.168.104.15",
+      "native_label": "ip_address",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<MAC_ADDRESS_1>": {
+      "placeholder": "<MAC_ADDRESS_1>",
+      "raw_value": "00:1A:2B:3C:4D:5E",
+      "entity_type": "MAC_ADDRESS",
+      "normalized_value": "00:1A:2B:3C:4D:5E",
+      "entity_id": "MAC_ADDRESS:00:1A:2B:3C:4D:5E",
+      "native_label": "mac_address",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PERSON_3>": {
+      "placeholder": "<PERSON_3>",
+      "raw_value": "Chloe Bennett",
+      "entity_type": "PERSON",
+      "normalized_value": "Chloe Bennett",
+      "entity_id": "PERSON:Chloe Bennett",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<EMAIL_2>": {
+      "placeholder": "<EMAIL_2>",
+      "raw_value": "c.bennett@apexcloud-internal.net",
+      "entity_type": "EMAIL",
+      "normalized_value": "c.bennett@apexcloud-internal.net",
+      "entity_id": "EMAIL:c.bennett@apexcloud-internal.net",
+      "native_label": "email",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<USER_ID_2>": {
+      "placeholder": "<USER_ID_2>",
+      "raw_value": "usr_cbennett_88",
+      "entity_type": "USER_ID",
+      "normalized_value": "usr_cbennett_88",
+      "entity_id": "USER_ID:usr_cbennett_88",
+      "native_label": "user_id",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<CONNECTION_STRING_1>": {
+      "placeholder": "<CONNECTION_STRING_1>",
+      "raw_value": "postgresql://apex_admin:VanceDB%23Secure2026!@db-primary.eu-west-1.rds.amazonaws.com:5432/production_ledger",
+      "entity_type": "CONNECTION_STRING",
+      "normalized_value": "postgresql://apex_admin:VanceDB%23Secure2026!@db-primary.eu-west-1.rds.amazonaws.com:5432/production_ledger",
+      "entity_id": "CONNECTION_STRING:postgresql://apex_admin:VanceDB%23Secure2026!@db-primary.eu-west-1.rds.amazonaws.com:5432/production_ledger",
+      "native_label": "connection_string",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    },
+    "<API_KEY_1>": {
+      "placeholder": "<API_KEY_1>",
+      "raw_value": "AKIAIOSFODNN7EXAMPLE",
+      "entity_type": "API_KEY",
+      "normalized_value": "AKIAIOSFODNN7EXAMPLE",
+      "entity_id": "API_KEY:AKIAIOSFODNN7EXAMPLE",
+      "native_label": "api_key",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    },
+    "<API_KEY_2>": {
+      "placeholder": "<API_KEY_2>",
+      "raw_value": "ghp_99xKlmZ018aBcDeFgHiJkLmNoPqRsTuVwXyZ",
+      "entity_type": "API_KEY",
+      "normalized_value": "ghp_99xKlmZ018aBcDeFgHiJkLmNoPqRsTuVwXyZ",
+      "entity_id": "API_KEY:ghp_99xKlmZ018aBcDeFgHiJkLmNoPqRsTuVwXyZ",
+      "native_label": "api_key",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    },
+    "<PASSWORD_1>": {
+      "placeholder": "<PASSWORD_1>",
+      "raw_value": "'RedisMasterPass992!'",
+      "entity_type": "PASSWORD",
+      "normalized_value": "RedisMasterPass992!",
+      "entity_id": "PASSWORD:RedisMasterPass992!",
+      "native_label": "password",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    },
+    "<PERSON_4>": {
+      "placeholder": "<PERSON_4>",
+      "raw_value": "Adyen",
+      "entity_type": "PERSON",
+      "normalized_value": "Adyen",
+      "entity_id": "PERSON:Adyen",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<IP_ADDRESS_3>": {
+      "placeholder": "<IP_ADDRESS_3>",
+      "raw_value": "2001:0db8:85a3:0000:0000:8a2e:0370:7334",
+      "entity_type": "IP_ADDRESS",
+      "normalized_value": "2001:0db8:85a3:0000:0000:8a2e:0370:7334",
+      "entity_id": "IP_ADDRESS:2001:0db8:85a3:0000:0000:8a2e:0370:7334",
+      "native_label": "ip_address",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<IP_ADDRESS_4>": {
+      "placeholder": "<IP_ADDRESS_4>",
+      "raw_value": "198.51.100.77",
+      "entity_type": "IP_ADDRESS",
+      "normalized_value": "198.51.100.77",
+      "entity_id": "IP_ADDRESS:198.51.100.77",
+      "native_label": "ip_address",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PERSON_5>": {
+      "placeholder": "<PERSON_5>",
+      "raw_value": "Aris Thorne",
+      "entity_type": "PERSON",
+      "normalized_value": "Aris Thorne",
+      "entity_id": "PERSON:Aris Thorne",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<EMAIL_3>": {
+      "placeholder": "<EMAIL_3>",
+      "raw_value": "aris.thorne@apexcloud.com",
+      "entity_type": "EMAIL",
+      "normalized_value": "aris.thorne@apexcloud.com",
+      "entity_id": "EMAIL:aris.thorne@apexcloud.com",
+      "native_label": "email",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PASSWORD_2>": {
+      "placeholder": "<PASSWORD_2>",
+      "raw_value": "leakage",
+      "entity_type": "PASSWORD",
+      "normalized_value": "leakage",
+      "entity_id": "PASSWORD:leakage",
+      "native_label": "password",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    }
+  },
+  "32d30776-a36a-4147-9ace-269159614c6f": {
+    "<EMAIL_1>": {
+      "placeholder": "<EMAIL_1>",
+      "raw_value": "jvance@vance-hastings-law.com",
+      "entity_type": "EMAIL",
+      "normalized_value": "jvance@vance-hastings-law.com",
+      "entity_id": "EMAIL:jvance@vance-hastings-law.com",
+      "native_label": "email",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PHONE_1>": {
+      "placeholder": "<PHONE_1>",
+      "raw_value": "+1-212-555-0178",
+      "entity_type": "PHONE",
+      "normalized_value": "+12125550178",
+      "entity_id": "PHONE:+12125550178",
+      "native_label": "phone",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<ADDRESS_1>": {
+      "placeholder": "<ADDRESS_1>",
+      "raw_value": "350 Fifth Avenue, 58th Floor, New York, NY 10118",
+      "entity_type": "ADDRESS",
+      "normalized_value": "350 Fifth Avenue, 58th Floor, New York, NY 10118",
+      "entity_id": "ADDRESS:350 Fifth Avenue, 58th Floor, New York, NY 10118",
+      "native_label": "address",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<EMAIL_2>": {
+      "placeholder": "<EMAIL_2>",
+      "raw_value": "j.drake.consulting@protonmail.com",
+      "entity_type": "EMAIL",
+      "normalized_value": "j.drake.consulting@protonmail.com",
+      "entity_id": "EMAIL:j.drake.consulting@protonmail.com",
+      "native_label": "email",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PHONE_2>": {
+      "placeholder": "<PHONE_2>",
+      "raw_value": "+1-415-555-0193",
+      "entity_type": "PHONE",
+      "normalized_value": "+14155550193",
+      "entity_id": "PHONE:+14155550193",
+      "native_label": "phone",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PHONE_3>": {
+      "placeholder": "<PHONE_3>",
+      "raw_value": "+1-212-555-0144",
+      "entity_type": "PHONE",
+      "normalized_value": "+12125550144",
+      "entity_id": "PHONE:+12125550144",
+      "native_label": "phone",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<EMAIL_3>": {
+      "placeholder": "<EMAIL_3>",
+      "raw_value": "katherine.belmont@horizon-holdings.com",
+      "entity_type": "EMAIL",
+      "normalized_value": "katherine.belmont@horizon-holdings.com",
+      "entity_id": "EMAIL:katherine.belmont@horizon-holdings.com",
+      "native_label": "email",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<BANK_ACCOUNT_1>": {
+      "placeholder": "<BANK_ACCOUNT_1>",
+      "raw_value": "948201948201",
+      "entity_type": "BANK_ACCOUNT",
+      "normalized_value": "948201948201",
+      "entity_id": "BANK_ACCOUNT:948201948201",
+      "native_label": "bank_account",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PHONE_4>": {
+      "placeholder": "<PHONE_4>",
+      "raw_value": "021000021",
+      "entity_type": "PHONE",
+      "normalized_value": "021000021",
+      "entity_id": "PHONE:021000021",
+      "native_label": "phone",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<API_KEY_1>": {
+      "placeholder": "<API_KEY_1>",
+      "raw_value": "HORIZON-CYBER-SETTLE-2026",
+      "entity_type": "API_KEY",
+      "normalized_value": "HORIZON-CYBER-SETTLE-2026",
+      "entity_id": "API_KEY:HORIZON-CYBER-SETTLE-2026",
+      "native_label": "api_key",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    },
+    "<CREDIT_CARD_1>": {
+      "placeholder": "<CREDIT_CARD_1>",
+      "raw_value": "5412751234123456",
+      "entity_type": "CREDIT_CARD",
+      "normalized_value": "5412751234123456",
+      "entity_id": "CREDIT_CARD:5412751234123456",
+      "native_label": "credit_card",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PASSWORD_1>": {
+      "placeholder": "<PASSWORD_1>",
+      "raw_value": "842",
+      "entity_type": "PASSWORD",
+      "normalized_value": "842",
+      "entity_id": "PASSWORD:842",
+      "native_label": "password",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    },
+    "<ADDRESS_2>": {
+      "placeholder": "<ADDRESS_2>",
+      "raw_value": "100 Wall Street, 12th Floor, New York, NY 10005",
+      "entity_type": "ADDRESS",
+      "normalized_value": "100 Wall Street, 12th Floor, New York, NY 10005",
+      "entity_id": "ADDRESS:100 Wall Street, 12th Floor, New York, NY 10005",
+      "native_label": "address",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "93f8e9b8-5aa2-44b5-88d8-3c861f38219d": {
+    "<TICKET_ID_1>": {
+      "placeholder": "<TICKET_ID_1>",
+      "raw_value": "INC-94821",
+      "entity_type": "TICKET_ID",
+      "normalized_value": "INC-94821",
+      "entity_id": "TICKET_ID:INC-94821",
+      "native_label": "ticket_id",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PASSWORD_1>": {
+      "placeholder": "<PASSWORD_1>",
+      "raw_value": "usage",
+      "entity_type": "PASSWORD",
+      "normalized_value": "usage",
+      "entity_id": "PASSWORD:usage",
+      "native_label": "password",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    },
+    "<PASSWORD_2>": {
+      "placeholder": "<PASSWORD_2>",
+      "raw_value": "exposure",
+      "entity_type": "PASSWORD",
+      "normalized_value": "exposure",
+      "entity_id": "PASSWORD:exposure",
+      "native_label": "password",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    },
+    "<PERSON_1>": {
+      "placeholder": "<PERSON_1>",
+      "raw_value": "credentials",
+      "entity_type": "PERSON",
+      "normalized_value": "credentials",
+      "entity_id": "PERSON:credentials",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PERSON_2>": {
+      "placeholder": "<PERSON_2>",
+      "raw_value": "Initiated",
+      "entity_type": "PERSON",
+      "normalized_value": "Initiated",
+      "entity_id": "PERSON:Initiated",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PASSWORD_3>": {
+      "placeholder": "<PASSWORD_3>",
+      "raw_value": "detection",
+      "entity_type": "PASSWORD",
+      "normalized_value": "detection",
+      "entity_id": "PASSWORD:detection",
+      "native_label": "password",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    },
+    "<PASSWORD_4>": {
+      "placeholder": "<PASSWORD_4>",
+      "raw_value": "handling",
+      "entity_type": "PASSWORD",
+      "normalized_value": "handling",
+      "entity_id": "PASSWORD:handling",
+      "native_label": "password",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    }
+  },
+  "7635c589-a3e2-4a43-abf8-d7a24839b4bd": {
+    "<EMAIL_1>": {
+      "placeholder": "<EMAIL_1>",
+      "raw_value": "jvance@vance-hastings-law.com",
+      "entity_type": "EMAIL",
+      "normalized_value": "jvance@vance-hastings-law.com",
+      "entity_id": "EMAIL:jvance@vance-hastings-law.com",
+      "native_label": "email",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PHONE_1>": {
+      "placeholder": "<PHONE_1>",
+      "raw_value": "+1-212-555-0178",
+      "entity_type": "PHONE",
+      "normalized_value": "+12125550178",
+      "entity_id": "PHONE:+12125550178",
+      "native_label": "phone",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<ADDRESS_1>": {
+      "placeholder": "<ADDRESS_1>",
+      "raw_value": "350 Fifth Avenue, 58th Floor, New York, NY 10118",
+      "entity_type": "ADDRESS",
+      "normalized_value": "350 Fifth Avenue, 58th Floor, New York, NY 10118",
+      "entity_id": "ADDRESS:350 Fifth Avenue, 58th Floor, New York, NY 10118",
+      "native_label": "address",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<EMAIL_2>": {
+      "placeholder": "<EMAIL_2>",
+      "raw_value": "j.drake.consulting@protonmail.com",
+      "entity_type": "EMAIL",
+      "normalized_value": "j.drake.consulting@protonmail.com",
+      "entity_id": "EMAIL:j.drake.consulting@protonmail.com",
+      "native_label": "email",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PHONE_2>": {
+      "placeholder": "<PHONE_2>",
+      "raw_value": "+1-415-555-0193",
+      "entity_type": "PHONE",
+      "normalized_value": "+14155550193",
+      "entity_id": "PHONE:+14155550193",
+      "native_label": "phone",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PHONE_3>": {
+      "placeholder": "<PHONE_3>",
+      "raw_value": "+1-212-555-0144",
+      "entity_type": "PHONE",
+      "normalized_value": "+12125550144",
+      "entity_id": "PHONE:+12125550144",
+      "native_label": "phone",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<EMAIL_3>": {
+      "placeholder": "<EMAIL_3>",
+      "raw_value": "katherine.belmont@horizon-holdings.com",
+      "entity_type": "EMAIL",
+      "normalized_value": "katherine.belmont@horizon-holdings.com",
+      "entity_id": "EMAIL:katherine.belmont@horizon-holdings.com",
+      "native_label": "email",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<BANK_ACCOUNT_1>": {
+      "placeholder": "<BANK_ACCOUNT_1>",
+      "raw_value": "948201948201",
+      "entity_type": "BANK_ACCOUNT",
+      "normalized_value": "948201948201",
+      "entity_id": "BANK_ACCOUNT:948201948201",
+      "native_label": "bank_account",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PHONE_4>": {
+      "placeholder": "<PHONE_4>",
+      "raw_value": "021000021",
+      "entity_type": "PHONE",
+      "normalized_value": "021000021",
+      "entity_id": "PHONE:021000021",
+      "native_label": "phone",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<API_KEY_1>": {
+      "placeholder": "<API_KEY_1>",
+      "raw_value": "HORIZON-CYBER-SETTLE-2026",
+      "entity_type": "API_KEY",
+      "normalized_value": "HORIZON-CYBER-SETTLE-2026",
+      "entity_id": "API_KEY:HORIZON-CYBER-SETTLE-2026",
+      "native_label": "api_key",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    },
+    "<CREDIT_CARD_1>": {
+      "placeholder": "<CREDIT_CARD_1>",
+      "raw_value": "5412751234123456",
+      "entity_type": "CREDIT_CARD",
+      "normalized_value": "5412751234123456",
+      "entity_id": "CREDIT_CARD:5412751234123456",
+      "native_label": "credit_card",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PASSWORD_1>": {
+      "placeholder": "<PASSWORD_1>",
+      "raw_value": "842",
+      "entity_type": "PASSWORD",
+      "normalized_value": "842",
+      "entity_id": "PASSWORD:842",
+      "native_label": "password",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    },
+    "<ADDRESS_2>": {
+      "placeholder": "<ADDRESS_2>",
+      "raw_value": "100 Wall Street, 12th Floor, New York, NY 10005",
+      "entity_type": "ADDRESS",
+      "normalized_value": "100 Wall Street, 12th Floor, New York, NY 10005",
+      "entity_id": "ADDRESS:100 Wall Street, 12th Floor, New York, NY 10005",
+      "native_label": "address",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  },
+  "fb396a82-eed7-40be-a7d1-8ae153d4ffee": {
+    "<PERSON_1>": {
+      "placeholder": "<PERSON_1>",
+      "raw_value": "jerin",
+      "entity_type": "PERSON",
+      "normalized_value": "jerin",
+      "entity_id": "PERSON:jerin",
+      "native_label": "person",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    },
+    "<PASSWORD_1>": {
+      "placeholder": "<PASSWORD_1>",
+      "raw_value": "26272",
+      "entity_type": "PASSWORD",
+      "normalized_value": "26272",
+      "entity_id": "PASSWORD:26272",
+      "native_label": "password",
+      "policy_decision": "MASK",
+      "disclosure_allowed": false
+    },
+    "<BANK_ACCOUNT_1>": {
+      "placeholder": "<BANK_ACCOUNT_1>",
+      "raw_value": "2272727272292",
+      "entity_type": "BANK_ACCOUNT",
+      "normalized_value": "2272727272292",
+      "entity_id": "BANK_ACCOUNT:2272727272292",
+      "native_label": "bank_account",
+      "policy_decision": "MASK",
+      "disclosure_allowed": true
+    }
+  }
+}

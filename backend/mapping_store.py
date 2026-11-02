@@ -8,26 +8,90 @@ The mapping store resides exclusively on the client/local environment
 and is never transmitted to external LLMs.
 """
 
+import json
+import logging
+import os
 import uuid
+from pathlib import Path
 from typing import Dict, Optional, Any
 from backend.models import EntityType
+
+logger = logging.getLogger(__name__)
+
+MAPPINGS_FILE = Path(__file__).parent / ".session_mappings.json"
 
 
 class MappingStore:
     """
-    In-memory session-isolated mapping repository for PromptShield AI.
+    Session-isolated mapping repository for PromptShield AI.
     Maps placeholders (e.g. <EMAIL_1>) to raw sensitive text.
+    Maintains in-memory state with local disk persistence so sessions
+    survive server restarts and hot-reloads.
     """
 
-    def __init__(self):
+    def __init__(self, persist: bool = True):
         # Format: {session_id: {placeholder: {"raw_value": str, "entity_type": EntityType, ...}}}
         self._store: Dict[str, Dict[str, Dict[str, Any]]] = {}
+        self._last_session_id: Optional[str] = None
+        self._persist: bool = persist
+        if self._persist:
+            self._load_from_disk()
+
+    def _persist_to_disk(self) -> None:
+        """Atomically persist in-memory mappings to local JSON store."""
+        if not self._persist:
+            return
+        try:
+            serializable_store = {}
+            for sid, ph_map in self._store.items():
+                serializable_store[sid] = {}
+                for ph, data in ph_map.items():
+                    entry = dict(data)
+                    et = entry.get("entity_type")
+                    if isinstance(et, EntityType):
+                        entry["entity_type"] = et.value
+                    serializable_store[sid][ph] = entry
+            with open(MAPPINGS_FILE, "w", encoding="utf-8") as f:
+                json.dump(serializable_store, f, indent=2)
+        except Exception as e:
+            logger.debug(f"[MappingStore] Could not persist to disk: {e}")
+
+    def _load_from_disk(self) -> None:
+        """Load persisted session mappings from disk on startup."""
+        if not MAPPINGS_FILE.exists():
+            return
+        try:
+            with open(MAPPINGS_FILE, "r", encoding="utf-8") as f:
+                raw_store = json.load(f)
+            for sid, ph_map in raw_store.items():
+                self._store[sid] = {}
+                for ph, data in ph_map.items():
+                    entry = dict(data)
+                    et_val = entry.get("entity_type")
+                    if et_val:
+                        try:
+                            entry["entity_type"] = EntityType(et_val)
+                        except ValueError:
+                            entry["entity_type"] = EntityType.PII_OTHER
+                    self._store[sid][ph] = entry
+                self._last_session_id = sid
+        except Exception as e:
+            logger.debug(f"[MappingStore] Could not load from disk: {e}")
+
+    def get_most_recent_session_id(self) -> Optional[str]:
+        """Return the most recently created or updated session ID."""
+        if self._last_session_id and self._last_session_id in self._store:
+            return self._last_session_id
+        if self._store:
+            return list(self._store.keys())[-1]
+        return None
 
     def create_session(self, session_id: Optional[str] = None) -> str:
         """Create a new session container if it does not exist."""
         sid = session_id or str(uuid.uuid4())
         if sid not in self._store:
             self._store[sid] = {}
+        self._last_session_id = sid
         return sid
 
     def store_mapping(
@@ -56,6 +120,8 @@ class MappingStore:
             "policy_decision": policy_decision or "MASK",
             "disclosure_allowed": disclosure_allowed,
         }
+        self._last_session_id = session_id
+        self._persist_to_disk()
 
     def register_mapping(
         self,
@@ -111,9 +177,13 @@ class MappingStore:
         """Delete session data from local store."""
         if session_id in self._store:
             del self._store[session_id]
+            if self._last_session_id == session_id:
+                self._last_session_id = list(self._store.keys())[-1] if self._store else None
+            self._persist_to_disk()
             return True
         return False
 
     def session_count(self) -> int:
         """Number of active sessions stored locally."""
         return len(self._store)
+

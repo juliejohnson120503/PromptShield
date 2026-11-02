@@ -1,6 +1,6 @@
 component,available,mean_ms,median_ms,p95_ms,note
-regex,True,0.6619,0.362,1.9154,"Always available — deterministic patterns, no ML"
-presidio,True,18.2926,12.7296,50.7741,Available if presidio-analyzer installed
+regex,True,0.8024,0.5699,2.2758,"Always available — deterministic patterns, no ML"
+presidio,True,21.5782,14.1567,51.6902,Available if presidio-analyzer installed
 gliner,True,0.0,0.0,0.0,Available if gliner package + model loaded
-spacy,True,330.2795,256.882,819.5355,Available if en_core_web_sm loaded
-fusion,True,0.5861,0.3622,2.1487,Measured on regex-only candidates as proxy for fusion overhead
+spacy,True,380.7482,246.5014,778.8562,Available if en_core_web_sm loaded
+fusion,True,0.557,0.3461,2.0409,Measured on regex-only candidates as proxy for fusion overhead

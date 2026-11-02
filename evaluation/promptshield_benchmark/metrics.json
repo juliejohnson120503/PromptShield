@@ -9,15 +9,15 @@
   "recall": 1.0,
   "micro_f1": 1.0,
   "macro_f1": 1.0,
-  "mean_latency_ms": 871.3815,
-  "median_latency_ms": 690.9205,
-  "min_latency_ms": 561.6287,
-  "max_latency_ms": 2867.6531,
-  "std_latency_ms": 447.2064,
-  "p95_latency_ms": 1938.9761,
-  "p99_latency_ms": 2207.213,
-  "throughput_prompts_per_second": 1.1476,
-  "model_init_time_ms": 13128.6816,
+  "mean_latency_ms": 1009.1349,
+  "median_latency_ms": 718.3998,
+  "min_latency_ms": 619.0683,
+  "max_latency_ms": 2065.9937,
+  "std_latency_ms": 482.9928,
+  "p95_latency_ms": 1816.6154,
+  "p99_latency_ms": 1876.4607,
+  "throughput_prompts_per_second": 0.9909,
+  "model_init_time_ms": 7089.0581,
   "warmup_runs": 5,
   "measured_runs": 600,
   "detector_status": {
@@ -39,6 +39,10 @@
       "model_loaded": true,
       "note": "GLiNER2 multi-category PII transformer loaded"
     },
+    "unicode_defense": {
+      "active": true,
+      "note": "Zero-width stripping, Cyrillic/Greek homoglyph mapping, NFKC canonicalization"
+    },
     "spacy": {
       "active": true,
       "model_loaded": true,
@@ -47,22 +51,22 @@
   },
   "component_latency_ms": {
     "regex": {
-      "mean": 0.6619,
-      "median": 0.362,
-      "min": 0.0881,
-      "max": 22.4492,
-      "std": 1.1347,
-      "p95": 1.9154,
-      "p99": 3.7715
+      "mean": 0.8024,
+      "median": 0.5699,
+      "min": 0.1229,
+      "max": 6.0601,
+      "std": 0.7431,
+      "p95": 2.2758,
+      "p99": 3.8544
     },
     "presidio": {
-      "mean": 18.2926,
-      "median": 12.7296,
-      "min": 6.0388,
-      "max": 109.303,
-      "std": 14.6229,
-      "p95": 50.7741,
-      "p99": 66.3208
+      "mean": 21.5782,
+      "median": 14.1567,
+      "min": 6.8776,
+      "max": 115.7699,
+      "std": 15.3449,
+      "p95": 51.6902,
+      "p99": 65.7358
     },
     "gliner": {
       "mean": 0.0,
@@ -74,36 +78,36 @@
       "p99": 0.0
     },
     "spacy": {
-      "mean": 330.2795,
-      "median": 256.882,
-      "min": 186.3115,
-      "max": 948.0501,
-      "std": 191.6571,
-      "p95": 819.5355,
-      "p99": 883.9233
+      "mean": 380.7482,
+      "median": 246.5014,
+      "min": 207.3836,
+      "max": 898.2284,
+      "std": 223.9547,
+      "p95": 778.8562,
+      "p99": 859.2387
     },
     "fusion": {
-      "mean": 0.5861,
-      "median": 0.3622,
-      "min": 0.0013,
-      "max": 4.7136,
-      "std": 0.7873,
-      "p95": 2.1487,
-      "p99": 3.399
+      "mean": 0.557,
+      "median": 0.3461,
+      "min": 0.0015,
+      "max": 4.1838,
+      "std": 0.7061,
+      "p95": 2.0409,
+      "p99": 3.0219
     }
   },
   "length_category_latency": [
     {
       "category": "SHORT",
       "num_prompts": 476,
-      "mean_latency_ms": 827.7069,
-      "p95_latency_ms": 1928.8708
+      "mean_latency_ms": 998.2573,
+      "p95_latency_ms": 1812.5236
     },
     {
       "category": "MEDIUM",
       "num_prompts": 124,
-      "mean_latency_ms": 1039.0353,
-      "p95_latency_ms": 2014.8661
+      "mean_latency_ms": 1050.8908,
+      "p95_latency_ms": 1847.7405
     }
   ],
   "unsupported_gt_labels": {}

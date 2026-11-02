@@ -50,6 +50,7 @@ That decision belongs to:
 """
 
 import logging
+from concurrent.futures import ThreadPoolExecutor
 from typing import Any, Dict, List, Optional
 
 from backend.models import DetectedEntity, EntityType
@@ -58,6 +59,7 @@ from backend.presidio_detector import PresidioDetector
 from backend.gliner2_pii_detector import GLiNER2PIIDetector
 from backend.spacy_detector import SpacyNERDetector
 from backend.entity_fusion import EntityFusionEngine
+from backend.normalization import canonicalize_adversarial_text, remap_entity_offsets
 
 # Re-export for backward compatibility with existing tests that import
 # is_luhn_valid and detect_card_brand from backend.detector.
@@ -126,6 +128,7 @@ class SensitiveDataDetector:
         self._fusion = EntityFusionEngine()
         self._use_gliner = self._use_gliner2
         self._gliner = self._gliner2
+        self._executor = ThreadPoolExecutor(max_workers=3, thread_name_prefix="ps_detector")
 
         logger.info(
             "[SensitiveDataDetector] Initialised — "
@@ -135,6 +138,14 @@ class SensitiveDataDetector:
             "ON (+" + ("spacy" if (self._spacy_ner and self._spacy_ner.is_available())
                        else "heuristic") + ")" if self._use_spacy else "OFF",
         )
+
+    def close(self) -> None:
+        """Shut down the worker thread pool."""
+        if hasattr(self, "_executor") and self._executor:
+            self._executor.shutdown(wait=False)
+
+    def __del__(self) -> None:
+        self.close()
 
     # ------------------------------------------------------------------
     # Public API
@@ -152,47 +163,48 @@ class SensitiveDataDetector:
         if not prompt or not prompt.strip():
             return []
 
+        # 0. Unicode & Homoglyph Evasion Defense (canonicalize adversarial text)
+        clean_prompt, offset_map = canonicalize_adversarial_text(prompt)
+        target_prompt = clean_prompt if offset_map is not None else prompt
+
         candidates: List[DetectedEntity] = []
 
-        # 1. Structured / deterministic regex detection
-        regex_results = self._regex.detect(prompt)
+        # 1. Structured / deterministic regex detection (fast, synchronous on main thread < 1 ms)
+        regex_results = self._regex.detect(target_prompt)
         candidates.extend(regex_results)
         logger.debug("[Detector] Regex found %d candidates.", len(regex_results))
 
-        # 2. Presidio PII detection (if enabled and available)
+        # 2. Concurrently execute heavy detectors (Presidio, GLiNER2, and spaCy)
+        futures = []
+
         if self._presidio is not None:
-            presidio_results = self._presidio.detect(prompt)
-            candidates.extend(presidio_results)
-            logger.debug(
-                "[Detector] Presidio found %d candidates.", len(presidio_results)
-            )
+            futures.append(self._executor.submit(self._presidio.detect, target_prompt))
 
-        # 3. GLiNER2 Deep Neural PII / Privacy Model (if enabled and available)
         if self._gliner2 is not None and self._gliner2.is_available():
-            gliner2_results = self._gliner2.detect(prompt)
-            candidates.extend(gliner2_results)
-            logger.debug(
-                "[Detector] GLiNER2 found %d candidates.", len(gliner2_results)
-            )
+            futures.append(self._executor.submit(self._gliner2.detect, target_prompt))
 
-        # 4. spaCy NER (if enabled) or Heuristic NER fallback (when use_spacy=False)
         if self._spacy_ner is not None:
-            ner_results = self._spacy_ner.detect(prompt)
-            candidates.extend(ner_results)
-            logger.debug(
-                "[Detector] NER found %d candidates.", len(ner_results)
-            )
+            futures.append(self._executor.submit(self._spacy_ner.detect, target_prompt))
         else:
             from backend.spacy_detector import HeuristicNERDetector
-            heuristic_results = HeuristicNERDetector().detect(prompt)
-            candidates.extend(heuristic_results)
-            logger.debug(
-                "[Detector] Heuristic NER (use_spacy=False fallback) found %d candidates.",
-                len(heuristic_results),
-            )
+            heuristic_det = HeuristicNERDetector()
+            futures.append(self._executor.submit(heuristic_det.detect, target_prompt))
 
-        # 5. Fusion: deduplicate, resolve overlaps, sort
-        fused = self._fusion.fuse(candidates, prompt)
+        # Collect results from all concurrent subsystems
+        for future in futures:
+            try:
+                sub_results = future.result()
+                candidates.extend(sub_results)
+            except Exception as exc:
+                logger.warning("[Detector] Subsystem detection failed in worker thread: %s", exc)
+
+        # 3. Fusion: deduplicate, resolve overlaps, sort
+        fused = self._fusion.fuse(candidates, target_prompt)
+
+        # 4. Remap entity offsets back to original prompt if adversarial defense transformed text
+        if offset_map is not None:
+            fused = remap_entity_offsets(fused, prompt, offset_map)
+
         logger.debug(
             "[Detector] Fusion reduced %d candidates → %d entities.",
             len(candidates), len(fused),
@@ -252,6 +264,10 @@ class SensitiveDataDetector:
             },
             "gliner2": gliner2_status,
             "gliner": gliner2_status,  # Backwards compatibility alias
+            "unicode_defense": {
+                "active": True,
+                "note": "Zero-width stripping, Cyrillic/Greek homoglyph mapping, NFKC canonicalization",
+            },
             "spacy": {
                 "active": self._use_spacy,
                 "model_loaded": spacy_ok,

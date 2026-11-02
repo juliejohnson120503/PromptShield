@@ -266,10 +266,60 @@
     }
   }, true);
 
+  // ---------------------------------------------------------------------------
+  // Conservative Client-Side Pre-Screening Filter (Step 3)
+  // ---------------------------------------------------------------------------
+  const SAFE_QUERY_PREFIXES = /^(what\s+(?:is|are|was|were|causes?|means?)|how\s+(?:to|do|does|can|did|works?|much|many)|why\s+(?:is|are|do|does|did)|explain|summarize|describe|define|translate|write\s+a\s+(?:poem|story|script|code|summary|essay)|generate\s+a\s+(?:poem|story|script|code|summary|essay)|list\s+(?:the|all|some)?|help\s+me\s+(?:understand|learn|debug|fix))\b/i;
+
+  const SENSITIVE_TRIGGER_WORDS = new RegExp(
+    "\\b(" +
+    "my|our|his|her|their|your|i\\s*am|i'?m|myself|" +
+    "name|called|named|who|who'?s|contact|reach|call|email|mail|phone|mobile|cell|" +
+    "pass|password|pwd|secret|key|token|credential|auth|login|pin|code|" +
+    "card|credit|debit|bank|account|acc|iban|cvv|exp|balance|payment|" +
+    "id|ssn|aadhaar|pan|passport|license|licence|ticket|order|customer|user|patient|medical|mrn|" +
+    "live|living|reside|address|street|st|ave|avenue|road|rd|city|state|zip|postal|" +
+    "mother|father|wife|husband|son|daughter|sister|brother|boss|doctor|manager|" +
+    "rohit|john|alice|bob|rahul|deepak|priya|david|sarah" +
+    ")\\b",
+    "i"
+  );
+
+  function canFastPassPrompt(prompt) {
+    if (!prompt || typeof prompt !== "string") return false;
+    const trimmed = prompt.trim();
+    // Only short, single-line queries qualify
+    if (trimmed.length < 5 || trimmed.length > 120 || trimmed.includes("\n")) return false;
+    // Non-ASCII characters (homoglyphs, zero-width, unicode) -> send to backend
+    if (/[^\x20-\x7E]/.test(trimmed)) return false;
+    // Any digit -> send to backend (cards, phones, accounts, IDs, dates, passwords)
+    if (/\d/.test(trimmed)) return false;
+    // Any uppercase letter -> send to backend (names, orgs, proper nouns, API keys)
+    if (/[A-Z]/.test(trimmed)) return false;
+    // Any sensitive delimiters or symbols -> send to backend
+    if (/[@#$%^&*+=<>~`|_\\/{}[\]:;"']/.test(trimmed)) return false;
+    // Any sensitive trigger words -> send to backend
+    if (SENSITIVE_TRIGGER_WORDS.test(trimmed)) return false;
+    // MUST start with an informational/general query prefix
+    if (!SAFE_QUERY_PREFIXES.test(trimmed)) return false;
+
+    return true;
+  }
+
   // 3. Core Interception Flow
   async function processPromptInterception(promptText, inputElem) {
     if (isIntercepting) return;
     isIntercepting = true;
+
+    // Conservative Client-Side Pre-Screening:
+    // If the prompt is unambiguously a benign general query, fast-pass immediately in 0 ms
+    if (canFastPassPrompt(promptText)) {
+      console.log("[PromptShield] Fast-pass: Benign general query detected. Submitting directly in 0 ms.");
+      safeSendMessage({ type: "RECORD_FAST_PASS" });
+      isIntercepting = false;
+      triggerDirectSubmit(promptText, inputElem);
+      return;
+    }
 
     // Check if extension context is valid
     if (!isExtensionContextValid()) {
@@ -281,19 +331,28 @@
       return;
     }
 
-    showMiniStatus("PromptShield Analyzing...");
+    const wordCount = promptText.trim().split(/\s+/).filter(Boolean).length;
+    if (wordCount > 200) {
+      showMiniStatus(`PromptShield Deep Scan (${wordCount} words)...`);
+    } else {
+      showMiniStatus("PromptShield Analyzing...");
+    }
 
-    // Safety timeout: if analysis takes longer than 7 seconds, release to prevent freezing
+    // Adaptive safety timeout: gives sufficient window for deep neural scanning on long prompts (500+ words)
     let completed = false;
+    const timeoutMs = wordCount > 200
+      ? Math.min(45000, 15000 + wordCount * 35)
+      : 12000;
+
     const safetyTimer = setTimeout(() => {
       if (!completed) {
         completed = true;
         isIntercepting = false;
         hideMiniStatus();
-        console.warn("[PromptShield] Analysis timeout. Releasing prompt directly.");
+        console.warn(`[PromptShield] Analysis timeout after ${timeoutMs}ms (${wordCount} words). Releasing prompt directly.`);
         triggerDirectSubmit(promptText, inputElem);
       }
-    }, 7000);
+    }, timeoutMs);
 
     safeSendMessage(
       { type: "ANALYZE_PROMPT", payload: { prompt: promptText } },
@@ -706,7 +765,7 @@
   // Scans incoming LLM responses for {{TYPE_N}} or <TYPE_N> placeholders and restores authorized secrets
   const inFlightRestoreNodes = new WeakSet();
   const fullyRestoredNodes = new WeakSet();
-  const PLACEHOLDER_CHECK_RE = /(?:\{\{|\{|\<|\[)([A-Z_]+)_(\d+)(?:\}\}|\}|\>|\])/;
+  const PLACEHOLDER_CHECK_RE = /(?:\{\{|\{|\<|\[|&lt;)\s*([A-Za-z_]+)_(\d+)\s*(?:\}\}|\}|\>|\]|&gt;)|\[(?:Your\s+Name|Your\s+Full\s+Name|Name|Full\s+Name|Applicant\s+Name|Candidate\s+Name)\]/i;
 
   // Restore lastSessionId from storage on startup
   chrome.storage.local.get(["lastSessionId"], (res) => {
@@ -744,18 +803,18 @@
           rawText += " " + inp.value;
         }
       });
-      // Also check for custom HTML tags like <LOCATION_1>, <EMAIL_1> created by browser parser
+      // Also check for custom HTML tags like <LOCATION_1>, <person_1> created by browser parser
       target.querySelectorAll("*").forEach((el) => {
-        if (/^[A-Z_]+_\d+$/i.test(el.tagName)) {
+        if (/^[A-Za-z_]+_\d+$/i.test(el.tagName)) {
           rawText += ` {{${el.tagName.toUpperCase()}}}`;
         }
       });
     }
     if (PLACEHOLDER_CHECK_RE.test(rawText)) {
-      const allPhs = Array.from(rawText.matchAll(/(?:\{\{|\{|\<|\[)([A-Z_]+)_(\d+)(?:\}\}|\}|\>|\])/g)).map((m) => m[0]);
+      const allPhs = Array.from(rawText.matchAll(/(?:\{\{|\{|\<|\[|&lt;)\s*([A-Za-z_]+)_(\d+)\s*(?:\}\}|\}|\>|\]|&gt;)|\[(?:Your\s+Name|Your\s+Full\s+Name|Name|Full\s+Name|Applicant\s+Name|Candidate\s+Name)\]/gi)).map((m) => m[0]);
       return allPhs.some((ph) => {
-        const clean = ph.replace(/[\{\}\<\>\[\]]/g, "");
-        return !(node._psBlockedPhs && (node._psBlockedPhs.has(ph) || node._psBlockedPhs.has(clean) || node._psBlockedPhs.has(`{{${clean}}}`)));
+        const clean = ph.replace(/[\{\}\<\>\[\]]|&lt;|&gt;/gi, "").toUpperCase();
+        return !(node._psBlockedPhs && (node._psBlockedPhs.has(ph) || node._psBlockedPhs.has(clean) || node._psBlockedPhs.has(`{{${clean}}}`) || node._psBlockedPhs.has(ph.toLowerCase())));
       });
     }
     return false;
@@ -988,6 +1047,22 @@
   function safelyReplacePlaceholders(rootElem, restoredMap) {
     if (!restoredMap || Object.keys(restoredMap).length === 0 || !rootElem) return;
 
+    // Build fast case-insensitive lookup and master regex (longer keys first to prevent partial prefix conflicts)
+    const sortedKeys = Object.keys(restoredMap).sort((a, b) => b.length - a.length);
+    if (sortedKeys.length === 0) return;
+    const patternStr = sortedKeys.map(k => escapeRegExp(k)).join("|");
+    const masterRegex = new RegExp(patternStr, "gi");
+
+    const lowerMap = {};
+    for (const [k, v] of Object.entries(restoredMap)) {
+      lowerMap[k.toLowerCase()] = v;
+    }
+
+    const replacer = (match) => {
+      const lower = match.toLowerCase();
+      return lowerMap[lower] !== undefined ? lowerMap[lower] : match;
+    };
+
     // 1. Safe text node walker replacement (preserves React virtual DOM and event listeners)
     // Exclude only the active compose input (#prompt-textarea) and PromptShield's own modal UI
     const walker = document.createTreeWalker(rootElem, NodeFilter.SHOW_TEXT, null, false);
@@ -1002,20 +1077,15 @@
       ) {
         continue;
       }
-      for (const ph of Object.keys(restoredMap)) {
-        if (textNode.nodeValue && textNode.nodeValue.includes(ph)) {
-          nodesToUpdate.push(textNode);
-          break;
-        }
+      if (textNode.nodeValue && masterRegex.test(textNode.nodeValue)) {
+        nodesToUpdate.push(textNode);
       }
+      masterRegex.lastIndex = 0;
     }
 
     for (const tn of nodesToUpdate) {
-      let val = tn.nodeValue;
-      for (const [ph, secret] of Object.entries(restoredMap)) {
-        val = val.replaceAll(ph, secret);
-      }
-      tn.nodeValue = val;
+      tn.nodeValue = tn.nodeValue.replace(masterRegex, replacer);
+      masterRegex.lastIndex = 0;
     }
 
     // 2. Safe input / textarea value updates with native React prototype setter
@@ -1025,19 +1095,12 @@
           return;
         }
         try {
-          if (inp.value && typeof inp.value === "string") {
-            let val = inp.value;
-            let modified = false;
-            for (const [ph, secret] of Object.entries(restoredMap)) {
-              if (val.includes(ph)) {
-                val = val.replaceAll(ph, secret);
-                modified = true;
-              }
-            }
-            if (modified) {
-              setNativeInputValue(inp, val);
-            }
+          if (inp.value && typeof inp.value === "string" && masterRegex.test(inp.value)) {
+            masterRegex.lastIndex = 0;
+            const replaced = inp.value.replace(masterRegex, replacer);
+            setNativeInputValue(inp, replaced);
           }
+          masterRegex.lastIndex = 0;
         } catch (_) {}
       });
 
@@ -1050,23 +1113,16 @@
         for (const attr of attributeNames) {
           if (el.hasAttribute(attr)) {
             let attrVal = el.getAttribute(attr);
-            if (attrVal) {
-              let updated = false;
-              for (const [ph, secret] of Object.entries(restoredMap)) {
-                if (attrVal.includes(ph)) {
-                  attrVal = attrVal.replaceAll(ph, secret);
-                  updated = true;
-                }
-              }
-              if (updated) {
-                el.setAttribute(attr, attrVal);
-              }
+            if (attrVal && masterRegex.test(attrVal)) {
+              masterRegex.lastIndex = 0;
+              el.setAttribute(attr, attrVal.replace(masterRegex, replacer));
             }
+            masterRegex.lastIndex = 0;
           }
         }
       });
 
-      // 4. Safe replacement for custom HTML tag elements created by browser (e.g. <LOCATION_1></LOCATION_1>)
+      // 4. Safe replacement for custom HTML tag elements created by browser (e.g. <LOCATION_1></LOCATION_1>, <person_1></person_1>)
       rootElem.querySelectorAll("*").forEach((el) => {
         if (
           el.closest(
@@ -1077,7 +1133,7 @@
         }
         const tag = el.tagName.toUpperCase();
         for (const [ph, secret] of Object.entries(restoredMap)) {
-          const cleanPh = ph.replace(/[\{\}\<\>\[\]]/g, "").toUpperCase();
+          const cleanPh = ph.replace(/[\{\}\<\>\[\]]|&lt;|&gt;/gi, "").toUpperCase();
           if (tag === cleanPh && secret) {
             const textNode = document.createTextNode(secret);
             el.replaceWith(textNode);

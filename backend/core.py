@@ -55,14 +55,19 @@ class PromptShieldCore:
         """
         return self.task_classifier.classify(prompt)
 
-    def analyze_context(self, prompt: str) -> ContextAnalysisResult:
+    def analyze_context(
+        self,
+        prompt: str,
+        entities: Optional[List[DetectedEntity]] = None,
+    ) -> ContextAnalysisResult:
         """
         Execute Phase 2 context understanding:
-        1. Detect entities in prompt
+        1. Detect entities in prompt (if not already provided)
         2. Classify task intent
         3. Determine contextual roles (e.g., personal PII vs public figures/facts)
         """
-        entities = self.detector.detect(prompt)
+        if entities is None:
+            entities = self.detector.detect(prompt)
         task_type, conf, cues = self.task_classifier.classify(prompt)
         return self.context_analyzer.analyze(
             prompt=prompt,
@@ -72,7 +77,12 @@ class PromptShieldCore:
             task_cues=cues,
         )
 
-    def evaluate_policy(self, prompt: str) -> PolicyReport:
+    def evaluate_policy(
+        self,
+        prompt: str,
+        context_result: Optional[ContextAnalysisResult] = None,
+        entities: Optional[List[DetectedEntity]] = None,
+    ) -> PolicyReport:
         """
         Execute Phase 3 Risk Assessment & Privacy Policy:
         1. Detect entities (Phase 1)
@@ -81,7 +91,8 @@ class PromptShieldCore:
 
         Returns a PolicyReport — the authoritative input for Phase 4 masking.
         """
-        context_result = self.analyze_context(prompt)
+        if context_result is None:
+            context_result = self.analyze_context(prompt, entities=entities)
         return self.policy_engine.evaluate(context_result)
 
     def sanitize_baseline(
@@ -103,6 +114,7 @@ class PromptShieldCore:
         session_id: Optional[str] = None,
         approved_entity_ids: Optional[Set[str]] = None,
         masked_entity_ids: Optional[Set[str]] = None,
+        policy_report: Optional[PolicyReport] = None,
     ) -> SemanticMaskingResult:
         """
         [Phase 4] Context-Aware Semantic Masking.
@@ -111,7 +123,8 @@ class PromptShieldCore:
         Respects MASK / RETAIN / USER_APPROVAL / REVIEW decisions from Phase 3,
         while honoring explicit user approval and masking overrides.
         """
-        policy_report = self.evaluate_policy(prompt)
+        if policy_report is None:
+            policy_report = self.evaluate_policy(prompt)
         return self.semantic_masker.mask(
             prompt=prompt,
             policy_report=policy_report,

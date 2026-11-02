@@ -67,12 +67,12 @@ class PromptShieldService:
     ) -> AnalyzeResponse:
         t0 = time.perf_counter()
 
-        # 1. Detection
+        # 1. Detection (Phase 1 — Run once)
         entities = self.shield.detector.detect(prompt)
-        # 2. Context
-        context = self.shield.analyze_context(prompt)
-        # 3. Policy
-        policy = self.shield.evaluate_policy(prompt)
+        # 2. Context (Phase 2 — Reuse detected entities)
+        context = self.shield.analyze_context(prompt, entities=entities)
+        # 3. Policy (Phase 3 — Reuse context result)
+        policy = self.shield.evaluate_policy(prompt, context_result=context)
         latency = (time.perf_counter() - t0) * 1000.0
 
         # Record audit
@@ -135,11 +135,15 @@ class PromptShieldService:
 
         approved_set = set(approved_entity_ids) if approved_entity_ids else None
         masked_set = set(masked_entity_ids) if masked_entity_ids else None
+        
+        # Evaluate policy once and pass into sanitize to avoid redundant detection
+        policy_eval = self.shield.evaluate_policy(prompt)
         mask_res = self.shield.sanitize(
             prompt=prompt,
             session_id=session_id,
             approved_entity_ids=approved_set,
             masked_entity_ids=masked_set,
+            policy_report=policy_eval,
         )
         latency = (time.perf_counter() - t0) * 1000.0
 
@@ -158,9 +162,6 @@ class PromptShieldService:
             )
             for rec in mask_res.approval_required
         ]
-
-        # Context evaluation for reporting
-        policy_eval = self.shield.evaluate_policy(prompt)
 
         return SanitizeResponse(
             session_id=mask_res.session_id,
@@ -184,6 +185,14 @@ class PromptShieldService:
     ) -> RestoreResponse:
         t0 = time.perf_counter()
 
+        effective_session_id = session_id
+        # Only fall back to most recent session if no session ID was provided at all
+        if not effective_session_id:
+            fallback_sid = self.shield.mapping_store.get_most_recent_session_id()
+            if fallback_sid and self.shield.mapping_store.get_mappings(fallback_sid):
+                logger.info(f"[restore_response] Falling back to session {fallback_sid}")
+                effective_session_id = fallback_sid
+
         if allow_all_restoration:
             rest_policy = RestorationPolicy(
                 allow_credentials_restoration=True,
@@ -194,7 +203,7 @@ class PromptShieldService:
 
         res = self.shield.restore_response(
             llm_response=llm_response,
-            session_id=session_id,
+            session_id=effective_session_id,
             policy=rest_policy,
         )
         latency = (time.perf_counter() - t0) * 1000.0
@@ -207,29 +216,68 @@ class PromptShieldService:
         restored_map = {}
         for r in res.restorations:
             if r.restored:
-                clean = re.sub(r"[\{\}\<\>\[\]]", "", r.placeholder).strip()
-                restored_map[r.placeholder] = r.original_value
-                restored_map[f"{{{{{clean}}}}}"] = r.original_value
-                restored_map[f"<{clean}>"] = r.original_value
-                restored_map[f"[{clean}]"] = r.original_value
-                restored_map[clean] = r.original_value
+                val = r.original_value
+                clean = re.sub(r"[\{\}\<\>\[\]]|&lt;|&gt;", "", r.placeholder).strip()
+                restored_map[r.placeholder] = val
+                restored_map[r.placeholder.lower()] = val
+                restored_map[f"{{{{{clean}}}}}"] = val
+                restored_map[f"{{{{{clean.lower()}}}}}"] = val
+                restored_map[f"<{clean}>"] = val
+                restored_map[f"<{clean.lower()}>"] = val
+                restored_map[f"[{clean}]"] = val
+                restored_map[f"[{clean.lower()}]"] = val
+                restored_map[f"&lt;{clean}&gt;"] = val
+                restored_map[f"&lt;{clean.lower()}&gt;"] = val
+                restored_map[clean] = val
+                restored_map[clean.lower()] = val
+
+                # If PERSON entity, register common LLM email template slot aliases
+                if r.entity_type == EntityType.PERSON or "PERSON" in clean.upper():
+                    restored_map["[Your Name]"] = val
+                    restored_map["[your name]"] = val
+                    restored_map["[Name]"] = val
+                    restored_map["[name]"] = val
+                    restored_map["[Your Full Name]"] = val
+                    restored_map["[your full name]"] = val
+                    restored_map["[Full Name]"] = val
+                    restored_map["[Candidate Name]"] = val
+                    restored_map["[Applicant Name]"] = val
 
         # Also enrich restored_map with all authorized session mappings so the frontend
         # can restore both the user's prompt turns and the assistant's responses
-        if session_id:
-            session_details = self.shield.mapping_store.get_mapping_details(session_id)
+        target_sid = effective_session_id or session_id
+        if target_sid:
+            session_details = self.shield.mapping_store.get_mapping_details(target_sid)
             for ph, det in session_details.items():
                 if ph not in blocked_phs and det.get("disclosure_allowed", True):
                     et = det.get("entity_type")
                     if not (et in rest_policy.blocked_entity_types and not rest_policy.allow_credentials_restoration):
                         raw_val = det.get("raw_value")
                         if raw_val:
-                            clean = re.sub(r"[\{\}\<\>\[\]]", "", ph).strip()
+                            clean = re.sub(r"[\{\}\<\>\[\]]|&lt;|&gt;", "", ph).strip()
                             restored_map[ph] = raw_val
+                            restored_map[ph.lower()] = raw_val
                             restored_map[f"{{{{{clean}}}}}"] = raw_val
+                            restored_map[f"{{{{{clean.lower()}}}}}"] = raw_val
                             restored_map[f"<{clean}>"] = raw_val
+                            restored_map[f"<{clean.lower()}>"] = raw_val
                             restored_map[f"[{clean}]"] = raw_val
+                            restored_map[f"[{clean.lower()}]"] = raw_val
+                            restored_map[f"&lt;{clean}&gt;"] = raw_val
+                            restored_map[f"&lt;{clean.lower()}&gt;"] = raw_val
                             restored_map[clean] = raw_val
+                            restored_map[clean.lower()] = raw_val
+
+                            if et == EntityType.PERSON or "PERSON" in clean.upper():
+                                restored_map["[Your Name]"] = raw_val
+                                restored_map["[your name]"] = raw_val
+                                restored_map["[Name]"] = raw_val
+                                restored_map["[name]"] = raw_val
+                                restored_map["[Your Full Name]"] = raw_val
+                                restored_map["[your full name]"] = raw_val
+                                restored_map["[Full Name]"] = raw_val
+                                restored_map["[Candidate Name]"] = raw_val
+                                restored_map["[Applicant Name]"] = raw_val
 
         restored_count = len(restored_phs)
         blocked_count = len(blocked_phs)
